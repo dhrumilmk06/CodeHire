@@ -17,6 +17,7 @@
     "express": "^5.1.0",
     "inngest": "^3.44.3",
     "mongoose": "^8.19.1",
-    "path-to-regexp": "^0.1.7"
+    "path-to-regexp": "^0.1.7",
+    "svix": "^1.84.1"
   }
 }

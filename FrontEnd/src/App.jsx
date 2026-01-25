@@ -8,13 +8,16 @@ function App() {
     <>
       <h1>Welcome to CodeHire</h1>
 
-      <SignedOut> // only show when user is signed out
+
+      {/* only show when user is signed out */ }
+      <SignedOut> 
         <SignInButton mode='modal' > 
           <button className=''>Login</button>
         </SignInButton>
       </SignedOut>
 
-      <SignedIn> // only show when user is signed in
+      {/*only show when user is signed in*/ }
+      <SignedIn> 
         <SignOutButton />
       </SignedIn>
 

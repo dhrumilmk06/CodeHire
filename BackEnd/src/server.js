@@ -1,6 +1,11 @@
 import express from 'express';
 import { ENV } from './lib/env.js';
 import { connectDB } from './lib/db.js';
+import { serve } from 'inngest/express';
+import { functions, inngest } from './lib/inngest.js';
+import cors from "cors";
+
+
 const app = express();
 
 
@@ -8,7 +13,14 @@ app.get('/', (req,res) => {
     res.send("Hello World")
 })
 
+//middlewares
+app.use(express.json());
+/* Cors means It is a security mechanism used by browsers to control:“Which frontend is allowed to talk to which backend?”
+credentials: true means server allows browser to include cookies on requests
+*/
+app.use(cors({origin:ENV.CLIENT_URL, credentials: true}))
 
+app.use("/api/inngest", serve({client: inngest, functions}))
 //this function is for first connecting to the database and then starting the server
 const startServer = async () => {
     try {

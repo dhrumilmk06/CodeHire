@@ -31,7 +31,7 @@ app.use("/api/inngest", serve({ client: inngest, functions }))
 if (ENV.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../../FrontEnd/dist")));
 
-    app.get("*", (req, res) => {
+    app.get(/^(?!\/api).+/, (req, res) => {
         res.sendFile(path.resolve(__dirname, "../../FrontEnd", "dist", "index.html"));
     });
 }

@@ -25,7 +25,11 @@ credentials: true means server allows browser to include cookies on requests
 */
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }))
 
-app.use("/api/inngest", serve({ client: inngest, functions }))
+app.use("/api/inngest", serve({
+    client: inngest,
+    functions,
+    signingKey: ENV.INNGEST_SIGNING_KEY,
+}))
 
 //deployment code
 if (ENV.NODE_ENV === "production") {

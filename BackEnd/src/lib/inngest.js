@@ -1,8 +1,12 @@
 import { Inngest } from 'inngest'
 import { connectDB } from './db.js'
 import User from '../models/User.js'
+import { ENV } from './env.js'
 
-export const inngest = new Inngest({ id: 'codehire-app' })
+export const inngest = new Inngest({
+    id: 'codehire-app',
+    eventKey: ENV.INNGEST_EVENT_KEY,
+})
 
 //syncUser function is used to connect clerk to mongo db for to store  user account and listens to user.created event from Clerk and creates a new user in our database
 const syncUser = inngest.createFunction(

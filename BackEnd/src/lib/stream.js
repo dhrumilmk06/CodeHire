@@ -11,6 +11,8 @@ if(!apiKey || !apiSecret){
 //passing api key or secret to know we are sending to stream server
 export const chatClient = StreamChat.getInstance(apiKey, apiSecret);
 
+export const serverClient = StreamChat.getInstance(apiKey, apiSecret);
+
 // this function work is to send userdata from clerk to stream
 //userData is coming from clerak and upsert means update + create upsertUser is stream built in methos to create user
 export const upsertStreamUser  = async (userData) => {
@@ -30,3 +32,6 @@ export const deleteStreamUser  = async (userId) => {
         console.error("Error deleting Stream user:", error);
     }
 };
+
+export const users = await serverClient.queryUsers({});
+console.log(users);

@@ -11,6 +11,7 @@ if(!apiKey || !apiSecret){
 //passing api key or secret to know we are sending to stream server
 export const chatClient = StreamChat.getInstance(apiKey, apiSecret);
 
+//this is for viewing stream user in console
 export const serverClient = StreamChat.getInstance(apiKey, apiSecret);
 
 // this function work is to send userdata from clerk to stream
@@ -33,5 +34,6 @@ export const deleteStreamUser  = async (userId) => {
     }
 };
 
+//this is for viewing stream user in console
 export const users = await serverClient.queryUsers({});
 console.log(users);

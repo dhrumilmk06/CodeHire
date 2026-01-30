@@ -1,22 +1,22 @@
 import express from 'express';
+import path from "path";
+import { serve } from 'inngest/express';
+import cors from "cors";
+import { clerkMiddleware } from '@clerk/express'
+
 import { ENV } from './lib/env.js';
 import { connectDB } from './lib/db.js';
-import { serve } from 'inngest/express';
 import { functions, inngest } from './lib/inngest.js';
-import cors from "cors";
-import path from "path";
+
 import { fileURLToPath } from "url";
-import { clerkMiddleware } from '@clerk/express'
-import { protectRoute } from './middleware/protectRoute.js';
 import chatRoutes from './routes/chatRoutes.js'
+import sessionRoutes from './routes/sessionRoutes.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
 const app = express();
-
-
 
 
 //middlewares
@@ -37,6 +37,7 @@ app.get('/api/health', (req, res) => {
 })
 
 app.use('/api/chat', chatRoutes)
+app.use('/api/sessions', sessionRoutes)
 
 //deployment code
 if (ENV.NODE_ENV === "production") {

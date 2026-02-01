@@ -1,18 +1,22 @@
 import {Routes, Route, Navigate} from 'react-router'
-import { HomePage } from './pages/Homepage'
+import { HomePage } from './pages/HomePage.jsx'
 import { ProblemPage } from './pages/ProblemPage'
-import { useUser } from "@clerk/clerk-react";
+import { SignIn, useUser } from "@clerk/clerk-react";
 import { Toaster } from 'react-hot-toast';
+import { DashBoardPage } from './pages/DashBoardPage.jsx';
 
 function App() {
 
-      const {isSignedIn} = useUser()
+      const {isSignedIn , isLoaded} = useUser()
 
+      //this will stop the filckering effect of changing page
+      if(!isLoaded) return null
   return (
     <>
       <Routes>
 
-        <Route path='/' element={<HomePage />} />
+        <Route path='/' element={!isSignedIn ? <HomePage /> : <Navigate to= {"/dashboard"} /> } />
+        <Route path='/dashboard' element={isSignedIn ? <DashBoardPage /> : <Navigate to= {"/"} /> } />
         <Route path='/problem' element={isSignedIn ? <ProblemPage/> : <Navigate to = {'/'} />} />
         
       </Routes>

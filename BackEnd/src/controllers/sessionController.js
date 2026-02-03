@@ -45,7 +45,8 @@ export async function createSession(req, res) {
 export async function getActiveSessions(_, res) {
    try {
     const sessions =  await Session.find({status: "active"})
-   .populate("host", "name profileImage email clerkId") // populate method is use foe fetching details form the model like host detail from User model
+   .populate("host", "name profileImage email clerkId")
+   .populate("participant", "name profileImage email clerkId") // populate method is use foe fetching details form the model like host detail from User model
    .sort({ createdAt: -1})// -1 means descending order
    .limit(20);
 

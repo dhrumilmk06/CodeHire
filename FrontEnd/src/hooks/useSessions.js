@@ -35,7 +35,7 @@ export const useMyRecentSessions = () => {
     return result
 };
 
-export const useSeesionById = (id) => {
+export const useSessionById = (id) => {
     const result = useQuery({
         queryKey:["session", id],
         queryFn: () => sessionApi.getSessionById,

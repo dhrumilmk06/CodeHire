@@ -1,6 +1,6 @@
-import {useMutation, useQuery} from '@tanstack/react-query'
-import {toast} from 'react-hot-toast'
-import {sessionApi} from '../api/sessions.js'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { toast } from 'react-hot-toast'
+import { sessionApi } from '../api/sessions.js'
 
 //tanstack query is use for not writing multiple fn and useEffect hooks
 // useQuery is use for feaching data and get req
@@ -11,7 +11,7 @@ export const useCreateSession = () => {
         mutationKey: ["createSession"],
         mutationFn: sessionApi.createSession,
         onSuccess: () => toast.success("Session created successfully!"),
-        onError:(error) => toast.error(error.response?.data?.message || "Failed to create room"),
+        onError: (error) => toast.error(error.response?.data?.message || "Failed to create room"),
     });
 
     return result;
@@ -19,7 +19,7 @@ export const useCreateSession = () => {
 
 export const useActiveSessions = () => {
     const result = useQuery({
-        queryKey:["activeSessions"],
+        queryKey: ["activeSessions"],
         queryFn: sessionApi.getActiveSessions,
     });
 
@@ -28,7 +28,7 @@ export const useActiveSessions = () => {
 
 export const useMyRecentSessions = () => {
     const result = useQuery({
-        queryKey:["myRecentSessions"],
+        queryKey: ["myRecentSessions"],
         queryFn: sessionApi.getMyReecentSessions,
     });
 
@@ -37,8 +37,8 @@ export const useMyRecentSessions = () => {
 
 export const useSessionById = (id) => {
     const result = useQuery({
-        queryKey:["session", id],
-        queryFn: () => sessionApi.getSessionById,
+        queryKey: ["session", id],
+        queryFn: () => sessionApi.getSessionById(id),
         enabled: !!id, // enable means if there is id than only access this api and !!is means we are converting default id String from id boolean
         refetchInterval: 5000,// refetch every 5 seconds to detect session status changes
     });
@@ -48,7 +48,7 @@ export const useSessionById = (id) => {
 
 export const useJoinSession = () => {
     const result = useMutation({
-        mutationKey:["joinSession"],
+        mutationKey: ["joinSession"],
         mutationFn: sessionApi.joinSession,
         onSuccess: () => toast.success("Joined session successfully!"),
         onError: (error) => toast.error(error.response?.data?.message || "Failed to join session"),
@@ -59,7 +59,7 @@ export const useJoinSession = () => {
 
 export const useEndSession = () => {
     const result = useMutation({
-        mutationKey:["endSession"],
+        mutationKey: ["endSession"],
         mutationFn: sessionApi.endSession,
         onSuccess: () => toast.success("Session ended successfully!"),
         onError: (error) => toast.error(error.response?.data?.message || "Failed to end session"),

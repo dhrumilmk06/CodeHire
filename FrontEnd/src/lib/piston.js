@@ -7,9 +7,9 @@
 const PISTON_API = "https://emkc.org/api/v2/piston"
 
 const LANGUAGE_VERSIONS = {
-    javascript: { language: "javascript", version: "18.15.0"},
-    python: { language: "pyhon", version: "3.10.0"},
-    java: { language: "java", version: "15.0.2"},
+    javascript: { language: "javascript", version: "18.15.0" },
+    python: { language: "python", version: "3.10.0" },
+    java: { language: "java", version: "15.0.2" },
 }
 
 /**
@@ -24,16 +24,16 @@ export async function executeCode(language, code) {
     try {
         const languageConfig = LANGUAGE_VERSIONS[language];
 
-        if(!languageConfig){
-            return{
+        if (!languageConfig) {
+            return {
                 success: false,
                 error: `Unsupported language: ${language}`
             }
         }
 
-        const response = await fetch(`${PISTON_API}/execute`,{
+        const response = await fetch(`${PISTON_API}/execute`, {
             method: "POST",
-            headers:{
+            headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
@@ -41,15 +41,15 @@ export async function executeCode(language, code) {
                 version: languageConfig.version,
                 files: [
                     {
-                        name:`main${getFileExecution(language)}`,
+                        name: `main${getFileExecution(language)}`,
                         content: code,
                     },
                 ],
             }),
         });
 
-        if(!response.ok){
-            return{
+        if (!response.ok) {
+            return {
                 success: false,
                 error: `HTTP error! status: ${response.status}`
             };
@@ -60,15 +60,15 @@ export async function executeCode(language, code) {
         const output = data.run.output || "";
         const stderr = data.run.stderr || "";
 
-        if(stderr) {
-            return{
+        if (stderr) {
+            return {
                 success: false,
                 output: output,
                 error: stderr,
             };
         }
 
-        return{
+        return {
             success: true,
             output: output || "No output",
         };
@@ -81,7 +81,7 @@ export async function executeCode(language, code) {
     }
 }
 
-function getFileExecution(language){
+function getFileExecution(language) {
     const extentions = {
         javascript: "js",
         python: "py",

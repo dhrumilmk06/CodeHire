@@ -339,6 +339,81 @@ print(maxArea([1,1]))  # Expected: 1`,
       java: "49\n1",
     },
   },
+
+  "3sum": {
+    id: "3sum",
+    title: "3Sum",
+    difficulty: "Medium",
+    category: "Array • Two Pointers",
+    description: {
+      text: "Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.",
+      notes: [
+        "Notice that the solution set must not contain duplicate triplets.",
+        "You can return the answer in any order.",
+      ],
+    },
+    examples: [
+      {
+        input: "nums = [-1,0,1,2,-1,-4]",
+        output: "[[-1,-1,2],[-1,0,1]]",
+        explanation:
+          "The distinct triplets are [-1,0,1] and [-1,-1,2]. Notice that the order of the output and the order of the triplets does not matter.",
+      },
+      {
+        input: "nums = [0,1,1]",
+        output: "[]",
+        explanation: "The only possible triplet does not sum up to 0.",
+      },
+      {
+        input: "nums = [0,0,0]",
+        output: "[[0,0,0]]",
+        explanation: "The only possible triplet sums up to 0.",
+      },
+    ],
+    constraints: [
+      "3 ≤ nums.length ≤ 3000",
+      "-10⁵ ≤ nums[i] ≤ 10⁵",
+    ],
+    starterCode: {
+      javascript: `function threeSum(nums) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(JSON.stringify(threeSum([-1,0,1,2,-1,-4]))); // Expected: [[-1,-1,2],[-1,0,1]]
+console.log(JSON.stringify(threeSum([0,1,1]))); // Expected: []
+console.log(JSON.stringify(threeSum([0,0,0]))); // Expected: [[0,0,0]]`,
+      python: `def threeSum(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(threeSum([-1,0,1,2,-1,-4]))  # Expected: [[-1,-1,2],[-1,0,1]]
+print(threeSum([0,1,1]))  # Expected: []
+print(threeSum([0,0,0]))  # Expected: [[0,0,0]]`,
+      java: `import java.util.*;
+
+class Solution {
+    public static List<List<Integer>> threeSum(int[] nums) {
+        // Write your solution here
+        
+        return new ArrayList<>();
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(threeSum(new int[]{-1,0,1,2,-1,-4})); // Expected: [[-1,-1,2],[-1,0,1]]
+        System.out.println(threeSum(new int[]{0,1,1})); // Expected: []
+        System.out.println(threeSum(new int[]{0,0,0})); // Expected: [[0,0,0]]
+    }
+}`,
+    },
+    expectedOutput: {
+      javascript: "[[-1,-1,2],[-1,0,1]]\n[]\n[[0,0,0]]",
+      python: "[[-1, -1, 2], [-1, 0, 1]]\n[]\n[[0, 0, 0]]",
+      java: "[[-1, -1, 2], [-1, 0, 1]]\n[]\n[[0, 0, 0]]",
+    },
+  },
 };
 
 export const LANGUAGE_CONFIG = {

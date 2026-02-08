@@ -475,6 +475,70 @@ print(trap([4,2,0,3,2,5]))  # Expected: 9`,
       java: "6\n9",
     },
   },
+
+  "merge-intervals": {
+    id: "merge-intervals",
+    title: "Merge Intervals",
+    difficulty: "Medium",
+    category: "Array • Sorting",
+    description: {
+      text: "Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "intervals = [[1,3],[2,6],[8,10],[15,18]]",
+        output: "[[1,6],[8,10],[15,18]]",
+        explanation: "Since intervals [1,3] and [2,6] overlap, merge them into [1,6].",
+      },
+      {
+        input: "intervals = [[1,4],[4,5]]",
+        output: "[[1,5]]",
+        explanation: "Intervals [1,4] and [4,5] are considered overlapping.",
+      },
+    ],
+    constraints: [
+      "1 ≤ intervals.length ≤ 10⁴",
+      "intervals[i].length == 2",
+      "0 ≤ starti ≤ endi ≤ 10⁴",
+    ],
+    starterCode: {
+      javascript: `function merge(intervals) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(JSON.stringify(merge([[1,3],[2,6],[8,10],[15,18]]))); // Expected: [[1,6],[8,10],[15,18]]
+console.log(JSON.stringify(merge([[1,4],[4,5]]))); // Expected: [[1,5]]`,
+      python: `def merge(intervals):
+    # Write your solution here
+    pass
+
+# Test cases
+print(merge([[1,3],[2,6],[8,10],[15,18]]))  # Expected: [[1, 6], [8, 10], [15, 18]]
+print(merge([[1,4],[4,5]]))  # Expected: [[1, 5]]`,
+      java: `import java.util.*;
+
+class Solution {
+    public static int[][] merge(int[][] intervals) {
+        // Write your solution here
+        
+        return new int[0][0];
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(Arrays.deepToString(merge(new int[][]{{1,3},{2,6},{8,10},{15,18}}))); // Expected: [[1, 6], [8, 10], [15, 18]]
+        System.out.println(Arrays.deepToString(merge(new int[][]{{1,4},{4,5}}))); // Expected: [[1, 5]]
+    }
+}`,
+    },
+    expectedOutput: {
+      javascript: "[[1,6],[8,10],[15,18]]\n[[1,5]]",
+      python: "[[1, 6], [8, 10], [15, 18]]\n[[1, 5]]",
+      java: "[[1, 6], [8, 10], [15, 18]]\n[[1, 5]]",
+    },
+  },
 };
 
 export const LANGUAGE_CONFIG = {

@@ -539,6 +539,71 @@ class Solution {
       java: "[[1, 6], [8, 10], [15, 18]]\n[[1, 5]]",
     },
   },
+
+  "median-of-two-sorted-arrays": {
+    id: "median-of-two-sorted-arrays",
+    title: "Median of Two Sorted Arrays",
+    difficulty: "Hard",
+    category: "Array • Binary Search",
+    description: {
+      text: "Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.",
+      notes: ["The overall run time complexity should be O(log (m+n))."],
+    },
+    examples: [
+      {
+        input: "nums1 = [1,3], nums2 = [2]",
+        output: "2.00000",
+        explanation: "merged array = [1,2,3] and median is 2.",
+      },
+      {
+        input: "nums1 = [1,2], nums2 = [3,4]",
+        output: "2.50000",
+        explanation: "merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.",
+      },
+    ],
+    constraints: [
+      "nums1.length == m",
+      "nums2.length == n",
+      "0 ≤ m ≤ 1000",
+      "0 ≤ n ≤ 1000",
+      "1 ≤ m + n ≤ 2000",
+      "-10⁶ ≤ nums1[i], nums2[i] ≤ 10⁶",
+    ],
+    starterCode: {
+      javascript: `function findMedianSortedArrays(nums1, nums2) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(findMedianSortedArrays([1,3], [2])); // Expected: 2
+console.log(findMedianSortedArrays([1,2], [3,4])); // Expected: 2.5`,
+      python: `def findMedianSortedArrays(nums1, nums2):
+    # Write your solution here
+    pass
+
+# Test cases
+print(findMedianSortedArrays([1,3], [2]))  # Expected: 2.0
+print(findMedianSortedArrays([1,2], [3,4]))  # Expected: 2.5`,
+      java: `class Solution {
+    public static double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        // Write your solution here
+        
+        return 0.0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(findMedianSortedArrays(new int[]{1,3}, new int[]{2})); // Expected: 2.0
+        System.out.println(findMedianSortedArrays(new int[]{1,2}, new int[]{3,4})); // Expected: 2.5
+    }
+}`,
+    },
+    expectedOutput: {
+      javascript: "2\n2.5",
+      python: "2\n2.5",
+      java: "2.0\n2.5",
+    },
+  },
 };
 
 export const LANGUAGE_CONFIG = {

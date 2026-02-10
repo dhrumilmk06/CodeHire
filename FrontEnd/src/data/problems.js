@@ -604,6 +604,144 @@ print(findMedianSortedArrays([1,2], [3,4]))  # Expected: 2.5`,
       java: "2.0\n2.5",
     },
   },
+
+  "longest-substring-without-repeating-characters": {
+    id: "longest-substring-without-repeating-characters",
+    title: "Longest Substring Without Repeating Characters",
+    difficulty: "Medium",
+    category: "String • Sliding Window",
+    description: {
+      text: "Given a string s, find the length of the longest substring without repeating characters.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: 's = "abcabcbb"',
+        output: "3",
+        explanation: "The answer is \"abc\", with the length of 3.",
+      },
+      {
+        input: 's = "bbbbb"',
+        output: "1",
+        explanation: "The answer is \"b\", with the length of 1.",
+      },
+      {
+        input: 's = "pwwkew"',
+        output: "3",
+        explanation: "The answer is \"wke\", with the length of 3. Notice that the answer must be a substring, \"pwke\" is a subsequence and not a substring.",
+      },
+    ],
+    constraints: [
+      "0 ≤ s.length ≤ 5 * 10⁴",
+      "s consists of English letters, digits, symbols and spaces.",
+    ],
+    starterCode: {
+      javascript: `function lengthOfLongestSubstring(s) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(lengthOfLongestSubstring("abcabcbb")); // Expected: 3
+console.log(lengthOfLongestSubstring("bbbbb")); // Expected: 1
+console.log(lengthOfLongestSubstring("pwwkew")); // Expected: 3`,
+      python: `def lengthOfLongestSubstring(s):
+    # Write your solution here
+    pass
+
+# Test cases
+print(lengthOfLongestSubstring("abcabcbb"))  # Expected: 3
+print(lengthOfLongestSubstring("bbbbb"))  # Expected: 1
+print(lengthOfLongestSubstring("pwwkew"))  # Expected: 3`,
+      java: `class Solution {
+    public static int lengthOfLongestSubstring(String s) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(lengthOfLongestSubstring("abcabcbb")); // Expected: 3
+        System.out.println(lengthOfLongestSubstring("bbbbb")); // Expected: 1
+        System.out.println(lengthOfLongestSubstring("pwwkew")); // Expected: 3
+    }
+}`,
+    },
+    expectedOutput: {
+      javascript: "3\n1\n3",
+      python: "3\n1\n3",
+      java: "3\n1\n3",
+    },
+  },
+
+  "first-missing-positive": {
+    id: "first-missing-positive",
+    title: "First Missing Positive",
+    difficulty: "Hard",
+    category: "Array • Hash Table",
+    description: {
+      text: "Given an unsorted integer array nums, return the smallest missing positive integer. You must implement an algorithm that runs in O(n) time and uses constant extra space.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "nums = [1,2,0]",
+        output: "3",
+        explanation: "The numbers generally range from 1 to 3, here 3 is missing.",
+      },
+      {
+        input: "nums = [3,4,-1,1]",
+        output: "2",
+        explanation: "1 is in the array but 2 is missing.",
+      },
+      {
+        input: "nums = [7,8,9,11,12]",
+        output: "1",
+        explanation: "The smallest positive integer 1 is missing.",
+      },
+    ],
+    constraints: [
+      "1 ≤ nums.length ≤ 10⁵",
+      "-2³¹ ≤ nums[i] ≤ 2³¹ - 1",
+    ],
+    starterCode: {
+      javascript: `function firstMissingPositive(nums) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(firstMissingPositive([1,2,0])); // Expected: 3
+console.log(firstMissingPositive([3,4,-1,1])); // Expected: 2
+console.log(firstMissingPositive([7,8,9,11,12])); // Expected: 1`,
+      python: `def firstMissingPositive(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(firstMissingPositive([1,2,0]))  # Expected: 3
+print(firstMissingPositive([3,4,-1,1]))  # Expected: 2
+print(firstMissingPositive([7,8,9,11,12]))  # Expected: 1`,
+      java: `class Solution {
+    public static int firstMissingPositive(int[] nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(firstMissingPositive(new int[]{1,2,0})); // Expected: 3
+        System.out.println(firstMissingPositive(new int[]{3,4,-1,1})); // Expected: 2
+        System.out.println(firstMissingPositive(new int[]{7,8,9,11,12})); // Expected: 1
+    }
+}`,
+    },
+    expectedOutput: {
+      javascript: "3\n2\n1",
+      python: "3\n2\n1",
+      java: "3\n2\n1",
+    },
+  },
 };
 
 export const LANGUAGE_CONFIG = {

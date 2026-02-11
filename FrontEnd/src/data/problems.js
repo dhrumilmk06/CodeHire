@@ -742,6 +742,77 @@ print(firstMissingPositive([7,8,9,11,12]))  # Expected: 1`,
       java: "3\n2\n1",
     },
   },
+
+  "search-in-rotated-sorted-array": {
+    id: "search-in-rotated-sorted-array",
+    title: "Search in Rotated Sorted Array",
+    difficulty: "Medium",
+    category: "Array • Binary Search",
+    description: {
+      text: "There is an integer array nums sorted in ascending order (with distinct values). Prior to being passed to your function, nums is possibly rotated at an unknown pivot index k (1 <= k < nums.length). Given the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.",
+      notes: [
+        "You must write an algorithm with O(log n) runtime complexity.",
+      ],
+    },
+    examples: [
+      {
+        input: "nums = [4,5,6,7,0,1,2], target = 0",
+        output: "4",
+      },
+      {
+        input: "nums = [4,5,6,7,0,1,2], target = 3",
+        output: "-1",
+      },
+      {
+        input: "nums = [1], target = 0",
+        output: "-1",
+      },
+    ],
+    constraints: [
+      "1 ≤ nums.length ≤ 5000",
+      "-10⁴ ≤ nums[i] ≤ 10⁴",
+      "All values of nums are unique.",
+      "nums is an ascending array that is possibly rotated.",
+      "-10⁴ ≤ target ≤ 10⁴",
+    ],
+    starterCode: {
+      javascript: `function search(nums, target) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(search([4,5,6,7,0,1,2], 0)); // Expected: 4
+console.log(search([4,5,6,7,0,1,2], 3)); // Expected: -1
+console.log(search([1], 0)); // Expected: -1`,
+      python: `def search(nums, target):
+    # Write your solution here
+    pass
+
+# Test cases
+print(search([4,5,6,7,0,1,2], 0))  # Expected: 4
+print(search([4,5,6,7,0,1,2], 3))  # Expected: -1
+print(search([1], 0))  # Expected: -1`,
+      java: `class Solution {
+    public static int search(int[] nums, int target) {
+        // Write your solution here
+        
+        return -1;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(search(new int[]{4,5,6,7,0,1,2}, 0)); // Expected: 4
+        System.out.println(search(new int[]{4,5,6,7,0,1,2}, 3)); // Expected: -1
+        System.out.println(search(new int[]{1}, 0)); // Expected: -1
+    }
+}`,
+    },
+    expectedOutput: {
+      javascript: "4\n-1\n-1",
+      python: "4\n-1\n-1",
+      java: "4\n-1\n-1",
+    },
+  },
 };
 
 export const LANGUAGE_CONFIG = {

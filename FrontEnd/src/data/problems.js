@@ -813,6 +813,78 @@ print(search([1], 0))  # Expected: -1`,
       java: "4\n-1\n-1",
     },
   },
+
+  "word-search": {
+    id: "word-search",
+    title: "Word Search",
+    difficulty: "Medium",
+    category: "Array • Backtracking • Matrix",
+    description: {
+      text: "Given an m x n grid of characters board and a string word, return true if word exists in the grid.",
+      notes: [
+        "The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring.",
+        "The same letter cell may not be used more than once.",
+      ],
+    },
+    examples: [
+      {
+        input: 'board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"',
+        output: "true",
+      },
+      {
+        input: 'board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "SEE"',
+        output: "true",
+      },
+      {
+        input: 'board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCB"',
+        output: "false",
+      },
+    ],
+    constraints: [
+      "m == board.length",
+      "n = board[i].length",
+      "1 ≤ m, n ≤ 6",
+      "1 ≤ word.length ≤ 15",
+      "board and word consists of only lowercase and uppercase English letters.",
+    ],
+    starterCode: {
+      javascript: `function exist(board, word) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(exist([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCCED")); // Expected: true
+console.log(exist([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "SEE")); // Expected: true
+console.log(exist([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCB")); // Expected: false`,
+      python: `def exist(board, word):
+    # Write your solution here
+    pass
+
+# Test cases
+print(exist([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCCED"))  # Expected: True
+print(exist([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "SEE"))  # Expected: True
+print(exist([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCB"))  # Expected: False`,
+      java: `class Solution {
+    public static boolean exist(char[][] board, String word) {
+        // Write your solution here
+        
+        return false;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(exist(new char[][]{{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}}, "ABCCED")); // Expected: true
+        System.out.println(exist(new char[][]{{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}}, "SEE")); // Expected: true
+        System.out.println(exist(new char[][]{{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}}, "ABCB")); // Expected: false
+    }
+}`,
+    },
+    expectedOutput: {
+      javascript: "true\ntrue\nfalse",
+      python: "True\nTrue\nFalse",
+      java: "true\ntrue\nfalse",
+    },
+  },
 };
 
 export const LANGUAGE_CONFIG = {

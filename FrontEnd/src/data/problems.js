@@ -886,6 +886,67 @@ print(exist([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCB"))  #
     },
   },
 
+  "valid-anagram": {
+    id: "valid-anagram",
+    title: "Valid Anagram",
+    difficulty: "Easy",
+    category: "String • Hash Table",
+    description: {
+      text: "Given two strings s and t, return true if t is an anagram of s, and false otherwise.",
+      notes: [
+        "An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.",
+      ],
+    },
+    examples: [
+      {
+        input: 's = "anagram", t = "nagaram"',
+        output: "true",
+      },
+      {
+        input: 's = "rat", t = "car"',
+        output: "false",
+      },
+    ],
+    constraints: [
+      "1 ≤ s.length, t.length ≤ 5 * 10⁴",
+      "s and t consist of lowercase English letters.",
+    ],
+    starterCode: {
+      javascript: `function isAnagram(s, t) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(isAnagram("anagram", "nagaram")); // Expected: true
+console.log(isAnagram("rat", "car")); // Expected: false`,
+      python: `def isAnagram(s, t):
+    # Write your solution here
+    pass
+
+# Test cases
+print(isAnagram("anagram", "nagaram"))  # Expected: True
+print(isAnagram("rat", "car"))  # Expected: False`,
+      java: `class Solution {
+    public static boolean isAnagram(String s, String t) {
+        // Write your solution here
+        
+        return false;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(isAnagram("anagram", "nagaram")); // Expected: true
+        System.out.println(isAnagram("rat", "car")); // Expected: false
+    }
+}`,
+    },
+    expectedOutput: {
+      javascript: "true\nfalse",
+      python: "True\nFalse",
+      java: "true\nfalse",
+    },
+  },
+
   "best-time-to-buy-and-sell-stock": {
     id: "best-time-to-buy-and-sell-stock",
     title: "Best Time to Buy and Sell Stock",
@@ -946,6 +1007,8 @@ print(maxProfit([7,6,4,3,1]))  # Expected: 0`,
       java: "5\n0",
     },
   },
+
+  
 };
 
 export const LANGUAGE_CONFIG = {

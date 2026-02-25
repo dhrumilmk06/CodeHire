@@ -1,6 +1,8 @@
 import { useUser } from "@clerk/clerk-react";
+import { AnimatePresence } from "framer-motion";
 import { Toaster } from 'react-hot-toast';
-import { Navigate, Route, Routes } from 'react-router';
+import { Navigate, Route, Routes, useLocation } from 'react-router';
+import { PageTransition } from './components/PageTransition.jsx';
 import { DashBoardPage } from './pages/DashBoardPage.jsx';
 import { HomePage } from './pages/HomePage.jsx';
 import { ProblemPage } from './pages/ProblemPage.jsx';
@@ -9,21 +11,49 @@ import { SessionPage } from './pages/SessionPage.jsx';
 
 function App() {
 
-      const {isSignedIn , isLoaded} = useUser()
+  const { isSignedIn, isLoaded } = useUser()
+  const location = useLocation()
 
-      //this will stop the filckering effect of changing page
-      if(!isLoaded) return null
+  //this will stop the filckering effect of changing page
+  if (!isLoaded) return null
+
   return (
     <>
-      <Routes>
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
 
-        <Route path='/' element={!isSignedIn ? <HomePage /> : <Navigate to= {"/dashboard"} /> } />
-        <Route path='/dashboard' element={isSignedIn ? <DashBoardPage /> : <Navigate to= {"/"} /> } />
-        <Route path='/problems' element={isSignedIn ? <ProblemsPage/> : <Navigate to = {'/'} />} />
-        <Route path='/problem/:id' element={isSignedIn ? <ProblemPage/> : <Navigate to = {'/'} />} />
-        <Route path='/session/:id' element={isSignedIn ? <SessionPage/> : <Navigate to = {'/'} />} />
+          <Route path='/' element={
+            <PageTransition>
+              {!isSignedIn ? <HomePage /> : <Navigate to={"/dashboard"} />}
+            </PageTransition>
+          } />
 
-      </Routes>
+          <Route path='/dashboard' element={
+            <PageTransition>
+              {isSignedIn ? <DashBoardPage /> : <Navigate to={"/"} />}
+            </PageTransition>
+          } />
+
+          <Route path='/problems' element={
+            <PageTransition>
+              {isSignedIn ? <ProblemsPage /> : <Navigate to={'/'} />}
+            </PageTransition>
+          } />
+
+          <Route path='/problem/:id' element={
+            <PageTransition>
+              {isSignedIn ? <ProblemPage /> : <Navigate to={'/'} />}
+            </PageTransition>
+          } />
+
+          <Route path='/session/:id' element={
+            <PageTransition>
+              {isSignedIn ? <SessionPage /> : <Navigate to={'/'} />}
+            </PageTransition>
+          } />
+
+        </Routes>
+      </AnimatePresence>
       <Toaster />
     </>
   )

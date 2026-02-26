@@ -2,6 +2,7 @@ import { useUser } from "@clerk/clerk-react";
 import { AnimatePresence } from "framer-motion";
 import { Toaster } from 'react-hot-toast';
 import { Navigate, Route, Routes, useLocation } from 'react-router';
+import { Navbar } from './components/Navbar.jsx';
 import { PageTransition } from './components/PageTransition.jsx';
 import { DashBoardPage } from './pages/DashBoardPage.jsx';
 import { HomePage } from './pages/HomePage.jsx';
@@ -16,9 +17,11 @@ function App() {
 
   //this will stop the filckering effect of changing page
   if (!isLoaded) return null
-
   return (
     <>
+      {/* Navbar stays outside AnimatePresence — no page transition on it */}
+      {isSignedIn && <Navbar />}
+
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
 

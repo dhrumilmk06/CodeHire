@@ -11,4 +11,14 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      // Proxy Piston API requests to Docker container to avoid CORS
+      "/piston": {
+        target: "http://localhost:2000",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/piston/, "/api/v2"),
+      },
+    },
+  },
 })

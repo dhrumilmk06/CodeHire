@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router'
 import { useEndSession, useJoinSession, useSessionById } from '../hooks/useSessions';
 import { PROBLEMS } from '../data/problems';
 import { executeCode } from '../lib/piston';
-import { Navbar } from '../components/Navbar';
+
 import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels';
 import { getDifficultyBadgeClass } from "../lib/utils";
 import { Loader2Icon, LogOutIcon, PhoneOffIcon } from "lucide-react";
@@ -30,7 +30,7 @@ export const SessionPage = () => {
   const isHost = session?.host?.clerkId === user?.id;
   const isParticipant = session?.participant?.clerkId === user?.id;
 
-  const {call, channel, chatClient, isInitializingCall, streamClient}= useStreamClient(
+  const { call, channel, chatClient, isInitializingCall, streamClient } = useStreamClient(
     session,
     loadingSession,
     isHost,
@@ -97,7 +97,7 @@ export const SessionPage = () => {
   }
   return (
     <div className='h-screen bg-base-100 flex flex-col'>
-      <Navbar />
+
 
       <div className='flex-1'>
         <PanelGroup direction='horizontal'>
@@ -250,7 +250,7 @@ export const SessionPage = () => {
                   </Panel>
                 </PanelGroup>
               </Panel>
-              
+
             </PanelGroup>
           </Panel>
 
@@ -284,12 +284,12 @@ export const SessionPage = () => {
                 <div className='h-full'>
                   <StreamVideo client={streamClient}>
                     <StreamCall call={call}>
-                      <VideoCallUI chatClient = {chatClient} channel = {channel}/>
+                      <VideoCallUI chatClient={chatClient} channel={channel} />
                     </StreamCall>
                   </StreamVideo>
                 </div>
               )}
-            
+
             </div>
           </Panel>
         </PanelGroup>

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router'
 import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 import { useActiveSessions, useCreateSession, useMyRecentSessions } from '../hooks/useSessions';
-import { Navbar } from '../components/Navbar.jsx'
+
 import { WelcomeSection } from '../components/WelcomeSection.jsx'
 import { StatsCards } from '../components/StatsCards.jsx'
 import { ActiveSessions } from '../components/ActiveSessions.jsx'
@@ -54,7 +54,7 @@ export const DashBoardPage = () => {
   return (
     <>
       <div className='min-h-screen bg-base-300'>
-        <Navbar />
+
         <WelcomeSection onCreateSession={() => setShowCreateModel(true)} />
 
         {/* Grid layout */}

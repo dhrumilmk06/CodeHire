@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import { PROBLEMS } from '../data/problems.js'
-import { Navbar } from '../components/Navbar.jsx'
+
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { ProblemDescription } from "../components/ProblemDescription.jsx"
 import { CodeEditorPanel } from '../components/CodeEditorPanel.jsx'
 import { OutputPanel } from '../components/OutputPanel.jsx'
-import { executeCode} from '../lib/piston.js'
+import { executeCode } from '../lib/piston.js'
 import toast from "react-hot-toast";
 import confetti from "canvas-confetti";
 
@@ -38,7 +38,7 @@ export const ProblemPage = () => {
         setSelectedLanguage(newLang);
         setCode(currentProblem.starterCode[newLang]);
         setOutput(null);
-     }
+    }
 
     const handelProblemChange = (newProblemId) => navigate(`/problem/${newProblemId}`)
 
@@ -54,24 +54,24 @@ export const ProblemPage = () => {
             spread: 250,
             origin: { x: 0.8, y: 0.6 },
         });
-     }
+    }
 
     const normalizeOutput = (output) => {
         // normalize output for comparison (trim whitespace, handle different spacing)
         return output
-        .trim()
-        .split("\n")
-        .map((line) =>
-            line
             .trim()
-            // remove spaces after [ and before ]
-            .replace(/\[\s+/g, "[")
-            .replace(/\s+\]/g, "]")
-            // normalize spaces around commas to single space after comma
-            .replace(/\s*,\s*/g, ",")
-        )
-        .filter((line) => line.length > 0)
-        .join("\n");
+            .split("\n")
+            .map((line) =>
+                line
+                    .trim()
+                    // remove spaces after [ and before ]
+                    .replace(/\[\s+/g, "[")
+                    .replace(/\s+\]/g, "]")
+                    // normalize spaces around commas to single space after comma
+                    .replace(/\s*,\s*/g, ",")
+            )
+            .filter((line) => line.length > 0)
+            .join("\n");
     };
 
     const checkIfTestsPassed = (actualOutput, expectedOutput) => {
@@ -89,27 +89,27 @@ export const ProblemPage = () => {
         setOutput(result)
         setIsRunning(false);
 
-         // check if code executed successfully and matches expected output
+        // check if code executed successfully and matches expected output
 
-         if (result.success) {
+        if (result.success) {
             const expectedOutput = currentProblem.expectedOutput[selectedLanguage];
             const testPassed = checkIfTestsPassed(result.output, expectedOutput);
 
-            if (testPassed){
+            if (testPassed) {
                 triggerConfetti();
                 toast.success("All tests passed! Great job!");
             } else {
                 toast.error("Tests failed. Check your output!");
             }
-         } else{
+        } else {
             toast.error("Code execution failed!");
-         }
-     }
+        }
+    }
 
 
     return (
         <div className='h-screen bg-base-100 flex flex-col'>
-            <Navbar />
+
 
             <div className='flex-1'>
                 <PanelGroup direction='horizontal'>
@@ -133,12 +133,12 @@ export const ProblemPage = () => {
                             {/* Top panel - Code editor */}
                             <Panel defaultSize={70} minSize={30}>
                                 <CodeEditorPanel
-                                    selectedLanguage = {selectedLanguage}
-                                    code = {code}
-                                    isRunning = {isRunning}
-                                    onLanguageChange = {handelLanguageChange}
-                                    onCodeChange = {setCode}
-                                    onRunCode = {handleRunCode}
+                                    selectedLanguage={selectedLanguage}
+                                    code={code}
+                                    isRunning={isRunning}
+                                    onLanguageChange={handelLanguageChange}
+                                    onCodeChange={setCode}
+                                    onRunCode={handleRunCode}
                                 />
                             </Panel>
 
@@ -146,7 +146,7 @@ export const ProblemPage = () => {
 
                             {/* bottom panel - output Panel */}
                             <Panel defaultSize={30} minSize={30}>
-                                <OutputPanel output={output}/>
+                                <OutputPanel output={output} />
                             </Panel>
 
                         </PanelGroup>

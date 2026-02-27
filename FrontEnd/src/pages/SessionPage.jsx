@@ -14,6 +14,8 @@ import { useStreamClient } from '../hooks/useStreamClient'
 import { StreamCall, StreamVideo } from '@stream-io/video-react-sdk';
 import { VideoCallUI } from '../components/VideoCallUI';
 import { useCollabEditor } from '../hooks/useCollabEditor';
+import { useQuery } from '@tanstack/react-query';
+import axiosInstance from '../lib/axios';
 
 export const SessionPage = () => {
   const navigate = useNavigate();
@@ -42,10 +44,24 @@ export const SessionPage = () => {
     isParticipant
   )
 
-  // Find the problem data based on session problem title
-  const problemData = session?.problem
+  // Find the problem data — first check built-in problems, then fetch custom by title
+  const builtInProblem = session?.problem
     ? Object.values(PROBLEMS).find((p) => p.title === session.problem)
     : null;
+
+  // Fetch custom problem by title from the server (works for ALL users, not just the owner)
+  const { data: customProblemData } = useQuery({
+    queryKey: ["custom-problem-by-title", session?.problem],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get(`/problems/find?title=${encodeURIComponent(session.problem)}`);
+      return data.problem;
+    },
+    // Only fetch if session has a problem title AND it's not a built-in problem
+    enabled: !!session?.problem && !builtInProblem,
+    retry: false, // Don't retry on 404 (means it's not a custom problem)
+  });
+
+  const problemData = builtInProblem ?? customProblemData ?? null;
 
   const [selectedLanguage, setSelectedLanguage] = useState("javascript");
   const [code, setCode] = useState(problemData?.starterCode?.[selectedLanguage] || "");

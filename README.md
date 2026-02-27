@@ -4,14 +4,16 @@ CodeHire is a high-performance web application designed for real-time collaborat
 
 ![CodeHire Banner](https://img.shields.io/badge/Tech-React%20%7C%20Node.js%20%7C%20MongoDB-blue?style=for-the-badge)
 
-## ✨ Features
+## ✨ Key Features
 
-- **💻 Collaborative Code Editor**: Powered by **Monaco Editor**, supporting multiple languages (JavaScript, Python, Java) with syntax highlighting.
-- **📹 Live Video Calls**: Integrated video conferencing using **Stream Video SDK** for clear real-time communication.
-- **💬 Instant Chat**: Built-in chat functionality using **Stream Chat SDK** to discuss problems and share ideas.
-- **🧩 Problem Dashboard**: A library of frequently asked DSA problems (Easy, Medium, Hard) to practice and master.
-- **🔐 Secure Authentication**: Fast and reliable user authentication handled by **Clerk**.
-- **🎨 Modern UI/UX**: Built with **Tailwind CSS** and **DaisyUI** for a sleek, responsive, and premium feel.
+- **� Real-Time Collaborative Editor**: Powered by **Monaco Editor** and **Socket.io**. Experience seamless, Google Docs-style code synchronization with live typing indicators and role-based cursor tracking.
+- **🏦 Custom Problem Bank**: Hosts can create, save, and manage their own private library of coding problems. Full CRUD support with custom constraints, examples, and starter code.
+- **📹 Live Video Calls**: High-quality integrated video conferencing using **Stream Video SDK** for face-to-face evaluation and communication.
+- **💬 Instant Session Chat**: Real-time chat powered by **Stream Chat SDK** to share thoughts, links, and snippets during a coding session.
+- **🏃 Live Code Execution**: Run code in JavaScript, Python, and Java with synchronized output viewing for all participants in the room.
+- **🧩 Managed Problems**: Access a curated library of built-in DSA problems (Easy, Medium, Hard) to jumpstart your practices.
+- **🔐 Secure Identity**: Enterprise-grade user authentication and profile management handled by **Clerk**.
+- **🎨 Premium UI/UX**: A state-of-the-art interface built with **Tailwind CSS 4.0** and **DaisyUI**, featuring dark mode, glassmorphism, and smooth page transitions.
 
 ## 🛠️ Tech Stack
 
@@ -20,13 +22,15 @@ CodeHire is a high-performance web application designed for real-time collaborat
 - **Bundler**: [Vite](https://vitejs.dev/)
 - **Styling**: [Tailwind CSS 4.0](https://tailwindcss.com/) & [DaisyUI](https://daisyui.com/)
 - **Auth**: [Clerk](https://clerk.com/)
-- **Real-time**: [Stream Video/Chat SDK](https://getstream.io/)
+- **Real-time Engine**: [Socket.io-client](https://socket.io/) (for editor sync)
+- **Communication**: [Stream Video/Chat SDK](https://getstream.io/)
 - **Editor**: [Monaco Editor](https://microsoft.github.io/monaco-editor/)
-- **Data Fetching**: [TanStack Query](https://tanstack.com/query/latest)
+- **Data Management**: [TanStack Query v5](https://tanstack.com/query/latest)
 
 ### Backend
 - **Runtime**: [Node.js](https://nodejs.org/)
 - **Framework**: [Express.js](https://expressjs.com/)
+- **WebSocket Server**: [Socket.io](https://socket.io/)
 - **Database**: [MongoDB](https://www.mongodb.com/) via [Mongoose](https://mongoosejs.com/)
 - **Workflow**: [Inngest](https://www.inngest.com/)
 - **Webhooks**: [Svix](https://www.svix.com/)
@@ -56,6 +60,7 @@ CodeHire is a high-performance web application designed for real-time collaborat
    CLERK_SECRET_KEY=your_clerk_secret_key
    STREAM_API_KEY=your_stream_api_key
    STREAM_SECRET_KEY=your_stream_secret_key
+   CLIENT_URL=http://localhost:5173
    ```
 
    Create a `.env` file in the `FrontEnd` directory:

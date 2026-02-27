@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router'
-import { BookOpenIcon, LayoutDashboardIcon, SparklesIcon } from "lucide-react"
+import { BookOpenIcon, LayoutDashboardIcon, LibraryIcon, SparklesIcon } from "lucide-react"
 import { UserButton } from '@clerk/clerk-react'
 import { motion } from 'framer-motion'
 
@@ -11,6 +11,7 @@ export const Navbar = () => {
 
     const navItems = [
         { path: "/problems", label: "Problems", icon: BookOpenIcon },
+        { path: "/problem-bank", label: "Problem Bank", icon: LibraryIcon },
         { path: "/dashboard", label: "DashBoard", icon: LayoutDashboardIcon },
     ]
 
@@ -22,12 +23,12 @@ export const Navbar = () => {
                     to='/'
                     className='group flex items-center gap-3 hover:scale-105 transition-transform duration-200'
                 >
-                    <div className='size-10 rounded-xl bg-gradient-to-r from-primary via-secondary to-accent flex items-center justify-center shadow-lg'>
+                    <div className='size-10 rounded-xl bg-linear-to-r from-primary via-secondary to-accent flex items-center justify-center shadow-lg'>
                         <SparklesIcon className='size-6 text-white' />
                     </div>
 
                     <div className="flex flex-col">
-                        <span className="font-black text-xl bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-mono tracking-wider">
+                        <span className="font-black text-xl bg-linear-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-mono tracking-wider">
                             CodeHire
                         </span>
                         <span className="text-xs text-base-content/60 font-medium -mt-1">Code Together</span>
@@ -57,8 +58,8 @@ export const Navbar = () => {
 
                             {/* Tab content (always on top of the pill) */}
                             <div className={`relative z-10 flex items-center gap-x-2.5 ${isActive(item.path)
-                                    ? "text-primary-content"
-                                    : "text-base-content/70 hover:text-base-content"
+                                ? "text-primary-content"
+                                : "text-base-content/70 hover:text-base-content"
                                 }`}>
                                 <item.icon className='size-4' />
                                 <span className='font-medium hidden sm:inline'>{item.label}</span>

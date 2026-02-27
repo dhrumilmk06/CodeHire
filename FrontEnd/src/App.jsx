@@ -9,6 +9,7 @@ import { HomePage } from './pages/HomePage.jsx';
 import { ProblemPage } from './pages/ProblemPage.jsx';
 import { ProblemsPage } from './pages/ProblemsPage';
 import { SessionPage } from './pages/SessionPage.jsx';
+import { ProblemBankPage } from './pages/ProblemBankPage.jsx';
 
 function App() {
 
@@ -52,6 +53,12 @@ function App() {
           <Route path='/session/:id' element={
             <PageTransition>
               {isSignedIn ? <SessionPage /> : <Navigate to={'/'} />}
+            </PageTransition>
+          } />
+
+          <Route path='/problem-bank' element={
+            <PageTransition>
+              {isSignedIn ? <ProblemBankPage /> : <Navigate to={'/'} />}
             </PageTransition>
           } />
 

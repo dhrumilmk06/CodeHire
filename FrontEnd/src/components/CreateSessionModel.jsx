@@ -1,5 +1,6 @@
 import { PROBLEMS } from "../data/problems";
-import { Code2Icon, LoaderIcon, PlusIcon } from "lucide-react";
+import { useMyProblems } from "../hooks/useCustomProblems";
+import { Code2Icon, LoaderIcon, PlusIcon, LockIcon } from "lucide-react";
 
 export const CreateSessionModel = ({ isOpen,
   onClose,
@@ -8,8 +9,15 @@ export const CreateSessionModel = ({ isOpen,
   onCreateRoom,
   isCreating,
 }) => {
+  const builtInProblems = Object.values(PROBLEMS);
+  const { data: customProblems = [] } = useMyProblems();
 
-  const problems = Object.values(PROBLEMS)
+  // Merge both lists — custom first so they appear at the top
+  const allProblems = [
+    ...customProblems.map((p) => ({ ...p, _isCustom: true })),
+    ...builtInProblems.map((p) => ({ ...p, _isCustom: false })),
+  ];
+
   if (!isOpen) return null;
 
   return (
@@ -28,9 +36,9 @@ export const CreateSessionModel = ({ isOpen,
             <select className="select w-full"
               value={roomConfig.problem}
               onChange={(e) => {
-                const selectedProblem = problems.find((p) => p.title === e.target.value);
+                const selectedProblem = allProblems.find((p) => p.title === e.target.value);
                 setRoomConfig({
-                  difficulty: selectedProblem.difficulty,
+                  difficulty: selectedProblem?.difficulty || "Easy",
                   problem: e.target.value,
                 });
               }}>
@@ -38,11 +46,25 @@ export const CreateSessionModel = ({ isOpen,
                 Choose a coding problem...
               </option>
 
-              {problems.map((problem) => (
-                <option key={problem.id} value={problem.title}>
-                  {problem.title} ({problem.difficulty})
-                </option>
-              ))}
+              {/* Custom problems group */}
+              {customProblems.length > 0 && (
+                <optgroup label="🔒 My Custom Problems">
+                  {customProblems.map((problem) => (
+                    <option key={problem._id} value={problem.title}>
+                      {problem.title} ({problem.difficulty})
+                    </option>
+                  ))}
+                </optgroup>
+              )}
+
+              {/* Built-in problems group */}
+              <optgroup label="📚 Built-in Problems">
+                {builtInProblems.map((problem) => (
+                  <option key={problem.id} value={problem.title}>
+                    {problem.title} ({problem.difficulty})
+                  </option>
+                ))}
+              </optgroup>
             </select>
           </div>
 

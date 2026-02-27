@@ -34,9 +34,9 @@ export async function executeCode(language, code) {
             }
         }
 
-        // Add a 10 second timeout so it never hangs indefinitely
+        // Add a 60 second timeout so it never hangs indefinitely
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000);
+        const timeoutId = setTimeout(() => controller.abort(), 60000);
 
         const response = await fetch(`${PISTON_API}/execute`, {
             method: "POST",
@@ -49,10 +49,14 @@ export async function executeCode(language, code) {
                 version: languageConfig.version,
                 files: [
                     {
-                        name: `main${getFileExecution(language)}`,
+                        name: getFileExecution(language),
                         content: code,
                     },
                 ],
+                compile_timeout: 30000,
+                run_timeout: 30000,
+                compile_memory_limit: -1,
+                run_memory_limit: -1,
             }),
         });
 
@@ -98,11 +102,11 @@ export async function executeCode(language, code) {
 }
 
 function getFileExecution(language) {
-    const extentions = {
-        javascript: "js",
-        python: "py",
-        java: "java"
+    const fileNames = {
+        javascript: "main.js",
+        python: "main.py",
+        java: "Solution.java"
     };
 
-    return extentions[language] || "txt"
+    return fileNames[language] || "main.txt"
 }

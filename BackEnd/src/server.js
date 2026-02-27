@@ -1,5 +1,7 @@
 import express from 'express';
 import path from "path";
+import http from 'http';
+import { Server as SocketIOServer } from 'socket.io';
 import { serve } from 'inngest/express';
 import cors from "cors";
 import { clerkMiddleware } from '@clerk/express'
@@ -15,17 +17,67 @@ import sessionRoutes from './routes/sessionRoutes.js'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 const app = express();
+const httpServer = http.createServer(app);
 
+// ── Socket.io Setup ────────────────────────────────────────────────────────
+const io = new SocketIOServer(httpServer, {
+    cors: {
+        origin: ENV.CLIENT_URL,
+        methods: ["GET", "POST"],
+        credentials: true,
+    },
+});
 
-//middlewares
+// In-memory store: roomId → { code, language, output }
+const roomState = new Map();
+
+io.on("connection", (socket) => {
+
+    // Join a collab room (use session's callId as roomId)
+    socket.on("join-room", ({ roomId, userId, role }) => {
+        socket.join(roomId);
+        socket.data.roomId = roomId;
+        socket.data.userId = userId;
+        socket.data.role = role;
+
+        // Send current room state to the new joiner so they're in sync
+        if (roomState.has(roomId)) {
+            socket.emit("sync-state", roomState.get(roomId));
+        }
+    });
+
+    // Broadcast code changes to everyone else in the room
+    socket.on("code-change", ({ roomId, code, language }) => {
+        const state = roomState.get(roomId) || {};
+        roomState.set(roomId, { ...state, code, language });
+        socket.to(roomId).emit("code-change", { code, language });
+    });
+
+    // Broadcast language change
+    socket.on("language-change", ({ roomId, language, code }) => {
+        const state = roomState.get(roomId) || {};
+        roomState.set(roomId, { ...state, language, code });
+        socket.to(roomId).emit("language-change", { language, code });
+    });
+
+    // Broadcast run-output to all participants in the room
+    socket.on("output-update", ({ roomId, output }) => {
+        const state = roomState.get(roomId) || {};
+        roomState.set(roomId, { ...state, output });
+        socket.to(roomId).emit("output-update", { output });
+    });
+
+    socket.on("disconnect", () => {
+        // Room cleanup is automatic via socket.io
+    });
+});
+// ──────────────────────────────────────────────────────────────────────────
+
+// Middlewares
 app.use(express.json());
-/* Cors means It is a security mechanism used by browsers to control:“Which frontend is allowed to talk to which backend?”
-credentials: true means server allows browser to include cookies on requests
-*/
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }))
-app.use(clerkMiddleware()) //  this adds auth field to request object: req.auth() means after this w can acces req.auth
+app.use(clerkMiddleware())
 
 app.use("/api/inngest", serve({
     client: inngest,
@@ -39,7 +91,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/chat', chatRoutes)
 app.use('/api/sessions', sessionRoutes)
 
-//deployment code
+// Deployment: serve built frontend
 if (ENV.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../../FrontEnd/dist")));
 
@@ -47,11 +99,11 @@ if (ENV.NODE_ENV === "production") {
         res.sendFile(path.resolve(__dirname, "../../FrontEnd", "dist", "index.html"));
     });
 }
-//this function is for first connecting to the database and then starting the server
+
 const startServer = async () => {
     try {
         await connectDB()
-        app.listen(ENV.PORT, () => {
+        httpServer.listen(ENV.PORT, () => {
             console.log("Server is running on port:", ENV.PORT)
         });
     } catch (error) {

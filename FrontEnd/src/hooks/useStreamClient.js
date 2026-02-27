@@ -19,15 +19,22 @@ export const useStreamClient = (session, loadingSession, isHost, isParticipant) 
   useEffect(() => {
     let videoCall = null;
     let chatClientInstance = null;
+    let isMounted = true;
 
     const initCall = async () => {
-      if (!session?.callId) return
+      if (!session?.callId || loadingSession) return
       if (!isHost && !isParticipant) return
       if (session.status === "completed") return
+
+      // If already initializing or initialized, don't do it again
+      setIsInitializingCall(true);
 
       try {
         const { token, userId, userName, userImage } = await sessionApi.getStreamToken();
 
+        if (!isMounted) return;
+
+        // 1. Initialize Video Client
         const client = await initializeStreamClient(
           {
             id: userId,
@@ -37,67 +44,68 @@ export const useStreamClient = (session, loadingSession, isHost, isParticipant) 
           token
         );
 
+        if (!isMounted) return;
         setStreamClient(client);
 
         videoCall = client.call("default", session.callId);
         await videoCall.join({ create: true });
+
+        if (!isMounted) return;
         setCall(videoCall)
 
+        // 2. Initialize Chat Client
         const apiKey = import.meta.env.VITE_STREAM_API_KEY;
-
-        //StreamChat for chats feature & passing api key or secret to know we are sending to stream server
         chatClientInstance = StreamChat.getInstance(apiKey)
 
-        await chatClientInstance.connectUser(
-          {
-            id: userId,
-            name: userName,
-            image: userImage,
-          },
-          token
-        );
+        // Only connect if not already connected
+        if (!chatClientInstance.userID) {
+          await chatClientInstance.connectUser(
+            {
+              id: userId,
+              name: userName,
+              image: userImage,
+            },
+            token
+          );
+        }
+
+        if (!isMounted) return;
         setChatClient(chatClientInstance);
 
         const chatChannel = chatClientInstance.channel("messaging", session.callId);
-        //watch - Loads the initial channel state and watches for changes
         await chatChannel.watch()
+
+        if (!isMounted) return;
         setChannel(chatChannel);
 
       } catch (error) {
-
-        toast.error("Failed to join video call");
-        console.error("Error init call", error);
-
+        if (isMounted) {
+          toast.error("Failed to join video call");
+          console.error("Error init call", error);
+        }
       } finally {
-        setIsInitializingCall(false)
+        if (isMounted) {
+          setIsInitializingCall(false)
+        }
       }
     };
 
-    // check only for callId to avoid re-init on other session changes
-    if (session?.callId && !loadingSession) initCall();
+    initCall();
 
-    // cleanup - performance reasons
     return () => {
-
-      // iife - fn calling it-self for only one time
-
-      (async () => {
-
+      isMounted = false;
+      const cleanup = async () => {
         try {
-
           if (videoCall) await videoCall.leave();
           if (chatClientInstance) await chatClientInstance.disconnectUser();
           await disconnectStreamClient()
-
         } catch (error) {
-
           console.error("Cleanup error:", error);
         }
-      })();
+      };
+      cleanup();
     }
-
-    // depended on session.callId and session.status to prevent re-running when other parts of session change
-  }, [session?.callId, isHost, isParticipant])
+  }, [session?.callId, loadingSession, isHost, isParticipant])
   return {
     streamClient,
     call,

@@ -1,5 +1,5 @@
 import { useUser } from '@clerk/clerk-react';
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { useEndSession, useJoinSession, useSessionById } from '../hooks/useSessions';
 import { PROBLEMS } from '../data/problems';
@@ -13,6 +13,7 @@ import { OutputPanel } from '../components/OutputPanel';
 import { useStreamClient } from '../hooks/useStreamClient'
 import { StreamCall, StreamVideo } from '@stream-io/video-react-sdk';
 import { VideoCallUI } from '../components/VideoCallUI';
+import { useCollabEditor } from '../hooks/useCollabEditor';
 
 export const SessionPage = () => {
   const navigate = useNavigate();
@@ -20,6 +21,10 @@ export const SessionPage = () => {
   const { user } = useUser();
   const [output, setOutput] = useState(null)
   const [isRunning, setIsRunning] = useState(false)
+
+  // Track remote typing state for the indicator
+  const remoteTypingTimer = useRef(null);
+  const [remoteUser, setRemoteUser] = useState(null);
 
   const { data: sessionData, isLoading: loadingSession, refetch } = useSessionById(id);
 
@@ -37,7 +42,7 @@ export const SessionPage = () => {
     isParticipant
   )
 
-  // find the problem data based on session problem title
+  // Find the problem data based on session problem title
   const problemData = session?.problem
     ? Object.values(PROBLEMS).find((p) => p.title === session.problem)
     : null;
@@ -45,7 +50,55 @@ export const SessionPage = () => {
   const [selectedLanguage, setSelectedLanguage] = useState("javascript");
   const [code, setCode] = useState(problemData?.starterCode?.[selectedLanguage] || "");
 
-  // auto-join session if user is not already a participant and not the host
+  // ── Collaborative Editor ─────────────────────────────────────────────────
+  // We use the session's callId as the collab room ID
+  const roomId = session?.callId;
+  const role = isHost ? "host" : "participant";
+
+  // Remote user info for the typing indicator
+  const getRemoteName = () => {
+    if (isHost) return session?.participant?.name || "Participant";
+    return session?.host?.name || "Host";
+  };
+  const getRemoteRole = () => (isHost ? "participant" : "host");
+
+  const showRemoteTyping = () => {
+    setRemoteUser({ name: getRemoteName(), role: getRemoteRole() });
+    // Clear from display after 2s of no activity
+    clearTimeout(remoteTypingTimer.current);
+    remoteTypingTimer.current = setTimeout(() => setRemoteUser(null), 2000);
+  };
+
+  const [socketConnected, setSocketConnected] = useState(false);
+
+  const { emitCodeChange, emitLanguageChange, emitOutputUpdate } = useCollabEditor({
+    roomId,
+    userId: user?.id,
+    role,
+    onCodeChange: (remoteCode, remoteLang) => {
+      showRemoteTyping();
+      setCode(remoteCode);
+      if (remoteLang && remoteLang !== selectedLanguage) {
+        setSelectedLanguage(remoteLang);
+      }
+    },
+    onLanguageChange: (remoteLang, remoteCode) => {
+      showRemoteTyping();
+      setSelectedLanguage(remoteLang);
+      if (remoteCode !== undefined) setCode(remoteCode);
+    },
+    onOutputUpdate: (remoteOutput) => {
+      setOutput(remoteOutput);
+    },
+  });
+
+  // Detect socket connected state by checking if roomId+userId are available
+  useEffect(() => {
+    setSocketConnected(!!(roomId && user?.id));
+  }, [roomId, user?.id]);
+  // ────────────────────────────────────────────────────────────────────────
+
+  // Auto-join session if user is not already a participant and not the host
   useEffect(() => {
     if (!session || !user || loadingSession) return;
     if (isHost || isParticipant) return
@@ -53,29 +106,34 @@ export const SessionPage = () => {
     joinSessionMutation.mutate(id, { onSuccess: refetch })
   }, [session, user, loadingSession, isHost, isParticipant, id])
 
-
-  // redirect the "participant" when session ends
+  // Redirect the "participant" when session ends
   useEffect(() => {
     if (!session || loadingSession) return
 
     if (session.status === "completed") navigate("/dashboard");
   }, [session, loadingSession, navigate])
 
-  // update code when problem loads or changes
+  // Update code when problem loads or changes
   useEffect(() => {
     if (problemData?.starterCode?.[selectedLanguage]) {
       setCode(problemData.starterCode[selectedLanguage]);
     }
   }, [problemData, selectedLanguage]);
 
-
   const handleLanguageChange = (e) => {
     const newLang = e.target.value;
-    setSelectedLanguage(newLang);
-    // use problem-specific starter code
     const starterCode = problemData?.starterCode?.[newLang] || "";
+    setSelectedLanguage(newLang);
     setCode(starterCode);
     setOutput(null);
+    // Broadcast language + new starter code to partner
+    emitLanguageChange(newLang, starterCode);
+  }
+
+  const handleCodeChange = (value) => {
+    setCode(value);
+    // Broadcast every keystroke to partner
+    emitCodeChange(value, selectedLanguage);
   }
 
   const handleRunCode = async () => {
@@ -83,31 +141,30 @@ export const SessionPage = () => {
     setOutput(null);
 
     const result = await executeCode(selectedLanguage, code);
-    setOutput(result)
-    setIsRunning(false)
-  }
+    setOutput(result);
+    setIsRunning(false);
 
+    // Broadcast the output so partner sees it too
+    emitOutputUpdate(result);
+  }
 
   const handleEndSession = () => {
     if (confirm("Are you sure you want to end this session? All participants will be notified.")) {
-
-      // this will navigate the HOST to dashboard
       endSessionMutation.mutate(id, { onSuccess: () => navigate('/dashboard') })
     }
   }
+
   return (
     <div className='h-screen bg-base-100 flex flex-col'>
-
-
       <div className='flex-1'>
         <PanelGroup direction='horizontal'>
           {/* LEFT PANEL - CODE EDITOR & PROBLEM DETAILS */}
           <Panel defaultSize={50} minSize={30}>
             <PanelGroup direction="vertical">
-              {/* PROBLEM DSC PANEL */}
+              {/* PROBLEM DESCRIPTION PANEL */}
               <Panel defaultSize={50} minSize={20}>
                 <div className="h-full overflow-y-auto bg-base-200">
-                  {/* HEADER SECTION */}
+                  {/* Header */}
                   <div className="p-6 bg-base-100 border-b border-base-300">
                     <div className="flex items-start justify-between mb-3">
                       <div>
@@ -125,12 +182,10 @@ export const SessionPage = () => {
 
                       <div className="flex items-center gap-3">
                         <span
-                          className={`badge badge-lg ${getDifficultyBadgeClass(
-                            session?.difficulty
-                          )}`}
+                          className={`badge badge-lg ${getDifficultyBadgeClass(session?.difficulty)}`}
                         >
-                          {session?.difficulty.slice(0, 1).toUpperCase() +
-                            session?.difficulty.slice(1) || "Easy"}
+                          {session?.difficulty?.slice(0, 1).toUpperCase() +
+                            session?.difficulty?.slice(1) || "Easy"}
                         </span>
                         {isHost && session?.status === "active" && (
                           <button
@@ -154,26 +209,23 @@ export const SessionPage = () => {
                   </div>
 
                   <div className="p-6 space-y-6">
-                    {/* problem desc */}
+                    {/* Problem Description */}
                     {problemData?.description && (
                       <div className="bg-base-100 rounded-xl shadow-sm p-5 border border-base-300">
                         <h2 className="text-xl font-bold mb-4 text-base-content">Description</h2>
                         <div className="space-y-3 text-base leading-relaxed">
                           <p className="text-base-content/90">{problemData.description.text}</p>
                           {problemData.description.notes?.map((note, idx) => (
-                            <p key={idx} className="text-base-content/90">
-                              {note}
-                            </p>
+                            <p key={idx} className="text-base-content/90">{note}</p>
                           ))}
                         </div>
                       </div>
                     )}
 
-                    {/* examples section */}
+                    {/* Examples */}
                     {problemData?.examples && problemData.examples.length > 0 && (
                       <div className="bg-base-100 rounded-xl shadow-sm p-5 border border-base-300">
                         <h2 className="text-xl font-bold mb-4 text-base-content">Examples</h2>
-
                         <div className="space-y-4">
                           {problemData.examples.map((example, idx) => (
                             <div key={idx}>
@@ -183,15 +235,11 @@ export const SessionPage = () => {
                               </div>
                               <div className="bg-base-200 rounded-lg p-4 font-mono text-sm space-y-1.5">
                                 <div className="flex gap-2">
-                                  <span className="text-primary font-bold min-w-[70px]">
-                                    Input:
-                                  </span>
+                                  <span className="text-primary font-bold min-w-[70px]">Input:</span>
                                   <span>{example.input}</span>
                                 </div>
                                 <div className="flex gap-2">
-                                  <span className="text-secondary font-bold min-w-[70px]">
-                                    Output:
-                                  </span>
+                                  <span className="text-secondary font-bold min-w-[70px]">Output:</span>
                                   <span>{example.output}</span>
                                 </div>
                                 {example.explanation && (
@@ -238,8 +286,10 @@ export const SessionPage = () => {
                       code={code}
                       isRunning={isRunning}
                       onLanguageChange={handleLanguageChange}
-                      onCodeChange={(value) => setCode(value)}
+                      onCodeChange={handleCodeChange}
                       onRunCode={handleRunCode}
+                      isConnected={socketConnected}
+                      remoteUser={remoteUser}
                     />
                   </Panel>
 
@@ -250,15 +300,12 @@ export const SessionPage = () => {
                   </Panel>
                 </PanelGroup>
               </Panel>
-
             </PanelGroup>
           </Panel>
 
           <PanelResizeHandle className="w-2 bg-base-300 hover:bg-primary transition-colors cursor-col-resize" />
 
-
-
-          {/* RIGHT PANEL - VIDEO CALLS & CHATS */}
+          {/* RIGHT PANEL - VIDEO CALL & CHAT */}
           <Panel defaultSize={50} minSize={30}>
             <div className='h-full bg-base-200 p-4 overflow-auto'>
               {isInitializingCall ? (
@@ -289,7 +336,6 @@ export const SessionPage = () => {
                   </StreamVideo>
                 </div>
               )}
-
             </div>
           </Panel>
         </PanelGroup>

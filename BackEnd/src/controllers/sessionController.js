@@ -66,6 +66,8 @@ export async function getMyReecentSessions(req, res) {
             status: "completed",
             $or: [{ host: userId }, { participant: userId }],
         })
+            .populate("host", "name clerkId")
+            .populate("participant", "name clerkId")
             .sort({ createdAt: -1 })
             .limit(20)
 
@@ -158,3 +160,89 @@ export async function endSession(req, res) {
 
 };
 
+// GET /api/sessions/:id/notes — host retrieves saved notes
+export async function getNotes(req, res) {
+    try {
+        const { id } = req.params;
+        const userId = req.user._id;
+
+        const session = await Session.findById(id);
+        if (!session) return res.status(404).json({ message: "Session not found" });
+
+        if (session.host.toString() !== userId.toString())
+            return res.status(403).json({ message: "Only the host can view notes" });
+
+        res.status(200).json({
+            notes: session.notes,
+            rating: session.rating,
+            tags: session.tags,
+            timeTaken: session.timeTaken,
+            testCasesPassed: session.testCasesPassed
+        });
+    } catch (error) {
+        console.log("Error in getNotes controller:", error.message);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+// POST /api/sessions/:id/notes — host saves notes
+export async function saveNotes(req, res) {
+    try {
+        const { id } = req.params;
+        const userId = req.user._id;
+        const { notes, rating, tags, timeTaken, testCasesPassed } = req.body;
+
+        const session = await Session.findById(id);
+        if (!session) return res.status(404).json({ message: "Session not found" });
+
+        if (session.host.toString() !== userId.toString())
+            return res.status(403).json({ message: "Only the host can save notes" });
+
+        if (notes !== undefined) session.notes = notes;
+        if (rating !== undefined) session.rating = rating;
+        if (tags !== undefined) session.tags = tags;
+        if (timeTaken !== undefined) session.timeTaken = timeTaken;
+        if (testCasesPassed !== undefined) session.testCasesPassed = testCasesPassed;
+
+        await session.save();
+
+        res.status(200).json({
+            message: "Notes saved",
+            notes: session.notes,
+            rating: session.rating,
+            tags: session.tags,
+            timeTaken: session.timeTaken,
+            testCasesPassed: session.testCasesPassed
+        });
+    } catch (error) {
+        console.log("Error in saveNotes controller:", error.message);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+// PATCH /api/sessions/:id/decision — host sets candidate decision
+export async function setDecision(req, res) {
+    try {
+        const { id } = req.params;
+        const userId = req.user._id;
+        const { decision } = req.body;
+
+        const validDecisions = ["move_forward", "on_hold", "rejected", null];
+        if (!validDecisions.includes(decision))
+            return res.status(400).json({ message: "Invalid decision value" });
+
+        const session = await Session.findById(id);
+        if (!session) return res.status(404).json({ message: "Session not found" });
+
+        if (session.host.toString() !== userId.toString())
+            return res.status(403).json({ message: "Only the host can set the decision" });
+
+        session.decision = decision;
+        await session.save();
+
+        res.status(200).json({ message: "Decision saved", decision: session.decision });
+    } catch (error) {
+        console.log("Error in setDecision controller:", error.message);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}

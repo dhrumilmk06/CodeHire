@@ -14,6 +14,7 @@ import { useStreamClient } from '../hooks/useStreamClient'
 import { StreamCall, StreamVideo } from '@stream-io/video-react-sdk';
 import { VideoCallUI } from '../components/VideoCallUI';
 import { useCollabEditor } from '../hooks/useCollabEditor';
+import { LiveNotesPanel } from '../components/LiveNotesPanel';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '../lib/axios';
 
@@ -356,6 +357,9 @@ export const SessionPage = () => {
           </Panel>
         </PanelGroup>
       </div>
+
+      {/* Host-only floating notes panel — rendered outside the panel layout so it never displaces existing UI */}
+      {isHost && <LiveNotesPanel sessionId={id} />}
     </div>
   )
 }

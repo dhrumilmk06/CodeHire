@@ -32,4 +32,12 @@ export const sessionApi = {
         const response = await axiosInstance.get(`/chat/token`)
         return response.data;
     },
+    getSessionNotes: async (id) => {
+        const response = await axiosInstance.get(`/sessions/${id}/notes`);
+        return response.data;
+    },
+    setSessionDecision: async ({ id, decision }) => {
+        const response = await axiosInstance.patch(`/sessions/${id}/decision`, { decision });
+        return response.data;
+    },
 }

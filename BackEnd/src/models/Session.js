@@ -74,6 +74,11 @@ const sessionSchema = new mongoose.Schema({
             duration: { type: Number, default: null }, // in seconds
         }
     ],
+    problemCodes: {
+        type: Map,
+        of: String,
+        default: {},
+    },
 },
     { timestamps: true }
 );

@@ -44,4 +44,16 @@ export const sessionApi = {
         const response = await axiosInstance.patch(`/sessions/${id}/timings`, { timings });
         return response.data;
     },
+    updateActiveProblem: async (id, data) => {
+        const response = await axiosInstance.patch(`/sessions/${id}/activeProblem`, data);
+        return response.data;
+    },
+    saveProblemCode: async (id, problemId, code) => {
+        const response = await axiosInstance.patch(`/sessions/${id}/code/${problemId}`, { code });
+        return response.data;
+    },
+    getProblemCode: async (id, problemId) => {
+        const response = await axiosInstance.get(`/sessions/${id}/code/${problemId}`);
+        return response.data;
+    },
 }

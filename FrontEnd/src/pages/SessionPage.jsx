@@ -18,6 +18,8 @@ import { LiveNotesPanel } from '../components/LiveNotesPanel';
 import { TimeTracker } from '../components/TimeTracker';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '../lib/axios';
+import { sessionApi } from '../api/sessions';
+import { toast } from 'react-hot-toast';
 
 export const SessionPage = () => {
   const navigate = useNavigate();
@@ -25,9 +27,11 @@ export const SessionPage = () => {
   const { user } = useUser();
   const [output, setOutput] = useState(null)
   const [isRunning, setIsRunning] = useState(false)
+  const [isProblemLoading, setIsProblemLoading] = useState(false);
 
   // Track remote typing state for the indicator
   const remoteTypingTimer = useRef(null);
+  const lastProblemRef = useRef(null);
   const [remoteUser, setRemoteUser] = useState(null);
 
   const { data: sessionData, isLoading: loadingSession, refetch } = useSessionById(id);
@@ -89,7 +93,7 @@ export const SessionPage = () => {
 
   const [socketConnected, setSocketConnected] = useState(false);
 
-  const { emitCodeChange, emitLanguageChange, emitOutputUpdate } = useCollabEditor({
+  const { emitCodeChange, emitLanguageChange, emitOutputUpdate, emitProblemChange } = useCollabEditor({
     roomId,
     userId: user?.id,
     role,
@@ -99,6 +103,13 @@ export const SessionPage = () => {
       if (remoteLang && remoteLang !== selectedLanguage) {
         setSelectedLanguage(remoteLang);
       }
+    },
+    onProblemChange: (problemTitle, difficulty) => {
+      setIsProblemLoading(true);
+      setTimeout(() => {
+        setIsProblemLoading(false);
+        refetch(); // Fetch latest session state to update problem desc
+      }, 3000);
     },
     onLanguageChange: (remoteLang, remoteCode) => {
       showRemoteTyping();
@@ -133,10 +144,20 @@ export const SessionPage = () => {
 
   // Update code when problem loads or changes
   useEffect(() => {
-    if (problemData?.starterCode?.[selectedLanguage]) {
-      setCode(problemData.starterCode[selectedLanguage]);
+    if (!problemData) return;
+
+    // Reset editor if it's a completely new problem we haven't seen in this state session
+    if (lastProblemRef.current !== problemData.title) {
+      lastProblemRef.current = problemData.title;
+      // Only set starter code if we don't already have content in the editor 
+      // (restored code from handleProblemSwitch will take priority)
+      if (!code || code === "") {
+        if (problemData?.starterCode?.[selectedLanguage]) {
+          setCode(problemData.starterCode[selectedLanguage]);
+        }
+      }
     }
-  }, [problemData, selectedLanguage]);
+  }, [problemData, selectedLanguage, code]);
 
   const handleLanguageChange = (e) => {
     const newLang = e.target.value;
@@ -165,6 +186,67 @@ export const SessionPage = () => {
     // Broadcast the output so partner sees it too
     emitOutputUpdate(result);
   }
+
+  const handleProblemSwitch = async (newProblem) => {
+    if (!isHost || isProblemLoading) return;
+    if (!newProblem || newProblem.title === session.problem) return;
+
+    console.log(`[Switch] Switching to: ${newProblem.title}`);
+    try {
+      setIsProblemLoading(true);
+
+      // Save current code
+      await sessionApi.updateActiveProblem(id, {
+        problemTitle: newProblem.title,
+        difficulty: newProblem.difficulty,
+        codeToSave: code,
+        previousProblemTitle: session.problem
+      });
+
+      // Clear current state to prepare for new problem
+      setCode("");
+      setOutput(null);
+      emitCodeChange("", selectedLanguage);
+      emitOutputUpdate(null);
+
+      // Fetch the saved code for the NEW problem (if any)
+      const { code: restoredCode } = await sessionApi.getProblemCode(id, newProblem.title);
+      console.log(`[Switch] Restored code for ${newProblem.title} exists:`, !!restoredCode);
+
+      // If there's saved code, use it. Otherwise use the new problem's starter code.
+      if (restoredCode) {
+        setCode(restoredCode);
+        emitCodeChange(restoredCode, selectedLanguage);
+      } else {
+        // Fallback: Manually set starter code if no saved code exists
+        // (This helps the editor update immediately without waiting for useEffect)
+        const nextBuiltIn = Object.values(PROBLEMS).find((p) => p.title === newProblem.title);
+        const nextStarter = nextBuiltIn?.starterCode?.[selectedLanguage] || "";
+        if (nextStarter) {
+          console.log(`[Switch] Applied starter code for ${newProblem.title}`);
+          setCode(nextStarter);
+          emitCodeChange(nextStarter, selectedLanguage);
+        }
+      }
+
+      // Broadcast switch to candidate
+      emitProblemChange(newProblem.title, newProblem.difficulty);
+
+      await refetch();
+      console.log("[Switch] Refetch completed");
+
+      toast.success(`Switched to: ${newProblem.title}`);
+
+      // Delay for candidate sync and visual effect
+      setTimeout(() => {
+        setIsProblemLoading(false);
+      }, 2500); // 2.5s delay
+    } catch (error) {
+      console.error("[Switch] Failed to switch problem:", error);
+      toast.error(error.response?.data?.message || "Failed to switch problem");
+      setIsProblemLoading(false);
+    }
+  };
 
   const handleEndSession = () => {
     if (confirm("Are you sure you want to end this session? All participants will be notified.")) {
@@ -231,6 +313,57 @@ export const SessionPage = () => {
                         )}
                       </div>
                     </div>
+
+                    {/* Problem Navigation Tabs (Host Only) */}
+                    {isHost && session?.problems && session.problems.length > 1 && (
+                      <div className="flex items-center gap-3 mt-4 overflow-x-auto pb-2 scrollbar-none">
+                        <div className="flex items-center gap-2">
+                          {session.problems.map((p, idx) => {
+                            const isActive = p.title === session.problem;
+                            // A problem is "completed" if its index is less than the active one
+                            const activeIdx = session.problems.findIndex(sp => sp.title === session.problem);
+                            const isCompleted = idx < activeIdx;
+
+                            return (
+                              <button
+                                key={idx}
+                                onClick={() => handleProblemSwitch(p)}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap border-2 ${isActive
+                                  ? "bg-success/10 border-success text-success shadow-[0_0_15px_rgba(34,197,94,0.2)]"
+                                  : isCompleted
+                                    ? "bg-base-200 border-base-300 text-base-content/50 hover:bg-base-300"
+                                    : "bg-base-100 border-transparent text-base-content/30 hover:bg-base-200"
+                                  }`}
+                              >
+                                <span className="opacity-50">{idx + 1}.</span>
+                                {p.title}
+                                {isCompleted && <span className="text-success">✓</span>}
+                                {isActive && <span className="flex h-2 w-2 rounded-full bg-success animate-pulse"></span>}
+                              </button>
+                            );
+                          })}
+                        </div>
+
+                        {(() => {
+                          const activeIdx = session.problems.findIndex(sp => sp.title === session.problem);
+                          const nextProblem = session.problems[activeIdx + 1];
+                          if (!nextProblem) return null;
+
+                          return (
+                            <button
+                              onClick={() => {
+                                console.log(`[NextBtn] Index: ${activeIdx}, Next: ${nextProblem.title}`);
+                                handleProblemSwitch(nextProblem);
+                              }}
+                              className="btn btn-primary btn-sm gap-2 whitespace-nowrap px-6 h-10 shadow-[0_0_20px_rgba(var(--p),0.3)] hover:shadow-[0_0_30px_rgba(var(--p),0.5)] hover:scale-105 active:scale-95 transition-all duration-300 group font-black uppercase tracking-[0.2em] text-[11px] border-none"
+                            >
+                              NEXT PROBLEM
+                              <span className="group-hover:translate-x-1 transition-transform text-lg">→</span>
+                            </button>
+                          );
+                        })()}
+                      </div>
+                    )}
                   </div>
 
                   <div className="p-6 space-y-6">
@@ -368,6 +501,22 @@ export const SessionPage = () => {
 
       {/* Host-only floating notes panel — rendered outside the panel layout so it never displaces existing UI */}
       {isHost && <LiveNotesPanel sessionId={id} />}
+
+      {/* NEW PROBLEM LOADING OVERLAY */}
+      {isProblemLoading && (
+        <div className="fixed inset-0 z-9999 bg-base-300/80 backdrop-blur-md flex items-center justify-center animate-in fade-in duration-300">
+          <div className="text-center space-y-4">
+            <div className="relative inline-block">
+              <div className="size-20 border-4 border-success/20 border-t-success rounded-full animate-spin"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="flex h-3 w-3 rounded-full bg-success animate-ping"></span>
+              </div>
+            </div>
+            <h2 className="text-3xl font-black text-base-content uppercase tracking-[0.3em]">New Problem Loading...</h2>
+            <p className="text-base-content/50 font-medium">Please wait while the host switches the problem</p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

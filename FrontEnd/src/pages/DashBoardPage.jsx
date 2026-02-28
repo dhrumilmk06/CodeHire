@@ -72,7 +72,9 @@ export const DashBoardPage = () => {
           </div>
 
           <RecentSession
-            sessions={recentSession} isLoading={loadingRecentSessions}
+            sessions={recentSession}
+            isLoading={loadingRecentSessions}
+            userClerkId={user?.id}
           />
         </div>
       </div>

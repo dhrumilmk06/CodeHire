@@ -22,6 +22,7 @@ export const useCollabEditor = ({
     onCodeChange,
     onLanguageChange,
     onOutputUpdate,
+    onProblemChange,
 }) => {
     const socketRef = useRef(null);
 
@@ -54,6 +55,11 @@ export const useCollabEditor = ({
             onOutputUpdate?.(output);
         });
 
+        // Remote host changed problem
+        socket.on("problem-change", ({ problemTitle, difficulty }) => {
+            onProblemChange?.(problemTitle, difficulty);
+        });
+
         // New joiner receives current room state
         socket.on("sync-state", ({ code, language, output }) => {
             if (code !== undefined) onCodeChange?.(code, language);
@@ -82,5 +88,10 @@ export const useCollabEditor = ({
         socketRef.current?.emit("output-update", { roomId, output });
     }, [roomId]);
 
-    return { emitCodeChange, emitLanguageChange, emitOutputUpdate };
+    /** Emit a problem switch to all other participants */
+    const emitProblemChange = useCallback((problemTitle, difficulty) => {
+        socketRef.current?.emit("problem-change", { roomId, problemTitle, difficulty });
+    }, [roomId]);
+
+    return { emitCodeChange, emitLanguageChange, emitOutputUpdate, emitProblemChange };
 };

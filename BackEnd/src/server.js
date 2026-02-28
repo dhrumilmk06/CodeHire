@@ -69,6 +69,11 @@ io.on("connection", (socket) => {
         socket.to(roomId).emit("output-update", { output });
     });
 
+    // Broadcast problem switch
+    socket.on("problem-change", ({ roomId, problemTitle, difficulty }) => {
+        socket.to(roomId).emit("problem-change", { problemTitle, difficulty });
+    });
+
     socket.on("disconnect", () => {
         // Room cleanup is automatic via socket.io
     });

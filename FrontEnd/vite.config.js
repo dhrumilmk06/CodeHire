@@ -7,11 +7,13 @@ import path from "path"
 // browser tabs close or navigate while a WS proxy connection is still open)
 const silentWSErrors = (proxy) => {
   const ignore = (err) => {
-    if (err?.code === 'ECONNABORTED' || err?.code === 'ECONNRESET') return;
+    if (err?.code === 'ECONNABORTED' || err?.code === 'ECONNRESET' || err?.code === 'EPIPE') return;
+    // Only log actual unexpected errors
     console.error('[proxy error]', err.message);
   };
   proxy.on('error', ignore);
   proxy.on('proxyReqWsError', ignore);
+  proxy.on('close', () => { }); // Handle unexpected closure quietly
 };
 
 // https://vite.dev/config/

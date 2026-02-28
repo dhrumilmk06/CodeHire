@@ -108,30 +108,56 @@ export const TimeTracker = ({ sessionId, currentProblemTitle, initialTimings = [
                 </div>
 
                 <div className="space-y-1 mb-4 max-h-56 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-base-300">
-                    {timings.map((t, idx) => (
-                        <div key={idx} className="flex items-center justify-between text-sm p-2.5 rounded-lg border border-transparent hover:border-base-300 hover:bg-base-200/50 transition-all duration-200">
-                            <div className="flex flex-col gap-0.5 min-w-0">
-                                <span className={`font-bold transition-colors ${t.endTime ? 'text-base-content/70' : 'text-success'}`}>
-                                    {t.problemId} {!t.endTime && '— (live)'}
-                                </span>
-                                <div className="flex items-center gap-1.5">
-                                    {t.endTime ? (
-                                        <span className="text-[10px] text-base-content/40 uppercase font-bold tracking-tighter flex items-center gap-1">
-                                            Completed <span className="text-success">✓</span>
+                    {(() => {
+                        // Group timings by problemId for a cleaner single-problem display
+                        const groups = timings.reduce((acc, t) => {
+                            if (!acc[t.problemId]) {
+                                acc[t.problemId] = {
+                                    problemId: t.problemId,
+                                    totalDuration: 0,
+                                    isActive: false
+                                };
+                            }
+                            if (t.endTime) {
+                                acc[t.problemId].totalDuration += (t.duration || 0);
+                            } else {
+                                acc[t.problemId].isActive = true;
+                            }
+                            return acc;
+                        }, {});
+
+                        return Object.values(groups).map((group, idx) => {
+                            const isLive = group.isActive && group.problemId === currentProblemTitle;
+                            const displayDuration = isLive
+                                ? group.totalDuration + activeElapsed
+                                : group.totalDuration;
+
+                            return (
+                                <div key={idx} className="flex items-center justify-between text-sm p-2.5 rounded-lg border border-transparent hover:border-base-300 hover:bg-base-200/50 transition-all duration-200">
+                                    <div className="flex flex-col gap-0.5 min-w-0">
+                                        <span className={`font-bold truncate transition-colors ${group.isActive ? 'text-success' : 'text-base-content/70'}`}>
+                                            {group.problemId} {isLive && '— (live)'}
                                         </span>
-                                    ) : (
-                                        <div className="flex items-center gap-1">
-                                            <span className="w-1 h-1 rounded-full bg-success animate-ping"></span>
-                                            <span className="text-[10px] text-success uppercase font-extrabold tracking-widest">Active</span>
+                                        <div className="flex items-center gap-1.5">
+                                            {group.isActive ? (
+                                                <div className="flex items-center gap-1">
+                                                    <span className="w-1 h-1 rounded-full bg-success animate-ping"></span>
+                                                    <span className="text-[10px] text-success uppercase font-extrabold tracking-widest">Active</span>
+                                                </div>
+                                            ) : (
+                                                <span className="text-[10px] text-base-content/40 uppercase font-bold tracking-tighter flex items-center gap-1">
+                                                    Completed <span className="text-success">✓</span>
+                                                </span>
+                                            )}
                                         </div>
-                                    )}
+                                    </div>
+                                    <span className={`font-mono font-bold text-base ${group.isActive ? 'text-success drop-shadow-[0_0_8px_rgba(34,197,94,0.3)]' : 'text-base-content/60'}`}>
+                                        {formatTime(displayDuration)}
+                                    </span>
                                 </div>
-                            </div>
-                            <span className={`font-mono font-bold text-base ${t.endTime ? 'text-base-content/60' : 'text-success drop-shadow-[0_0_8px_rgba(34,197,94,0.3)]'}`}>
-                                {t.endTime ? formatTime(t.duration) : formatTime(activeElapsed)}
-                            </span>
-                        </div>
-                    ))}
+                            );
+                        });
+                    })()}
                 </div>
 
                 <div className="pt-4 border-t border-base-300 flex items-center justify-between px-1">

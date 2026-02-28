@@ -11,6 +11,9 @@ import {
     saveNotes,
     setDecision,
     updateTimings,
+    updateActiveProblem,
+    saveProblemCode,
+    getProblemCode,
 } from "../controllers/sessionController.js";
 
 
@@ -28,5 +31,8 @@ router.get("/:id/notes", protectRoute, getNotes);
 router.post("/:id/notes", protectRoute, saveNotes);
 router.patch("/:id/decision", protectRoute, setDecision);
 router.patch("/:id/timings", protectRoute, updateTimings);
+router.patch("/:id/activeProblem", protectRoute, updateActiveProblem);
+router.patch("/:id/code/:problemId", protectRoute, saveProblemCode);
+router.get("/:id/code/:problemId", protectRoute, getProblemCode);
 
 export default router;

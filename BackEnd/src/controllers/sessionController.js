@@ -302,3 +302,71 @@ export async function updateTimings(req, res) {
         res.status(500).json({ message: "Internal Server Error" });
     }
 }
+
+export async function updateActiveProblem(req, res) {
+    try {
+        const { id } = req.params;
+        const userId = req.user._id;
+        const { problemTitle, difficulty, codeToSave, previousProblemTitle } = req.body;
+
+        const session = await Session.findById(id);
+        if (!session) return res.status(404).json({ message: "Session not found" });
+
+        if (session.host.toString() !== userId.toString())
+            return res.status(403).json({ message: "Only the host can update the active problem" });
+
+        // Save progress of previous problem if provided
+        if (previousProblemTitle && codeToSave !== undefined) {
+            session.problemCodes.set(previousProblemTitle, codeToSave);
+        }
+
+        session.problem = problemTitle;
+        session.difficulty = difficulty.toLowerCase();
+
+        await session.save();
+
+        res.status(200).json({
+            message: "Active problem updated",
+            problem: session.problem,
+            difficulty: session.difficulty,
+            problemCodes: Object.fromEntries(session.problemCodes)
+        });
+    } catch (error) {
+        console.log("Error in updateActiveProblem controller:", error.message);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+export async function saveProblemCode(req, res) {
+    try {
+        const { id, problemId } = req.params;
+        const { code } = req.body;
+
+        const session = await Session.findById(id);
+        if (!session) return res.status(404).json({ message: "Session not found" });
+
+        // We allow both host and participant to save code, as both contribute
+        session.problemCodes.set(problemId, code);
+        await session.save();
+
+        res.status(200).json({ message: "Code saved for problem", problemId });
+    } catch (error) {
+        console.log("Error in saveProblemCode controller:", error.message);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+export async function getProblemCode(req, res) {
+    try {
+        const { id, problemId } = req.params;
+
+        const session = await Session.findById(id);
+        if (!session) return res.status(404).json({ message: "Session not found" });
+
+        const code = session.problemCodes.get(problemId) || "";
+        res.status(200).json({ code });
+    } catch (error) {
+        console.log("Error in getProblemCode controller:", error.message);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}

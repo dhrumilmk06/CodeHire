@@ -60,6 +60,14 @@ const sessionSchema = new mongoose.Schema({
         type: String, // format "X/Y"
         default: "0/0",
     },
+    timings: [
+        {
+            problemId: { type: String, required: true },
+            startTime: { type: Date, required: true },
+            endTime: { type: Date, default: null },
+            duration: { type: Number, default: null }, // in seconds
+        }
+    ],
 },
     { timestamps: true }
 );

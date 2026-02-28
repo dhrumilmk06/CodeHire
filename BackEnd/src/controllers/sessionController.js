@@ -177,7 +177,8 @@ export async function getNotes(req, res) {
             rating: session.rating,
             tags: session.tags,
             timeTaken: session.timeTaken,
-            testCasesPassed: session.testCasesPassed
+            testCasesPassed: session.testCasesPassed,
+            timings: session.timings,
         });
     } catch (error) {
         console.log("Error in getNotes controller:", error.message);
@@ -243,6 +244,42 @@ export async function setDecision(req, res) {
         res.status(200).json({ message: "Decision saved", decision: session.decision });
     } catch (error) {
         console.log("Error in setDecision controller:", error.message);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+export async function updateTimings(req, res) {
+    try {
+        const { id } = req.params;
+        const userId = req.user._id;
+        const { timings } = req.body;
+
+        const session = await Session.findById(id);
+        if (!session) return res.status(404).json({ message: "Session not found" });
+
+        // Calculate legacy timeTaken
+        const totalDuration = timings.reduce((acc, curr) => acc + (curr.duration || 0), 0);
+        const timeTaken = Math.round(totalDuration / 60);
+
+        // Use findOneAndUpdate to bypass versioning issues and race conditions with rapid updates
+        const updatedSession = await Session.findOneAndUpdate(
+            { _id: id, host: userId },
+            {
+                $set: {
+                    timings,
+                    timeTaken
+                }
+            },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedSession) {
+            return res.status(404).json({ message: "Session not found or user is not the host" });
+        }
+
+        res.status(200).json({ message: "Timings updated", timings: updatedSession.timings });
+    } catch (error) {
+        console.log("Error in updateTimings controller:", error.message);
         res.status(500).json({ message: "Internal Server Error" });
     }
 }

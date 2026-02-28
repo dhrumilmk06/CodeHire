@@ -40,4 +40,8 @@ export const sessionApi = {
         const response = await axiosInstance.patch(`/sessions/${id}/decision`, { decision });
         return response.data;
     },
+    updateTimings: async (id, timings) => {
+        const response = await axiosInstance.patch(`/sessions/${id}/timings`, { timings });
+        return response.data;
+    },
 }

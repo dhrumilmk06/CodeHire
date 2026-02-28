@@ -15,18 +15,17 @@ export const DashBoardPage = () => {
 
   //showCreateModel show the pop-up after we click on createsessionBtn  
   const [showCreateModel, setShowCreateModel] = useState(false);
-  const [roomConfig, setRoomConfig] = useState({ problem: "", difficulty: "" })
+  const [roomConfig, setRoomConfig] = useState({ problems: [] })
 
   const createSessionMutation = useCreateSession();
 
   // this will handel createRoom btn
   const handelCreateRoom = () => {
-    if (!roomConfig.problem || !roomConfig.difficulty) return;
+    if (!roomConfig.problems || roomConfig.problems.length === 0) return;
 
     createSessionMutation.mutate(
-      { // problem and diffeculty come from createSession controller
-        problem: roomConfig.problem,
-        difficulty: roomConfig.difficulty.toLowerCase(),
+      {
+        problems: roomConfig.problems,
       },
       {
         onSuccess: (data) => {

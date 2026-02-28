@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
 
 const sessionSchema = new mongoose.Schema({
+    problems: [
+        {
+            title: { type: String, required: true },
+            difficulty: { type: String, required: true },
+        }
+    ],
     problem: {
         type: String,
         required: true,

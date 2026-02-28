@@ -15,6 +15,7 @@ import { StreamCall, StreamVideo } from '@stream-io/video-react-sdk';
 import { VideoCallUI } from '../components/VideoCallUI';
 import { useCollabEditor } from '../hooks/useCollabEditor';
 import { LiveNotesPanel } from '../components/LiveNotesPanel';
+import { TimeTracker } from '../components/TimeTracker';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '../lib/axios';
 
@@ -198,6 +199,13 @@ export const SessionPage = () => {
                       </div>
 
                       <div className="flex items-center gap-3">
+                        {isHost && session && session.status === "active" && (
+                          <TimeTracker
+                            sessionId={id}
+                            currentProblemTitle={session.problem}
+                            initialTimings={session.timings}
+                          />
+                        )}
                         <span
                           className={`badge badge-lg ${getDifficultyBadgeClass(session?.difficulty)}`}
                         >

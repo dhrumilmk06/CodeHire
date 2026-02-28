@@ -10,6 +10,7 @@ import {
     getNotes,
     saveNotes,
     setDecision,
+    updateTimings,
 } from "../controllers/sessionController.js";
 
 
@@ -26,5 +27,6 @@ router.post("/:id/end", protectRoute, endSession);
 router.get("/:id/notes", protectRoute, getNotes);
 router.post("/:id/notes", protectRoute, saveNotes);
 router.patch("/:id/decision", protectRoute, setDecision);
+router.patch("/:id/timings", protectRoute, updateTimings);
 
 export default router;

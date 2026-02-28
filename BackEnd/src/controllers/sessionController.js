@@ -3,31 +3,50 @@ import { chatClient, streamClient } from "../lib/stream.js";
 
 export async function createSession(req, res) {
     try {
-        const { problem, difficulty } = req.body
+        const { problems } = req.body
         const userId = req.user._id;
         const clerkId = req.user.clerkId;
 
-        if (!problem || !difficulty) {
-            return res.status(400).json({ message: "Problem and difficulty are required" })
+        if (!problems || !Array.isArray(problems) || problems.length === 0) {
+            return res.status(400).json({ message: "At least one problem is required" })
         }
+
+        const activeProblem = problems[0].title;
+        const activeDifficulty = problems[0].difficulty.toLowerCase();
+
+        // Prepare problems array with lowercased difficulties for consistency
+        const sanitizedProblems = problems.map(p => ({
+            ...p,
+            difficulty: p.difficulty.toLowerCase()
+        }));
 
         //generate uniqu callId for stream video
         const callId = `session_${Date.now()}_${Math.random().toString(36).substring(7)}`;
 
         //create session in db
-        const session = await Session.create({ problem, difficulty, host: userId, callId });
+        const session = await Session.create({
+            problems: sanitizedProblems,
+            problem: activeProblem,
+            difficulty: activeDifficulty,
+            host: userId,
+            callId
+        });
 
         //create stream video call
         await streamClient.video.call("default", callId).getOrCreate({
             data: {
                 created_by_id: clerkId,
-                custom: { problem, difficulty, sessionId: session._id.toString() },
+                custom: {
+                    problem: activeProblem,
+                    difficulty: activeDifficulty,
+                    sessionId: session._id.toString()
+                },
             },
         });
 
         // chat messaging
         const channel = chatClient.channel("messaging", callId, {
-            name: `${problem} Session`,
+            name: `${activeProblem} Session`,
             created_by_id: clerkId,
             members: [clerkId],
         });

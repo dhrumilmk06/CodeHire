@@ -42,6 +42,9 @@ io.on("connection", (socket) => {
         socket.data.userId = userId;
         socket.data.role = role;
 
+        // Join a private room for the user to receive targeted updates (like auto-score)
+        socket.join(`user_${userId}`);
+
         // Send current room state to the new joiner so they're in sync
         if (roomState.has(roomId)) {
             socket.emit("sync-state", roomState.get(roomId));
@@ -84,6 +87,12 @@ io.on("connection", (socket) => {
 app.use(express.json());
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }))
 app.use(clerkMiddleware())
+
+// Attach socket.io to req for controllers
+app.use((req, res, next) => {
+    req.io = io;
+    next();
+});
 
 app.use("/api/inngest", serve({
     client: inngest,

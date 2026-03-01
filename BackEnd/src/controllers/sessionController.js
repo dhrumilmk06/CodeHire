@@ -1,4 +1,5 @@
 import Session from "../models/Session.js";
+import CustomProblem from "../models/CustomProblem.js";
 import { chatClient, streamClient } from "../lib/stream.js";
 
 export async function createSession(req, res) {
@@ -367,6 +368,155 @@ export async function getProblemCode(req, res) {
         res.status(200).json({ code });
     } catch (error) {
         console.log("Error in getProblemCode controller:", error.message);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+export async function runCode(req, res) {
+    try {
+        const { code, language, sessionId, problemId } = req.body;
+
+        const languageVersions = {
+            javascript: { language: "javascript", version: "18.15.0" },
+            python: { language: "python", version: "3.10.0" },
+            java: { language: "java", version: "15.0.2" },
+        };
+
+        const config = languageVersions[language] || languageVersions.javascript;
+
+        // Step 1: Execute code normally
+        const normalResponse = await fetch('http://localhost:2000/api/v2/execute', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                language: config.language,
+                version: config.version,
+                files: [{ content: code }]
+            })
+        });
+
+        const normalResult = await normalResponse.json();
+        const output = normalResult.run.output || "";
+        const stderr = normalResult.run.stderr || "";
+
+        // Return immediately to frontend for candidate output
+        res.json({ success: true, output, stderr });
+
+        // Step 2-4: Process hidden tests in background (Host only update)
+        console.log("Looking for problem with title:", problemId);
+        const problem = await CustomProblem.findOne({ title: problemId });
+        if (problem) {
+            console.log("Found problem:", problem.title, "with", problem.hiddenTestCases?.length, "hidden tests");
+        } else {
+            console.log("Problem not found in CustomProblem collection:", problemId);
+        }
+
+        if (problem && problem.hiddenTestCases && problem.hiddenTestCases.length > 0) {
+            const results = await Promise.all(
+                problem.hiddenTestCases.map(async (test) => {
+                    try {
+                        // Use language specific input code
+                        const langKey = language === "javascript" || language === "python" || language === "java" ? language : "javascript";
+                        const testInputCode = test.inputCode?.[langKey];
+
+                        if (!testInputCode) {
+                            console.log(`No ${langKey} inputCode found for test`, test.id);
+                            return null;
+                        }
+
+                        const filename = language === "java" ? "Main.java" : `main${getFileExecution(language)}`;
+                        const sanitizedCode = language === "java" ? code.replace(/public\s+class/g, "class") : code;
+
+                        const executeBody = {
+                            language: config.language,
+                            version: config.version,
+                            files: [
+                                { name: filename, content: sanitizedCode + "\n" + testInputCode }
+                            ]
+                        };
+
+                        const testResponse = await fetch('http://localhost:2000/api/v2/execute', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(executeBody)
+                        });
+                        const testResult = await testResponse.json();
+                        const fullOutput = (testResult.run.stdout || "").trim();
+
+                        // Extract the last non-empty line (the one we appended)
+                        const lines = fullOutput.split('\n').filter(line => line.trim() !== "");
+                        const actualOutput = lines.length > 0 ? lines[lines.length - 1].trim() : "";
+
+                        // Robust comparison: remove all spaces for both actual and expected
+                        const normalize = (str) => str.replace(/\s+/g, "");
+                        const passed = normalize(actualOutput) === normalize(test.expectedOutput);
+
+                        console.log(`Test ${test.id} result:`, {
+                            actual: actualOutput,
+                            expected: test.expectedOutput,
+                            passed,
+                            stderr: testResult.run.stderr || "None"
+                        });
+
+                        return { id: test.id, description: test.description, passed };
+                    } catch (err) {
+                        return { id: test.id, description: test.description, passed: false };
+                    }
+                })
+            );
+
+            const finalResults = results.filter(r => r !== null);
+            const passedCount = finalResults.filter(r => r.passed).length;
+            const totalCount = finalResults.length;
+
+            if (totalCount === 0) return; // No scoring possible
+
+            const session = await Session.findById(sessionId).populate("host");
+            if (session && session.host) {
+                const hostClerkId = session.host.clerkId;
+                console.log("Emitting autoScoreResults to host:", hostClerkId);
+                // Emit only to host's private room
+                req.io.to(`user_${hostClerkId}`).emit("autoScoreResults", {
+                    sessionId,
+                    problemId,
+                    score: { passed: passedCount, total: totalCount },
+                    results: finalResults
+                });
+            }
+        }
+    } catch (error) {
+        console.error("Error in runCode controller:", error.message);
+        if (!res.headersSent) {
+            res.status(500).json({ message: "Internal Server Error" });
+        }
+    }
+}
+
+function getFileExecution(language) {
+    const extensions = {
+        javascript: ".js",
+        python: ".py",
+        java: ".java"
+    };
+    return extensions[language] || ".js";
+}
+
+export async function updateSessionScore(req, res) {
+    try {
+        const { id } = req.params;
+        const { score } = req.body; // e.g., "3/5"
+
+        const session = await Session.findByIdAndUpdate(
+            id,
+            { testCasesPassed: score },
+            { new: true }
+        );
+
+        if (!session) return res.status(404).json({ message: "Session not found" });
+
+        res.status(200).json({ message: "Score updated", score: session.testCasesPassed });
+    } catch (error) {
+        console.log("Error in updateSessionScore controller:", error.message);
         res.status(500).json({ message: "Internal Server Error" });
     }
 }

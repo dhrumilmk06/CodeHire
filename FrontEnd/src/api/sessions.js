@@ -56,4 +56,12 @@ export const sessionApi = {
         const response = await axiosInstance.get(`/sessions/${id}/code/${problemId}`);
         return response.data;
     },
+    runCode: async (data) => {
+        const response = await axiosInstance.post('/sessions/run-code', data);
+        return response.data;
+    },
+    updateSessionScore: async (id, score) => {
+        const response = await axiosInstance.patch(`/sessions/${id}/score`, { score });
+        return response.data;
+    },
 }

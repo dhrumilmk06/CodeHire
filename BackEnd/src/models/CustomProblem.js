@@ -46,6 +46,18 @@ const customProblemSchema = new mongoose.Schema({
         python: { type: String, default: "" },
         java: { type: String, default: "" },
     },
+    hiddenTestCases: [
+        {
+            id: { type: Number },
+            description: { type: String },
+            inputCode: {
+                javascript: { type: String },
+                python: { type: String },
+                java: { type: String }
+            },
+            expectedOutput: { type: String },
+        }
+    ],
 }, { timestamps: true });
 
 const CustomProblem = mongoose.model("CustomProblem", customProblemSchema);

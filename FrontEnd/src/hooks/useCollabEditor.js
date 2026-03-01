@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import { io } from "socket.io-client";
 
 // Relative URL — Vite proxy forwards /socket.io → backend:3000
@@ -24,74 +24,80 @@ export const useCollabEditor = ({
     onOutputUpdate,
     onProblemChange,
 }) => {
-    const socketRef = useRef(null);
+    const [socket, setSocket] = useState(null);
 
     useEffect(() => {
         if (!roomId || !userId) return;
 
-        const socket = io(SOCKET_URL, {
+        const s = io(SOCKET_URL, {
             transports: ["websocket", "polling"],
             withCredentials: true,
         });
 
-        socketRef.current = socket;
+        setSocket(s);
 
-        socket.on("connect", () => {
-            socket.emit("join-room", { roomId, userId, role });
+        s.on("connect", () => {
+            s.emit("join-room", { roomId, userId, role });
         });
 
         // Remote participant changed code
-        socket.on("code-change", ({ code, language }) => {
+        s.on("code-change", ({ code, language }) => {
             onCodeChange?.(code, language);
         });
 
         // Remote participant changed language
-        socket.on("language-change", ({ language, code }) => {
+        s.on("language-change", ({ language, code }) => {
             onLanguageChange?.(language, code);
         });
 
         // Remote participant ran code — sync output
-        socket.on("output-update", ({ output }) => {
+        s.on("output-update", ({ output }) => {
             onOutputUpdate?.(output);
         });
 
         // Remote host changed problem
-        socket.on("problem-change", ({ problemTitle, difficulty }) => {
+        s.on("problem-change", ({ problemTitle, difficulty }) => {
             onProblemChange?.(problemTitle, difficulty);
         });
 
         // New joiner receives current room state
-        socket.on("sync-state", ({ code, language, output }) => {
+        s.on("sync-state", ({ code, language, output }) => {
             if (code !== undefined) onCodeChange?.(code, language);
             if (output !== undefined) onOutputUpdate?.(output);
         });
 
         return () => {
-            socket.disconnect();
-            socketRef.current = null;
+            s.disconnect();
+            setSocket(null);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [roomId, userId, role]);
 
     /** Emit a code change to all other participants */
     const emitCodeChange = useCallback((code, language) => {
-        socketRef.current?.emit("code-change", { roomId, code, language });
-    }, [roomId]);
+        socket?.emit("code-change", { roomId, code, language });
+    }, [roomId, socket]);
 
     /** Emit a language change to all other participants */
     const emitLanguageChange = useCallback((language, code) => {
-        socketRef.current?.emit("language-change", { roomId, language, code });
-    }, [roomId]);
+        socket?.emit("language-change", { roomId, language, code });
+    }, [roomId, socket]);
 
     /** Emit the run-output to all other participants */
     const emitOutputUpdate = useCallback((output) => {
-        socketRef.current?.emit("output-update", { roomId, output });
-    }, [roomId]);
+        socket?.emit("output-update", { roomId, output });
+    }, [roomId, socket]);
 
     /** Emit a problem switch to all other participants */
     const emitProblemChange = useCallback((problemTitle, difficulty) => {
-        socketRef.current?.emit("problem-change", { roomId, problemTitle, difficulty });
-    }, [roomId]);
+        socket?.emit("problem-change", { roomId, problemTitle, difficulty });
+    }, [roomId, socket]);
 
-    return { emitCodeChange, emitLanguageChange, emitOutputUpdate, emitProblemChange };
+    return {
+        emitCodeChange,
+        emitLanguageChange,
+        emitOutputUpdate,
+        emitProblemChange,
+        socket
+    };
 };

@@ -14,6 +14,8 @@ import {
     updateActiveProblem,
     saveProblemCode,
     getProblemCode,
+    runCode,
+    updateSessionScore
 } from "../controllers/sessionController.js";
 
 
@@ -34,5 +36,7 @@ router.patch("/:id/timings", protectRoute, updateTimings);
 router.patch("/:id/activeProblem", protectRoute, updateActiveProblem);
 router.patch("/:id/code/:problemId", protectRoute, saveProblemCode);
 router.get("/:id/code/:problemId", protectRoute, getProblemCode);
+router.post("/run-code", protectRoute, runCode);
+router.patch("/:id/score", protectRoute, updateSessionScore);
 
 export default router;

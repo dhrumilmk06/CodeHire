@@ -16,6 +16,7 @@ import { VideoCallUI } from '../components/VideoCallUI';
 import { useCollabEditor } from '../hooks/useCollabEditor';
 import { LiveNotesPanel } from '../components/LiveNotesPanel';
 import { TimeTracker } from '../components/TimeTracker';
+import { AutoScorePanel } from '../components/AutoScorePanel';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '../lib/axios';
 import { sessionApi } from '../api/sessions';
@@ -28,6 +29,8 @@ export const SessionPage = () => {
   const [output, setOutput] = useState(null)
   const [isRunning, setIsRunning] = useState(false)
   const [isProblemLoading, setIsProblemLoading] = useState(false);
+  const [autoScoreResults, setAutoScoreResults] = useState(null);
+  const [isScoring, setIsScoring] = useState(false);
 
   // Track remote typing state for the indicator
   const remoteTypingTimer = useRef(null);
@@ -93,7 +96,7 @@ export const SessionPage = () => {
 
   const [socketConnected, setSocketConnected] = useState(false);
 
-  const { emitCodeChange, emitLanguageChange, emitOutputUpdate, emitProblemChange } = useCollabEditor({
+  const { emitCodeChange, emitLanguageChange, emitOutputUpdate, emitProblemChange, socket } = useCollabEditor({
     roomId,
     userId: user?.id,
     role,
@@ -104,12 +107,10 @@ export const SessionPage = () => {
         setSelectedLanguage(remoteLang);
       }
     },
-    onProblemChange: (problemTitle, difficulty) => {
+    onProblemChange: async (problemTitle, difficulty) => {
       setIsProblemLoading(true);
-      setTimeout(() => {
-        setIsProblemLoading(false);
-        refetch(); // Fetch latest session state to update problem desc
-      }, 3000);
+      await refetch(); // Fetch latest session state to update problem desc
+      setTimeout(() => setIsProblemLoading(false), 3000);
     },
     onLanguageChange: (remoteLang, remoteCode) => {
       showRemoteTyping();
@@ -120,6 +121,30 @@ export const SessionPage = () => {
       setOutput(remoteOutput);
     },
   });
+
+  // Listen for host-only auto-score results
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleAutoScore = async (data) => {
+      if (data.sessionId === id) {
+        setAutoScoreResults(data);
+        setIsScoring(false);
+
+        // Host persists the score to DB
+        if (isHost && data.score) {
+          try {
+            await sessionApi.updateSessionScore(id, `${data.score.passed}/${data.score.total}`);
+          } catch (err) {
+            console.error("Failed to save session score:", err);
+          }
+        }
+      }
+    };
+
+    socket.on('autoScoreResults', handleAutoScore);
+    return () => socket.off('autoScoreResults', handleAutoScore);
+  }, [socket, id, isHost]);
 
   // Detect socket connected state by checking if roomId+userId are available
   useEffect(() => {
@@ -177,14 +202,27 @@ export const SessionPage = () => {
 
   const handleRunCode = async () => {
     setIsRunning(true);
+    setIsScoring(true); // Start scoring state for host
     setOutput(null);
+    setAutoScoreResults(null); // Clear previous results
 
-    const result = await executeCode(selectedLanguage, code);
-    setOutput(result);
-    setIsRunning(false);
+    try {
+      const result = await sessionApi.runCode({
+        code,
+        language: selectedLanguage,
+        sessionId: id,
+        problemId: session.problem
+      });
 
-    // Broadcast the output so partner sees it too
-    emitOutputUpdate(result);
+      setOutput(result);
+      // Broadcast the output so partner sees it too
+      emitOutputUpdate(result);
+    } catch (err) {
+      toast.error("Failed to execute code");
+      setIsScoring(false);
+    } finally {
+      setIsRunning(false);
+    }
   }
 
   const handleProblemSwitch = async (newProblem) => {
@@ -454,7 +492,18 @@ export const SessionPage = () => {
                   <PanelResizeHandle className="h-2 bg-base-300 hover:bg-primary transition-colors cursor-row-resize" />
 
                   <Panel defaultSize={30} minSize={15}>
-                    <OutputPanel output={output} />
+                    <div className="h-full flex flex-col">
+                      <OutputPanel output={output} isRunning={isRunning} />
+
+                      {/* Auto Score Panel (Host Only) */}
+                      {isHost && (autoScoreResults || isScoring) && (
+                        <AutoScorePanel
+                          results={autoScoreResults?.results}
+                          score={autoScoreResults?.score}
+                          isScoring={isScoring}
+                        />
+                      )}
+                    </div>
                   </Panel>
                 </PanelGroup>
               </Panel>

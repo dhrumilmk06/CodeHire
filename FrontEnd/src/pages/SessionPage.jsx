@@ -215,6 +215,20 @@ export const SessionPage = () => {
       });
 
       setOutput(result);
+
+      // Visible test case validation (similar to Practice mode)
+      if (result.success && problemData?.expectedOutput?.[selectedLanguage]) {
+        const normalize = (str) => str.trim().split("\n").map(l => l.trim().replace(/\s*,\s*/g, ",").replace(/\[\s+/g, "[").replace(/\s+\]/g, "]")).filter(l => l.length > 0).join("\n");
+        const normalizedActual = normalize(result.output);
+        const normalizedExpected = normalize(problemData.expectedOutput[selectedLanguage]);
+
+        if (normalizedActual === normalizedExpected) {
+          toast.success("Visible test cases passed!");
+        } else {
+          toast.error("Visible test cases failed. Check output formatting.");
+        }
+      }
+
       // Broadcast the output so partner sees it too
       emitOutputUpdate(result);
     } catch (err) {

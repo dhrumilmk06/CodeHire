@@ -427,11 +427,25 @@ export async function runCode(req, res) {
                         const filename = language === "java" ? "Main.java" : `main${getFileExecution(language)}`;
                         const sanitizedCode = language === "java" ? code.replace(/public\s+class/g, "class") : code;
 
+                        let combinedContent;
+                        if (language === "java") {
+                            // Extract all import lines from candidate's code
+                            const importRegex = /^\s*import\s+.*;/gm;
+                            const imports = sanitizedCode.match(importRegex) || [];
+                            const codeWithoutImports = sanitizedCode.replace(importRegex, "");
+
+                            // Combine: Imports first, then Test Wrapper (Main), then Candidate code
+                            combinedContent = imports.join("\n") + "\n" + testInputCode + "\n" + codeWithoutImports;
+                        } else {
+                            // Append test code to the end so functions are defined and hidden test is the LAST output
+                            combinedContent = sanitizedCode + "\n" + testInputCode;
+                        }
+
                         const executeBody = {
                             language: config.language,
                             version: config.version,
                             files: [
-                                { name: filename, content: sanitizedCode + "\n" + testInputCode }
+                                { name: filename, content: combinedContent }
                             ]
                         };
 

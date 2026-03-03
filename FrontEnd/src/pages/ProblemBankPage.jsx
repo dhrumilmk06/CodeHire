@@ -21,6 +21,7 @@ const EMPTY_FORM = {
     constraints: [],
     starterCode: { javascript: "", python: "", java: "" },
     expectedOutput: { javascript: "", python: "", java: "" },
+    hiddenTestCases: [{ id: 1, description: "", inputCode: { javascript: "", python: "", java: "" }, expectedOutput: "" }],
 };
 
 const BUILT_IN_LIST = Object.values(PROBLEMS);
@@ -62,7 +63,17 @@ function TagInput({ label, values, onChange, placeholder }) {
 
 // ── Problem Form Modal ───────────────────────────────────────────────────────
 function ProblemFormModal({ initial, onClose, onSave, isSaving }) {
-    const [form, setForm] = useState(initial || EMPTY_FORM);
+    const [form, setForm] = useState(() => {
+        if (!initial) return EMPTY_FORM;
+        return {
+            ...EMPTY_FORM,
+            ...initial,
+            description: { ...EMPTY_FORM.description, ...initial.description },
+            starterCode: { ...EMPTY_FORM.starterCode, ...initial.starterCode },
+            expectedOutput: { ...EMPTY_FORM.expectedOutput, ...initial.expectedOutput },
+            hiddenTestCases: initial.hiddenTestCases || EMPTY_FORM.hiddenTestCases,
+        };
+    });
     const [tab, setTab] = useState("basic"); // basic | examples | code
 
     const set = (path, val) => {
@@ -93,9 +104,9 @@ function ProblemFormModal({ initial, onClose, onSave, isSaving }) {
 
                 {/* Tabs */}
                 <div className="tabs tabs-boxed mb-6">
-                    {["basic", "examples", "code"].map((t) => (
+                    {["basic", "examples", "code", "tests"].map((t) => (
                         <button key={t} className={`tab capitalize ${tab === t ? "tab-active" : ""}`} onClick={() => setTab(t)}>
-                            {t}
+                            {t === "tests" ? "Test Cases" : t}
                         </button>
                     ))}
                 </div>
@@ -243,6 +254,88 @@ function ProblemFormModal({ initial, onClose, onSave, isSaving }) {
                                     />
                                 </div>
                             ))}
+                        </div>
+                    )}
+
+                    {/* ── TEST CASES ────────────────────────────────────────────── */}
+                    {tab === "tests" && (
+                        <div className="space-y-6">
+                            {form.hiddenTestCases.map((tc, i) => (
+                                <div key={i} className="card bg-base-200 border border-base-300 p-4 space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <span className="font-bold text-lg">Test Case {i + 1}</span>
+                                        <button
+                                            type="button"
+                                            className="btn btn-ghost btn-xs text-error"
+                                            disabled={form.hiddenTestCases.length === 1}
+                                            onClick={() => set("hiddenTestCases", form.hiddenTestCases.filter((_, j) => j !== i))}
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="space-y-1">
+                                            <label className="label-text font-semibold text-xs">Description</label>
+                                            <input
+                                                className="input input-bordered input-sm w-full"
+                                                value={tc.description}
+                                                onChange={(e) => {
+                                                    const tcs = [...form.hiddenTestCases];
+                                                    tcs[i] = { ...tcs[i], description: e.target.value };
+                                                    set("hiddenTestCases", tcs);
+                                                }}
+                                                placeholder="e.g. Basic case"
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="label-text font-semibold text-xs">Expected Output</label>
+                                            <input
+                                                className="input input-bordered input-sm w-full font-mono"
+                                                value={tc.expectedOutput}
+                                                onChange={(e) => {
+                                                    const tcs = [...form.hiddenTestCases];
+                                                    tcs[i] = { ...tcs[i], expectedOutput: e.target.value };
+                                                    set("hiddenTestCases", tcs);
+                                                }}
+                                                placeholder="e.g. [0,1]"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        <label className="label-text font-semibold text-xs">Input Code (Driver Code)</label>
+                                        <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+                                            {["javascript", "python", "java"].map((lang) => (
+                                                <div key={lang} className="space-y-1">
+                                                    <span className="text-[10px] uppercase font-bold opacity-50">{lang}</span>
+                                                    <textarea
+                                                        className="textarea textarea-bordered w-full h-24 font-mono text-[11px] leading-tight"
+                                                        value={tc.inputCode[lang]}
+                                                        onChange={(e) => {
+                                                            const tcs = [...form.hiddenTestCases];
+                                                            tcs[i] = { ...tcs[i], inputCode: { ...tcs[i].inputCode, [lang]: e.target.value } };
+                                                            set("hiddenTestCases", tcs);
+                                                        }}
+                                                        placeholder={
+                                                            lang === "javascript" ? "console.log(JSON.stringify(solve(args)))" :
+                                                                lang === "python" ? "print(json.dumps(solve(args)))" :
+                                                                    "System.out.println(Solution.solve(args))"
+                                                        }
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                            <button
+                                type="button"
+                                className="btn btn-outline btn-sm gap-2"
+                                onClick={() => set("hiddenTestCases", [...form.hiddenTestCases, { id: form.hiddenTestCases.length + 1, description: "", inputCode: { javascript: "", python: "", java: "" }, expectedOutput: "" }])}
+                            >
+                                <Plus className="w-4 h-4" /> Add Test Case
+                            </button>
                         </div>
                     )}
 

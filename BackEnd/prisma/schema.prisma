@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String    @id @default(cuid())
+  clerkId      String    @unique
+  email        String    @unique
+  name         String?
+  profileImage String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  sessions     Session[] @relation("HostSessions")
+  participants Session[] @relation("ParticipantSessions")
+}
+
+model CustomProblem {
+  id              String   @id
+  title           String
+  difficulty      String
+  category        String?
+  description     Json
+  examples        Json
+  constraints     String[]
+  starterCode     Json
+  expectedOutput  Json?
+  hiddenTestCases Json
+  ownerClerkId    String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([ownerClerkId])
+  @@index([title])
+}
+
+model Session {
+  id                 String   @id @default(cuid())
+  problem            String
+  difficulty         String
+  hostId             String
+  participantClerkId String?
+  problems           Json
+  status             String   @default("active")
+  callId             String?
+  notes              String?
+  rating             Int?     @default(0)
+  tags               String[]
+  decision           String?
+  timeTaken          Int?     @default(0)
+  testCasesPassed    String?  @default("0/0")
+  timings            Json
+  problemCodes       Json
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  host               User     @relation("HostSessions", fields: [hostId], references: [clerkId])
+  participant        User?    @relation("ParticipantSessions", fields: [participantClerkId], references: [clerkId])
+}

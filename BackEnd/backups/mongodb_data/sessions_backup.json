@@ -1,0 +1,929 @@
+[
+  {
+    "_id": "698206750b1eda36cb44c3ad",
+    "problem": "Two Sum",
+    "difficulty": "easy",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": null,
+    "status": "completed",
+    "callId": "session_1770129013371_q2yzjs",
+    "createdAt": "2026-02-03T14:30:13.385Z",
+    "updatedAt": "2026-02-26T15:54:25.052Z",
+    "__v": 0
+  },
+  {
+    "_id": "698206ed0b1eda36cb44c3b5",
+    "problem": "Reverse String",
+    "difficulty": "easy",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": null,
+    "status": "completed",
+    "callId": "session_1770129133970_dokf3v",
+    "createdAt": "2026-02-03T14:32:13.972Z",
+    "updatedAt": "2026-02-27T18:30:12.262Z",
+    "__v": 0
+  },
+  {
+    "_id": "69821369c97c572d9b064183",
+    "problem": "Two Sum",
+    "difficulty": "easy",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": null,
+    "status": "completed",
+    "callId": "session_1770132329684_wmsvlh",
+    "createdAt": "2026-02-03T15:25:29.704Z",
+    "updatedAt": "2026-02-26T15:52:39.142Z",
+    "__v": 0
+  },
+  {
+    "_id": "698216956ab78d51243f93a2",
+    "problem": "Two Sum",
+    "difficulty": "easy",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": "698189776751c4de184b9923",
+    "status": "completed",
+    "callId": "session_1770133141213_hkxrml",
+    "createdAt": "2026-02-03T15:39:01.224Z",
+    "updatedAt": "2026-02-06T04:50:12.172Z",
+    "__v": 0
+  },
+  {
+    "_id": "698217d36ab78d51243f93e1",
+    "problem": "Maximum Subarray",
+    "difficulty": "medium",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": "698189776751c4de184b9923",
+    "status": "completed",
+    "callId": "session_1770133459614_g34cvm",
+    "createdAt": "2026-02-03T15:44:19.619Z",
+    "updatedAt": "2026-02-06T04:42:57.868Z",
+    "__v": 0
+  },
+  {
+    "_id": "69844c2d9a268d84dccbbe85",
+    "problem": "Container With Most Water",
+    "difficulty": "medium",
+    "host": "698189776751c4de184b9923",
+    "participant": null,
+    "status": "completed",
+    "callId": "session_1770277933260_h1y44v",
+    "createdAt": "2026-02-05T07:52:13.275Z",
+    "updatedAt": "2026-02-05T17:52:20.604Z",
+    "__v": 0
+  },
+  {
+    "_id": "698451d19a268d84dccbbec6",
+    "problem": "3Sum",
+    "difficulty": "medium",
+    "host": "698189776751c4de184b9923",
+    "participant": "697f271f7bd7e9b5aee576fe",
+    "status": "completed",
+    "callId": "session_1770279377248_u1mas",
+    "createdAt": "2026-02-05T08:16:17.253Z",
+    "updatedAt": "2026-02-05T17:52:03.896Z",
+    "__v": 0
+  },
+  {
+    "_id": "6984fba829f65f95ca42e174",
+    "problem": "Two Sum",
+    "difficulty": "easy",
+    "host": "698189776751c4de184b9923",
+    "participant": null,
+    "status": "completed",
+    "callId": "session_1770322856347_qsbhej",
+    "createdAt": "2026-02-05T20:20:56.365Z",
+    "updatedAt": "2026-02-05T20:21:11.779Z",
+    "__v": 0
+  },
+  {
+    "_id": "699fe20517348221570691ed",
+    "problem": "Maximum Subarray",
+    "difficulty": "medium",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": "698189776751c4de184b9923",
+    "status": "completed",
+    "callId": "session_1772085765608_f9g8vj",
+    "createdAt": "2026-02-26T06:02:45.638Z",
+    "updatedAt": "2026-02-26T06:05:53.769Z",
+    "__v": 0
+  },
+  {
+    "_id": "69a12326975f472ee8350af8",
+    "problem": "First Missing Positive",
+    "difficulty": "hard",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": null,
+    "status": "completed",
+    "callId": "session_1772167974955_ll9fta",
+    "createdAt": "2026-02-27T04:52:54.980Z",
+    "updatedAt": "2026-02-27T04:54:05.362Z",
+    "__v": 0
+  },
+  {
+    "_id": "69a1cb0bc3b0f5a271b00824",
+    "problem": "Two Sum",
+    "difficulty": "easy",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": "698189776751c4de184b9923",
+    "status": "completed",
+    "callId": "session_1772210955427_v1iacm",
+    "createdAt": "2026-02-27T16:49:15.443Z",
+    "updatedAt": "2026-02-27T18:30:05.325Z",
+    "__v": 0
+  },
+  {
+    "_id": "69a1de1a952730f6995e8087",
+    "problem": "Two Sum",
+    "difficulty": "easy",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": "698189776751c4de184b9923",
+    "status": "completed",
+    "callId": "session_1772215834117_s2wvfpl",
+    "createdAt": "2026-02-27T18:10:34.130Z",
+    "updatedAt": "2026-02-27T18:15:56.141Z",
+    "__v": 0
+  },
+  {
+    "_id": "69a1f7c71ca3db60b5fd6880",
+    "problem": "Binary Search",
+    "difficulty": "medium",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": "698189776751c4de184b9923",
+    "status": "completed",
+    "callId": "session_1772222407440_4u5wk8",
+    "createdAt": "2026-02-27T20:00:07.441Z",
+    "updatedAt": "2026-02-27T20:19:48.258Z",
+    "__v": 0
+  },
+  {
+    "_id": "69a2e145b7f24eedba5d9e02",
+    "problem": "Two Sum",
+    "difficulty": "easy",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": null,
+    "status": "completed",
+    "callId": "session_1772282181427_woq778",
+    "createdAt": "2026-02-28T12:36:21.448Z",
+    "updatedAt": "2026-02-28T13:03:03.996Z",
+    "__v": 3,
+    "notes": "better approach",
+    "rating": 4,
+    "tags": [
+      "Good Problem Solving",
+      "Clean Code"
+    ]
+  },
+  {
+    "_id": "69a2eace885a51eb1c565d1e",
+    "problem": "Reverse String",
+    "difficulty": "easy",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": "698189776751c4de184b9923",
+    "status": "completed",
+    "callId": "session_1772284622727_2g9ub",
+    "notes": "brut force approch\ngood understanding",
+    "rating": 4,
+    "tags": [
+      "Strong Communication"
+    ],
+    "decision": null,
+    "timeTaken": 0,
+    "testCasesPassed": "0/0",
+    "createdAt": "2026-02-28T13:17:02.747Z",
+    "updatedAt": "2026-02-28T13:19:22.850Z",
+    "__v": 3
+  },
+  {
+    "_id": "69a2fe88fc46b4f86170d8c3",
+    "problem": "Two Sum",
+    "difficulty": "easy",
+    "host": "698189776751c4de184b9923",
+    "participant": "69a2fe9d161d18db483d66dd",
+    "status": "completed",
+    "callId": "session_1772289672890_4n20cl",
+    "notes": "good coding knowledge",
+    "rating": 5,
+    "tags": [
+      "Clean Code",
+      "Good Complexity Analysis"
+    ],
+    "decision": null,
+    "timeTaken": 0,
+    "testCasesPassed": "0/0",
+    "createdAt": "2026-02-28T14:41:12.900Z",
+    "updatedAt": "2026-02-28T14:43:26.353Z",
+    "__v": 4
+  },
+  {
+    "_id": "69a3202891c9195adfcfd6f7",
+    "problem": "Two Sum",
+    "difficulty": "easy",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": null,
+    "status": "completed",
+    "callId": "session_1772298280227_71yewh",
+    "notes": "",
+    "rating": 0,
+    "tags": [],
+    "decision": null,
+    "timeTaken": 0,
+    "testCasesPassed": "0/0",
+    "timings": [
+      {
+        "problemId": "Two Sum",
+        "startTime": "2026-02-28T17:04:42.343Z",
+        "endTime": null,
+        "duration": null,
+        "_id": "69a3202a91c9195adfcfd701"
+      }
+    ],
+    "createdAt": "2026-02-28T17:04:40.249Z",
+    "updatedAt": "2026-02-28T17:06:25.725Z",
+    "__v": 1
+  },
+  {
+    "_id": "69a3266936e14884d0a0b708",
+    "problem": "Binary Search",
+    "difficulty": "medium",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": null,
+    "status": "completed",
+    "callId": "session_1772299881806_9r3deg",
+    "notes": "",
+    "rating": 0,
+    "tags": [],
+    "decision": null,
+    "timeTaken": 0,
+    "testCasesPassed": "0/0",
+    "timings": [
+      {
+        "problemId": "Binary Search",
+        "startTime": "2026-02-28T17:31:23.618Z",
+        "endTime": null,
+        "duration": null,
+        "_id": "69a3266c36e14884d0a0b718"
+      }
+    ],
+    "createdAt": "2026-02-28T17:31:21.822Z",
+    "updatedAt": "2026-02-28T17:31:38.327Z",
+    "__v": 0
+  },
+  {
+    "_id": "69a32e0f8d296c9b26a993ea",
+    "problem": "Binary Search",
+    "difficulty": "medium",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": null,
+    "status": "active",
+    "callId": "session_1772301839345_zpfbs",
+    "notes": "",
+    "rating": 0,
+    "tags": [],
+    "decision": null,
+    "timeTaken": 0,
+    "testCasesPassed": "0/0",
+    "createdAt": "2026-02-28T18:03:59.359Z",
+    "updatedAt": "2026-03-01T15:07:12.648Z",
+    "__v": 0,
+    "timings": [
+      {
+        "problemId": "Binary Search",
+        "startTime": "2026-03-01T15:07:12.214Z",
+        "endTime": null,
+        "duration": null,
+        "_id": "69a4562072ad09cb5b86cf0d"
+      }
+    ]
+  },
+  {
+    "_id": "69a33172c16e1ae2a5c05ce5",
+    "problems": [
+      {
+        "title": "Two Sum",
+        "difficulty": "easy",
+        "_id": "69a33172c16e1ae2a5c05ce6"
+      },
+      {
+        "title": "Reverse String",
+        "difficulty": "easy",
+        "_id": "69a33172c16e1ae2a5c05ce7"
+      },
+      {
+        "title": "Binary Search",
+        "difficulty": "medium",
+        "_id": "69a33172c16e1ae2a5c05ce8"
+      }
+    ],
+    "problem": "Reverse String",
+    "difficulty": "easy",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": "698189776751c4de184b9923",
+    "status": "completed",
+    "callId": "session_1772302706585_xm4xj",
+    "notes": "",
+    "rating": 5,
+    "tags": [],
+    "decision": null,
+    "timeTaken": 29,
+    "testCasesPassed": "0/0",
+    "createdAt": "2026-02-28T18:18:26.608Z",
+    "updatedAt": "2026-02-28T19:05:02.826Z",
+    "__v": 0,
+    "timings": [
+      {
+        "problemId": "Two Sum",
+        "startTime": "2026-02-28T18:32:24.749Z",
+        "endTime": "2026-02-28T18:50:38.395Z",
+        "duration": 1093,
+        "_id": "69a334b8865f1d27e86cac31"
+      },
+      {
+        "problemId": "Reverse String",
+        "startTime": "2026-02-28T18:50:38.395Z",
+        "endTime": "2026-02-28T18:50:43.987Z",
+        "duration": 5,
+        "_id": "69a338fe36b786d3c6ed223a"
+      },
+      {
+        "problemId": "Two Sum",
+        "startTime": "2026-02-28T18:50:43.987Z",
+        "endTime": "2026-02-28T18:52:57.533Z",
+        "duration": 133,
+        "_id": "69a3390436b786d3c6ed2269"
+      },
+      {
+        "problemId": "Reverse String",
+        "startTime": "2026-02-28T18:52:57.533Z",
+        "endTime": "2026-02-28T18:53:12.611Z",
+        "duration": 15,
+        "_id": "69a3398936b786d3c6ed23a4"
+      },
+      {
+        "problemId": "Binary Search",
+        "startTime": "2026-02-28T18:53:12.611Z",
+        "endTime": "2026-02-28T18:53:19.599Z",
+        "duration": 6,
+        "_id": "69a3399836b786d3c6ed2411"
+      },
+      {
+        "problemId": "Two Sum",
+        "startTime": "2026-02-28T18:53:19.599Z",
+        "endTime": "2026-02-28T18:53:35.415Z",
+        "duration": 15,
+        "_id": "69a3399f36b786d3c6ed2465"
+      },
+      {
+        "problemId": "Reverse String",
+        "startTime": "2026-02-28T18:53:35.415Z",
+        "endTime": "2026-02-28T18:58:32.019Z",
+        "duration": 296,
+        "_id": "69a339af36b786d3c6ed2500"
+      },
+      {
+        "problemId": "Binary Search",
+        "startTime": "2026-02-28T18:58:32.019Z",
+        "endTime": "2026-02-28T18:58:45.608Z",
+        "duration": 13,
+        "_id": "69a33ad836b786d3c6ed260c"
+      },
+      {
+        "problemId": "Two Sum",
+        "startTime": "2026-02-28T18:58:45.608Z",
+        "endTime": "2026-02-28T18:59:32.539Z",
+        "duration": 46,
+        "_id": "69a33ae536b786d3c6ed2687"
+      },
+      {
+        "problemId": "Reverse String",
+        "startTime": "2026-02-28T18:59:32.539Z",
+        "endTime": "2026-02-28T19:00:19.219Z",
+        "duration": 46,
+        "_id": "69a33b1436b786d3c6ed2779"
+      },
+      {
+        "problemId": "Binary Search",
+        "startTime": "2026-02-28T19:00:19.219Z",
+        "endTime": "2026-02-28T19:01:51.478Z",
+        "duration": 92,
+        "_id": "69a33b4336b786d3c6ed289c"
+      },
+      {
+        "problemId": "Reverse String",
+        "startTime": "2026-02-28T19:01:51.478Z",
+        "endTime": null,
+        "duration": null,
+        "_id": "69a33b9f36b786d3c6ed2a6c"
+      }
+    ],
+    "problemCodes": {
+      "Two Sum": "function twoSum(nums, target) {\n  // Write your solution here\n  \n}\n\n// Test cases\nconsole.log(twoSum([2, 7, 11, 15], 9)); // Expected: [0, 1]\nconsole.log(twoSum([3, 2, 4], 6)); // Expected: [1, 2]\nconsole.log(twoSum([3, 3], 6)); // Expected: [0, 1]",
+      "Reverse String": "function reverseString(s) {\n  // Write your solution here\n  \n}\n\n// Test cases\nlet test1 = [\"h\",\"e\",\"l\",\"l\",\"o\"];\nreverseString(test1);\nconsole.log(test1); // Expected: [\"o\",\"l\",\"l\",\"e\",\"h\"]\n\nlet test2 = [\"H\",\"a\",\"n\",\"n\",\"a\",\"h\"];\nreverseString(test2);\nconsole.log(test2); // Expected: [\"h\",\"a\",\"n\",\"n\",\"a\",\"H\"]",
+      "Binary Search": "function search(nums, target) {\n  // Write your solution here\n  \n}\n\n// Test cases\nconsole.log(search([-1,0,3,5,9,12], 9));  // Expected: 4\nconsole.log(search([-1,0,3,5,9,12], 2));  // Expected: -1\n"
+    }
+  },
+  {
+    "_id": "69a333d3865f1d27e86cab77",
+    "problems": [
+      {
+        "title": "Two Sum",
+        "difficulty": "easy",
+        "_id": "69a333d3865f1d27e86cab78"
+      },
+      {
+        "title": "Reverse String",
+        "difficulty": "easy",
+        "_id": "69a333d3865f1d27e86cab79"
+      },
+      {
+        "title": "Binary Search",
+        "difficulty": "medium",
+        "_id": "69a333d3865f1d27e86cab7a"
+      }
+    ],
+    "problem": "Two Sum",
+    "difficulty": "easy",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": null,
+    "status": "completed",
+    "callId": "session_1772303315401_3jwcdi",
+    "notes": "good work",
+    "rating": 4,
+    "tags": [
+      "Strong Communication",
+      "Good Problem Solving",
+      "Clean Code",
+      "Struggled with Edge Cases"
+    ],
+    "decision": null,
+    "timeTaken": 0,
+    "testCasesPassed": "0/0",
+    "timings": [
+      {
+        "problemId": "Two Sum",
+        "startTime": "2026-02-28T18:28:37.304Z",
+        "endTime": null,
+        "duration": null,
+        "_id": "69a333d5865f1d27e86cab8f"
+      }
+    ],
+    "createdAt": "2026-02-28T18:28:35.431Z",
+    "updatedAt": "2026-02-28T18:29:10.241Z",
+    "__v": 4
+  },
+  {
+    "_id": "69a4564072ad09cb5b86cf34",
+    "problems": [
+      {
+        "title": "Two Sum",
+        "difficulty": "easy",
+        "_id": "69a4564072ad09cb5b86cf35"
+      },
+      {
+        "title": "Binary Search",
+        "difficulty": "medium",
+        "_id": "69a4564072ad09cb5b86cf36"
+      }
+    ],
+    "problem": "Binary Search",
+    "difficulty": "medium",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": "698189776751c4de184b9923",
+    "status": "completed",
+    "callId": "session_1772377664273_iu4y",
+    "notes": "",
+    "rating": 0,
+    "tags": [],
+    "decision": null,
+    "timeTaken": 141,
+    "testCasesPassed": "4/4",
+    "problemCodes": {
+      "Two Sum": "function twoSum(nums, target) {\r\n  const map = new Map(); // value -> index\r\n  \r\n  for (let i = 0; i < nums.length; i++) {\r\n    const complement = target - nums[i];\r\n    \r\n    if (map.has(complement)) {\r\n      return [map.get(complement), i];\r\n    }\r\n    \r\n    map.set(nums[i], i);\r\n  }\r\n}\r\n\r\n// Test cases\r\nconsole.log(twoSum([2, 7, 11, 15], 9)); // Expected: [0, 1]\r\nconsole.log(twoSum([3, 2, 4], 6));       // Expected: [1, 2]\r\nconsole.log(twoSum([3, 3], 6));           // Expected: [0, 1]",
+      "Binary Search": "function search(nums, target) {\r\n  let left = 0;\r\n  let right = nums.length - 1;\r\n\r\n  while (left <= right) {\r\n    // Find the middle index\r\n    let mid = Math.floor((left + right) / 2);\r\n\r\n    if (nums[mid] === target) {\r\n      return mid; // Target found\r\n    } else if (nums[mid] < target) {\r\n      left = mid + 1; // Search the right half\r\n    } else {\r\n      right = mid - 1; // Search the left half\r\n    }\r\n  }\r\n\r\n  return -1; // Target not found\r\n}\r\n\r\n// Test cases\r\nconsole.log(search([-1,0,3,5,9,12], 9)); // Expected: 4\r\nconsole.log(search([-1,0,3,5,9,12], 2)); // Expected: -1\r\n"
+    },
+    "timings": [
+      {
+        "problemId": "Two Sum",
+        "startTime": "2026-03-01T15:07:47.093Z",
+        "endTime": "2026-03-01T16:54:14.427Z",
+        "duration": 6387,
+        "_id": "69a4564372ad09cb5b86cf48"
+      },
+      {
+        "problemId": "Binary Search",
+        "startTime": "2026-03-01T16:54:14.427Z",
+        "endTime": "2026-03-01T16:54:20.377Z",
+        "duration": 5,
+        "_id": "69a46f36a9fbc0787596ac7b"
+      },
+      {
+        "problemId": "Two Sum",
+        "startTime": "2026-03-01T16:54:20.377Z",
+        "endTime": "2026-03-01T16:54:24.846Z",
+        "duration": 4,
+        "_id": "69a46f40a9fbc0787596acd0"
+      },
+      {
+        "problemId": "Binary Search",
+        "startTime": "2026-03-01T16:54:24.846Z",
+        "endTime": "2026-03-01T16:58:13.260Z",
+        "duration": 228,
+        "_id": "69a46f40a9fbc0787596acd1"
+      },
+      {
+        "problemId": "Two Sum",
+        "startTime": "2026-03-01T16:58:13.260Z",
+        "endTime": "2026-03-01T17:00:57.166Z",
+        "duration": 163,
+        "_id": "69a47025a9fbc0787596ae24"
+      },
+      {
+        "problemId": "Binary Search",
+        "startTime": "2026-03-01T17:00:57.166Z",
+        "endTime": "2026-03-01T17:13:55.769Z",
+        "duration": 778,
+        "_id": "69a470c9a9fbc0787596ae71"
+      },
+      {
+        "problemId": "Two Sum",
+        "startTime": "2026-03-01T17:13:55.769Z",
+        "endTime": "2026-03-01T17:28:31.526Z",
+        "duration": 875,
+        "_id": "69a473d3a9fbc0787596af10"
+      },
+      {
+        "problemId": "Binary Search",
+        "startTime": "2026-03-01T17:28:31.526Z",
+        "endTime": null,
+        "duration": null,
+        "_id": "69a4773fd9241fc60125826f"
+      }
+    ],
+    "createdAt": "2026-03-01T15:07:44.287Z",
+    "updatedAt": "2026-03-01T17:28:57.259Z",
+    "__v": 0
+  },
+  {
+    "_id": "69a47769d9241fc60125834f",
+    "problems": [
+      {
+        "title": "Reverse String",
+        "difficulty": "easy",
+        "_id": "69a47769d9241fc601258350"
+      }
+    ],
+    "problem": "Reverse String",
+    "difficulty": "easy",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": null,
+    "status": "completed",
+    "callId": "session_1772386153711_gstdgk",
+    "notes": "",
+    "rating": 0,
+    "tags": [],
+    "decision": null,
+    "timeTaken": 0,
+    "testCasesPassed": "1/4",
+    "problemCodes": {},
+    "timings": [
+      {
+        "problemId": "Reverse String",
+        "startTime": "2026-03-01T17:29:15.523Z",
+        "endTime": null,
+        "duration": null,
+        "_id": "69a4776bd9241fc60125835f"
+      }
+    ],
+    "createdAt": "2026-03-01T17:29:13.720Z",
+    "updatedAt": "2026-03-02T07:39:15.224Z",
+    "__v": 0
+  },
+  {
+    "_id": "69a53ebfbc4d6c12ee489e9a",
+    "problems": [
+      {
+        "title": "Two Sum",
+        "difficulty": "easy",
+        "_id": "69a53ebfbc4d6c12ee489e9b"
+      }
+    ],
+    "problem": "Two Sum",
+    "difficulty": "easy",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": null,
+    "status": "completed",
+    "callId": "session_1772437183090_souizq",
+    "notes": "",
+    "rating": 5,
+    "tags": [
+      "Good Problem Solving",
+      "Clean Code"
+    ],
+    "decision": null,
+    "timeTaken": 0,
+    "testCasesPassed": "5/5",
+    "problemCodes": {},
+    "timings": [
+      {
+        "problemId": "Two Sum",
+        "startTime": "2026-03-02T07:39:44.501Z",
+        "endTime": null,
+        "duration": null,
+        "_id": "69a53ec0bc4d6c12ee489eaa"
+      }
+    ],
+    "createdAt": "2026-03-02T07:39:43.095Z",
+    "updatedAt": "2026-03-02T08:03:31.761Z",
+    "__v": 2
+  },
+  {
+    "_id": "69a598fc33b7a00c63dbb698",
+    "problems": [
+      {
+        "title": "Two Sum",
+        "difficulty": "easy",
+        "_id": "69a598fc33b7a00c63dbb699"
+      }
+    ],
+    "problem": "Two Sum",
+    "difficulty": "easy",
+    "host": "698189776751c4de184b9923",
+    "participant": "697f271f7bd7e9b5aee576fe",
+    "status": "completed",
+    "callId": "session_1772460284086_e8h9a",
+    "notes": "",
+    "rating": 4,
+    "tags": [
+      "Good Problem Solving"
+    ],
+    "decision": null,
+    "timeTaken": 0,
+    "testCasesPassed": "5/5",
+    "problemCodes": {},
+    "timings": [
+      {
+        "problemId": "Two Sum",
+        "startTime": "2026-03-02T14:04:45.896Z",
+        "endTime": null,
+        "duration": null,
+        "_id": "69a598fd33b7a00c63dbb6a8"
+      }
+    ],
+    "createdAt": "2026-03-02T14:04:44.105Z",
+    "updatedAt": "2026-03-03T04:06:01.700Z",
+    "__v": 1
+  },
+  {
+    "_id": "69a65f1a048fa2ff0c56e88f",
+    "problems": [
+      {
+        "title": "Reverse String",
+        "difficulty": "easy",
+        "_id": "69a65f1a048fa2ff0c56e890"
+      },
+      {
+        "title": "Valid Palindrome",
+        "difficulty": "easy",
+        "_id": "69a65f1a048fa2ff0c56e891"
+      },
+      {
+        "title": "Two Sum",
+        "difficulty": "easy",
+        "_id": "69a65f1a048fa2ff0c56e892"
+      }
+    ],
+    "problem": "Valid Palindrome",
+    "difficulty": "easy",
+    "host": "698189776751c4de184b9923",
+    "participant": null,
+    "status": "completed",
+    "callId": "session_1772511002495_wvtr8",
+    "notes": "",
+    "rating": 0,
+    "tags": [],
+    "decision": null,
+    "timeTaken": 4,
+    "testCasesPassed": "0/0",
+    "problemCodes": {
+      "Reverse String": "function reverseString(s) {\n  // Write your solution here\n  \n}\n\n// Test cases\nlet test1 = [\"h\",\"e\",\"l\",\"l\",\"o\"];\nreverseString(test1);\nconsole.log(JSON.stringify(test1)); // Expected: [\"o\",\"l\",\"l\",\"e\",\"h\"]\n\nlet test2 = [\"H\",\"a\",\"n\",\"n\",\"a\",\"h\"];\nreverseString(test2);\nconsole.log(JSON.stringify(test2)); // Expected: [\"h\",\"a\",\"n\",\"n\",\"a\",\"H\"]",
+      "Valid Palindrome": "function isPalindrome(s) {\n  // Write your solution here\n  \n}\n\n// Test cases\nconsole.log(isPalindrome(\"A man, a plan, a canal: Panama\")); // Expected: true\nconsole.log(isPalindrome(\"race a car\")); // Expected: false\nconsole.log(isPalindrome(\" \")); // Expected: true"
+    },
+    "timings": [
+      {
+        "problemId": "Reverse String",
+        "startTime": "2026-03-03T04:10:04.051Z",
+        "endTime": "2026-03-03T04:10:16.019Z",
+        "duration": 11,
+        "_id": "69a65f1c048fa2ff0c56e8a7"
+      },
+      {
+        "problemId": "Valid Palindrome",
+        "startTime": "2026-03-03T04:10:16.019Z",
+        "endTime": "2026-03-03T04:10:33.671Z",
+        "duration": 17,
+        "_id": "69a65f28048fa2ff0c56e8da"
+      },
+      {
+        "problemId": "Reverse String",
+        "startTime": "2026-03-03T04:10:33.671Z",
+        "endTime": "2026-03-03T04:14:04.238Z",
+        "duration": 210,
+        "_id": "69a65f39048fa2ff0c56e919"
+      },
+      {
+        "problemId": "Valid Palindrome",
+        "startTime": "2026-03-03T04:14:04.238Z",
+        "endTime": null,
+        "duration": null,
+        "_id": "69a6600c048fa2ff0c56ea66"
+      }
+    ],
+    "createdAt": "2026-03-03T04:10:02.543Z",
+    "updatedAt": "2026-03-03T04:21:47.379Z",
+    "__v": 0
+  },
+  {
+    "_id": "69a6ff123c7615cb827172d9",
+    "problems": [
+      {
+        "title": "Longest Palindromic Substring",
+        "difficulty": "medium",
+        "_id": "69a6ff123c7615cb827172da"
+      }
+    ],
+    "problem": "Longest Palindromic Substring",
+    "difficulty": "medium",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": "698189776751c4de184b9923",
+    "status": "completed",
+    "callId": "session_1772551954186_wg9qv",
+    "notes": "",
+    "rating": 0,
+    "tags": [],
+    "decision": null,
+    "timeTaken": 0,
+    "testCasesPassed": "2/3",
+    "problemCodes": {},
+    "timings": [
+      {
+        "problemId": "Longest Palindromic Substring",
+        "startTime": "2026-03-03T15:32:36.741Z",
+        "endTime": null,
+        "duration": null,
+        "_id": "69a6ff153c7615cb827172f1"
+      }
+    ],
+    "createdAt": "2026-03-03T15:32:34.190Z",
+    "updatedAt": "2026-03-03T18:14:44.679Z",
+    "__v": 0
+  },
+  {
+    "_id": "69a71dac49d9dde8b0f2be5c",
+    "problems": [
+      {
+        "title": "Two Sum",
+        "difficulty": "easy",
+        "_id": "69a71dac49d9dde8b0f2be5d"
+      },
+      {
+        "title": "Binary Search",
+        "difficulty": "easy",
+        "_id": "69a71dac49d9dde8b0f2be5e"
+      },
+      {
+        "title": "Longest Palindromic Substring",
+        "difficulty": "medium",
+        "_id": "69a71dac49d9dde8b0f2be5f"
+      }
+    ],
+    "problem": "Binary Search",
+    "difficulty": "easy",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": null,
+    "status": "completed",
+    "callId": "session_1772559788216_txhqqo",
+    "notes": "",
+    "rating": 0,
+    "tags": [],
+    "decision": null,
+    "timeTaken": 0,
+    "testCasesPassed": "0/0",
+    "problemCodes": {
+      "Two Sum": "function twoSum(nums, target) {\n  // Write your solution here\n  \n}\n\n// Test cases\nconsole.log(JSON.stringify(twoSum([2, 7, 11, 15], 9))); // Expected: [0,1]\nconsole.log(JSON.stringify(twoSum([3, 2, 4], 6))); // Expected: [1,2]\nconsole.log(JSON.stringify(twoSum([3, 3], 6))); // Expected: [0,1]"
+    },
+    "timings": [
+      {
+        "problemId": "Two Sum",
+        "startTime": "2026-03-03T17:43:10.226Z",
+        "endTime": "2026-03-03T17:43:30.113Z",
+        "duration": 19,
+        "_id": "69a71dae49d9dde8b0f2be74"
+      },
+      {
+        "problemId": "Binary Search",
+        "startTime": "2026-03-03T17:43:30.113Z",
+        "endTime": null,
+        "duration": null,
+        "_id": "69a71dc249d9dde8b0f2beb4"
+      }
+    ],
+    "createdAt": "2026-03-03T17:43:08.248Z",
+    "updatedAt": "2026-03-03T17:44:02.016Z",
+    "__v": 0
+  },
+  {
+    "_id": "69a71eef49d9dde8b0f2c159",
+    "problems": [
+      {
+        "title": "Two Sum",
+        "difficulty": "easy",
+        "_id": "69a71eef49d9dde8b0f2c15a"
+      },
+      {
+        "title": "Reverse String",
+        "difficulty": "easy",
+        "_id": "69a71eef49d9dde8b0f2c15b"
+      }
+    ],
+    "problem": "Two Sum",
+    "difficulty": "easy",
+    "host": "698189776751c4de184b9923",
+    "participant": null,
+    "status": "active",
+    "callId": "session_1772560111466_shky",
+    "notes": "",
+    "rating": 0,
+    "tags": [],
+    "decision": null,
+    "timeTaken": 0,
+    "testCasesPassed": "5/5",
+    "problemCodes": {},
+    "timings": [
+      {
+        "problemId": "Two Sum",
+        "startTime": "2026-03-03T17:48:33.199Z",
+        "endTime": null,
+        "duration": null,
+        "_id": "69a71ef149d9dde8b0f2c16d"
+      }
+    ],
+    "createdAt": "2026-03-03T17:48:31.472Z",
+    "updatedAt": "2026-03-03T17:50:00.236Z",
+    "__v": 0
+  },
+  {
+    "_id": "69a72c3d49d9dde8b0f2c45a",
+    "problems": [
+      {
+        "title": "Two Sum",
+        "difficulty": "easy",
+        "_id": "69a72c3d49d9dde8b0f2c45b"
+      },
+      {
+        "title": "Reverse String",
+        "difficulty": "easy",
+        "_id": "69a72c3d49d9dde8b0f2c45c"
+      },
+      {
+        "title": "Binary Search",
+        "difficulty": "easy",
+        "_id": "69a72c3d49d9dde8b0f2c45d"
+      }
+    ],
+    "problem": "Reverse String",
+    "difficulty": "easy",
+    "host": "697f271f7bd7e9b5aee576fe",
+    "participant": null,
+    "status": "completed",
+    "callId": "session_1772563517695_xzki8s",
+    "notes": "dsda",
+    "rating": 4,
+    "tags": [
+      "Good Problem Solving"
+    ],
+    "decision": null,
+    "timeTaken": 1,
+    "testCasesPassed": "5/5",
+    "problemCodes": {
+      "Two Sum": "function twoSum(nums, target) {\r\n  const map = new Map();\r\n  for (let i = 0; i < nums.length; i++) {\r\n    const complement = target - nums[i];\r\n    if (map.has(complement)) {\r\n        return [map.get(complement), i];\r\n    }\r\n    map.set(nums[i], i);\r\n  }\r\n  return [];\r\n}\r\n\r\n// ALWAYS use JSON.stringify for test cases to match platform strictness\r\nconsole.log(JSON.stringify(twoSum([2, 7, 11, 15], 9))); // Expected: [0,1]\r\nconsole.log(JSON.stringify(twoSum([3, 2, 4], 6))); // Expected: [1,2]\r\nconsole.log(JSON.stringify(twoSum([3, 3], 6))); // Expected: [0,1"
+    },
+    "timings": [
+      {
+        "problemId": "Two Sum",
+        "startTime": "2026-03-03T18:45:19.576Z",
+        "endTime": "2026-03-03T18:46:48.838Z",
+        "duration": 89,
+        "_id": "69a72c3f49d9dde8b0f2c472"
+      },
+      {
+        "problemId": "Reverse String",
+        "startTime": "2026-03-03T18:46:48.838Z",
+        "endTime": null,
+        "duration": null,
+        "_id": "69a72c9849d9dde8b0f2c53c"
+      }
+    ],
+    "createdAt": "2026-03-03T18:45:17.706Z",
+    "updatedAt": "2026-03-03T18:47:11.657Z",
+    "__v": 1
+  }
+]

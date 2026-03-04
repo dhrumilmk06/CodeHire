@@ -23,5 +23,9 @@
     "socket.io": "^4.8.3",
     "stream-chat": "^9.24.0",
     "svix": "^1.84.1"
+  },
+  "devDependencies": {
+    "@prisma/client": "^7.4.2",
+    "prisma": "^7.4.2"
   }
 }

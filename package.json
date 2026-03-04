@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/dhrumilmk06/CodeHire/issues"
   },
-  "homepage": "https://github.com/dhrumilmk06/CodeHire#readme"
+  "homepage": "https://github.com/dhrumilmk06/CodeHire#readme",
+  "dependencies": {
+    "prisma": "^6.19.2"
+  }
 }

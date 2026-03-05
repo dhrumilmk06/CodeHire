@@ -131,6 +131,10 @@ export const SessionPage = () => {
         setAutoScoreResults(data);
         setIsScoring(false);
 
+        if (data.message && isHost) {
+          toast(data.message, { icon: 'ℹ️' });
+        }
+
         // Host persists the score to DB
         if (isHost && data.score) {
           try {
@@ -142,8 +146,19 @@ export const SessionPage = () => {
       }
     };
 
+    const handleScoringStarted = (data) => {
+      if (data.sessionId === id) {
+        setIsScoring(true);
+        setAutoScoreResults(null);
+      }
+    };
+
     socket.on('autoScoreResults', handleAutoScore);
-    return () => socket.off('autoScoreResults', handleAutoScore);
+    socket.on('scoring-started', handleScoringStarted);
+    return () => {
+      socket.off('autoScoreResults', handleAutoScore);
+      socket.off('scoring-started', handleScoringStarted);
+    };
   }, [socket, id, isHost]);
 
   // Detect socket connected state by checking if roomId+userId are available
@@ -207,25 +222,35 @@ export const SessionPage = () => {
     setAutoScoreResults(null); // Clear previous results
 
     try {
+      const pId = session.problem;
+
       const result = await sessionApi.runCode({
         code,
         language: selectedLanguage,
         sessionId: id,
-        problemId: session.problem
+        problemId: pId
       });
 
       setOutput(result);
 
       // Visible test case validation (similar to Practice mode)
-      if (result.success && problemData?.expectedOutput?.[selectedLanguage]) {
+      // Check for either language-specific expected output OR a flat string for custom problems
+      const expected = problemData?.expectedOutput?.[selectedLanguage] ||
+        (typeof problemData?.expectedOutput === 'string' ? problemData.expectedOutput : null);
+
+      if (result.success && expected) {
         const normalize = (str) => str.trim().split("\n").map(l => l.trim().replace(/\s*,\s*/g, ",").replace(/\[\s+/g, "[").replace(/\s+\]/g, "]")).filter(l => l.length > 0).join("\n");
         const normalizedActual = normalize(result.output);
-        const normalizedExpected = normalize(problemData.expectedOutput[selectedLanguage]);
+        const normalizedExpected = normalize(expected);
 
         if (normalizedActual === normalizedExpected) {
-          toast.success("Visible test cases passed!");
+          toast.success("Visible examples passed!");
         } else {
-          toast.error("Visible test cases failed. Check output formatting.");
+          // Changed to neutral toast to avoid "Red Error" confusion
+          toast("Output mismatch. Check formatting or extra console.logs.", {
+            icon: '⚠️',
+            duration: 4000,
+          });
         }
       }
 

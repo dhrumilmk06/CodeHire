@@ -435,15 +435,20 @@ export const ProblemBankPage = () => {
     });
 
     const handleSave = async (formData) => {
-        if (editingProblem) {
-            await updateMutation.mutateAsync({ id: editingProblem._id, ...formData });
-            toast.success("Problem updated!");
-        } else {
-            await createMutation.mutateAsync(formData);
-            toast.success("Problem created!");
+        try {
+            if (editingProblem) {
+                await updateMutation.mutateAsync({ id: editingProblem._id, ...formData });
+                toast.success("Problem updated!");
+            } else {
+                await createMutation.mutateAsync(formData);
+                toast.success("Problem created!");
+            }
+            setShowForm(false);
+            setEditingProblem(null);
+        } catch (err) {
+            console.error("Failed to save problem:", err);
+            toast.error(err.response?.data?.message || "Failed to save problem");
         }
-        setShowForm(false);
-        setEditingProblem(null);
     };
 
     const handleEdit = (problem) => {

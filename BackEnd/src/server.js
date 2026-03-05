@@ -9,6 +9,7 @@ import { clerkMiddleware } from '@clerk/express'
 import { ENV } from './lib/env.js';
 import { connectDB } from './lib/db.js';
 import { functions, inngest } from './lib/inngest.js';
+import { setIO } from './lib/socket.js';
 
 import { fileURLToPath } from "url";
 import chatRoutes from './routes/chatRoutes.js'
@@ -29,6 +30,8 @@ const io = new SocketIOServer(httpServer, {
         credentials: true,
     },
 });
+
+setIO(io);
 
 // In-memory store: roomId → { code, language, output }
 const roomState = new Map();

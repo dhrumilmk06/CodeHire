@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
-import CustomProblem from './src/models/CustomProblem.js';
 
 dotenv.config();
 
+const prisma = new PrismaClient();
 const CLERK_ID = "user_3941rvrVxAajsRtU3iKBpHQK0gB"; // Default owner
 
 const problemsData = [
@@ -239,32 +239,39 @@ const problemsData = [
 
 const seedAllHiddenTests = async () => {
     try {
-        await mongoose.connect(process.env.DB_URL);
-        console.log("Connected to DB");
+        console.log("Connecting to Database...");
 
         for (const problemData of problemsData) {
-            const problem = await CustomProblem.findOneAndUpdate(
-                { title: problemData.title },
-                {
-                    $set: {
-                        hiddenTestCases: problemData.hiddenTestCases,
-                        id: problemData.id,
-                        difficulty: problemData.difficulty,
-                        category: problemData.category,
-                        description: problemData.description,
-                        starterCode: problemData.starterCode,
-                        ownerClerkId: CLERK_ID
-                    }
+            const problem = await prisma.customProblem.upsert({
+                where: { title: problemData.title },
+                update: {
+                    hiddenTestCases: problemData.hiddenTestCases,
+                    id: problemData.id,
+                    difficulty: problemData.difficulty,
+                    category: problemData.category,
+                    description: problemData.description,
+                    starterCode: problemData.starterCode,
+                    ownerClerkId: CLERK_ID
                 },
-                { upsert: true, new: true }
-            );
+                create: {
+                    title: problemData.title,
+                    id: problemData.id,
+                    difficulty: problemData.difficulty,
+                    category: problemData.category,
+                    description: problemData.description,
+                    starterCode: problemData.starterCode,
+                    hiddenTestCases: problemData.hiddenTestCases,
+                    ownerClerkId: CLERK_ID
+                }
+            });
             console.log("Synced problem:", problem.title);
         }
 
         console.log("All hidden tests seeded successfully!");
-        await mongoose.connection.close();
+        await prisma.$disconnect();
     } catch (err) {
         console.error("Error seeding:", err);
+        await prisma.$disconnect();
     }
 };
 

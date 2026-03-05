@@ -1,20 +1,14 @@
-import mongoose from 'mongoose';
-
+import { PrismaClient } from '@prisma/client';
 import { ENV } from './env.js';
 
+export const prisma = new PrismaClient();
+
 export const connectDB = async () => {
-    if(!ENV.DB_URL){
-        throw new Error("DB_URL is not defined in environment variables");
-    }
     try {
-    
-    if(!ENV.DB_URL){
-    throw new Error("DB_URL is not defined in environment variables");
-    }
-      const conn = await mongoose.connect(ENV.DB_URL)
-      console.log("✅Connection to MongoDB:", conn.connection.host)
+        await prisma.$connect();
+        console.log("✅ Connection to PostgreSQL established via Prisma");
     } catch (error) {
-        console.error("❌Error connecting to MongoDB:", error)
-        process.exit(1); // 0 means success, 1 means failure
+        console.error("❌ Error connecting to PostgreSQL:", error);
+        process.exit(1);
     }
 };

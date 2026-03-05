@@ -2,7 +2,7 @@
 
 CodeHire is a high-performance web application designed for real-time collaborative coding, interview preparation, and teamwork. It combines a powerful code editor, live video calls, and instant messaging into a seamless experience.
 
-![CodeHire Banner](https://img.shields.io/badge/Tech-React%20%7C%20Node.js%20%7C%20MongoDB-blue?style=for-the-badge)
+![CodeHire Banner](https://img.shields.io/badge/Tech-React%20%7C%20Node.js%20%7C%20PostgreSQL-blue?style=for-the-badge)
 
 ## ✨ Key Features
 
@@ -31,7 +31,8 @@ CodeHire is a high-performance web application designed for real-time collaborat
 - **Runtime**: [Node.js](https://nodejs.org/)
 - **Framework**: [Express.js](https://expressjs.com/)
 - **WebSocket Server**: [Socket.io](https://socket.io/)
-- **Database**: [MongoDB](https://www.mongodb.com/) via [Mongoose](https://mongoosejs.com/)
+- **Database**: [PostgreSQL](https://www.postgresql.org/)
+- **ORM**: [Prisma](https://www.prisma.io/)
 - **Workflow**: [Inngest](https://www.inngest.com/)
 - **Webhooks**: [Svix](https://www.svix.com/)
 
@@ -39,7 +40,7 @@ CodeHire is a high-performance web application designed for real-time collaborat
 
 ### Prerequisites
 - Node.js (v18+)
-- MongoDB Atlas account
+- PostgreSQL (Local or Cloud instance like Neon/Supabase)
 - Clerk account
 - Stream account
 
@@ -55,7 +56,7 @@ CodeHire is a high-performance web application designed for real-time collaborat
    Create a `.env` file in the `BackEnd` directory:
    ```env
    PORT=3000
-   MONGODB_URI=your_mongodb_uri
+   DATABASE_URL=your_postgresql_connection_string
    CLERK_PUBLISHABLE_KEY=your_clerk_pub_key
    CLERK_SECRET_KEY=your_clerk_secret_key
    STREAM_API_KEY=your_stream_api_key

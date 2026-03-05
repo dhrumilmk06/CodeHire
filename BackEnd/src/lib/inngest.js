@@ -1,53 +1,71 @@
 import { Inngest } from 'inngest'
-import { connectDB } from './db.js'
-import User from '../models/User.js'
+import { prisma } from './db.js'
 import { deleteStreamUser, upsertStreamUser } from './stream.js'
+import { getFileExecution } from './utils.js'
+import { emitToUser, emitToRoom } from './socket.js'
+import { runAutoScore } from './scoring.js'
 
 export const inngest = new Inngest({
     id: 'codehire-app'
 })
 
-//syncUser function is used to connect clerk to mongo db for to store  user account and listens to user.created event from Clerk and creates a new user in our database
-const syncUser = inngest.createFunction(
-    { id: "sync-user" }, // we can give any id here
-    { event: 'clerk/user.created' }, // this is event in clerk that we are listening means whnever a new user is created in clerk this function will be triggered
+//syncUser function is used to connect clerk to PostgreSQL for to store user account
+export const syncUser = inngest.createFunction(
+    { id: "sync-user" },
+    { event: 'clerk/user.created' },
 
-    async ({ event }) => { // this is the function that will be executed when the event is triggered
-        await connectDB()
-        //this event id,email_addresses, first_name, last_name, image_url are give by cleark when user is created
+    async ({ event }) => {
         const { id, email_addresses, first_name, last_name, image_url } = event.data
 
         const newUser = {
             clerkId: id,
             email: email_addresses[0]?.email_address,
-            name: `${first_name || ""} ${last_name || ""} `,
+            name: `${first_name || ""} ${last_name || ""} `.trim(),
             profileImage: image_url,
         };
 
-        await User.create(newUser);
+        // Using upsert in case the user was already created (e.g., via a manual sync or re-run)
+        const user = await prisma.user.upsert({
+            where: { clerkId: id },
+            update: {
+                email: newUser.email,
+                name: newUser.name,
+                profileImage: newUser.profileImage
+            },
+            create: newUser
+        });
 
-        // this is for saving data in stream from the clerk
         await upsertStreamUser({
-            id: newUser.clerkId.toString(),
-            name: newUser.name,
-            image: newUser.profileImage
+            id: user.clerkId,
+            name: user.name,
+            image: user.profileImage
         })
     }
 )
 
-const deleteUserFromDB = inngest.createFunction(
-    { id: "delete-user" }, // we can give any id here
+export const deleteUserFromDB = inngest.createFunction(
+    { id: "delete-user" },
     { event: 'clerk/user.deleted' },
 
-    async ({ event }) => { // this is the function that will be executed when the event is triggered
-        await connectDB()
-        //this event id is given by cleark when user is deleted
+    async ({ event }) => {
         const { id } = event.data
 
-        await User.deleteOne({ clerkId: id });
+        await prisma.user.delete({
+            where: { clerkId: id }
+        });
 
         await deleteStreamUser(id.toString());
     }
 )
 
-export const functions = [syncUser, deleteUserFromDB];
+export const autoScore = inngest.createFunction(
+    { id: "auto-score", retries: 2 },
+    { event: 'app/code.run' },
+
+    async ({ event }) => {
+        await runAutoScore(event.data);
+        return { success: true };
+    }
+);
+
+export const functions = [syncUser, deleteUserFromDB, autoScore];

@@ -36,11 +36,17 @@ export const AutoScorePanel = ({ results, score, isScoring }) => {
                             <Loader2 className="w-4 h-4 animate-spin" />
                             <span className="text-[10px] font-bold uppercase tracking-widest">Running hidden tests...</span>
                         </div>
-                    ) : (
+                    ) : score ? (
                         <div className={`flex items-center gap-2 ${getScoreColor(score.passed, score.total)}`}>
                             <span className="text-lg font-black">{score.passed} / {score.total}</span>
                             <span className="text-[10px] font-bold uppercase tracking-widest bg-base-100 px-2 py-0.5 rounded-full border border-current/20">
                                 {getScoreText(score.passed, score.total)}
+                            </span>
+                        </div>
+                    ) : (
+                        <div className="flex items-center gap-2 text-base-content/40 italic">
+                            <span className="text-[10px] font-bold uppercase tracking-widest">
+                                No test cases found
                             </span>
                         </div>
                     )}

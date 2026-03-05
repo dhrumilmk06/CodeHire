@@ -14,15 +14,17 @@ export const TimeTracker = ({ sessionId, currentProblemTitle, initialTimings = [
     const timerRef = useRef(null);
     const timingsRef = useRef(initialTimings || []);
 
-    // Update refs when state changes to avoid dependency loops in timer
-    useEffect(() => {
-        timingsRef.current = timings;
-    }, [timings]);
-
     // Sync from props if they change (e.g. initial load from server)
+    // Only update if prop data has more entries or different "completed" states
+    // to avoid overwriting local fresh additions during problem switches.
     useEffect(() => {
-        if (initialTimings && initialTimings.length > 0) {
-            setTimings(initialTimings);
+        if (initialTimings && Array.isArray(initialTimings)) {
+            const hasMoreData = initialTimings.length > timings.length;
+            const hasStatusChange = initialTimings.some((t, i) => t.endTime && !timings[i]?.endTime);
+
+            if (hasMoreData || hasStatusChange || timings.length === 0) {
+                setTimings(initialTimings);
+            }
         }
     }, [initialTimings]);
 
@@ -37,42 +39,54 @@ export const TimeTracker = ({ sessionId, currentProblemTitle, initialTimings = [
     useEffect(() => {
         if (!currentProblemTitle || !sessionId) return;
 
-        let localTimings = [...timingsRef.current];
-        let activeIndex = localTimings.findIndex(t => !t.endTime);
-        let activeEntry = activeIndex !== -1 ? localTimings[activeIndex] : null;
+        let activeStartTime = null;
 
-        // Check if we need to switch problems or start the first one
-        if (!activeEntry || activeEntry.problemId !== currentProblemTitle) {
+        setTimings(prev => {
+            let localTimings = [...prev];
+            let activeIndex = localTimings.findIndex(t => !t.endTime);
+            let activeEntry = activeIndex !== -1 ? localTimings[activeIndex] : null;
+
+            // 1. If we are on the correct problem already, just grab the start time for the ticker
+            if (activeEntry && activeEntry.problemId === currentProblemTitle) {
+                activeStartTime = new Date(activeEntry.startTime).getTime();
+                return prev;
+            }
+
             const now = new Date();
 
-            // If there was an active entry for a different problem, close it
+            // 2. If changing problems, close the old one
             if (activeEntry) {
                 const duration = Math.floor((now - new Date(activeEntry.startTime)) / 1000);
                 localTimings[activeIndex] = { ...activeEntry, endTime: now, duration };
             }
 
-            // Start new entry for the current problem (or first problem)
-            activeEntry = {
+            // 3. Start the brand new problem entry
+            const newEntry = {
                 problemId: currentProblemTitle,
                 startTime: now,
                 endTime: null,
                 duration: null
             };
-            localTimings.push(activeEntry);
+            localTimings.push(newEntry);
+            activeStartTime = now.getTime();
 
-            setTimings(localTimings);
             saveTimings(localTimings);
-        }
+            return localTimings;
+        });
 
-        // Start ticker logic
-        const startTimeStamp = new Date(activeEntry.startTime).getTime();
-
+        // Ticker logic: Always calculate based on the REAL start time stored in the record
+        // This ensures that if you refresh, (Date.now() - activeStartTime) reflects the real progress.
         if (timerRef.current) clearInterval(timerRef.current);
 
-        timerRef.current = setInterval(() => {
-            const seconds = Math.floor((Date.now() - startTimeStamp) / 1000);
-            setActiveElapsed(seconds);
-        }, 1000);
+        const runTicker = () => {
+            if (activeStartTime) {
+                const seconds = Math.floor((Date.now() - activeStartTime) / 1000);
+                setActiveElapsed(Math.max(0, seconds));
+            }
+        };
+
+        runTicker(); // Run once immediately
+        timerRef.current = setInterval(runTicker, 1000);
 
         return () => {
             if (timerRef.current) clearInterval(timerRef.current);

@@ -30,13 +30,14 @@ export const runAutoScore = async (data) => {
             javascript: { language: "javascript", version: "18.15.0" },
             python: { language: "python", version: "3.10.0" },
             java: { language: "java", version: "15.0.2" },
+            cpp: { language: "cpp", version: "10.2.0" },
         };
         const config = languageVersions[language] || languageVersions.javascript;
 
         const results = await Promise.all(
             problem.hiddenTestCases.map(async (test) => {
                 try {
-                    const langKey = (language === "javascript" || language === "python" || language === "java") ? language : "javascript";
+                    const langKey = (language === "javascript" || language === "python" || language === "java" || language === "cpp") ? language : "javascript";
                     const testInputCode = test.inputCode?.[langKey];
 
                     if (!testInputCode) return null;
@@ -59,7 +60,7 @@ export const runAutoScore = async (data) => {
                         // We also make sure testInputCode uses the 'Solution' class name
                         combinedContent = imports.join("\n") + "\n\n" + codeWithoutImports + "\n\n" + testInputCode;
                     } else {
-                        combinedContent = sanitizedCode + "\n" + testInputCode;
+                        combinedContent = (language === "cpp" ? "#define HIDDEN_TEST\n" : "") + sanitizedCode + "\n" + testInputCode;
                     }
 
                     const executeBody = {

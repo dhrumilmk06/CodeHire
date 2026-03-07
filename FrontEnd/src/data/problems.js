@@ -66,11 +66,49 @@ class Solution {
         System.out.println(Arrays.toString(twoSum(new int[]{3, 3}, 6))); // Expected: [0, 1]
     }
 }`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        // Write your solution here
+        
+        return {};
+    }
+};
+
+string vectorToString(vector<int> res) {
+    string s = "[";
+    for (int i = 0; i < res.size(); i++) {
+        s += to_string(res[i]) + (i == res.size() - 1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> nums1 = {2, 7, 11, 15};
+    cout << vectorToString(sol.twoSum(nums1, 9)) << endl;
+    vector<int> nums2 = {3, 2, 4};
+    cout << vectorToString(sol.twoSum(nums2, 6)) << endl;
+    vector<int> nums3 = {3, 3};
+    cout << vectorToString(sol.twoSum(nums3, 6)) << endl;
+    return 0;
+}
+#endif`,
     },
     expectedOutput: {
       javascript: "[0,1]\n[1,2]\n[0,1]",
       python: "[0,1]\n[1,2]\n[0,1]",
       java: "[0, 1]\n[1, 2]\n[0, 1]",
+      cpp: "[0,1]\n[1,2]\n[0,1]",
     },
   },
 
@@ -139,11 +177,50 @@ class Solution {
         System.out.println(Arrays.toString(test2)); // Expected: [h, a, n, n, a, H]
     }
 }`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    void reverseString(vector<char>& s) {
+        // Write your solution here
+        
+    }
+};
+
+string vectorToString(const vector<char>& s) {
+    string res = "[";
+    for (int i = 0; i < s.size(); i++) {
+        res += "\"";
+        res += s[i];
+        res += "\"";
+        if (i < s.size() - 1) res += ",";
+    }
+    res += "]";
+    return res;
+}
+
+int main() {
+    Solution sol;
+    vector<char> s1 = {'h', 'e', 'l', 'l', 'o'};
+    sol.reverseString(s1);
+    cout << vectorToString(s1) << endl;
+    
+    vector<char> s2 = {'H', 'a', 'n', 'n', 'a', 'h'};
+    sol.reverseString(s2);
+    cout << vectorToString(s2) << endl;
+    return 0;
+}`,
     },
     expectedOutput: {
       javascript: '["o","l","l","e","h"]\n["h","a","n","n","a","H"]',
       python: '["o","l","l","e","h"]\n["h","a","n","n","a","H"]',
       java: "[o, l, l, e, h]\n[h, a, n, n, a, H]",
+      cpp: '["o","l","l","e","h"]\n["h","a","n","n","a","H"]',
     },
   },
 
@@ -206,11 +283,34 @@ print(isPalindrome(" "))  # Expected: True`,
         System.out.println(isPalindrome(" ")); // Expected: true
     }
 }`,
+      cpp: `#include <iostream>
+#include <string>
+#include <cctype>
+
+using namespace std;
+
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        // Write your solution here
+        
+        return false;
+    }
+};
+
+int main() {
+    Solution sol;
+    cout << (sol.isPalindrome("A man, a plan, a canal: Panama") ? "true" : "false") << endl;
+    cout << (sol.isPalindrome("race a car") ? "true" : "false") << endl;
+    cout << (sol.isPalindrome(" ") ? "true" : "false") << endl;
+    return 0;
+}`,
     },
     expectedOutput: {
       javascript: "true\nfalse\ntrue",
       python: "True\nFalse\nTrue",
       java: "true\nfalse\ntrue",
+      cpp: "true\nfalse\ntrue",
     },
   },
 
@@ -272,11 +372,37 @@ print(maxSubArray([5,4,-1,7,8]))  # Expected: 23`,
         System.out.println(maxSubArray(new int[]{5,4,-1,7,8})); // Expected: 23
     }
 }`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+int main() {
+    Solution sol;
+    vector<int> n1 = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
+    cout << sol.maxSubArray(n1) << endl;
+    vector<int> n2 = {1};
+    cout << sol.maxSubArray(n2) << endl;
+    vector<int> n3 = {5, 4, -1, 7, 8};
+    cout << sol.maxSubArray(n3) << endl;
+    return 0;
+}`,
     },
     expectedOutput: {
       javascript: "6\n1\n23",
       python: "6\n1\n23",
       java: "6\n1\n23",
+      cpp: "6\n1\n23",
     },
   },
 
@@ -334,11 +460,35 @@ print(maxArea([1,1]))  # Expected: 1`,
         System.out.println(maxArea(new int[]{1,1})); // Expected: 1
     }
 }`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+int main() {
+    Solution sol;
+    vector<int> h1 = {1, 8, 6, 2, 5, 4, 8, 3, 7};
+    cout << sol.maxArea(h1) << endl;
+    vector<int> h2 = {1, 1};
+    cout << sol.maxArea(h2) << endl;
+    return 0;
+}`,
     },
     expectedOutput: {
       javascript: "49\n1",
       python: "49\n1",
       java: "49\n1",
+      cpp: "49\n1",
     },
   },
 
@@ -409,11 +559,51 @@ class Solution {
         System.out.println(threeSum(new int[]{0,0,0})); // Expected: [[0,0,0]]
     }
 }`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        // Write your solution here
+        
+        return {};
+    }
+};
+
+string vectorToString(const vector<vector<int>>& res) {
+    string s = "[";
+    for (int i = 0; i < res.size(); i++) {
+        s += "[";
+        for (int j = 0; j < res[i].size(); j++) {
+            s += to_string(res[i][j]) + (j == res[i].size() - 1 ? "" : ",");
+        }
+        s += "]" + (i == res.size() - 1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+int main() {
+    Solution sol;
+    vector<int> n1 = {-1, 0, 1, 2, -1, -4};
+    cout << vectorToString(sol.threeSum(n1)) << endl;
+    vector<int> n2 = {0, 1, 1};
+    cout << vectorToString(sol.threeSum(n2)) << endl;
+    vector<int> n3 = {0, 0, 0};
+    cout << vectorToString(sol.threeSum(n3)) << endl;
+    return 0;
+}`,
     },
     expectedOutput: {
       javascript: "[[-1,-1,2],[-1,0,1]]\n[]\n[[0,0,0]]",
       python: "[[-1, -1, 2], [-1, 0, 1]]\n[]\n[[0, 0, 0]]",
       java: "[[-1, -1, 2], [-1, 0, 1]]\n[]\n[[0, 0, 0]]",
+      cpp: "[[-1,-1,2],[-1,0,1]]\n[]\n[[0,0,0]]",
     },
   },
 
@@ -470,11 +660,35 @@ print(trap([4,2,0,3,2,5]))  # Expected: 9`,
         System.out.println(trap(new int[]{4,2,0,3,2,5})); // Expected: 9
     }
 }`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+int main() {
+    Solution sol;
+    vector<int> h1 = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
+    cout << sol.trap(h1) << endl;
+    vector<int> h2 = {4, 2, 0, 3, 2, 5};
+    cout << sol.trap(h2) << endl;
+    return 0;
+}`,
     },
     expectedOutput: {
       javascript: "6\n9",
       python: "6\n9",
       java: "6\n9",
+      cpp: "6\n9",
     },
   },
 
@@ -534,11 +748,49 @@ class Solution {
         System.out.println(Arrays.deepToString(merge(new int[][]{{1,4},{4,5}}))); // Expected: [[1, 5]]
     }
 }`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        // Write your solution here
+        
+        return {};
+    }
+};
+
+string vectorToString(const vector<vector<int>>& res) {
+    string s = "[";
+    for (int i = 0; i < res.size(); i++) {
+        s += "[";
+        for (int j = 0; j < res[i].size(); j++) {
+            s += to_string(res[i][j]) + (j == res[i].size() - 1 ? "" : ",");
+        }
+        s += "]" + (i == res.size() - 1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+int main() {
+    Solution sol;
+    vector<vector<int>> i1 = {{1, 3}, {2, 6}, {8, 10}, {15, 18}};
+    cout << vectorToString(sol.merge(i1)) << endl;
+    vector<vector<int>> i2 = {{1, 4}, {4, 5}};
+    cout << vectorToString(sol.merge(i2)) << endl;
+    return 0;
+}`,
     },
     expectedOutput: {
       javascript: "[[1,6],[8,10],[15,18]]\n[[1,5]]",
       python: "[[1, 6], [8, 10], [15, 18]]\n[[1, 5]]",
       java: "[[1, 6], [8, 10], [15, 18]]\n[[1, 5]]",
+      cpp: "[[1,6],[8,10],[15,18]]\n[[1,5]]",
     },
   },
 
@@ -599,11 +851,35 @@ print(findMedianSortedArrays([1,2], [3,4]))  # Expected: 2.5`,
         System.out.println(findMedianSortedArrays(new int[]{1,2}, new int[]{3,4})); // Expected: 2.5
     }
 }`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <iomanip>
+
+using namespace std;
+
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        // Write your solution here
+        
+        return 0.0;
+    }
+};
+
+int main() {
+    Solution sol;
+    vector<int> n1 = {1, 3}, n2 = {2};
+    cout << sol.findMedianSortedArrays(n1, n2) << endl;
+    vector<int> n3 = {1, 2}, n4 = {3, 4};
+    cout << sol.findMedianSortedArrays(n3, n4) << endl;
+    return 0;
+}`,
     },
     expectedOutput: {
       javascript: "2\n2.5",
       python: "2\n2.5",
       java: "2.0\n2.5",
+      cpp: "2\n2.5",
     },
   },
 
@@ -668,11 +944,35 @@ print(lengthOfLongestSubstring("pwwkew"))  # Expected: 3`,
         System.out.println(lengthOfLongestSubstring("pwwkew")); // Expected: 3
     }
 }`,
+      cpp: `#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+int main() {
+    Solution sol;
+    cout << sol.lengthOfLongestSubstring("abcabcbb") << endl;
+    cout << sol.lengthOfLongestSubstring("bbbbb") << endl;
+    cout << sol.lengthOfLongestSubstring("pwwkew") << endl;
+    return 0;
+}`,
     },
     expectedOutput: {
       javascript: "3\n1\n3",
       python: "3\n1\n3",
       java: "3\n1\n3",
+      cpp: "3\n1\n3",
     },
   },
 
@@ -737,11 +1037,37 @@ print(firstMissingPositive([7,8,9,11,12]))  # Expected: 1`,
         System.out.println(firstMissingPositive(new int[]{7,8,9,11,12})); // Expected: 1
     }
 }`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+int main() {
+    Solution sol;
+    vector<int> n1 = {1, 2, 0};
+    cout << sol.firstMissingPositive(n1) << endl;
+    vector<int> n2 = {3, 4, -1, 1};
+    cout << sol.firstMissingPositive(n2) << endl;
+    vector<int> n3 = {7, 8, 9, 11, 12};
+    cout << sol.firstMissingPositive(n3) << endl;
+    return 0;
+}`,
     },
     expectedOutput: {
       javascript: "3\n2\n1",
       python: "3\n2\n1",
       java: "3\n2\n1",
+      cpp: "3\n2\n1",
     },
   },
 
@@ -808,11 +1134,36 @@ print(search([1], 0))  # Expected: -1`,
         System.out.println(search(new int[]{1}, 0)); // Expected: -1
     }
 }`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        // Write your solution here
+        
+        return -1;
+    }
+};
+
+int main() {
+    Solution sol;
+    vector<int> n1 = {4, 5, 6, 7, 0, 1, 2};
+    cout << sol.search(n1, 0) << endl;
+    cout << sol.search(n1, 3) << endl;
+    vector<int> n2 = {1};
+    cout << sol.search(n2, 0) << endl;
+    return 0;
+}`,
     },
     expectedOutput: {
       javascript: "4\n-1\n-1",
       python: "4\n-1\n-1",
       java: "4\n-1\n-1",
+      cpp: "4\n-1\n-1",
     },
   },
 
@@ -880,11 +1231,35 @@ print(exist([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCB"))  #
         System.out.println(exist(new char[][]{{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}}, "ABCB")); // Expected: false
     }
 }`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        // Write your solution here
+        
+        return false;
+    }
+};
+
+int main() {
+    Solution sol;
+    vector<vector<char>> b1 = {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}};
+    cout << (sol.exist(b1, "ABCCED") ? "true" : "false") << endl;
+    cout << (sol.exist(b1, "SEE") ? "true" : "false") << endl;
+    cout << (sol.exist(b1, "ABCB") ? "true" : "false") << endl;
+    return 0;
+}`,
     },
     expectedOutput: {
       javascript: "true\ntrue\nfalse",
       python: "True\nTrue\nFalse",
       java: "true\ntrue\nfalse",
+      cpp: "true\ntrue\nfalse",
     },
   },
 
@@ -941,11 +1316,33 @@ print(isAnagram("rat", "car"))  # Expected: False`,
         System.out.println(isAnagram("rat", "car")); // Expected: false
     }
 }`,
+      cpp: `#include <iostream>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        // Write your solution here
+        
+        return false;
+    }
+};
+
+int main() {
+    Solution sol;
+    cout << (sol.isAnagram("anagram", "nagaram") ? "true" : "false") << endl;
+    cout << (sol.isAnagram("rat", "car") ? "true" : "false") << endl;
+    return 0;
+}`,
     },
     expectedOutput: {
       javascript: "true\nfalse",
       python: "True\nFalse",
       java: "true\nfalse",
+      cpp: "true\nfalse",
     },
   },
 
@@ -1002,11 +1399,35 @@ print(maxProfit([7,6,4,3,1]))  # Expected: 0`,
         System.out.println(maxProfit(new int[]{7,6,4,3,1})); // Expected: 0
     }
 }`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+int main() {
+    Solution sol;
+    vector<int> p1 = {7, 1, 5, 3, 6, 4};
+    cout << sol.maxProfit(p1) << endl;
+    vector<int> p2 = {7, 6, 4, 3, 1};
+    cout << sol.maxProfit(p2) << endl;
+    return 0;
+}`,
     },
     expectedOutput: {
       javascript: "5\n0",
       python: "5\n0",
       java: "5\n0",
+      cpp: "5\n0",
     },
   },
 
@@ -1028,5 +1449,10 @@ export const LANGUAGE_CONFIG = {
     name: "Java",
     icon: "/java.png",
     monacoLang: "java",
+  },
+  cpp: {
+    name: "C++",
+    icon: "/cpp.png",
+    monacoLang: "cpp",
   },
 };

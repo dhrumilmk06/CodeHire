@@ -13,6 +13,7 @@ const LANGUAGE_VERSIONS = {
     javascript: { language: "javascript", version: "18.15.0" },
     python: { language: "python", version: "3.10.0" },
     java: { language: "java", version: "15.0.2" },
+    cpp: { language: "cpp", version: "10.2.0" },
 }
 
 /**
@@ -105,7 +106,8 @@ function getFileExecution(language) {
     const fileNames = {
         javascript: "main.js",
         python: "main.py",
-        java: "Solution.java"
+        java: "Solution.java",
+        cpp: "main.cpp"
     };
 
     return fileNames[language] || "main.txt"

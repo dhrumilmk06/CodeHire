@@ -19,9 +19,9 @@ const EMPTY_FORM = {
     description: { text: "", notes: [] },
     examples: [{ input: "", output: "", explanation: "" }],
     constraints: [],
-    starterCode: { javascript: "", python: "", java: "" },
-    expectedOutput: { javascript: "", python: "", java: "" },
-    hiddenTestCases: [{ id: 1, description: "", inputCode: { javascript: "", python: "", java: "" }, expectedOutput: "" }],
+    starterCode: { javascript: "", python: "", java: "", cpp: "" },
+    expectedOutput: { javascript: "", python: "", java: "", cpp: "" },
+    hiddenTestCases: [{ id: 1, description: "", inputCode: { javascript: "", python: "", java: "", cpp: "" }, expectedOutput: "" }],
 };
 
 const BUILT_IN_LIST = Object.values(PROBLEMS);
@@ -236,7 +236,7 @@ function ProblemFormModal({ initial, onClose, onSave, isSaving }) {
                     {/* ── CODE ──────────────────────────────────────────────────── */}
                     {tab === "code" && (
                         <div className="space-y-5">
-                            {["javascript", "python", "java"].map((lang) => (
+                            {["javascript", "python", "java", "cpp"].map((lang) => (
                                 <div key={lang} className="space-y-2">
                                     <label className="label-text font-semibold capitalize">{lang} Starter Code</label>
                                     <textarea
@@ -306,7 +306,7 @@ function ProblemFormModal({ initial, onClose, onSave, isSaving }) {
                                     <div className="space-y-3">
                                         <label className="label-text font-semibold text-xs">Input Code (Driver Code)</label>
                                         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-                                            {["javascript", "python", "java"].map((lang) => (
+                                            {["javascript", "python", "java", "cpp"].map((lang) => (
                                                 <div key={lang} className="space-y-1">
                                                     <span className="text-[10px] uppercase font-bold opacity-50">{lang}</span>
                                                     <textarea
@@ -320,7 +320,8 @@ function ProblemFormModal({ initial, onClose, onSave, isSaving }) {
                                                         placeholder={
                                                             lang === "javascript" ? "console.log(JSON.stringify(solve(args)))" :
                                                                 lang === "python" ? "print(json.dumps(solve(args)))" :
-                                                                    "System.out.println(Solution.solve(args))"
+                                                                    lang === "java" ? "System.out.println(Solution.solve(args))" :
+                                                                        "Solution sol; cout << sol.solve(args) << endl;"
                                                         }
                                                     />
                                                 </div>

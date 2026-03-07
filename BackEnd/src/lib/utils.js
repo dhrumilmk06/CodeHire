@@ -31,6 +31,6 @@ export function mapId(data) {
 }
 
 export function getFileExecution(language) {
-    const extensions = { javascript: ".js", python: ".py", java: ".java" };
+    const extensions = { javascript: ".js", python: ".py", java: ".java", cpp: ".cpp" };
     return extensions[language] || ".js";
 }

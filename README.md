@@ -6,33 +6,33 @@ CodeHire is a high-performance web application designed for real-time collaborat
 
 ## ✨ Key Features
 
-- **� Real-Time Collaborative Editor**: Powered by **Monaco Editor** and **Socket.io**. Experience seamless, Google Docs-style code synchronization with live typing indicators and role-based cursor tracking.
-- **🏦 Custom Problem Bank**: Hosts can create, save, and manage their own private library of coding problems. Full CRUD support with custom constraints, examples, and starter code.
-- **📹 Live Video Calls**: High-quality integrated video conferencing using **Stream Video SDK** for face-to-face evaluation and communication.
-- **💬 Instant Session Chat**: Real-time chat powered by **Stream Chat SDK** to share thoughts, links, and snippets during a coding session.
-- **🏃 Live Code Execution**: Run code in JavaScript, Python, and Java with synchronized output viewing for all participants in the room.
-- **🧩 Managed Problems**: Access a curated library of built-in DSA problems (Easy, Medium, Hard) to jumpstart your practices.
-- **🔐 Secure Identity**: Enterprise-grade user authentication and profile management handled by **Clerk**.
-- **🎨 Premium UI/UX**: A state-of-the-art interface built with **Tailwind CSS 4.0** and **DaisyUI**, featuring dark mode, glassmorphism, and smooth page transitions.
+- **⚡ Real-Time Collaborative Editor**: Powered by **Monaco Editor** and **Socket.io**. Experience seamless, Google Docs-style code synchronization with live typing indicators and role-based cursor tracking.
+- **� Multi-Language Code Execution**: Execute code in **JavaScript, Python, Java, and C++** via the **Piston API**, with synchronized output viewing for all participants.
+- **�🏦 Custom Problem Bank**: Create, save, and manage your private library of coding problems. Supports full CRUD, custom constraints, starter code, and **hidden test cases** for robust validation.
+- **📊 Automated Session Scoring**: Smart scoring logic that evaluates performance based on test case pass rates, code quality, and completion time.
+- **⏳ Advanced Timer System**: Persistent session timer that tracks time across page refreshes and problem switches, ensuring accurate evaluation.
+- **📹 Live Video Calls**: High-quality integrated video conferencing using **Stream Video SDK** for face-to-face evaluation.
+- **💬 Instant Session Chat**: Real-time chat powered by **Stream Chat SDK** to share thoughts and snippets during a session.
+- **🔐 Secure Identity**: Enterprise-grade user authentication and profile management handled by **Clerk**, with seamless dashboard redirection.
+- **🎨 Premium UI/UX**: State-of-the-art interface built with **Tailwind CSS 4.0**, **DaisyUI**, and **Framer Motion**, featuring glassmorphism and smooth micro-animations.
 
 ## 🛠️ Tech Stack
 
 ### Frontend
 - **Framework**: [React 19](https://react.dev/)
-- **Bundler**: [Vite](https://vitejs.dev/)
-- **Styling**: [Tailwind CSS 4.0](https://tailwindcss.com/) & [DaisyUI](https://daisyui.com/)
+- **Styling**: [Tailwind CSS 4.0](https://tailwindcss.com/), [DaisyUI](https://daisyui.com/), & [Framer Motion](https://www.framer.com/motion/)
 - **Auth**: [Clerk](https://clerk.com/)
-- **Real-time Engine**: [Socket.io-client](https://socket.io/) (for editor sync)
+- **Data Management**: [TanStack Query v5](https://tanstack.com/query/latest)
+- **Real-time Engine**: [Socket.io-client](https://socket.io/)
 - **Communication**: [Stream Video/Chat SDK](https://getstream.io/)
 - **Editor**: [Monaco Editor](https://microsoft.github.io/monaco-editor/)
-- **Data Management**: [TanStack Query v5](https://tanstack.com/query/latest)
 
 ### Backend
 - **Runtime**: [Node.js](https://nodejs.org/)
 - **Framework**: [Express.js](https://expressjs.com/)
-- **WebSocket Server**: [Socket.io](https://socket.io/)
-- **Database**: [PostgreSQL](https://www.postgresql.org/)
-- **ORM**: [Prisma](https://www.prisma.io/)
+- **Database**: [PostgreSQL](https://www.postgresql.org/) with [Prisma ORM](https://www.prisma.io/)
+- **Execution Engine**: [Piston API](https://github.com/engineer-man/piston) (configured with GCC for C++ support)
+- **Storage**: [Cloudinary](https://cloudinary.com/) (for problem/profile assets)
 - **Workflow**: [Inngest](https://www.inngest.com/)
 - **Webhooks**: [Svix](https://www.svix.com/)
 
@@ -40,9 +40,8 @@ CodeHire is a high-performance web application designed for real-time collaborat
 
 ### Prerequisites
 - Node.js (v18+)
-- PostgreSQL (Local or Cloud instance like Neon/Supabase)
-- Clerk account
-- Stream account
+- PostgreSQL instance (Local or Neon/Supabase)
+- Clerk, Stream, and Cloudinary accounts
 
 ### Installation
 
@@ -61,6 +60,7 @@ CodeHire is a high-performance web application designed for real-time collaborat
    CLERK_SECRET_KEY=your_clerk_secret_key
    STREAM_API_KEY=your_stream_api_key
    STREAM_SECRET_KEY=your_stream_secret_key
+   CLOUDINARY_URL=your_cloudinary_url
    CLIENT_URL=http://localhost:5173
    ```
 
@@ -73,23 +73,18 @@ CodeHire is a high-performance web application designed for real-time collaborat
 
 3. **Install Dependencies & Start Development Servers:**
 
-   **Root (Main Command):**
+   **Root (Build Script):**
    ```bash
-   npm install
+   npm run build
    ```
 
-   **BackEnd:**
+   **Alternatively, run manually:**
    ```bash
-   cd BackEnd
-   npm install
-   npm run dev
-   ```
+   # Terminal 1: BackEnd
+   cd BackEnd && npm install && npm run dev
 
-   **FrontEnd:**
-   ```bash
-   cd ../FrontEnd
-   npm install
-   npm run dev
+   # Terminal 2: FrontEnd
+   cd FrontEnd && npm install && npm run dev
    ```
 
 ## 📜 License

@@ -25,7 +25,7 @@ export const ActiveSessions = ({ sessions, isLoading, isUserInSession }) => {
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="size-2 bg-success rounded-full" />
+            <div className="size-2 bg-success rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
             <span className="text-sm font-medium text-success">{sessions.length} active</span>
           </div>
 
@@ -50,7 +50,7 @@ export const ActiveSessions = ({ sessions, isLoading, isUserInSession }) => {
                     <div className="flex items-center gap-4 flex-1">
                       <div className="relative size-14 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
                         <Code2Icon className="size-7 text-white" />
-                        <div className="absolute -top-1 -right-1 size-4 bg-success rounded-full border-2 border-base-100" />
+                        <div className="absolute -top-1 -right-1 size-4 bg-success rounded-full border-2 border-base-100 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.4)]" />
                       </div>
 
                       <div className="flex-1 min-w-0">

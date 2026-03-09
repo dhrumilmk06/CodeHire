@@ -6,9 +6,11 @@ import {
   UsersIcon,
   ZapIcon,
   LoaderIcon,
+  LinkIcon,
 } from "lucide-react";
 import { Link } from "react-router";
 import { getDifficultyBadgeClass } from "../lib/utils";
+import toast from "react-hot-toast";
 
 export const ActiveSessions = ({ sessions, isLoading, isUserInSession }) => {
   return (
@@ -84,14 +86,28 @@ export const ActiveSessions = ({ sessions, isLoading, isUserInSession }) => {
                       </div>
                     </div>
 
-                    {session.participant && !isUserInSession(session) ? (
-                      <button className="btn btn-disabled btn-sm">Full</button>
-                    ) : (
-                      <Link to={`/session/${session._id}`} className="btn btn-primary btn-sm gap-2">
-                        {isUserInSession(session) ? "Rejoin" : "Join"}
-                        <ArrowRightIcon className="size-4" />
-                      </Link>
-                    )}
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => {
+                          const link = `${window.location.origin}/session/${session._id}`;
+                          navigator.clipboard.writeText(link);
+                          toast.success("Invite link copied!");
+                        }}
+                        className="btn btn-ghost btn-sm btn-square"
+                        title="Copy Invite Link"
+                      >
+                        <LinkIcon className="size-4" />
+                      </button>
+
+                      {session.participant && !isUserInSession(session) ? (
+                        <button className="btn btn-disabled btn-sm">Full</button>
+                      ) : (
+                        <Link to={`/session/${session._id}`} className="btn btn-primary btn-sm gap-2">
+                          {isUserInSession(session) ? "Rejoin" : "Join"}
+                          <ArrowRightIcon className="size-4" />
+                        </Link>
+                      )}
+                    </div>
                   </div>
                 </div>
               );

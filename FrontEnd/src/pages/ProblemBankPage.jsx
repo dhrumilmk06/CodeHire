@@ -246,8 +246,8 @@ function ProblemFormModal({ initial, onClose, onSave, isSaving }) {
                                         placeholder={`// ${lang} starter code...`}
                                     />
                                     <label className="label-text font-semibold capitalize">{lang} Expected Output</label>
-                                    <input
-                                        className="input input-bordered input-sm w-full font-mono"
+                                    <textarea
+                                        className="textarea textarea-bordered w-full h-24 font-mono text-sm"
                                         value={form.expectedOutput[lang]}
                                         onChange={(e) => set(`expectedOutput.${lang}`, e.target.value)}
                                         placeholder="Expected output (line-separated)..."

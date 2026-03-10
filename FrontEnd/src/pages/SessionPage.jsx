@@ -334,10 +334,10 @@ export const SessionPage = () => {
   return (
     <div className='h-screen bg-base-100 flex flex-col'>
       <div className='flex-1'>
-        <PanelGroup direction='horizontal'>
+        <PanelGroup direction='horizontal' id='main-horizontal-group' autoSaveId='main-horizontal-layout'>
           {/* LEFT PANEL - CODE EDITOR & PROBLEM DETAILS */}
           <Panel defaultSize={50} minSize={30}>
-            <PanelGroup direction="vertical">
+            <PanelGroup direction="vertical" id="left-vertical-group" autoSaveId="left-vertical-layout">
               {/* PROBLEM DESCRIPTION PANEL */}
               <Panel defaultSize={50} minSize={20}>
                 <div className="h-full overflow-y-auto bg-base-200">
@@ -514,7 +514,7 @@ export const SessionPage = () => {
 
               {/* CODE EDITOR PANEL */}
               <Panel defaultSize={50} minSize={20}>
-                <PanelGroup direction="vertical">
+                <PanelGroup direction="vertical" id="editor-output-group" autoSaveId="editor-output-layout">
                   <Panel defaultSize={70} minSize={30}>
                     <CodeEditorPanel
                       selectedLanguage={selectedLanguage}

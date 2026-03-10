@@ -43,7 +43,7 @@ export const createProblem = async (req, res) => {
             .replace(/(^-|-$)/g, "");
 
         // Sanitize body: remove fields that shouldn't be in the 'data' spread for creation
-        const { _id, id: bodyId, ownerClerkId, createdAt, updatedAt, ...sanitizedBody } = body;
+        const { _id, id: bodyId, ownerClerkId, createdAt, updatedAt, _isCustom, ...sanitizedBody } = body;
 
         const problem = await prisma.customProblem.create({
             data: {
@@ -72,7 +72,7 @@ export const updateProblem = async (req, res) => {
         if (!problem) return res.status(404).json({ message: "Problem not found" });
 
         // Sanitize body: remove fields that Prisma might reject or that shouldn't be updated directly
-        const { _id, id: bodyId, ownerClerkId, createdAt, updatedAt, ...sanitizedBody } = req.body;
+        const { _id, id: bodyId, ownerClerkId, createdAt, updatedAt, _isCustom, ...sanitizedBody } = req.body;
 
         const updatedProblem = await prisma.customProblem.update({
             where: { id },

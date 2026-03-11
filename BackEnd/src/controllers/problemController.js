@@ -106,3 +106,82 @@ export const deleteProblem = async (req, res) => {
         res.status(500).json({ message: "Failed to delete problem", error: err.message });
     }
 };
+
+/** POST /api/problems/bulk — bulk import problems */
+export const bulkImportProblems = async (req, res) => {
+    try {
+        const { problems } = req.body;
+        const { userId } = req.auth();
+
+        if (!problems || !Array.isArray(problems)) {
+            return res.status(400).json({ message: "Problems must be an array" });
+        }
+
+        // 1. Count limit
+        if (problems.length > 50) {
+            return res.status(400).json({ message: "Maximum 50 problems allowed" });
+        }
+
+        // 2. Check for duplicates in this user's collection
+        const existingTitles = await prisma.customProblem.findMany({
+            where: {
+                ownerClerkId: userId,
+                title: { in: problems.map(p => p.title) }
+            },
+            select: { title: true }
+        });
+
+        const duplicates = existingTitles.map(p => p.title);
+        const newProblems = problems.filter(p => !duplicates.includes(p.title));
+
+        if (newProblems.length === 0) {
+            return res.json({
+                created: 0,
+                skipped: duplicates.length,
+                duplicates,
+                message: `No new problems were imported. ${duplicates.length} duplicates skipped.`
+            });
+        }
+
+        // 3. Save all in a single transaction
+        await prisma.$transaction(async (tx) => {
+            const data = newProblems.map(p => {
+                // Generate a unique-ish ID from the title
+                const baseId = p.title
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, "-")
+                    .replace(/(^-|-$)/g, "");
+                
+                // Add a random suffix to avoid global collisions
+                const id = `${baseId}-${Math.random().toString(36).substring(2, 7)}`;
+
+                return {
+                    id,
+                    title: p.title,
+                    difficulty: p.difficulty,
+                    category: p.category || "",
+                    description: p.description,
+                    examples: p.examples || [],
+                    starterCode: p.starterCode || {},
+                    hiddenTestCases: p.hiddenTestCases || [],
+                    ownerClerkId: userId,
+                };
+            });
+
+            await tx.customProblem.createMany({
+                data: data
+            });
+        });
+
+        // 4. Return summary
+        return res.json({
+            created: newProblems.length,
+            skipped: duplicates.length,
+            duplicates: duplicates,
+            message: `Successfully imported ${newProblems.length} problems`
+        });
+    } catch (err) {
+        console.error("Bulk import error:", err);
+        res.status(500).json({ message: "Failed to import problems", error: err.message });
+    }
+};

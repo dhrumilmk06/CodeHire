@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Plus, Pencil, Trash2, Search, Lock, X, Check } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, Lock, X, Check, Upload } from "lucide-react";
 import { BookOpenIcon, CodeIcon, Loader2Icon } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useMyProblems, useCreateProblem, useUpdateProblem, useDeleteProblem } from "../hooks/useCustomProblems";
 import { PROBLEMS } from "../data/problems";
 import toast from "react-hot-toast";
+import { BulkImportModal } from "../components/BulkImportModal";
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 const DIFFICULTY_COLORS = {
@@ -412,6 +414,7 @@ function ProblemCard({ problem, isCustom, onEdit, onDelete, isDeleting }) {
 // ── Main Page ────────────────────────────────────────────────────────────────
 export const ProblemBankPage = () => {
     const { data: customProblems = [], isLoading } = useMyProblems();
+    const queryClient = useQueryClient();
     const createMutation = useCreateProblem();
     const updateMutation = useUpdateProblem();
     const deleteMutation = useDeleteProblem();
@@ -420,6 +423,7 @@ export const ProblemBankPage = () => {
     const [diffFilter, setDiffFilter] = useState("All");
     const [typeFilter, setTypeFilter] = useState("All"); // All | Built-in | Custom
     const [showForm, setShowForm] = useState(false);
+    const [showBulkModal, setShowBulkModal] = useState(false);
     const [editingProblem, setEditingProblem] = useState(null);
 
     // Merge both lists
@@ -492,13 +496,22 @@ export const ProblemBankPage = () => {
                                 </span>
                             </div>
                         </div>
-                        <button
-                            className="btn btn-primary gap-2 shadow-lg"
-                            onClick={() => { setEditingProblem(null); setShowForm(true); }}
-                        >
-                            <Plus className="w-5 h-5" />
-                            New Custom Problem
-                        </button>
+                        <div className="flex gap-3">
+                            <button
+                                className="btn bg-[#0a0a0a] hover:bg-[#22c55e]/10 border-[#2a2a2a] hover:border-[#22c55e] text-[#22c55e] gap-2 transition-all duration-300"
+                                onClick={() => setShowBulkModal(true)}
+                            >
+                                <Upload className="w-5 h-5" />
+                                Bulk Import
+                            </button>
+                            <button
+                                className="btn btn-primary gap-2 shadow-lg"
+                                onClick={() => { setEditingProblem(null); setShowForm(true); }}
+                            >
+                                <Plus className="w-5 h-5" />
+                                New Custom Problem
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -578,6 +591,16 @@ export const ProblemBankPage = () => {
                     onClose={() => { setShowForm(false); setEditingProblem(null); }}
                     onSave={handleSave}
                     isSaving={isSaving}
+                />
+            )}
+
+            {/* Bulk Import Modal */}
+            {showBulkModal && (
+                <BulkImportModal
+                    onClose={() => setShowBulkModal(false)}
+                    onRefresh={() => {
+                        queryClient.invalidateQueries({ queryKey: ["my-problems"] });
+                    }}
                 />
             )}
         </div>

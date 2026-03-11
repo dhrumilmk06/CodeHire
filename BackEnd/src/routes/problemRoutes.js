@@ -13,9 +13,13 @@ import {
 const router = express.Router();
 
 const bulkImportLimiter = rateLimit({
-    windowMs: 60 * 60 * 1000, // 1 hour
-    max: 5,                    // max 5 bulk imports per hour
-    message: { message: "Too many bulk imports. Try again after 1 hour" }
+    windowMs: 60 * 60 * 1000,  // 1 hour
+    max: 5,                      // max 5 bulk imports per hour per user
+    standardHeaders: true,       // Return rate limit info in RateLimit-* headers
+    legacyHeaders: false,
+    // Fix 7 — rate limit per authenticated user, not just by IP
+    keyGenerator: (req) => req.user?.id || req.auth?.()?.userId || req.ip,
+    message: { message: "Too many bulk import requests. Please try again after 1 hour" }
 });
 
 router.get("/", protectRoute, getMyProblems);

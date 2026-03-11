@@ -212,7 +212,7 @@ const TEMPLATE_FILE_DATA = [FIELD_GUIDE, ...TEMPLATE_DATA];
 export function BulkImportModal({ onClose, onRefresh }) {
     const [file, setFile] = useState(null);
     const [problems, setProblems] = useState([]);
-    const [errors, setErrors] = useState([]);
+    const [uploadError, setUploadError] = useState(null); // Fix 1/2: show error in upload zone
     const [isImporting, setIsImporting] = useState(false);
     const [dragActive, setDragActive] = useState(false);
     const fileInputRef = useRef(null);
@@ -227,73 +227,196 @@ export function BulkImportModal({ onClose, onRefresh }) {
         downloadAnchorNode.remove();
     };
 
-    const validateProblem = (problem) => {
-        const errs = [];
-        if (!problem.title || typeof problem.title !== 'string') errs.push('title is required');
-        if (!['Easy', 'Medium', 'Hard'].includes(problem.difficulty)) errs.push('difficulty must be Easy, Medium or Hard');
-        if (!problem.description || (typeof problem.description !== 'string' && typeof problem.description !== 'object')) errs.push('description is required');
-        if (problem.title?.length > 100) errs.push('title too long (max 100 chars)');
-        
-        // Handle both string and object description
-        const descLen = typeof problem.description === 'string' ? problem.description.length : JSON.stringify(problem.description).length;
-        if (descLen > 10000) errs.push('description too long (max 10000 chars)');
+    // ── Fix 2 — File Size Limit ────────────────────────────────────────────────
+    const validateFileSize = (file) => {
+        const MAX_SIZE = 1 * 1024 * 1024; // 1MB
+        if (file.size === 0) {
+            throw new Error('File is empty. Please upload a valid JSON file');
+        }
+        if (file.size > MAX_SIZE) {
+            throw new Error(
+                `File too large (${(file.size / 1024).toFixed(1)} KB). Maximum allowed is 1 MB`
+            );
+        }
+    };
 
-        if (problem.examples && !Array.isArray(problem.examples)) errs.push('examples must be an array');
-        if (problem.hiddenTestCases && !Array.isArray(problem.hiddenTestCases)) errs.push('hiddenTestCases must be an array');
-        return errs;
+    // ── Fix 1 — File Type Validation ──────────────────────────────────────────
+    const validateFileType = (file) => {
+        if (!file.name.toLowerCase().endsWith('.json')) {
+            throw new Error('Only .json files are allowed');
+        }
+        if (file.type !== 'application/json' && file.type !== '') {
+            throw new Error('Invalid file type. Please upload a JSON file');
+        }
+    };
+
+    // ── Fix 3 — Problem Count Limit ───────────────────────────────────────────
+    const validateProblemCount = (arr) => {
+        if (!Array.isArray(arr)) {
+            throw new Error('JSON must be an array of problems');
+        }
+        if (arr.length < 1) {
+            throw new Error('JSON file contains no problems');
+        }
+        if (arr.length > 50) {
+            throw new Error(
+                `Too many problems. Your file has ${arr.length} problems. Maximum allowed is 50`
+            );
+        }
+    };
+
+    // ── Fix 4 — JSON Depth Check ──────────────────────────────────────────────
+    const checkJsonDepth = (obj, maxDepth = 5, depth = 0) => {
+        if (depth > maxDepth) {
+            throw new Error('JSON structure is too deeply nested. Maximum depth is 5 levels');
+        }
+        if (obj !== null && typeof obj === 'object') {
+            // Check object values
+            for (const value of Object.values(obj)) {
+                checkJsonDepth(value, maxDepth, depth + 1);
+            }
+        }
+        if (Array.isArray(obj)) {
+            for (const item of obj) {
+                checkJsonDepth(item, maxDepth, depth + 1);
+            }
+        }
+    };
+
+    // ── Fix 5 — Per-Problem Field Validation ──────────────────────────────────
+    const validateProblem = (problem, index) => {
+        const errors = [];
+        const label = `Problem ${index + 1}`;
+
+        // Required: title
+        if (!problem.title || typeof problem.title !== 'string' || problem.title.trim() === '') {
+            errors.push(`title is required and must be a non-empty string`);
+        } else if (problem.title.trim().length > 100) {
+            errors.push(`title is too long (max 100 characters)`);
+        }
+
+        // Required: difficulty
+        const validDifficulties = ['Easy', 'Medium', 'Hard'];
+        if (!problem.difficulty || !validDifficulties.includes(problem.difficulty)) {
+            errors.push(`difficulty must be exactly 'Easy', 'Medium', or 'Hard'`);
+        }
+
+        // Required: description
+        if (!problem.description) {
+            errors.push(`description is required`);
+        } else if (typeof problem.description === 'object') {
+            if (!problem.description.text || typeof problem.description.text !== 'string' || problem.description.text.trim() === '') {
+                errors.push(`description.text is required`);
+            } else if (problem.description.text.length > 10000) {
+                errors.push(`description.text is too long (max 10,000 characters)`);
+            }
+            if (problem.description.notes !== undefined && !Array.isArray(problem.description.notes)) {
+                errors.push(`description.notes must be an array`);
+            }
+        } else if (typeof problem.description === 'string') {
+            if (problem.description.trim() === '') {
+                errors.push(`description cannot be empty`);
+            } else if (problem.description.length > 10000) {
+                errors.push(`description is too long (max 10,000 characters)`);
+            }
+        } else {
+            errors.push(`description must be a string or object`);
+        }
+
+        // Optional: examples must be array if present
+        if (problem.examples !== undefined && !Array.isArray(problem.examples)) {
+            errors.push(`examples must be an array`);
+        }
+
+        // Optional: hiddenTestCases must be array if present
+        if (problem.hiddenTestCases !== undefined && !Array.isArray(problem.hiddenTestCases)) {
+            errors.push(`hiddenTestCases must be an array`);
+        }
+
+        // Optional: starterCode must be object if present
+        if (problem.starterCode !== undefined && (typeof problem.starterCode !== 'object' || Array.isArray(problem.starterCode))) {
+            errors.push(`starterCode must be an object`);
+        }
+
+        // Optional: constraints must be array if present
+        if (problem.constraints !== undefined && !Array.isArray(problem.constraints)) {
+            errors.push(`constraints must be an array`);
+        }
+
+        return errors;
+    };
+
+    // ── Fix 6 — Input Sanitization ────────────────────────────────────────────
+    const sanitizeString = (str) => {
+        if (typeof str !== 'string') return str;
+        return DOMPurify.sanitize(str.trim());
     };
 
     const sanitizeProblem = (problem) => {
-        // If description is string, convert it to the expected format { text: "..." }
         let description = problem.description;
         if (typeof description === 'string') {
-            description = { text: DOMPurify.sanitize(description), notes: [] };
+            description = { text: sanitizeString(description), notes: [] };
         } else if (typeof description === 'object') {
             description = {
-                text: DOMPurify.sanitize(description.text || ""),
-                notes: (description.notes || []).map(n => DOMPurify.sanitize(n))
+                text: sanitizeString(description.text || ''),
+                notes: (description.notes || []).map(sanitizeString)
             };
         }
 
         return {
-            title: DOMPurify.sanitize(problem.title),
-            difficulty: problem.difficulty,
-            category: DOMPurify.sanitize(problem.category || ""),
-            description: description,
-            examples: problem.examples || [],
-            starterCode: problem.starterCode || {},
+            title:           sanitizeString(problem.title),
+            difficulty:      problem.difficulty,
+            category:        sanitizeString(problem.category || ''),
+            description:     description,
+            constraints:     (problem.constraints     || []).map(sanitizeString),
+            examples:        (problem.examples        || []).map(ex => ({
+                input:       sanitizeString(ex.input),
+                output:      sanitizeString(ex.output),
+                explanation: sanitizeString(ex.explanation || '')
+            })),
+            starterCode:     problem.starterCode     || {},
             hiddenTestCases: problem.hiddenTestCases || [],
-            constraints: problem.constraints || []
         };
     };
 
-    const handleFile = async (selectedFile) => {
+    // ── Main file handler — runs all Fix 1–5 checks in the correct order ──────
+    const handleFile = (selectedFile) => {
         if (!selectedFile) return;
+        setUploadError(null);
+        setFile(null);
+        setProblems([]);
 
-        if (!selectedFile.name.endsWith('.json')) {
-            toast.error('Only .json files are allowed');
+        try {
+            // Fix 2 first (cheapest check — no I/O needed)
+            validateFileSize(selectedFile);
+            // Fix 1 — type check
+            validateFileType(selectedFile);
+        } catch (err) {
+            setUploadError(err.message);
             return;
         }
 
-        if (selectedFile.size > 1 * 1024 * 1024) {
-            toast.error('File too large. Maximum size is 1MB');
-            return;
-        }
-
-        setFile(selectedFile);
         const reader = new FileReader();
+        reader.onerror = () => setUploadError('Could not read file. Please try again.');
         reader.onload = (e) => {
             try {
-                const json = JSON.parse(e.target.result);
-                if (!Array.isArray(json)) {
-                    throw new Error("JSON must be an array of problems");
-                }
-                if (json.length > 50) {
-                    throw new Error("Maximum 50 problems allowed per import");
+                // Fix 1 — actually parse as JSON (not just extension check)
+                let json;
+                try {
+                    json = JSON.parse(e.target.result);
+                } catch {
+                    throw new Error('File is not valid JSON. Please check the format');
                 }
 
+                // Fix 3 — count limit
+                validateProblemCount(json);
+
+                // Fix 4 — depth check
+                checkJsonDepth(json);
+
+                // Fix 5 — per-problem validation
                 const validated = json.map((p, idx) => {
-                    const pErrors = validateProblem(p);
+                    const pErrors = validateProblem(p, idx);
                     return {
                         original: p,
                         errors: pErrors,
@@ -302,11 +425,10 @@ export function BulkImportModal({ onClose, onRefresh }) {
                     };
                 });
 
+                setFile(selectedFile);
                 setProblems(validated);
             } catch (err) {
-                toast.error("Invalid JSON format: " + err.message);
-                setFile(null);
-                setProblems([]);
+                setUploadError(err.message);
             }
         };
         reader.readAsText(selectedFile);
@@ -319,15 +441,20 @@ export function BulkImportModal({ onClose, onRefresh }) {
         setIsImporting(true);
         try {
             const response = await axios.post('/api/problems/bulk', { problems: validProblems });
-            toast.success(response.data.message);
-            if (response.data.skipped > 0) {
-                toast(`${response.data.skipped} duplicates were skipped`, { icon: 'ℹ️' });
+            const { created, skipped, skippedInvalid, message } = response.data;
+            toast.success(message || `Successfully imported ${created} problems`);
+            if (skipped > 0) {
+                toast(`${skipped} duplicate(s) were skipped`, { icon: 'ℹ️' });
+            }
+            if (skippedInvalid > 0) {
+                toast(`${skippedInvalid} invalid problem(s) were skipped on the server`, { icon: '⚠️' });
             }
             onRefresh();
             onClose();
         } catch (err) {
             console.error(err);
-            toast.error(err.response?.data?.message || "Import failed — please check your JSON format");
+            const msg = err.response?.data?.message || err.response?.data?.error || 'Import failed — please check your JSON format';
+            toast.error(msg);
         } finally {
             setIsImporting(false);
         }
@@ -397,42 +524,60 @@ export function BulkImportModal({ onClose, onRefresh }) {
                     </div>
 
                     {/* Section 2 - Upload Area */}
-                    <div 
-                        onDragEnter={onDrag}
-                        onDragLeave={onDrag}
-                        onDragOver={onDrag}
-                        onDrop={onDrop}
-                        onClick={() => fileInputRef.current?.click()}
-                        className={`
-                            relative border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center gap-3 transition-all cursor-pointer
-                            ${dragActive ? 'border-[#22c55e] bg-[#22c55e]/5' : 'border-[#2a2a2a] hover:border-[#22c55e] hover:bg-[#22c55e]/5'}
-                        `}
-                    >
-                        <input 
-                            ref={fileInputRef}
-                            type="file" 
-                            accept=".json"
-                            onChange={(e) => handleFile(e.target.files?.[0])}
-                            className="hidden" 
-                        />
-                        
-                        {file ? (
-                          <div className="flex flex-col items-center animate-in slide-in-from-bottom-2 duration-300">
-                             <div className="w-16 h-16 bg-[#22c55e]/20 rounded-full flex items-center justify-center mb-2">
-                                <Check className="w-8 h-8 text-[#22c55e]" />
-                             </div>
-                             <p className="text-white font-medium">{file.name}</p>
-                             <p className="text-[#888888] text-xs">{(file.size / 1024).toFixed(1)} KB • Ready to check</p>
-                          </div>
-                        ) : (
-                          <>
-                             <div className="w-16 h-16 bg-[#2a2a2a] rounded-full flex items-center justify-center mb-2">
-                                <Upload className="w-8 h-8 text-[#888888]" />
-                             </div>
-                             <p className="text-white font-medium">Drag & Drop your JSON file or click to browse</p>
-                             <p className="text-[#888888] text-xs">Only .json files • Max 1MB</p>
-                          </>
-                        )}
+                    <div className="space-y-2">
+                        <div 
+                            onDragEnter={onDrag}
+                            onDragLeave={onDrag}
+                            onDragOver={onDrag}
+                            onDrop={onDrop}
+                            onClick={() => fileInputRef.current?.click()}
+                            className={`
+                                relative border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center gap-3 transition-all cursor-pointer
+                                ${
+                                    uploadError
+                                        ? 'border-[#ef4444] bg-[#ef4444]/5 hover:bg-[#ef4444]/10'
+                                        : dragActive
+                                            ? 'border-[#22c55e] bg-[#22c55e]/5'
+                                            : file
+                                                ? 'border-[#22c55e] bg-[#22c55e]/5'
+                                                : 'border-[#2a2a2a] hover:border-[#22c55e] hover:bg-[#22c55e]/5'
+                                }
+                            `}
+                        >
+                            <input 
+                                ref={fileInputRef}
+                                type="file" 
+                                accept=".json"
+                                onChange={(e) => handleFile(e.target.files?.[0])}
+                                className="hidden" 
+                            />
+                            
+                            {uploadError ? (
+                              <div className="flex flex-col items-center animate-in slide-in-from-bottom-2 duration-300">
+                                 <div className="w-16 h-16 bg-[#ef4444]/20 rounded-full flex items-center justify-center mb-2">
+                                    <AlertCircle className="w-8 h-8 text-[#ef4444]" />
+                                 </div>
+                                 <p className="text-[#ef4444] font-medium text-center">{uploadError}</p>
+                                 <p className="text-[#888888] text-xs mt-1">Click to try a different file</p>
+                              </div>
+                            ) : file ? (
+                              <div className="flex flex-col items-center animate-in slide-in-from-bottom-2 duration-300">
+                                 <div className="w-16 h-16 bg-[#22c55e]/20 rounded-full flex items-center justify-center mb-2">
+                                    <Check className="w-8 h-8 text-[#22c55e]" />
+                                 </div>
+                                 <p className="text-white font-medium">{file.name}</p>
+                                 <p className="text-[#888888] text-xs">{(file.size / 1024).toFixed(1)} KB • Valid JSON</p>
+                              </div>
+                            ) : (
+                              <>
+                                 <div className="w-16 h-16 bg-[#2a2a2a] rounded-full flex items-center justify-center mb-2">
+                                    <Upload className="w-8 h-8 text-[#888888]" />
+                                 </div>
+                                 <p className="text-white font-medium">Drag & Drop your JSON file or click to browse</p>
+                                 <p className="text-[#888888] text-xs">Only .json files • Max 1MB • Max 50 problems</p>
+                              </>
+                            )}
+                        </div>
                     </div>
 
                     {/* Section 3 - Preview Table */}

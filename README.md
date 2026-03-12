@@ -7,14 +7,15 @@ CodeHire is a high-performance web application designed for real-time collaborat
 ## ✨ Key Features
 
 - **⚡ Real-Time Collaborative Editor**: Powered by **Monaco Editor** and **Socket.io**. Experience seamless, Google Docs-style code synchronization with live typing indicators and role-based cursor tracking.
-- **� Multi-Language Code Execution**: Execute code in **JavaScript, Python, Java, and C++** via the **Piston API**, with synchronized output viewing for all participants.
-- **�🏦 Custom Problem Bank**: Create, save, and manage your private library of coding problems. Supports full CRUD, custom constraints, starter code, and **hidden test cases** for robust validation.
+- **🚀 Enhanced Multi-Language support**: Full execution support for **JavaScript, Python, Java, and C++**. High-performance runner with synchronized output and error handling for all session participants.
+- **📥 Bulk Problem Import**: Import up to 50 problems at once via **JSON**. Features a downloadable template, drag-and-drop UI, real-time validation preview, and multi-language test case support.
+- **📁 Custom Problem Bank**: Create and manage a private library of coding problems. Supports full CRUD, custom categories, starter code for multiple languages, and **hidden test cases** for automated evaluation.
 - **📊 Automated Session Scoring**: Smart scoring logic that evaluates performance based on test case pass rates, code quality, and completion time.
-- **⏳ Advanced Timer System**: Persistent session timer that tracks time across page refreshes and problem switches, ensuring accurate evaluation.
-- **📹 Live Video Calls**: High-quality integrated video conferencing using **Stream Video SDK** for face-to-face evaluation.
-- **💬 Instant Session Chat**: Real-time chat powered by **Stream Chat SDK** to share thoughts and snippets during a session.
-- **🔐 Secure Identity**: Enterprise-grade user authentication and profile management handled by **Clerk**, with seamless dashboard redirection.
-- **🎨 Premium UI/UX**: State-of-the-art interface built with **Tailwind CSS 4.0**, **DaisyUI**, and **Framer Motion**, featuring glassmorphism and smooth micro-animations.
+- **⏳ Persistent Timer System**: Advanced state management that preserves elapsed time across page refreshes and problem switches, ensuring zero-loss tracking.
+- **🛡️ Enterprise-Grade Security**: Fully hardened endpoints featuring **Rate Limiting**, **XSS Sanitization (DOMPurify)**, JSON depth checks, and atomic **Prisma Transactions** for data integrity.
+- **📹 Live Video Calls & Chat**: Integrated high-quality video conferencing and instant messaging powered by **Stream SDK**, keeping the interview focus within the app.
+- **🔐 Secure Identity**: Modern authentication handled by **Clerk**, providing seamless onboarding and secure dashboard redirection.
+- **🎨 State-of-the-Art UI**: Built with **Tailwind CSS 4.0**, **DaisyUI**, and **Framer Motion**, delivering a premium dark-mode experience with glassmorphism and smooth animations.
 
 ## 🛠️ Tech Stack
 

@@ -53,8 +53,10 @@ export const DashBoardPage = () => {
   return (
     <>
       <div className='min-h-screen bg-base-300'>
-
-        <WelcomeSection onCreateSession={() => setShowCreateModel(true)} />
+        {/* Welcome Hero Section */}
+        <div className="bg-linear-to-br from-primary/10 via-base-200 to-secondary/5 border-b border-base-300">
+          <WelcomeSection onCreateSession={() => setShowCreateModel(true)} />
+        </div>
 
         {/* Grid layout */}
         <div className='container mx-auto px-6 pb-16'>

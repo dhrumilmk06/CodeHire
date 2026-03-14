@@ -8,10 +8,10 @@ import toast from "react-hot-toast";
 import { BulkImportModal } from "../components/BulkImportModal";
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
-const DIFFICULTY_COLORS = {
-    Easy: "badge-success",
-    Medium: "badge-warning",
-    Hard: "badge-error",
+const DIFFICULTY_CLASSES = {
+    Easy: "bg-green-500 text-black text-xs font-semibold px-2 py-1 rounded-full transition-shadow duration-300 group-hover:shadow-[0_0_8px_rgba(34,197,94,0.6)]",
+    Medium: "bg-yellow-500 text-black text-xs font-semibold px-2 py-1 rounded-full transition-shadow duration-300 group-hover:shadow-[0_0_8px_rgba(234,179,8,0.6)]",
+    Hard: "bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full transition-shadow duration-300 group-hover:shadow-[0_0_8px_rgba(239,68,68,0.6)]",
 };
 
 const EMPTY_FORM = {
@@ -360,53 +360,82 @@ function ProblemFormModal({ initial, onClose, onSave, isSaving }) {
 // ── Problem Card ─────────────────────────────────────────────────────────────
 function ProblemCard({ problem, isCustom, onEdit, onDelete, isDeleting }) {
     return (
-        <div className="card bg-base-100 border border-base-300 hover:border-primary/40 hover:shadow-lg transition-all duration-200 group">
-            <div className="card-body p-5">
-                <div className="flex items-start justify-between gap-3">
-                    <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1 flex-wrap">
-                            <span className={`badge badge-sm ${DIFFICULTY_COLORS[problem.difficulty]}`}>
-                                {problem.difficulty}
+        <div
+            className="
+                bg-[#111111] border border-[#2a2a2a] rounded-xl p-5 cursor-pointer
+                relative group
+                transition-all duration-300 ease-in-out
+                hover:-translate-y-2 hover:scale-[1.02]
+                hover:border-green-500
+                hover:bg-[#1a1a1a]
+                hover:shadow-[0_0_15px_rgba(34,197,94,0.15),0_8px_25px_rgba(0,0,0,0.5)]
+                hover:z-10
+                flex flex-col h-full
+            "
+        >
+            <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-3 flex-wrap">
+                        <span className={DIFFICULTY_CLASSES[problem.difficulty]}>
+                            {problem.difficulty}
+                        </span>
+                        {isCustom && (
+                            <span className="bg-[#2a2a2a] text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1 transition-shadow duration-300 group-hover:shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+                                <Lock className="w-2.5 h-2.5" /> Custom
                             </span>
-                            {isCustom && (
-                                <span className="badge badge-sm badge-outline badge-primary gap-1">
-                                    <Lock className="w-2.5 h-2.5" /> Custom
-                                </span>
-                            )}
-                        </div>
-                        <h3 className="font-bold text-base truncate">{problem.title}</h3>
-                        {problem.category && (
-                            <p className="text-xs text-base-content/50 mt-0.5">{problem.category}</p>
                         )}
                     </div>
-
-                    {isCustom && (
-                        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                            <button
-                                className="btn btn-ghost btn-xs"
-                                onClick={() => onEdit(problem)}
-                                title="Edit"
-                            >
-                                <Pencil className="w-3.5 h-3.5" />
-                            </button>
-                            <button
-                                className="btn btn-ghost btn-xs text-error"
-                                onClick={() => onDelete(problem._id)}
-                                disabled={isDeleting}
-                                title="Delete"
-                            >
-                                {isDeleting ? <Loader2Icon className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
-                            </button>
-                        </div>
+                    
+                    <h3 className="
+                        font-bold text-white mb-1
+                        transition-colors duration-300
+                        group-hover:text-green-500
+                    ">
+                        {problem.title}
+                    </h3>
+                    
+                    {problem.category && (
+                        <p className="
+                            text-[#888888] text-sm mb-3
+                            transition-colors duration-300
+                            group-hover:text-[#aaaaaa]
+                        ">
+                            {problem.category}
+                        </p>
                     )}
                 </div>
 
-                {problem.description?.text && (
-                    <p className="text-xs text-base-content/60 line-clamp-2 mt-1">
-                        {problem.description.text}
-                    </p>
+                {isCustom && (
+                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                        <button
+                            className="btn btn-ghost btn-xs text-white hover:text-green-500"
+                            onClick={(e) => { e.stopPropagation(); onEdit(problem); }}
+                            title="Edit"
+                        >
+                            <Pencil className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                            className="btn btn-ghost btn-xs text-error"
+                            onClick={(e) => { e.stopPropagation(); onDelete(problem._id); }}
+                            disabled={isDeleting}
+                            title="Delete"
+                        >
+                            {isDeleting ? <Loader2Icon className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
+                        </button>
+                    </div>
                 )}
             </div>
+
+            {problem.description?.text && (
+                <p className="
+                    text-[#666666] text-sm line-clamp-2
+                    transition-colors duration-300
+                    group-hover:text-[#888888]
+                    mt-auto
+                ">
+                    {problem.description.text}
+                </p>
+            )}
         </div>
     );
 }

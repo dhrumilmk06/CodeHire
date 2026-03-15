@@ -1,5 +1,6 @@
 import { prisma } from "../lib/db.js";
 import { mapId } from "../lib/utils.js";
+import { getAuth } from "@clerk/express";
 
 /** GET /api/problems/find?title=... — find any custom problem by title (no ownership check, for session participants) */
 export const getProblemByTitle = async (req, res) => {
@@ -19,7 +20,7 @@ export const getProblemByTitle = async (req, res) => {
 /** GET /api/problems — get all custom problems for the current user */
 export const getMyProblems = async (req, res) => {
     try {
-        const { userId } = req.auth();
+        const { userId } = getAuth(req);
         const problems = await prisma.customProblem.findMany({
             where: { ownerClerkId: userId },
             orderBy: { createdAt: 'desc' }
@@ -33,7 +34,7 @@ export const getMyProblems = async (req, res) => {
 /** POST /api/problems — create a new custom problem */
 export const createProblem = async (req, res) => {
     try {
-        const { userId } = req.auth();
+        const { userId } = getAuth(req);
         const body = req.body;
 
         // Generate a URL-friendly ID from the title
@@ -62,7 +63,7 @@ export const createProblem = async (req, res) => {
 /** PUT /api/problems/:id — update a custom problem */
 export const updateProblem = async (req, res) => {
     try {
-        const { userId } = req.auth();
+        const { userId } = getAuth(req);
         const { id } = req.params;
 
         // Verify ownership and check existence
@@ -88,7 +89,7 @@ export const updateProblem = async (req, res) => {
 /** DELETE /api/problems/:id — delete a custom problem */
 export const deleteProblem = async (req, res) => {
     try {
-        const { userId } = req.auth();
+        const { userId } = getAuth(req);
         const { id } = req.params;
 
         // Verify ownership and check existence
@@ -182,8 +183,8 @@ export const bulkImportProblems = async (req, res) => {
     try {
         const { problems } = req.body;
 
-        // Fix 9 — Auth guard (belt-and-suspenders; protectRoute already enforces this)
-        const { userId } = req.auth();
+        // Auth guard (belt-and-suspenders; protectRoute already enforces this)
+        const { userId } = getAuth(req);
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized. Please log in." });
         }
@@ -201,7 +202,7 @@ export const bulkImportProblems = async (req, res) => {
             return res.status(400).json({ message: `Maximum 50 problems allowed. Your batch has ${problems.length}` });
         }
 
-        // Fix 5 (server-side) — Validate every problem and split valid vs invalid
+        // Validate every problem and split valid vs invalid
         const validationResults = problems.map((p, i) => ({
             problem: p,
             errors: validateProblemServer(p, i)
@@ -216,7 +217,7 @@ export const bulkImportProblems = async (req, res) => {
             });
         }
 
-        // Fix 8 — Duplicate check (database + internal)
+        // Duplicate check (database + internal)
         const { databaseDuplicates, internalDuplicates, allDuplicates, newProblems } =
             await checkDuplicates(validProblems, userId);
 
@@ -227,7 +228,7 @@ export const bulkImportProblems = async (req, res) => {
             });
         }
 
-        // Fix 10 — Save in a single transaction (all or nothing)
+        // Save in a single transaction (all or nothing)
         await prisma.$transaction(async (tx) => {
             const data = newProblems.map(p => {
                 const baseId = p.title.trim()

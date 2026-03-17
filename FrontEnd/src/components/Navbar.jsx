@@ -1,19 +1,45 @@
-import { Link, useLocation } from 'react-router'
-import { BookOpenIcon, LayoutDashboardIcon, LibraryIcon, SparklesIcon } from "lucide-react"
-import { UserButton } from '@clerk/clerk-react'
-import { motion } from 'framer-motion'
+import { Link, useLocation } from 'react-router';
+import { useUser, UserButton } from '@clerk/clerk-react';
+import { motion } from 'framer-motion';
+import { 
+    BookOpenIcon, 
+    LayoutDashboardIcon, 
+    LibraryIcon, 
+    SparklesIcon, 
+    HistoryIcon, 
+    ShieldCheckIcon,
+    UsersIcon,
+    VideoIcon
+} from "lucide-react";
 
 export const Navbar = () => {
-
+    const { user } = useUser();
     const location = useLocation();
 
-    const isActive = (path) => location.pathname === path
+    const isActive = (path) => location.pathname === path;
 
-    const navItems = [
-        { path: "/problems", label: "Problems", icon: BookOpenIcon },
-        { path: "/problem-bank", label: "Problem Bank", icon: LibraryIcon },
-        { path: "/dashboard", label: "DashBoard", icon: LayoutDashboardIcon },
-    ]
+    const role = user?.publicMetadata?.role || user?.role;
+
+    const navItems = [];
+
+    if (role === 'admin') {
+        navItems.push(
+            { path: "/admin", label: "Admin Panel", icon: ShieldCheckIcon },
+            { path: "/admin/users", label: "Users", icon: UsersIcon },
+            { path: "/admin/sessions", label: "Sessions", icon: VideoIcon }
+        );
+    } else if (role === 'host') {
+        navItems.push(
+            { path: "/problems", label: "Problems", icon: BookOpenIcon },
+            { path: "/problem-bank", label: "Problem Bank", icon: LibraryIcon },
+            { path: "/dashboard", label: "DashBoard", icon: LayoutDashboardIcon }
+        );
+    } else if (role === 'participant') {
+        navItems.push(
+            { path: "/problems", label: "Problems", icon: BookOpenIcon },
+            { path: "/my-interviews", label: "My Interviews", icon: HistoryIcon }
+        );
+    }
 
     return (
         <nav className='bg-base-100/80 backdrop-blur-md border-b border-primary/20 sticky top-0 z-50 shadow-lg'>

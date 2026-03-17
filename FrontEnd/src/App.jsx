@@ -11,10 +11,40 @@ import { ProblemsPage } from './pages/ProblemsPage';
 import { SessionPage } from './pages/SessionPage.jsx';
 import { ProblemBankPage } from './pages/ProblemBankPage.jsx';
 
-import { AdminRoute, HostRoute, ParticipantRoute } from './components/RoleRoutes.jsx';
+import { AdminRoute, HostRoute, ParticipantRoute, AuthenticatedRoute } from './components/RoleRoutes.jsx';
 import { AdminPanelPage } from './pages/AdminPanelPage.jsx';
 import { MyInterviewsPage } from './pages/MyInterviewsPage.jsx';
 import { SelectRolePage } from './pages/SelectRolePage.jsx';
+
+function LandingRedirect() {
+  const { user, isLoaded } = useUser();
+
+  if (!isLoaded) return null;
+
+  const role = user?.publicMetadata?.role || user?.role;
+
+  // First time login — no role set yet
+  if (!role || role === '') {
+    return <Navigate to="/select-role" />;
+  }
+
+  // Admin → go to admin panel
+  if (role === 'admin') {
+    return <Navigate to="/admin" />;
+  }
+
+  // Host → go to host dashboard
+  if (role === 'host') {
+    return <Navigate to="/dashboard" />;
+  }
+
+  // Participant → go to participant dashboard
+  if (role === 'participant') {
+    return <Navigate to="/my-interviews" />;
+  }
+
+  return <Navigate to="/select-role" />;
+}
 
 function App() {
 
@@ -32,7 +62,7 @@ function App() {
           {/* Public / Landing */}
           <Route path='/' element={
             <PageTransition>
-              {!isSignedIn ? <HomePage /> : <Navigate to={"/dashboard"} />}
+              {!isSignedIn ? <HomePage /> : <LandingRedirect />}
             </PageTransition>
           } />
 
@@ -61,11 +91,11 @@ function App() {
           } />
 
           <Route path='/problems' element={
-            <HostRoute>
+            <AuthenticatedRoute>
               <PageTransition>
                 <ProblemsPage />
               </PageTransition>
-            </HostRoute>
+            </AuthenticatedRoute>
           } />
 
           <Route path='/problem-bank' element={
@@ -77,11 +107,11 @@ function App() {
           } />
 
           <Route path='/problem/:id' element={
-            <HostRoute>
+            <AuthenticatedRoute>
               <PageTransition>
                 <ProblemPage />
               </PageTransition>
-            </HostRoute>
+            </AuthenticatedRoute>
           } />
 
           {/* Participant Routes */}

@@ -308,11 +308,17 @@ const SessionCard = ({ session, userClerkId, onSelect, isSelected, compareMode }
                 <p className="text-[10px] text-zinc-500 font-medium truncate">{session.participant.email}</p>
               </div>
             )}
+            {!isHost && session.host && (
+              <div className="flex flex-col -mt-1 mb-2">
+                <p className="text-xs font-bold text-secondary">Interviewer: {session.host.name}</p>
+                <p className="text-[10px] text-zinc-500 font-medium truncate">{session.host.email}</p>
+              </div>
+            )}
             <div className="flex items-center gap-2 flex-wrap">
               <span className={`badge badge-sm font-bold ${getDifficultyBadgeClass(session.difficulty)}`}>
                 {session.difficulty}
               </span>
-              {isHost && displayRating > 0 && <StarRating value={displayRating} readonly />}
+              {displayRating > 0 && <StarRating value={displayRating} readonly />}
             </div>
           </div>
         </div>
@@ -337,13 +343,13 @@ const SessionCard = ({ session, userClerkId, onSelect, isSelected, compareMode }
             <Users className="w-3.5 h-3.5 text-secondary" />
             <span>{session.participant ? "2" : "1"} Participants</span>
           </div>
-          {isHost && session.timeTaken > 0 && (
+          {session.timeTaken > 0 && (
             <div className="flex items-center gap-2">
               <TimerIcon className="w-3.5 h-3.5 text-yellow-500" />
               <span>{session.timeTaken}m</span>
             </div>
           )}
-          {isHost && session.testCasesPassed !== "0/0" && (
+          {session.testCasesPassed !== "0/0" && (
             <div className="flex items-center gap-2">
               <ClipboardCheckIcon className="w-3.5 h-3.5 text-emerald-500" />
               <span>{session.testCasesPassed}</span>

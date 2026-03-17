@@ -1,0 +1,1521 @@
+[
+  {
+    "id": "majority-element-uvpf7",
+    "title": "Majority Element",
+    "difficulty": "Easy",
+    "category": "Array • Hash Table • Divide and Conquer",
+    "description": {
+      "text": "Given an array nums of size n, return the majority element. The majority element is the element that appears more than n / 2 times. You may assume that the majority element always exists in the array.",
+      "notes": [
+        "The majority element always exists in the array.",
+        "Try Boyer-Moore Voting Algorithm for O(1) space solution.",
+        "A simple hash map approach works too but uses O(n) space."
+      ]
+    },
+    "examples": [
+      {
+        "input": "nums = [3,2,3]",
+        "output": "3",
+        "explanation": "3 appears 2 times out of 3 elements which is more than n/2 = 1.5."
+      },
+      {
+        "input": "nums = [2,2,1,1,1,2,2]",
+        "output": "2",
+        "explanation": "2 appears 4 times out of 7 elements which is more than n/2 = 3.5."
+      }
+    ],
+    "constraints": [
+      "n == nums.length",
+      "1 &lt;= n &lt;= 5 * 10^4",
+      "-10^9 &lt;= nums[i] &lt;= 10^9",
+      "The majority element always exists in the array"
+    ],
+    "starterCode": {
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass Solution {\npublic:\n    int majorityElement(vector<int>& nums) {\n        // Write your solution here\n        return 0;\n    }\n};",
+      "java": "class Solution {\n    public int majorityElement(int[] nums) {\n        // Write your solution here\n        return 0;\n    }\n}",
+      "python": "def majorityElement(nums):\n    # Write your solution here\n    pass",
+      "javascript": "function majorityElement(nums) {\n  // Write your solution here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {3,2,3};\ncout << sol.majorityElement(nums) << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {3,2,3};\nSystem.out.println(sol.majorityElement(nums));",
+          "python": "print(majorityElement([3,2,3]))",
+          "javascript": "console.log(majorityElement([3,2,3]));"
+        },
+        "description": "Basic case — [3,2,3]",
+        "expectedOutput": "3"
+      },
+      {
+        "id": 2,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {2,2,1,1,1,2,2};\ncout << sol.majorityElement(nums) << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {2,2,1,1,1,2,2};\nSystem.out.println(sol.majorityElement(nums));",
+          "python": "print(majorityElement([2,2,1,1,1,2,2]))",
+          "javascript": "console.log(majorityElement([2,2,1,1,1,2,2]));"
+        },
+        "description": "Larger array — [2,2,1,1,1,2,2]",
+        "expectedOutput": "2"
+      },
+      {
+        "id": 3,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {1};\ncout << sol.majorityElement(nums) << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {1};\nSystem.out.println(sol.majorityElement(nums));",
+          "python": "print(majorityElement([1]))",
+          "javascript": "console.log(majorityElement([1]));"
+        },
+        "description": "Single element",
+        "expectedOutput": "1"
+      },
+      {
+        "id": 4,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {5,5,5,5,5};\ncout << sol.majorityElement(nums) << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {5,5,5,5,5};\nSystem.out.println(sol.majorityElement(nums));",
+          "python": "print(majorityElement([5,5,5,5,5]))",
+          "javascript": "console.log(majorityElement([5,5,5,5,5]));"
+        },
+        "description": "All same elements",
+        "expectedOutput": "5"
+      },
+      {
+        "id": 5,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {-1,-1,-1,2,3};\ncout << sol.majorityElement(nums) << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {-1,-1,-1,2,3};\nSystem.out.println(sol.majorityElement(nums));",
+          "python": "print(majorityElement([-1,-1,-1,2,3]))",
+          "javascript": "console.log(majorityElement([-1,-1,-1,2,3]));"
+        },
+        "description": "Negative majority element",
+        "expectedOutput": "-1"
+      }
+    ],
+    "ownerClerkId": "user_3998cpBYn7jbKYUv1aYnWTUgPMo",
+    "createdAt": "2026-03-15T17:37:24.149Z",
+    "updatedAt": "2026-03-15T17:37:24.149Z"
+  },
+  {
+    "id": "move-zeroes-qedgq",
+    "title": "Move Zeroes",
+    "difficulty": "Easy",
+    "category": "Array • Two Pointers",
+    "description": {
+      "text": "Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements. Note that you must do this in-place without making a copy of the array.",
+      "notes": [
+        "You must modify the array in-place.",
+        "The relative order of non-zero elements must be maintained.",
+        "Use two pointers — one for current position and one for the next non-zero placement position."
+      ]
+    },
+    "examples": [
+      {
+        "input": "nums = [0,1,0,3,12]",
+        "output": "[1,3,12,0,0]",
+        "explanation": "All zeroes moved to end while maintaining order of 1, 3, 12."
+      },
+      {
+        "input": "nums = [0]",
+        "output": "[0]",
+        "explanation": "Single zero element stays as is."
+      }
+    ],
+    "constraints": [
+      "1 &lt;= nums.length &lt;= 10^4",
+      "-2^31 &lt;= nums[i] &lt;= 2^31 - 1"
+    ],
+    "starterCode": {
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass Solution {\npublic:\n    void moveZeroes(vector<int>& nums) {\n        // Modify nums in-place, no return needed\n    }\n};",
+      "java": "class Solution {\n    public void moveZeroes(int[] nums) {\n        // Modify nums in-place, no return needed\n    }\n}",
+      "python": "def moveZeroes(nums):\n    # Modify nums in-place, no return needed\n    pass",
+      "javascript": "function moveZeroes(nums) {\n  // Modify nums in-place, no return needed\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {0,1,0,3,12};\nsol.moveZeroes(nums);\nfor(int x : nums) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {0,1,0,3,12};\nsol.moveZeroes(nums);\nSystem.out.println(Arrays.toString(nums));",
+          "python": "import json\nnums = [0,1,0,3,12]\nmoveZeroes(nums)\nprint(json.dumps(nums, separators=(',',':')))",
+          "javascript": "let nums = [0,1,0,3,12];\nmoveZeroes(nums);\nconsole.log(JSON.stringify(nums));"
+        },
+        "description": "Standard case — [0,1,0,3,12]",
+        "expectedOutput": "[1,3,12,0,0]"
+      },
+      {
+        "id": 2,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {0};\nsol.moveZeroes(nums);\nfor(int x : nums) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {0};\nsol.moveZeroes(nums);\nSystem.out.println(Arrays.toString(nums));",
+          "python": "import json\nnums = [0]\nmoveZeroes(nums)\nprint(json.dumps(nums, separators=(',',':')))",
+          "javascript": "let nums = [0];\nmoveZeroes(nums);\nconsole.log(JSON.stringify(nums));"
+        },
+        "description": "Single zero",
+        "expectedOutput": "[0]"
+      },
+      {
+        "id": 3,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {1,2,3};\nsol.moveZeroes(nums);\nfor(int x : nums) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {1,2,3};\nsol.moveZeroes(nums);\nSystem.out.println(Arrays.toString(nums));",
+          "python": "import json\nnums = [1,2,3]\nmoveZeroes(nums)\nprint(json.dumps(nums, separators=(',',':')))",
+          "javascript": "let nums = [1,2,3];\nmoveZeroes(nums);\nconsole.log(JSON.stringify(nums));"
+        },
+        "description": "No zeroes in array",
+        "expectedOutput": "[1,2,3]"
+      },
+      {
+        "id": 4,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {0,0,0};\nsol.moveZeroes(nums);\nfor(int x : nums) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {0,0,0};\nsol.moveZeroes(nums);\nSystem.out.println(Arrays.toString(nums));",
+          "python": "import json\nnums = [0,0,0]\nmoveZeroes(nums)\nprint(json.dumps(nums, separators=(',',':')))",
+          "javascript": "let nums = [0,0,0];\nmoveZeroes(nums);\nconsole.log(JSON.stringify(nums));"
+        },
+        "description": "All zeroes",
+        "expectedOutput": "[0,0,0]"
+      },
+      {
+        "id": 5,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {1,2,3,0};\nsol.moveZeroes(nums);\nfor(int x : nums) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {1,2,3,0};\nsol.moveZeroes(nums);\nSystem.out.println(Arrays.toString(nums));",
+          "python": "import json\nnums = [1,2,3,0]\nmoveZeroes(nums)\nprint(json.dumps(nums, separators=(',',':')))",
+          "javascript": "let nums = [1,2,3,0];\nmoveZeroes(nums);\nconsole.log(JSON.stringify(nums));"
+        },
+        "description": "Zero at end already",
+        "expectedOutput": "[1,2,3,0]"
+      }
+    ],
+    "ownerClerkId": "user_3998cpBYn7jbKYUv1aYnWTUgPMo",
+    "createdAt": "2026-03-15T17:37:24.149Z",
+    "updatedAt": "2026-03-15T17:37:24.149Z"
+  },
+  {
+    "id": "spiral-matrix-1p04n",
+    "title": "Spiral Matrix",
+    "difficulty": "Medium",
+    "category": "Array • Matrix • Simulation",
+    "description": {
+      "text": "Given an m x n matrix, return all elements of the matrix in spiral order.",
+      "notes": [
+        "Think of it as peeling the outer layer of the matrix one at a time.",
+        "Keep track of four boundaries: top, bottom, left, right.",
+        "After traversing each boundary shrink it inward."
+      ]
+    },
+    "examples": [
+      {
+        "input": "matrix = [[1,2,3],[4,5,6],[7,8,9]]",
+        "output": "[1,2,3,6,9,8,7,4,5]",
+        "explanation": "Traverse right across top row, down right column, left across bottom row, up left column, then inward."
+      },
+      {
+        "input": "matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]",
+        "output": "[1,2,3,4,8,12,11,10,9,5,6,7]",
+        "explanation": "Spiral traversal of a 3x4 matrix."
+      }
+    ],
+    "constraints": [
+      "m == matrix.length",
+      "n == matrix[i].length",
+      "1 &lt;= m, n &lt;= 10",
+      "-100 &lt;= matrix[i][j] &lt;= 100"
+    ],
+    "starterCode": {
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> spiralOrder(vector<vector<int>>& matrix) {\n        // Write your solution here\n        return {};\n    }\n};",
+      "java": "import java.util.*;\n\nclass Solution {\n    public List<Integer> spiralOrder(int[][] matrix) {\n        // Write your solution here\n        return new ArrayList<>();\n    }\n}",
+      "python": "def spiralOrder(matrix):\n    # Write your solution here\n    pass",
+      "javascript": "function spiralOrder(matrix) {\n  // Write your solution here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<vector<int>> matrix = {{1,2,3},{4,5,6},{7,8,9}};\nvector<int> res = sol.spiralOrder(matrix);\nfor(int x : res) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[][] matrix = {{1,2,3},{4,5,6},{7,8,9}};\nSystem.out.println(sol.spiralOrder(matrix));",
+          "python": "import json\nprint(json.dumps(spiralOrder([[1,2,3],[4,5,6],[7,8,9]]), separators=(',',':')))",
+          "javascript": "console.log(JSON.stringify(spiralOrder([[1,2,3],[4,5,6],[7,8,9]])));"
+        },
+        "description": "3x3 matrix",
+        "expectedOutput": "[1,2,3,6,9,8,7,4,5]"
+      },
+      {
+        "id": 2,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<vector<int>> matrix = {{1,2,3,4},{5,6,7,8},{9,10,11,12}};\nvector<int> res = sol.spiralOrder(matrix);\nfor(int x : res) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[][] matrix = {{1,2,3,4},{5,6,7,8},{9,10,11,12}};\nSystem.out.println(sol.spiralOrder(matrix));",
+          "python": "import json\nprint(json.dumps(spiralOrder([[1,2,3,4],[5,6,7,8],[9,10,11,12]]), separators=(',',':')))",
+          "javascript": "console.log(JSON.stringify(spiralOrder([[1,2,3,4],[5,6,7,8],[9,10,11,12]])));"
+        },
+        "description": "3x4 matrix",
+        "expectedOutput": "[1,2,3,4,8,12,11,10,9,5,6,7]"
+      },
+      {
+        "id": 3,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<vector<int>> matrix = {{1,2,3}};\nvector<int> res = sol.spiralOrder(matrix);\nfor(int x : res) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[][] matrix = {{1,2,3}};\nSystem.out.println(sol.spiralOrder(matrix));",
+          "python": "import json\nprint(json.dumps(spiralOrder([[1,2,3]]), separators=(',',':')))",
+          "javascript": "console.log(JSON.stringify(spiralOrder([[1,2,3]])));"
+        },
+        "description": "Single row",
+        "expectedOutput": "[1,2,3]"
+      },
+      {
+        "id": 4,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<vector<int>> matrix = {{1},{2},{3}};\nvector<int> res = sol.spiralOrder(matrix);\nfor(int x : res) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[][] matrix = {{1},{2},{3}};\nSystem.out.println(sol.spiralOrder(matrix));",
+          "python": "import json\nprint(json.dumps(spiralOrder([[1],[2],[3]]), separators=(',',':')))",
+          "javascript": "console.log(JSON.stringify(spiralOrder([[1],[2],[3]])));"
+        },
+        "description": "Single column",
+        "expectedOutput": "[1,2,3]"
+      },
+      {
+        "id": 5,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<vector<int>> matrix = {{7}};\nvector<int> res = sol.spiralOrder(matrix);\nfor(int x : res) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[][] matrix = {{7}};\nSystem.out.println(sol.spiralOrder(matrix));",
+          "python": "import json\nprint(json.dumps(spiralOrder([[7]]), separators=(',',':')))",
+          "javascript": "console.log(JSON.stringify(spiralOrder([[7]])));"
+        },
+        "description": "1x1 matrix",
+        "expectedOutput": "[7]"
+      }
+    ],
+    "ownerClerkId": "user_3998cpBYn7jbKYUv1aYnWTUgPMo",
+    "createdAt": "2026-03-15T17:37:24.149Z",
+    "updatedAt": "2026-03-15T17:37:24.149Z"
+  },
+  {
+    "id": "longest-common-prefix-wu2pj",
+    "title": "Longest Common Prefix",
+    "difficulty": "Easy",
+    "category": "String • Trie",
+    "description": {
+      "text": "Write a function to find the longest common prefix string amongst an array of strings. If there is no common prefix, return an empty string \"\".",
+      "notes": [
+        "Compare characters column by column across all strings.",
+        "Stop as soon as a mismatch is found or any string runs out of characters.",
+        "If the input array is empty return an empty string."
+      ]
+    },
+    "examples": [
+      {
+        "input": "strs = [\"flower\",\"flow\",\"flight\"]",
+        "output": "\"fl\"",
+        "explanation": "The longest common prefix among all three strings is 'fl'."
+      },
+      {
+        "input": "strs = [\"dog\",\"racecar\",\"car\"]",
+        "output": "\"\"",
+        "explanation": "There is no common prefix among the input strings so return empty string."
+      }
+    ],
+    "constraints": [
+      "1 &lt;= strs.length &lt;= 200",
+      "0 &lt;= strs[i].length &lt;= 200",
+      "strs[i] consists of only lowercase English letters"
+    ],
+    "starterCode": {
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass Solution {\npublic:\n    string longestCommonPrefix(vector<string>& strs) {\n        // Write your solution here\n        return \"\";\n    }\n};",
+      "java": "class Solution {\n    public String longestCommonPrefix(String[] strs) {\n        // Write your solution here\n        return \"\";\n    }\n}",
+      "python": "def longestCommonPrefix(strs):\n    # Write your solution here\n    pass",
+      "javascript": "function longestCommonPrefix(strs) {\n  // Write your solution here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<string> strs = {\"flower\",\"flow\",\"flight\"};\ncout << sol.longestCommonPrefix(strs) << endl;",
+          "java": "Solution sol = new Solution();\nString[] strs = {\"flower\",\"flow\",\"flight\"};\nSystem.out.println(sol.longestCommonPrefix(strs));",
+          "python": "print(longestCommonPrefix(['flower','flow','flight']))",
+          "javascript": "console.log(longestCommonPrefix([\"flower\",\"flow\",\"flight\"]));"
+        },
+        "description": "Standard case — flower flow flight",
+        "expectedOutput": "fl"
+      },
+      {
+        "id": 2,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<string> strs = {\"dog\",\"racecar\",\"car\"};\ncout << sol.longestCommonPrefix(strs) << endl;",
+          "java": "Solution sol = new Solution();\nString[] strs = {\"dog\",\"racecar\",\"car\"};\nSystem.out.println(sol.longestCommonPrefix(strs));",
+          "python": "print(longestCommonPrefix(['dog','racecar','car']))",
+          "javascript": "console.log(longestCommonPrefix([\"dog\",\"racecar\",\"car\"]));"
+        },
+        "description": "No common prefix",
+        "expectedOutput": ""
+      },
+      {
+        "id": 3,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<string> strs = {\"alone\"};\ncout << sol.longestCommonPrefix(strs) << endl;",
+          "java": "Solution sol = new Solution();\nString[] strs = {\"alone\"};\nSystem.out.println(sol.longestCommonPrefix(strs));",
+          "python": "print(longestCommonPrefix(['alone']))",
+          "javascript": "console.log(longestCommonPrefix([\"alone\"]));"
+        },
+        "description": "Single string",
+        "expectedOutput": "alone"
+      },
+      {
+        "id": 4,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<string> strs = {\"test\",\"test\",\"test\"};\ncout << sol.longestCommonPrefix(strs) << endl;",
+          "java": "Solution sol = new Solution();\nString[] strs = {\"test\",\"test\",\"test\"};\nSystem.out.println(sol.longestCommonPrefix(strs));",
+          "python": "print(longestCommonPrefix(['test','test','test']))",
+          "javascript": "console.log(longestCommonPrefix([\"test\",\"test\",\"test\"]));"
+        },
+        "description": "All identical strings",
+        "expectedOutput": "test"
+      },
+      {
+        "id": 5,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<string> strs = {\"abc\",\"\",\"ab\"};\ncout << sol.longestCommonPrefix(strs) << endl;",
+          "java": "Solution sol = new Solution();\nString[] strs = {\"abc\",\"\",\"ab\"};\nSystem.out.println(sol.longestCommonPrefix(strs));",
+          "python": "print(longestCommonPrefix(['abc','','ab']))",
+          "javascript": "console.log(longestCommonPrefix([\"abc\",\"\",\"ab\"]));"
+        },
+        "description": "One empty string in array",
+        "expectedOutput": ""
+      }
+    ],
+    "ownerClerkId": "user_3998cpBYn7jbKYUv1aYnWTUgPMo",
+    "createdAt": "2026-03-15T17:37:24.149Z",
+    "updatedAt": "2026-03-15T17:37:24.149Z"
+  },
+  {
+    "id": "rotate-array-z67ao",
+    "title": "Rotate Array",
+    "difficulty": "Medium",
+    "category": "Array • Math • Two Pointers",
+    "description": {
+      "text": "Given an integer array nums, rotate the array to the right by k steps, where k is non-negative. You must do this in-place with O(1) extra space.",
+      "notes": [
+        "If k is greater than the array length, use k % nums.length to get effective rotations.",
+        "A clean trick: reverse the whole array, then reverse first k elements, then reverse remaining elements.",
+        "You must modify the array in-place."
+      ]
+    },
+    "examples": [
+      {
+        "input": "nums = [1,2,3,4,5,6,7], k = 3",
+        "output": "[5,6,7,1,2,3,4]",
+        "explanation": "Rotate right by 3 steps: [7,1,2,3,4,5,6] → [6,7,1,2,3,4,5] → [5,6,7,1,2,3,4]."
+      },
+      {
+        "input": "nums = [-1,-100,3,99], k = 2",
+        "output": "[3,99,-1,-100]",
+        "explanation": "Rotate right by 2 steps: [99,-1,-100,3] → [3,99,-1,-100]."
+      }
+    ],
+    "constraints": [
+      "1 &lt;= nums.length &lt;= 10^5",
+      "-2^31 &lt;= nums[i] &lt;= 2^31 - 1",
+      "0 &lt;= k &lt;= 10^5"
+    ],
+    "starterCode": {
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass Solution {\npublic:\n    void rotate(vector<int>& nums, int k) {\n        // Modify nums in-place, no return needed\n    }\n};",
+      "java": "class Solution {\n    public void rotate(int[] nums, int k) {\n        // Modify nums in-place, no return needed\n    }\n}",
+      "python": "def rotate(nums, k):\n    # Modify nums in-place, no return needed\n    pass",
+      "javascript": "function rotate(nums, k) {\n  // Modify nums in-place, no return needed\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {1,2,3,4,5,6,7};\nsol.rotate(nums, 3);\nfor(int x : nums) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {1,2,3,4,5,6,7};\nsol.rotate(nums, 3);\nSystem.out.println(Arrays.toString(nums));",
+          "python": "import json\nnums = [1,2,3,4,5,6,7]\nrotate(nums, 3)\nprint(json.dumps(nums, separators=(',',':')))",
+          "javascript": "let nums = [1,2,3,4,5,6,7];\nrotate(nums, 3);\nconsole.log(JSON.stringify(nums));"
+        },
+        "description": "Standard case — k=3",
+        "expectedOutput": "[5,6,7,1,2,3,4]"
+      },
+      {
+        "id": 2,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {-1,-100,3,99};\nsol.rotate(nums, 2);\nfor(int x : nums) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {-1,-100,3,99};\nsol.rotate(nums, 2);\nSystem.out.println(Arrays.toString(nums));",
+          "python": "import json\nnums = [-1,-100,3,99]\nrotate(nums, 2)\nprint(json.dumps(nums, separators=(',',':')))",
+          "javascript": "let nums = [-1,-100,3,99];\nrotate(nums, 2);\nconsole.log(JSON.stringify(nums));"
+        },
+        "description": "Negative numbers — k=2",
+        "expectedOutput": "[3,99,-1,-100]"
+      },
+      {
+        "id": 3,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {1,2,3};\nsol.rotate(nums, 3);\nfor(int x : nums) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {1,2,3};\nsol.rotate(nums, 3);\nSystem.out.println(Arrays.toString(nums));",
+          "python": "import json\nnums = [1,2,3]\nrotate(nums, 3)\nprint(json.dumps(nums, separators=(',',':')))",
+          "javascript": "let nums = [1,2,3];\nrotate(nums, 3);\nconsole.log(JSON.stringify(nums));"
+        },
+        "description": "k equals array length — no change",
+        "expectedOutput": "[1,2,3]"
+      },
+      {
+        "id": 4,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {1,2,3,4};\nsol.rotate(nums, 0);\nfor(int x : nums) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {1,2,3,4};\nsol.rotate(nums, 0);\nSystem.out.println(Arrays.toString(nums));",
+          "python": "import json\nnums = [1,2,3,4]\nrotate(nums, 0)\nprint(json.dumps(nums, separators=(',',':')))",
+          "javascript": "let nums = [1,2,3,4];\nrotate(nums, 0);\nconsole.log(JSON.stringify(nums));"
+        },
+        "description": "k=0 — no rotation",
+        "expectedOutput": "[1,2,3,4]"
+      },
+      {
+        "id": 5,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {1,2,3};\nsol.rotate(nums, 5);\nfor(int x : nums) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {1,2,3};\nsol.rotate(nums, 5);\nSystem.out.println(Arrays.toString(nums));",
+          "python": "import json\nnums = [1,2,3]\nrotate(nums, 5)\nprint(json.dumps(nums, separators=(',',':')))",
+          "javascript": "let nums = [1,2,3];\nrotate(nums, 5);\nconsole.log(JSON.stringify(nums));"
+        },
+        "description": "k larger than array length",
+        "expectedOutput": "[2,3,1]"
+      }
+    ],
+    "ownerClerkId": "user_3998cpBYn7jbKYUv1aYnWTUgPMo",
+    "createdAt": "2026-03-15T17:37:24.149Z",
+    "updatedAt": "2026-03-15T17:37:24.149Z"
+  },
+  {
+    "id": "house-robber-pmlrg",
+    "title": "House Robber",
+    "difficulty": "Medium",
+    "category": "Array • Dynamic Programming",
+    "description": {
+      "text": "You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed. The only constraint stopping you from robbing each of them is that adjacent houses have security systems connected and it will automatically contact the police if two adjacent houses were broken into on the same night. Given an integer array nums representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.",
+      "notes": [
+        "You cannot rob two adjacent houses.",
+        "Think about whether to rob the current house or skip it.",
+        "Use dynamic programming: at each step decide to rob current + best from two steps ago, or skip and take best from one step ago."
+      ]
+    },
+    "examples": [
+      {
+        "input": "nums = [1,2,3,1]",
+        "output": "4",
+        "explanation": "Rob house 1 (money=1) then rob house 3 (money=3). Total = 1 + 3 = 4."
+      },
+      {
+        "input": "nums = [2,7,9,3,1]",
+        "output": "12",
+        "explanation": "Rob house 1 (money=2), house 3 (money=9), and house 5 (money=1). Total = 2 + 9 + 1 = 12."
+      }
+    ],
+    "constraints": [
+      "1 &lt;= nums.length &lt;= 100",
+      "0 &lt;= nums[i] &lt;= 400"
+    ],
+    "starterCode": {
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass Solution {\npublic:\n    int rob(vector<int>& nums) {\n        // Write your solution here\n        return 0;\n    }\n};",
+      "java": "class Solution {\n    public int rob(int[] nums) {\n        // Write your solution here\n        return 0;\n    }\n}",
+      "python": "def rob(nums):\n    # Write your solution here\n    pass",
+      "javascript": "function rob(nums) {\n  // Write your solution here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {1,2,3,1};\ncout << sol.rob(nums) << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {1,2,3,1};\nSystem.out.println(sol.rob(nums));",
+          "python": "print(rob([1,2,3,1]))",
+          "javascript": "console.log(rob([1,2,3,1]));"
+        },
+        "description": "Standard case — [1,2,3,1]",
+        "expectedOutput": "4"
+      },
+      {
+        "id": 2,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {2,7,9,3,1};\ncout << sol.rob(nums) << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {2,7,9,3,1};\nSystem.out.println(sol.rob(nums));",
+          "python": "print(rob([2,7,9,3,1]))",
+          "javascript": "console.log(rob([2,7,9,3,1]));"
+        },
+        "description": "Standard case — [2,7,9,3,1]",
+        "expectedOutput": "12"
+      },
+      {
+        "id": 3,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {5};\ncout << sol.rob(nums) << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {5};\nSystem.out.println(sol.rob(nums));",
+          "python": "print(rob([5]))",
+          "javascript": "console.log(rob([5]));"
+        },
+        "description": "Single house",
+        "expectedOutput": "5"
+      },
+      {
+        "id": 4,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {1,10};\ncout << sol.rob(nums) << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {1,10};\nSystem.out.println(sol.rob(nums));",
+          "python": "print(rob([1,10]))",
+          "javascript": "console.log(rob([1,10]));"
+        },
+        "description": "Two houses — pick the larger",
+        "expectedOutput": "10"
+      },
+      {
+        "id": 5,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {0,0,0,0};\ncout << sol.rob(nums) << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {0,0,0,0};\nSystem.out.println(sol.rob(nums));",
+          "python": "print(rob([0,0,0,0]))",
+          "javascript": "console.log(rob([0,0,0,0]));"
+        },
+        "description": "All zeros",
+        "expectedOutput": "0"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-15T17:39:38.802Z",
+    "updatedAt": "2026-03-15T17:39:38.802Z"
+  },
+  {
+    "id": "linked-list-cycle-m4zlg",
+    "title": "Linked List Cycle",
+    "difficulty": "Easy",
+    "category": "Linked List • Two Pointers • Hash Table",
+    "description": {
+      "text": "Given head, the head of a linked list, determine if the linked list has a cycle in it. There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Return true if there is a cycle in the linked list. Otherwise, return false.",
+      "notes": [
+        "Use Floyd's Cycle Detection Algorithm (fast and slow pointers) for O(1) space.",
+        "A slow pointer moves one step at a time, a fast pointer moves two steps.",
+        "If they ever meet, there is a cycle. If fast reaches null, there is no cycle."
+      ]
+    },
+    "examples": [
+      {
+        "input": "head = [3,2,0,-4], pos = 1",
+        "output": "true",
+        "explanation": "There is a cycle in the linked list where the tail connects to the 1st node (0-indexed)."
+      },
+      {
+        "input": "head = [1,2], pos = 0",
+        "output": "true",
+        "explanation": "There is a cycle where the tail connects to the 0th node."
+      },
+      {
+        "input": "head = [1], pos = -1",
+        "output": "false",
+        "explanation": "There is no cycle in the linked list."
+      }
+    ],
+    "constraints": [
+      "The number of nodes in the list is in the range [0, 10^4]",
+      "-10^5 &lt;= Node.val &lt;= 10^5",
+      "pos is -1 or a valid index in the linked list"
+    ],
+    "starterCode": {
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nstruct ListNode {\n    int val;\n    ListNode *next;\n    ListNode(int x) : val(x), next(NULL) {}\n};\n\nclass Solution {\npublic:\n    bool hasCycle(ListNode *head) {\n        // Write your solution here\n        return false;\n    }\n};",
+      "java": "public class ListNode {\n    int val;\n    ListNode next;\n    ListNode(int x) { val = x; next = null; }\n}\n\nclass Solution {\n    public boolean hasCycle(ListNode head) {\n        // Write your solution here\n        return false;\n    }\n}",
+      "python": "class ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\ndef hasCycle(head):\n    # Write your solution here\n    pass",
+      "javascript": "function hasCycle(head) {\n  // Write your solution here\n  // Note: ListNode is available as: { val, next }\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "ListNode* n1 = new ListNode(3);\nListNode* n2 = new ListNode(2);\nListNode* n3 = new ListNode(0);\nListNode* n4 = new ListNode(-4);\nn1->next = n2; n2->next = n3; n3->next = n4; n4->next = n2;\nSolution sol;\ncout << sol.hasCycle(n1) << endl;",
+          "java": "ListNode n1 = new ListNode(3);\nListNode n2 = new ListNode(2);\nListNode n3 = new ListNode(0);\nListNode n4 = new ListNode(-4);\nn1.next = n2; n2.next = n3; n3.next = n4; n4.next = n2;\nSolution sol = new Solution();\nSystem.out.println(sol.hasCycle(n1));",
+          "python": "n1 = ListNode(3); n2 = ListNode(2); n3 = ListNode(0); n4 = ListNode(-4)\nn1.next = n2; n2.next = n3; n3.next = n4; n4.next = n2\nimport json; print(json.dumps(hasCycle(n1)))",
+          "javascript": "function ListNode(val) { this.val = val; this.next = null; }\nconst n1 = new ListNode(3);\nconst n2 = new ListNode(2);\nconst n3 = new ListNode(0);\nconst n4 = new ListNode(-4);\nn1.next = n2; n2.next = n3; n3.next = n4; n4.next = n2;\nconsole.log(hasCycle(n1));"
+        },
+        "description": "Cycle present — tail connects to index 1",
+        "expectedOutput": "true"
+      },
+      {
+        "id": 2,
+        "inputCode": {
+          "cpp": "ListNode* n1 = new ListNode(1);\nSolution sol;\ncout << sol.hasCycle(n1) << endl;",
+          "java": "ListNode n1 = new ListNode(1);\nSolution sol = new Solution();\nSystem.out.println(sol.hasCycle(n1));",
+          "python": "n1 = ListNode(1)\nimport json; print(json.dumps(hasCycle(n1)))",
+          "javascript": "function ListNode(val) { this.val = val; this.next = null; }\nconst n1 = new ListNode(1);\nconsole.log(hasCycle(n1));"
+        },
+        "description": "No cycle — single node",
+        "expectedOutput": "false"
+      },
+      {
+        "id": 3,
+        "inputCode": {
+          "cpp": "Solution sol;\ncout << sol.hasCycle(nullptr) << endl;",
+          "java": "Solution sol = new Solution();\nSystem.out.println(sol.hasCycle(null));",
+          "python": "import json; print(json.dumps(hasCycle(None)))",
+          "javascript": "console.log(hasCycle(null));"
+        },
+        "description": "Empty list — null head",
+        "expectedOutput": "false"
+      },
+      {
+        "id": 4,
+        "inputCode": {
+          "cpp": "ListNode* n1 = new ListNode(1);\nListNode* n2 = new ListNode(2);\nn1->next = n2; n2->next = n1;\nSolution sol;\ncout << sol.hasCycle(n1) << endl;",
+          "java": "ListNode n1 = new ListNode(1);\nListNode n2 = new ListNode(2);\nn1.next = n2; n2.next = n1;\nSolution sol = new Solution();\nSystem.out.println(sol.hasCycle(n1));",
+          "python": "n1 = ListNode(1); n2 = ListNode(2)\nn1.next = n2; n2.next = n1\nimport json; print(json.dumps(hasCycle(n1)))",
+          "javascript": "function ListNode(val) { this.val = val; this.next = null; }\nconst n1 = new ListNode(1);\nconst n2 = new ListNode(2);\nn1.next = n2; n2.next = n1;\nconsole.log(hasCycle(n1));"
+        },
+        "description": "Two nodes with cycle",
+        "expectedOutput": "true"
+      },
+      {
+        "id": 5,
+        "inputCode": {
+          "cpp": "ListNode* n1 = new ListNode(1);\nListNode* n2 = new ListNode(2);\nn1->next = n2;\nSolution sol;\ncout << sol.hasCycle(n1) << endl;",
+          "java": "ListNode n1 = new ListNode(1);\nListNode n2 = new ListNode(2);\nn1.next = n2;\nSolution sol = new Solution();\nSystem.out.println(sol.hasCycle(n1));",
+          "python": "n1 = ListNode(1); n2 = ListNode(2)\nn1.next = n2\nimport json; print(json.dumps(hasCycle(n1)))",
+          "javascript": "function ListNode(val) { this.val = val; this.next = null; }\nconst n1 = new ListNode(1);\nconst n2 = new ListNode(2);\nn1.next = n2;\nconsole.log(hasCycle(n1));"
+        },
+        "description": "Two nodes without cycle",
+        "expectedOutput": "false"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-15T17:39:38.802Z",
+    "updatedAt": "2026-03-15T17:39:38.802Z"
+  },
+  {
+    "id": "product-of-array-except-self-4p1f3",
+    "title": "Product of Array Except Self",
+    "difficulty": "Medium",
+    "category": "Array • Prefix Sum",
+    "description": {
+      "text": "Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i]. The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer. You must write an algorithm that runs in O(n) time and without using the division operation.",
+      "notes": [
+        "You cannot use division.",
+        "Think about prefix products and suffix products.",
+        "answer[i] = product of all elements to the LEFT of i × product of all elements to the RIGHT of i."
+      ]
+    },
+    "examples": [
+      {
+        "input": "nums = [1,2,3,4]",
+        "output": "[24,12,8,6]",
+        "explanation": "answer[0]=2*3*4=24, answer[1]=1*3*4=12, answer[2]=1*2*4=8, answer[3]=1*2*3=6."
+      },
+      {
+        "input": "nums = [-1,1,0,-3,3]",
+        "output": "[0,0,9,0,0]",
+        "explanation": "Any position where 0 exists in the array makes all other positions 0."
+      }
+    ],
+    "constraints": [
+      "2 &lt;= nums.length &lt;= 10^5",
+      "-30 &lt;= nums[i] &lt;= 30",
+      "The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer"
+    ],
+    "starterCode": {
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> productExceptSelf(vector<int>& nums) {\n        // Write your solution here\n        return {};\n    }\n};",
+      "java": "class Solution {\n    public int[] productExceptSelf(int[] nums) {\n        // Write your solution here\n        return new int[]{};\n    }\n}",
+      "python": "def productExceptSelf(nums):\n    # Write your solution here\n    pass",
+      "javascript": "function productExceptSelf(nums) {\n  // Write your solution here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {1,2,3,4};\nvector<int> res = sol.productExceptSelf(nums);\nfor(int x : res) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {1,2,3,4};\nSystem.out.println(Arrays.toString(sol.productExceptSelf(nums)));",
+          "python": "import json\nprint(json.dumps(productExceptSelf([1,2,3,4]), separators=(',',':')))",
+          "javascript": "console.log(JSON.stringify(productExceptSelf([1,2,3,4])));"
+        },
+        "description": "Standard case — [1,2,3,4]",
+        "expectedOutput": "[24,12,8,6]"
+      },
+      {
+        "id": 2,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {-1,1,0,-3,3};\nvector<int> res = sol.productExceptSelf(nums);\nfor(int x : res) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {-1,1,0,-3,3};\nSystem.out.println(Arrays.toString(sol.productExceptSelf(nums)));",
+          "python": "import json\nprint(json.dumps(productExceptSelf([-1,1,0,-3,3]), separators=(',',':')))",
+          "javascript": "console.log(JSON.stringify(productExceptSelf([-1,1,0,-3,3])));"
+        },
+        "description": "Array with zero — [-1,1,0,-3,3]",
+        "expectedOutput": "[0,0,9,0,0]"
+      },
+      {
+        "id": 3,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {3,4};\nvector<int> res = sol.productExceptSelf(nums);\nfor(int x : res) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {3,4};\nSystem.out.println(Arrays.toString(sol.productExceptSelf(nums)));",
+          "python": "import json\nprint(json.dumps(productExceptSelf([3,4]), separators=(',',':')))",
+          "javascript": "console.log(JSON.stringify(productExceptSelf([3,4])));"
+        },
+        "description": "Two elements",
+        "expectedOutput": "[4,3]"
+      },
+      {
+        "id": 4,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {1,1,1,1};\nvector<int> res = sol.productExceptSelf(nums);\nfor(int x : res) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {1,1,1,1};\nSystem.out.println(Arrays.toString(sol.productExceptSelf(nums)));",
+          "python": "import json\nprint(json.dumps(productExceptSelf([1,1,1,1]), separators=(',',':')))",
+          "javascript": "console.log(JSON.stringify(productExceptSelf([1,1,1,1])));"
+        },
+        "description": "All ones",
+        "expectedOutput": "[1,1,1,1]"
+      },
+      {
+        "id": 5,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {-1,-2,-3,-4};\nvector<int> res = sol.productExceptSelf(nums);\nfor(int x : res) cout << x << ' ';\ncout << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {-1,-2,-3,-4};\nSystem.out.println(Arrays.toString(sol.productExceptSelf(nums)));",
+          "python": "import json\nprint(json.dumps(productExceptSelf([-1,-2,-3,-4]), separators=(',',':')))",
+          "javascript": "console.log(JSON.stringify(productExceptSelf([-1,-2,-3,-4])));"
+        },
+        "description": "Negative numbers",
+        "expectedOutput": "[-24,-12,-8,-6]"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-15T17:39:38.802Z",
+    "updatedAt": "2026-03-15T17:39:38.802Z"
+  },
+  {
+    "id": "find-minimum-in-rotated-sorted-array-u1f8m",
+    "title": "Find Minimum in Rotated Sorted Array",
+    "difficulty": "Medium",
+    "category": "Array • Binary Search",
+    "description": {
+      "text": "Suppose an array of length n sorted in ascending order is rotated between 1 and n times. Given the sorted rotated array nums of unique elements, return the minimum element of this array. You must write an algorithm that runs in O(log n) time.",
+      "notes": [
+        "You must use binary search to achieve O(log n).",
+        "The minimum element is the point where the rotation happened.",
+        "If nums[mid] > nums[right], the minimum is in the right half. Otherwise it is in the left half including mid."
+      ]
+    },
+    "examples": [
+      {
+        "input": "nums = [3,4,5,1,2]",
+        "output": "1",
+        "explanation": "The original array was [1,2,3,4,5] rotated 3 times. Minimum is 1."
+      },
+      {
+        "input": "nums = [4,5,6,7,0,1,2]",
+        "output": "0",
+        "explanation": "The original array was [0,1,2,4,5,6,7] rotated 4 times. Minimum is 0."
+      },
+      {
+        "input": "nums = [11,13,15,17]",
+        "output": "11",
+        "explanation": "The original array was [11,13,15,17] rotated 4 times (no rotation). Minimum is 11."
+      }
+    ],
+    "constraints": [
+      "n == nums.length",
+      "1 &lt;= n &lt;= 5000",
+      "-5000 &lt;= nums[i] &lt;= 5000",
+      "All integers in nums are unique",
+      "nums is sorted and rotated between 1 and n times"
+    ],
+    "starterCode": {
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass Solution {\npublic:\n    int findMin(vector<int>& nums) {\n        // Write your solution here\n        return 0;\n    }\n};",
+      "java": "class Solution {\n    public int findMin(int[] nums) {\n        // Write your solution here\n        return 0;\n    }\n}",
+      "python": "def findMin(nums):\n    # Write your solution here\n    pass",
+      "javascript": "function findMin(nums) {\n  // Write your solution here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {3,4,5,1,2};\ncout << sol.findMin(nums) << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {3,4,5,1,2};\nSystem.out.println(sol.findMin(nums));",
+          "python": "print(findMin([3,4,5,1,2]))",
+          "javascript": "console.log(findMin([3,4,5,1,2]));"
+        },
+        "description": "Rotated 3 times — [3,4,5,1,2]",
+        "expectedOutput": "1"
+      },
+      {
+        "id": 2,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {4,5,6,7,0,1,2};\ncout << sol.findMin(nums) << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {4,5,6,7,0,1,2};\nSystem.out.println(sol.findMin(nums));",
+          "python": "print(findMin([4,5,6,7,0,1,2]))",
+          "javascript": "console.log(findMin([4,5,6,7,0,1,2]));"
+        },
+        "description": "Rotated 4 times — [4,5,6,7,0,1,2]",
+        "expectedOutput": "0"
+      },
+      {
+        "id": 3,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {11,13,15,17};\ncout << sol.findMin(nums) << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {11,13,15,17};\nSystem.out.println(sol.findMin(nums));",
+          "python": "print(findMin([11,13,15,17]))",
+          "javascript": "console.log(findMin([11,13,15,17]));"
+        },
+        "description": "No rotation — already sorted",
+        "expectedOutput": "11"
+      },
+      {
+        "id": 4,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {1};\ncout << sol.findMin(nums) << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {1};\nSystem.out.println(sol.findMin(nums));",
+          "python": "print(findMin([1]))",
+          "javascript": "console.log(findMin([1]));"
+        },
+        "description": "Single element",
+        "expectedOutput": "1"
+      },
+      {
+        "id": 5,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> nums = {2,1};\ncout << sol.findMin(nums) << endl;",
+          "java": "Solution sol = new Solution();\nint[] nums = {2,1};\nSystem.out.println(sol.findMin(nums));",
+          "python": "print(findMin([2,1]))",
+          "javascript": "console.log(findMin([2,1]));"
+        },
+        "description": "Two elements rotated",
+        "expectedOutput": "1"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-15T17:39:38.802Z",
+    "updatedAt": "2026-03-15T17:39:38.802Z"
+  },
+  {
+    "id": "coin-change-dzzft",
+    "title": "Coin Change",
+    "difficulty": "Medium",
+    "category": "Array • Dynamic Programming • Breadth-First Search",
+    "description": {
+      "text": "You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money. Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1. You may assume that you have an infinite number of each kind of coin.",
+      "notes": [
+        "You have unlimited supply of each coin denomination.",
+        "Use dynamic programming — build up solutions from smaller amounts to the target.",
+        "dp[i] = minimum coins needed to make amount i.",
+        "If no combination can make the amount, return -1."
+      ]
+    },
+    "examples": [
+      {
+        "input": "coins = [1,2,5], amount = 11",
+        "output": "3",
+        "explanation": "11 = 5 + 5 + 1. Three coins needed."
+      },
+      {
+        "input": "coins = [2], amount = 3",
+        "output": "-1",
+        "explanation": "Amount 3 cannot be made with only coin denomination 2."
+      },
+      {
+        "input": "coins = [1], amount = 0",
+        "output": "0",
+        "explanation": "Amount 0 requires 0 coins."
+      }
+    ],
+    "constraints": [
+      "1 &lt;= coins.length &lt;= 12",
+      "1 &lt;= coins[i] &lt;= 2^31 - 1",
+      "0 &lt;= amount &lt;= 10^4"
+    ],
+    "starterCode": {
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass Solution {\npublic:\n    int coinChange(vector<int>& coins, int amount) {\n        // Write your solution here\n        return 0;\n    }\n};",
+      "java": "class Solution {\n    public int coinChange(int[] coins, int amount) {\n        // Write your solution here\n        return 0;\n    }\n}",
+      "python": "def coinChange(coins, amount):\n    # Write your solution here\n    pass",
+      "javascript": "function coinChange(coins, amount) {\n  // Write your solution here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> coins = {1,2,5};\ncout << sol.coinChange(coins, 11) << endl;",
+          "java": "Solution sol = new Solution();\nint[] coins = {1,2,5};\nSystem.out.println(sol.coinChange(coins, 11));",
+          "python": "print(coinChange([1,2,5], 11))",
+          "javascript": "console.log(coinChange([1,2,5], 11));"
+        },
+        "description": "Standard case — coins=[1,2,5], amount=11",
+        "expectedOutput": "3"
+      },
+      {
+        "id": 2,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> coins = {2};\ncout << sol.coinChange(coins, 3) << endl;",
+          "java": "Solution sol = new Solution();\nint[] coins = {2};\nSystem.out.println(sol.coinChange(coins, 3));",
+          "python": "print(coinChange([2], 3))",
+          "javascript": "console.log(coinChange([2], 3));"
+        },
+        "description": "Impossible — coins=[2], amount=3",
+        "expectedOutput": "-1"
+      },
+      {
+        "id": 3,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> coins = {1};\ncout << sol.coinChange(coins, 0) << endl;",
+          "java": "Solution sol = new Solution();\nint[] coins = {1};\nSystem.out.println(sol.coinChange(coins, 0));",
+          "python": "print(coinChange([1], 0))",
+          "javascript": "console.log(coinChange([1], 0));"
+        },
+        "description": "Amount zero — always 0 coins",
+        "expectedOutput": "0"
+      },
+      {
+        "id": 4,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> coins = {1,5,10,25};\ncout << sol.coinChange(coins, 100) << endl;",
+          "java": "Solution sol = new Solution();\nint[] coins = {1,5,10,25};\nSystem.out.println(sol.coinChange(coins, 100));",
+          "python": "print(coinChange([1,5,10,25], 100))",
+          "javascript": "console.log(coinChange([1,5,10,25], 100));"
+        },
+        "description": "Large amount with small coins",
+        "expectedOutput": "4"
+      },
+      {
+        "id": 5,
+        "inputCode": {
+          "cpp": "Solution sol;\nvector<int> coins = {5};\ncout << sol.coinChange(coins, 5) << endl;",
+          "java": "Solution sol = new Solution();\nint[] coins = {5};\nSystem.out.println(sol.coinChange(coins, 5));",
+          "python": "print(coinChange([5], 5))",
+          "javascript": "console.log(coinChange([5], 5));"
+        },
+        "description": "Exact match with single coin",
+        "expectedOutput": "1"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-15T17:39:38.802Z",
+    "updatedAt": "2026-03-15T17:39:38.802Z"
+  },
+  {
+    "id": "reverse-string",
+    "title": "Reverse String",
+    "difficulty": "Easy",
+    "category": "String • Two Pointers",
+    "description": {
+      "text": "Write a function that reverses a string."
+    },
+    "examples": [],
+    "constraints": [],
+    "starterCode": {
+      "cpp": "#include <iostream>\n#include <vector>\n#include <string>\n#include <algorithm>\n\nusing namespace std;\n\nclass Solution {\npublic:\n    void reverseString(vector<char>& s) {\n    }\n};",
+      "java": "class Solution {\n    public static void reverseString(char[] s) {\n    }\n}",
+      "python": "def reverseString(s):\n    # Implementation here\n    pass",
+      "javascript": "function reverseString(s) {\n    // Implementation here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "int main() { Solution sol; vector<char> s={'h','e','l','l','o'}; sol.reverseString(s); cout << '['; for(int i=0; i<s.size(); i++) { cout << '\"' << s[i] << '\"' << (i==s.size()-1 ? \"\" : \",\"); } cout << ']' << endl; return 0; }",
+          "java": "class Main { public static void main(String[] x) { char[] s={'h','e','l','l','o'}; Solution.reverseString(s); StringBuilder sb = new StringBuilder(\"[\"); for(int i=0; i<s.length; i++){ sb.append(\"\\\"\").append(s[i]).append(\"\\\"\").append(i==s.length-1?\"\":\",\"); } sb.append(\"]\"); System.out.println(sb.toString()); } }",
+          "python": "import json; s=['h','e','l','l','o']; reverseString(s); print(json.dumps(s, separators=(',', ':')))",
+          "javascript": "let s=['h','e','l','l','o']; reverseString(s); console.log(JSON.stringify(s))"
+        },
+        "description": "Hello",
+        "expectedOutput": "[\"o\",\"l\",\"l\",\"e\",\"h\"]"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-17T18:08:54.385Z",
+    "updatedAt": "2026-03-17T18:20:30.149Z"
+  },
+  {
+    "id": "valid-palindrome",
+    "title": "Valid Palindrome",
+    "difficulty": "Easy",
+    "category": "String • Two Pointers",
+    "description": {
+      "text": "Return true if it is a palindrome, or false otherwise."
+    },
+    "examples": [],
+    "constraints": [],
+    "starterCode": {
+      "cpp": "#include <iostream>\n#include <string>\n#include <cctype>\n\nusing namespace std;\n\nclass Solution {\npublic:\n    bool isPalindrome(string s) {\n        return false;\n    }\n};",
+      "java": "class Solution {\n    public static boolean isPalindrome(String s) {\n        return false;\n    }\n}",
+      "python": "def isPalindrome(s):\n    # Implementation here\n    pass",
+      "javascript": "function isPalindrome(s) {\n    // Implementation here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "int main() { Solution sol; cout << (sol.isPalindrome(\"A man, a plan, a canal: Panama\") ? \"true\" : \"false\") << endl; return 0; }",
+          "java": "class Hidden { public static void main(String[] x) { System.out.println(Solution.isPalindrome(\"A man, a plan, a canal: Panama\")); } }",
+          "python": "print(str(isPalindrome(\"A man, a plan, a canal: Panama\")).lower())",
+          "javascript": "console.log(isPalindrome(\"A man, a plan, a canal: Panama\"))"
+        },
+        "description": "Palindrome",
+        "expectedOutput": "true"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-17T18:08:54.391Z",
+    "updatedAt": "2026-03-17T18:20:30.154Z"
+  },
+  {
+    "id": "maximum-subarray",
+    "title": "Maximum Subarray",
+    "difficulty": "Medium",
+    "category": "Array • Dynamic Programming",
+    "description": {
+      "text": "Find the subarray with the largest sum."
+    },
+    "examples": [],
+    "constraints": [],
+    "starterCode": {
+      "cpp": "#include <iostream>\n#include <vector>\n#include <algorithm>\n\nusing namespace std;\n\nclass Solution {\npublic:\n    int maxSubArray(vector<int>& nums) {\n        return 0;\n    }\n};",
+      "java": "class Solution {\n    public static int maxSubArray(int[] nums) {\n        return 0;\n    }\n}",
+      "python": "def maxSubArray(nums):\n    # Implementation here\n    pass",
+      "javascript": "function maxSubArray(nums) {\n    // Implementation here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "int main() { Solution sol; vector<int> n = {-2,1,-3,4,-1,2,1,-5,4}; cout << sol.maxSubArray(n) << endl; return 0; }",
+          "java": "class Hidden { public static void main(String[] x) { System.out.println(Solution.maxSubArray(new int[]{-2,1,-3,4,-1,2,1,-5,4})); } }",
+          "python": "print(maxSubArray([-2,1,-3,4,-1,2,1,-5,4]))",
+          "javascript": "console.log(maxSubArray([-2,1,-3,4,-1,2,1,-5,4]))"
+        },
+        "description": "Standard",
+        "expectedOutput": "6"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-17T18:08:54.397Z",
+    "updatedAt": "2026-03-17T18:20:30.161Z"
+  },
+  {
+    "id": "container-with-most-water",
+    "title": "Container With Most Water",
+    "difficulty": "Medium",
+    "category": "Array • Two Pointers",
+    "description": {
+      "text": "Return the maximum amount of water a container can store."
+    },
+    "examples": [],
+    "constraints": [],
+    "starterCode": {
+      "cpp": "#include <iostream>\n#include <vector>\n#include <algorithm>\n\nusing namespace std;\n\nclass Solution {\npublic:\n    int maxArea(vector<int>& height) {\n        return 0;\n    }\n};",
+      "java": "class Solution {\n    public static int maxArea(int[] height) {\n        return 0;\n    }\n}",
+      "python": "def maxArea(height):\n    # Implementation here\n    pass",
+      "javascript": "function maxArea(height) {\n    // Implementation here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "int main() { Solution sol; vector<int> h = {1,8,6,2,5,4,8,3,7}; cout << sol.maxArea(h) << endl; return 0; }",
+          "java": "class Hidden { public static void main(String[] x) { System.out.println(Solution.maxArea(new int[]{1,8,6,2,5,4,8,3,7})); } }",
+          "python": "print(maxArea([1,8,6,2,5,4,8,3,7]))",
+          "javascript": "console.log(maxArea([1,8,6,2,5,4,8,3,7]))"
+        },
+        "description": "Standard",
+        "expectedOutput": "49"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-17T18:08:54.403Z",
+    "updatedAt": "2026-03-17T18:20:30.166Z"
+  },
+  {
+    "id": "3sum",
+    "title": "3Sum",
+    "difficulty": "Medium",
+    "category": "Array • Two Pointers",
+    "description": {
+      "text": "Return all the triplets that sum to zero."
+    },
+    "examples": [],
+    "constraints": [],
+    "starterCode": {
+      "cpp": "#include <iostream>\n#include <vector>\n#include <algorithm>\n\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> threeSum(vector<int>& nums) {\n        return {};\n    }\n};",
+      "java": "class Solution {\n    public static List<List<Integer>> threeSum(int[] nums) {\n        return new ArrayList<>();\n    }\n}",
+      "python": "def threeSum(nums):\n    # Implementation here\n    pass",
+      "javascript": "function threeSum(nums) {\n    // Implementation here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "int main() { Solution sol; vector<int> n = {-1,0,1,2,-1,-4}; vector<vector<int>> res = sol.threeSum(n); cout << '['; for(int i=0; i<res.size(); i++) { cout << '['; for(int j=0; j<res[i].size(); j++) cout << res[i][j] << (j==res[i].size()-1 ? \"\" : \",\"); cout << ']' << (i==res.size()-1 ? \"\" : \",\"); } cout << ']' << endl; return 0; }",
+          "java": "class Hidden { public static void main(String[] x) { System.out.println(Solution.threeSum(new int[]{-1,0,1,2,-1,-4})); } }",
+          "python": "print(threeSum([-1,0,1,2,-1,-4]))",
+          "javascript": "console.log(JSON.stringify(threeSum([-1,0,1,2,-1,-4])))"
+        },
+        "description": "Standard",
+        "expectedOutput": "[[-1,-1,2],[-1,0,1]]"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-17T18:08:54.410Z",
+    "updatedAt": "2026-03-17T18:20:30.171Z"
+  },
+  {
+    "id": "merge-intervals",
+    "title": "Merge Intervals",
+    "difficulty": "Medium",
+    "category": "Array • Sorting",
+    "description": {
+      "text": "Merge all overlapping intervals."
+    },
+    "examples": [],
+    "constraints": [],
+    "starterCode": {
+      "cpp": "#include <iostream>\n#include <vector>\n#include <algorithm>\n\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> merge(vector<vector<int>>& intervals) {\n        return {};\n    }\n};",
+      "java": "class Solution {\n    public static int[][] merge(int[][] intervals) {\n        return new int[0][0];\n    }\n}",
+      "python": "def merge(intervals):\n    # Implementation here\n    pass",
+      "javascript": "function merge(intervals) {\n    // Implementation here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "int main() { Solution sol; vector<vector<int>> i = {{1,3},{2,6},{8,10},{15,18}}; vector<vector<int>> res = sol.merge(i); cout << '['; for(int i=0; i<res.size(); i++) { cout << '['; for(int j=0; j<res[i].size(); j++) cout << res[i][j] << (j==res[i].size()-1 ? \"\" : \",\"); cout << ']' << (i==res.size()-1 ? \"\" : \",\"); } cout << ']' << endl; return 0; }",
+          "java": "class Hidden { public static void main(String[] x) { System.out.println(Arrays.deepToString(Solution.merge(new int[][]{{1,3},{2,6},{8,10},{15,18}}))); } }",
+          "python": "print(merge([[1,3],[2,6],[8,10],[15,18]]))",
+          "javascript": "console.log(JSON.stringify(merge([[1,3],[2,6],[8,10],[15,18]])))"
+        },
+        "description": "Standard",
+        "expectedOutput": "[[1,6],[8,10],[15,18]]"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-17T18:08:54.423Z",
+    "updatedAt": "2026-03-17T18:20:30.182Z"
+  },
+  {
+    "id": "median-of-two-sorted-arrays",
+    "title": "Median of Two Sorted Arrays",
+    "difficulty": "Hard",
+    "category": "Array • Binary Search",
+    "description": {
+      "text": "Return the median of the two sorted arrays."
+    },
+    "examples": [],
+    "constraints": [],
+    "starterCode": {
+      "cpp": "#include <iostream>\n#include <vector>\n#include <iomanip>\n\nusing namespace std;\n\nclass Solution {\npublic:\n    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {\n        return 0.0;\n    }\n};",
+      "java": "class Solution {\n    public static double findMedianSortedArrays(int[] nums1, int[] nums2) {\n        return 0.0;\n    }\n}",
+      "python": "def findMedianSortedArrays(nums1, nums2):\n    # Implementation here\n    pass",
+      "javascript": "function findMedianSortedArrays(nums1, nums2) {\n    // Implementation here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "int main() { Solution sol; vector<int> n1={1,3}, n2={2}; cout << sol.findMedianSortedArrays(n1, n2) << endl; return 0; }",
+          "java": "class Hidden { public static void main(String[] x) { System.out.println(Solution.findMedianSortedArrays(new int[]{1,3}, new int[]{2})); } }",
+          "python": "print(findMedianSortedArrays([1,3], [2]))",
+          "javascript": "console.log(findMedianSortedArrays([1,3], [2]))"
+        },
+        "description": "Standard",
+        "expectedOutput": "2"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-17T18:08:54.430Z",
+    "updatedAt": "2026-03-17T18:20:30.188Z"
+  },
+  {
+    "id": "longest-substring-without-repeating-characters",
+    "title": "Longest Substring Without Repeating Characters",
+    "difficulty": "Medium",
+    "category": "String • Sliding Window",
+    "description": {
+      "text": "Find the length of the longest substring without repeating characters."
+    },
+    "examples": [],
+    "constraints": [],
+    "starterCode": {
+      "cpp": "#include <iostream>\n#include <string>\n#include <vector>\n#include <algorithm>\n\nusing namespace std;\n\nclass Solution {\npublic:\n    int lengthOfLongestSubstring(string s) {\n        return 0;\n    }\n};",
+      "java": "class Solution {\n    public static int lengthOfLongestSubstring(String s) {\n        return 0;\n    }\n}",
+      "python": "def lengthOfLongestSubstring(s):\n    # Implementation here\n    pass",
+      "javascript": "function lengthOfLongestSubstring(s) {\n    // Implementation here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "int main() { Solution sol; cout << sol.lengthOfLongestSubstring(\"abcabcbb\") << endl; return 0; }",
+          "java": "class Hidden { public static void main(String[] x) { System.out.println(Solution.lengthOfLongestSubstring(\"abcabcbb\")); } }",
+          "python": "print(lengthOfLongestSubstring(\"abcabcbb\"))",
+          "javascript": "console.log(lengthOfLongestSubstring(\"abcabcbb\"))"
+        },
+        "description": "Standard",
+        "expectedOutput": "3"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-17T18:08:54.435Z",
+    "updatedAt": "2026-03-17T18:20:30.194Z"
+  },
+  {
+    "id": "first-missing-positive",
+    "title": "First Missing Positive",
+    "difficulty": "Hard",
+    "category": "Array • Hash Table",
+    "description": {
+      "text": "Return the smallest missing positive integer."
+    },
+    "examples": [],
+    "constraints": [],
+    "starterCode": {
+      "cpp": "#include <iostream>\n#include <vector>\n#include <algorithm>\n\nusing namespace std;\n\nclass Solution {\npublic:\n    int firstMissingPositive(vector<int>& nums) {\n        return 0;\n    }\n};",
+      "java": "class Solution {\n    public static int firstMissingPositive(int[] nums) {\n        return 0;\n    }\n}",
+      "python": "def firstMissingPositive(nums):\n    # Implementation here\n    pass",
+      "javascript": "function firstMissingPositive(nums) {\n    // Implementation here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "int main() { Solution sol; vector<int> n={1,2,0}; cout << sol.firstMissingPositive(n) << endl; return 0; }",
+          "java": "class Hidden { public static void main(String[] x) { System.out.println(Solution.firstMissingPositive(new int[]{1,2,0})); } }",
+          "python": "print(firstMissingPositive([1,2,0]))",
+          "javascript": "console.log(firstMissingPositive([1,2,0]))"
+        },
+        "description": "Standard",
+        "expectedOutput": "3"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-17T18:08:54.440Z",
+    "updatedAt": "2026-03-17T18:20:30.198Z"
+  },
+  {
+    "id": "search-in-rotated-sorted-array",
+    "title": "Search in Rotated Sorted Array",
+    "difficulty": "Medium",
+    "category": "Array • Binary Search",
+    "description": {
+      "text": "Return the index of target in a rotated sorted array."
+    },
+    "examples": [],
+    "constraints": [],
+    "starterCode": {
+      "cpp": "#include <iostream>\n#include <vector>\n#include <algorithm>\n\nusing namespace std;\n\nclass Solution {\npublic:\n    int search(vector<int>& nums, int target) {\n        return -1;\n    }\n};",
+      "java": "class Solution {\n    public static int search(int[] nums, int target) {\n        return -1;\n    }\n}",
+      "python": "def search(nums, target):\n    # Implementation here\n    pass",
+      "javascript": "function search(nums, target) {\n    // Implementation here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "int main() { Solution sol; vector<int> n={4,5,6,7,0,1,2}; cout << sol.search(n, 0) << endl; return 0; }",
+          "java": "class Hidden { public static void main(String[] x) { System.out.println(Solution.search(new int[]{4,5,6,7,0,1,2}, 0)); } }",
+          "python": "print(search([4,5,6,7,0,1,2], 0))",
+          "javascript": "console.log(search([4,5,6,7,0,1,2], 0))"
+        },
+        "description": "Standard",
+        "expectedOutput": "4"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-17T18:08:54.445Z",
+    "updatedAt": "2026-03-17T18:20:30.202Z"
+  },
+  {
+    "id": "two-sum",
+    "title": "Two Sum",
+    "difficulty": "Easy",
+    "category": "Array • Hash Table",
+    "description": {
+      "text": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target."
+    },
+    "examples": [],
+    "constraints": [],
+    "starterCode": {
+      "cpp": "#include <iostream>\n#include <vector>\n#include <unordered_map>\n#include <string>\n\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        return {};\n    }\n};",
+      "java": "class Solution {\n    public static int[] twoSum(int[] nums, int target) {\n        return new int[0];\n    }\n}",
+      "python": "def twoSum(nums, target):\n    # Implementation here\n    pass",
+      "javascript": "function twoSum(nums, target) {\n    // Implementation here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "int main() { Solution sol; vector<int> v={2,7,11,15}; vector<int> res=sol.twoSum(v, 9); cout << '['; for(int i=0; i<res.size(); i++) cout << res[i] << (i==res.size()-1 ? \"\" : \",\"); cout << ']' << endl; return 0; }",
+          "java": "class Main { public static void main(String[] x) { System.out.println(java.util.Arrays.toString(Solution.twoSum(new int[]{2,7,11,15}, 9))); } }",
+          "python": "import json; print(json.dumps(twoSum([2,7,11,15], 9), separators=(',', ':')))",
+          "javascript": "console.log(JSON.stringify(twoSum([2,7,11,15], 9)))"
+        },
+        "description": "Basic case",
+        "expectedOutput": "[0,1]"
+      },
+      {
+        "id": 2,
+        "inputCode": {
+          "cpp": "int main() { Solution sol; vector<int> v={3,3}; vector<int> res=sol.twoSum(v, 6); cout << '['; for(int i=0; i<res.size(); i++) cout << res[i] << (i==res.size()-1 ? \"\" : \",\"); cout << ']' << endl; return 0; }",
+          "java": "class Main { public static void main(String[] x) { System.out.println(java.util.Arrays.toString(Solution.twoSum(new int[]{3,3}, 6))); } }",
+          "python": "import json; print(json.dumps(twoSum([3,3], 6), separators=(',', ':')))",
+          "javascript": "console.log(JSON.stringify(twoSum([3,3], 6)))"
+        },
+        "description": "Duplicate numbers",
+        "expectedOutput": "[0,1]"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-17T18:08:54.187Z",
+    "updatedAt": "2026-03-17T18:20:29.961Z"
+  },
+  {
+    "id": "trapping-rain-water",
+    "title": "Trapping Rain Water",
+    "difficulty": "Hard",
+    "category": "Array • Two Pointers • Dynamic Programming",
+    "description": {
+      "text": "Compute how much water it can trap after raining."
+    },
+    "examples": [],
+    "constraints": [],
+    "starterCode": {
+      "cpp": "#include <iostream>\n#include <vector>\n#include <algorithm>\n\nusing namespace std;\n\nclass Solution {\npublic:\n    int trap(vector<int>& height) {\n        return 0;\n    }\n};",
+      "java": "class Solution {\n    public static int trap(int[] height) {\n        return 0;\n    }\n}",
+      "python": "def trap(height):\n    # Implementation here\n    pass",
+      "javascript": "function trap(height) {\n    // Implementation here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "int main() { Solution sol; vector<int> h = {0,1,0,2,1,0,1,3,2,1,2,1}; cout << sol.trap(h) << endl; return 0; }",
+          "java": "class Hidden { public static void main(String[] x) { System.out.println(Solution.trap(new int[]{0,1,0,2,1,0,1,3,2,1,2,1})); } }",
+          "python": "print(trap([0,1,0,2,1,0,1,3,2,1,2,1]))",
+          "javascript": "console.log(trap([0,1,0,2,1,0,1,3,2,1,2,1]))"
+        },
+        "description": "Standard",
+        "expectedOutput": "6"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-17T18:08:54.417Z",
+    "updatedAt": "2026-03-17T18:20:30.177Z"
+  },
+  {
+    "id": "word-search",
+    "title": "Word Search",
+    "difficulty": "Medium",
+    "category": "Array • Backtracking • Matrix",
+    "description": {
+      "text": "Given an m x n grid of characters board and a string word, return true if word exists in the grid."
+    },
+    "examples": [],
+    "constraints": [],
+    "starterCode": {
+      "cpp": "#include <iostream>\n#include <vector>\n#include <string>\n\nusing namespace std;\n\nclass Solution {\npublic:\n    bool exist(vector<vector<char>>& board, string word) {\n        return false;\n    }\n};",
+      "java": "class Solution {\n    public static boolean exist(char[][] board, String word) {\n        return false;\n    }\n}",
+      "python": "def exist(board, word):\n    # Implementation here\n    pass",
+      "javascript": "function exist(board, word) {\n    // Implementation here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "int main() { Solution sol; vector<vector<char>> b = {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}}; cout << (sol.exist(b, \"ABCCED\") ? \"true\" : \"false\") << endl; return 0; }",
+          "java": "class Hidden { public static void main(String[] x) { System.out.println(Solution.exist(new char[][]{{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}}, \"ABCCED\")); } }",
+          "python": "print(str(exist([[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]], \"ABCCED\")).lower())",
+          "javascript": "console.log(exist([[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]], \"ABCCED\"))"
+        },
+        "description": "Standard",
+        "expectedOutput": "true"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-17T18:08:54.449Z",
+    "updatedAt": "2026-03-17T18:20:30.207Z"
+  },
+  {
+    "id": "valid-anagram",
+    "title": "Valid Anagram",
+    "difficulty": "Easy",
+    "category": "String • Hash Table",
+    "description": {
+      "text": "Given two strings s and t, return true if t is an anagram of s, and false otherwise."
+    },
+    "examples": [],
+    "constraints": [],
+    "starterCode": {
+      "cpp": "#include <iostream>\n#include <string>\n#include <algorithm>\n\nusing namespace std;\n\nclass Solution {\npublic:\n    bool isAnagram(string s, string t) {\n        return false;\n    }\n};",
+      "java": "class Solution {\n    public static boolean isAnagram(String s, String t) {\n        return false;\n    }\n}",
+      "python": "def isAnagram(s, t):\n    # Implementation here\n    pass",
+      "javascript": "function isAnagram(s, t) {\n    // Implementation here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "int main() { Solution sol; cout << (sol.isAnagram(\"anagram\", \"nagaram\") ? \"true\" : \"false\") << endl; return 0; }",
+          "java": "class Hidden { public static void main(String[] x) { System.out.println(Solution.isAnagram(\"anagram\", \"nagaram\")); } }",
+          "python": "print(str(isAnagram(\"anagram\", \"nagaram\")).lower())",
+          "javascript": "console.log(isAnagram(\"anagram\", \"nagaram\"))"
+        },
+        "description": "Standard",
+        "expectedOutput": "true"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-17T18:08:54.455Z",
+    "updatedAt": "2026-03-17T18:20:30.211Z"
+  },
+  {
+    "id": "best-time-to-buy-and-sell-stock",
+    "title": "Best Time to Buy and Sell Stock",
+    "difficulty": "Easy",
+    "category": "Array • Dynamic Programming",
+    "description": {
+      "text": "Maximize your profit from a single buy and sell."
+    },
+    "examples": [],
+    "constraints": [],
+    "starterCode": {
+      "cpp": "#include <iostream>\n#include <vector>\n#include <algorithm>\n\nusing namespace std;\n\nclass Solution {\npublic:\n    int maxProfit(vector<int>& prices) {\n        return 0;\n    }\n};",
+      "java": "class Solution {\n    public static int maxProfit(int[] prices) {\n        return 0;\n    }\n}",
+      "python": "def maxProfit(prices):\n    # Implementation here\n    pass",
+      "javascript": "function maxProfit(prices) {\n    // Implementation here\n}"
+    },
+    "expectedOutput": null,
+    "hiddenTestCases": [
+      {
+        "id": 1,
+        "inputCode": {
+          "cpp": "int main() { Solution sol; vector<int> p={7,1,5,3,6,4}; cout << sol.maxProfit(p) << endl; return 0; }",
+          "java": "class Hidden { public static void main(String[] x) { System.out.println(Solution.maxProfit(new int[]{7,1,5,3,6,4})); } }",
+          "python": "print(maxProfit([7,1,5,3,6,4]))",
+          "javascript": "console.log(maxProfit([7,1,5,3,6,4]))"
+        },
+        "description": "Standard",
+        "expectedOutput": "5"
+      }
+    ],
+    "ownerClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "createdAt": "2026-03-17T18:08:54.460Z",
+    "updatedAt": "2026-03-17T18:20:30.215Z"
+  }
+]

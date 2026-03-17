@@ -1,0 +1,89 @@
+[
+  {
+    "id": "cmmuwtaw90001u2akqbzvljry",
+    "problem": "Spiral Matrix",
+    "difficulty": "medium",
+    "hostId": "user_3998cpBYn7jbKYUv1aYnWTUgPMo",
+    "participantClerkId": null,
+    "problems": [
+      {
+        "title": "Spiral Matrix",
+        "difficulty": "medium"
+      },
+      {
+        "title": "Majority Element",
+        "difficulty": "easy"
+      }
+    ],
+    "status": "active",
+    "callId": "session_1773769921635_ljph3",
+    "notes": null,
+    "rating": 0,
+    "tags": [],
+    "decision": null,
+    "timeTaken": 0,
+    "testCasesPassed": "0/0",
+    "timings": [
+      {
+        "endTime": null,
+        "duration": null,
+        "problemId": "Spiral Matrix",
+        "startTime": "2026-03-17T17:52:03.775Z"
+      }
+    ],
+    "problemCodes": {},
+    "createdAt": "2026-03-17T17:52:01.638Z",
+    "updatedAt": "2026-03-17T17:52:03.874Z"
+  },
+  {
+    "id": "cmms1fck50002u2i4cuy1xxnv",
+    "problem": "Two Sum",
+    "difficulty": "easy",
+    "hostId": "user_3998cpBYn7jbKYUv1aYnWTUgPMo",
+    "participantClerkId": "user_3941rvrVxAajsRtU3iKBpHQK0gB",
+    "problems": [
+      {
+        "title": "Two Sum",
+        "difficulty": "easy"
+      },
+      {
+        "title": "Reverse String",
+        "difficulty": "easy"
+      }
+    ],
+    "status": "completed",
+    "callId": "session_1773596270140_2sexeq",
+    "notes": null,
+    "rating": 0,
+    "tags": [],
+    "decision": null,
+    "timeTaken": 2905,
+    "testCasesPassed": "2/2",
+    "timings": [
+      {
+        "endTime": "2026-03-17T18:02:54.875Z",
+        "duration": 174303,
+        "problemId": "Two Sum",
+        "startTime": "2026-03-15T17:37:51.584Z"
+      },
+      {
+        "endTime": "2026-03-17T18:03:01.342Z",
+        "duration": 6,
+        "problemId": "Reverse String",
+        "startTime": "2026-03-17T18:02:54.875Z"
+      },
+      {
+        "endTime": null,
+        "duration": null,
+        "problemId": "Two Sum",
+        "startTime": "2026-03-17T18:03:01.342Z"
+      }
+    ],
+    "problemCodes": {
+      "Two Sum": "function twoSum(nums, target) {\r\n  const map = new Map();\r\n  for (let i = 0; i < nums.length; i++) {\r\n    const complement = target - nums[i];\r\n    if (map.has(complement)) {\r\n        return [map.get(complement), i];\r\n    }\r\n    map.set(nums[i], i);\r\n  }\r\n  return [];\r\n}\r\n\r\n// ALWAYS use JSON.stringify for test cases to match platform strictness\r\nconsole.log(JSON.stringify(twoSum([2, 7, 11, 15], 9))); // Expected: [0,1]\r\nconsole.log(JSON.stringify(twoSum([3, 2, 4], 6))); // Expected: [1,2]\r\nconsole.log(JSON.stringify(twoSum([3, 3], 6))); // Expected: [0,1]",
+      "Reverse String": "function reverseString(s) {\n  // Write your solution here\n  \n}\n\n// Test cases\nlet test1 = [\"h\",\"e\",\"l\",\"l\",\"o\"];\nreverseString(test1);\nconsole.log(JSON.stringify(test1)); // Expected: [\"o\",\"l\",\"l\",\"e\",\"h\"]\n\nlet test2 = [\"H\",\"a\",\"n\",\"n\",\"a\",\"h\"];\nreverseString(test2);\nconsole.log(JSON.stringify(test2)); // Expected: [\"h\",\"a\",\"n\",\"n\",\"a\",\"H\"]"
+    },
+    "createdAt": "2026-03-15T17:37:50.150Z",
+    "updatedAt": "2026-03-17T18:22:12.882Z"
+  }
+]

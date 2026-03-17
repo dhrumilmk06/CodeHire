@@ -18,7 +18,7 @@ const bulkImportLimiter = rateLimit({
     standardHeaders: true,       // Return rate limit info in RateLimit-* headers
     legacyHeaders: false,
     // Fix 7 — rate limit per authenticated user, not just by IP
-    keyGenerator: (req) => req.user?.id || req.auth?.()?.userId || req.ip,
+    keyGenerator: (req) => req.user?.id || req.auth?.userId || "anonymous",
     message: { message: "Too many bulk import requests. Please try again after 1 hour" }
 });
 

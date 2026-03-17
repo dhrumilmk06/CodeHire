@@ -106,8 +106,8 @@ export async function getMyReecentSessions(req, res) {
                 ],
             },
             include: {
-                host: { select: { name: true, clerkId: true } },
-                participant: { select: { name: true, clerkId: true } }
+                host: { select: { name: true, email: true, clerkId: true } },
+                participant: { select: { name: true, email: true, clerkId: true } }
             },
             orderBy: { createdAt: 'desc' },
             take: 20

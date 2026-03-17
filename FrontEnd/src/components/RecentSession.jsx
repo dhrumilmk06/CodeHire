@@ -103,9 +103,10 @@ const ComparisonModal = ({ selectedSessions, onClose, onUpdateDecision }) => {
                 )}
 
                 <div className="p-8 space-y-8 flex-1 overflow-y-auto custom-scrollbar">
-                  <div className="space-y-2">
+                  <div className="space-y-1">
                     <h3 className="text-2xl font-black text-white truncate">{session.participant?.name || "Anonymous"}</h3>
-                    <p className="text-primary font-bold text-xs uppercase tracking-widest">
+                    <p className="text-[10px] text-zinc-500 font-bold truncate">{session.participant?.email}</p>
+                    <p className="text-primary font-bold text-[10px] uppercase tracking-widest mt-1">
                       {new Date(session.createdAt).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}
                     </p>
                   </div>
@@ -302,7 +303,10 @@ const SessionCard = ({ session, userClerkId, onSelect, isSelected, compareMode }
               )}
             </div>
             {isHost && session.participant && (
-              <p className="text-xs font-bold text-secondary -mt-1 mb-2">Candidate: {session.participant.name}</p>
+              <div className="flex flex-col -mt-1 mb-2">
+                <p className="text-xs font-bold text-secondary">Candidate: {session.participant.name}</p>
+                <p className="text-[10px] text-zinc-500 font-medium truncate">{session.participant.email}</p>
+              </div>
             )}
             <div className="flex items-center gap-2 flex-wrap">
               <span className={`badge badge-sm font-bold ${getDifficultyBadgeClass(session.difficulty)}`}>

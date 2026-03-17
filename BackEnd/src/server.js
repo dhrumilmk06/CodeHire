@@ -15,6 +15,8 @@ import { fileURLToPath } from "url";
 import chatRoutes from './routes/chatRoutes.js'
 import sessionRoutes from './routes/sessionRoutes.js'
 import problemRoutes from './routes/problemRoutes.js'
+import userRoutes from './routes/userRoutes.js'
+import adminRoutes from './routes/adminRoutes.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -109,6 +111,8 @@ app.get('/api/health', (req, res) => {
 app.use('/api/chat', chatRoutes)
 app.use('/api/sessions', sessionRoutes)
 app.use('/api/problems', problemRoutes)
+app.use('/api/users', userRoutes)
+app.use('/api/admin', adminRoutes)
 
 // Deployment: serve built frontend
 if (ENV.NODE_ENV === "production") {

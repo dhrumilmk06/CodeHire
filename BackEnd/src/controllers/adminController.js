@@ -1,3 +1,4 @@
+import { clerkClient } from "@clerk/express";
 import { prisma } from "../lib/db.js";
 import { mapId } from "../lib/utils.js";
 
@@ -46,9 +47,17 @@ export const changeUserRole = async (req, res) => {
             return res.status(400).json({ error: 'Invalid role' });
         }
 
+        // 1. Update DB
         const user = await prisma.user.update({
             where: { id: userId },
             data: { role }
+        });
+
+        // 2. Sync to Clerk (Clerk uses clerkId, not our cuid id)
+        await clerkClient.users.updateUserMetadata(user.clerkId, {
+            publicMetadata: {
+                role: role
+            }
         });
 
         return res.json({ success: true, user: mapId(user) });
@@ -69,9 +78,17 @@ export const toggleBanUser = async (req, res) => {
             return res.status(400).json({ error: 'Banned status must be a boolean' });
         }
 
+        // 1. Update DB
         const user = await prisma.user.update({
             where: { id: userId },
             data: { banned }
+        });
+
+        // 2. Clear Clerk role/access if banned
+        await clerkClient.users.updateUserMetadata(user.clerkId, {
+            publicMetadata: {
+                banned: banned
+            }
         });
 
         return res.json({ success: true, user: mapId(user) });

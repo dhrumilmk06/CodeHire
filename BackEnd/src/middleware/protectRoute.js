@@ -58,6 +58,22 @@ export const protectRoute = [
                 }
             }
 
+            // Auto-sync role and status to Clerk metadata to ensure frontend role guards have the latest data
+            if (user && user.role) {
+                try {
+                    // This creates a reliable "source of truth" in Clerk's metadata for the UI
+                    await clerkClient.users.updateUserMetadata(clerkId, {
+                        publicMetadata: { 
+                            role: user.role,
+                            banned: user.banned
+                        }
+                    });
+                } catch (syncErr) {
+                    // Log but don't fail the request - we don't want to block users if Clerk API has a hiccup
+                    console.error("⚠️ Background metadata sync to Clerk failed:", syncErr.message);
+                }
+            }
+
             req.user = mapId(user)
             next()
         } catch (error) {

@@ -358,6 +358,16 @@ export const SessionPage = () => {
                       </div>
 
                       <div className="flex items-center gap-3">
+                        {isHost ? (
+                          <div className="badge badge-outline border-primary/40 text-primary font-black uppercase tracking-widest text-[10px] py-3 px-4 shadow-[0_0_15px_rgba(var(--p),0.1)]">
+                            Interviewer Mode
+                          </div>
+                        ) : (
+                          <div className="badge badge-outline border-secondary/40 text-secondary font-black uppercase tracking-widest text-[10px] py-3 px-4">
+                            Candidate Mode
+                          </div>
+                        )}
+                        
                         {isHost && session && session.status === "active" && (
                           <TimeTracker
                             sessionId={id}

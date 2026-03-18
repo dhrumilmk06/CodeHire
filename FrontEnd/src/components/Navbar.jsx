@@ -24,9 +24,7 @@ export const Navbar = () => {
 
     if (role === 'admin') {
         navItems.push(
-            { path: "/admin", label: "Admin Panel", icon: ShieldCheckIcon },
-            { path: "/admin/users", label: "Users", icon: UsersIcon },
-            { path: "/admin/sessions", label: "Sessions", icon: VideoIcon }
+            { path: "/admin", label: "Admin Panel", icon: ShieldCheckIcon }
         );
     } else if (role === 'host') {
         navItems.push(

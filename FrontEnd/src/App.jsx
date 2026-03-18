@@ -1,7 +1,9 @@
+import { useState, useEffect } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { AnimatePresence } from "framer-motion";
 import { Toaster } from 'react-hot-toast';
 import { Navigate, Route, Routes, useLocation } from 'react-router';
+import { LoaderIcon } from "lucide-react";
 import { Navbar } from './components/Navbar.jsx';
 import { PageTransition } from './components/PageTransition.jsx';
 import { DashBoardPage } from './pages/DashBoardPage.jsx';
@@ -18,8 +20,36 @@ import { SelectRolePage } from './pages/SelectRolePage.jsx';
 
 function LandingRedirect() {
   const { user, isLoaded } = useUser();
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [retry, setRetry] = useState(0);
 
-  if (!isLoaded) return null;
+  // If clerk role is missing, we try to trigger a backend sync by fetching our profile
+  // This hits protectRoute.js which auto-syncs DB role -> Clerk metadata
+  useEffect(() => {
+    const syncRole = async () => {
+      if (isLoaded && user && !user.publicMetadata?.role) {
+        setIsSyncing(true);
+        try {
+          const { default: axiosInstance } = await import("./lib/axios");
+          await axiosInstance.get('/users/me'); // Hits protectRoute auto-sync
+          await user.reload(); // Refresh local clerk user
+        } catch (err) {
+          console.error("Sync failed:", err);
+        } finally {
+          setIsSyncing(false);
+        }
+      }
+    };
+    syncRole();
+  }, [isLoaded, user, retry]);
+
+  if (!isLoaded || isSyncing) {
+    return (
+        <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+            <LoaderIcon className="size-10 animate-spin text-primary" />
+        </div>
+    );
+  }
 
   const role = user?.publicMetadata?.role || user?.role;
 
@@ -74,6 +104,13 @@ function App() {
 
           {/* Admin Routes */}
           <Route path='/admin' element={
+            <AdminRoute>
+              <PageTransition>
+                <AdminPanelPage />
+              </PageTransition>
+            </AdminRoute>
+          } />
+          <Route path='/admin/:tab' element={
             <AdminRoute>
               <PageTransition>
                 <AdminPanelPage />

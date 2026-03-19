@@ -32,6 +32,10 @@ export const SessionPage = () => {
   const [autoScoreResults, setAutoScoreResults] = useState(null);
   const [isScoring, setIsScoring] = useState(false);
 
+  // AI Hint State
+  const [isLoadingHint, setIsLoadingHint] = useState(false);
+  const [showHintSent, setShowHintSent] = useState(false);
+
   // Track remote typing state for the indicator
   const remoteTypingTimer = useRef(null);
   const lastProblemRef = useRef(null);
@@ -263,6 +267,35 @@ export const SessionPage = () => {
       setIsRunning(false);
     }
   }
+
+  const sendHint = async () => {
+    setIsLoadingHint(true);
+    setShowHintSent(false);
+
+    try {
+      const response = await axiosInstance.post('/ai/hint', {
+        sessionId: id,
+        problemTitle: session.problem,
+        problemDescription: problemData?.description?.text || "No description provided",
+        candidateCode: code
+      });
+
+      if (response.data.hint) {
+        socket.emit('send-hint', {
+          sessionId: id,
+          hint: response.data.hint
+        });
+
+        setShowHintSent(true);
+        setTimeout(() => setShowHintSent(false), 3000);
+      }
+    } catch (error) {
+      console.error('Error sending hint:', error);
+      toast.error(error.response?.data?.error || 'Failed to send AI hint');
+    } finally {
+      setIsLoadingHint(false);
+    }
+  };
 
   const handleProblemSwitch = async (newProblem) => {
     if (!isHost || isProblemLoading) return;
@@ -535,6 +568,10 @@ export const SessionPage = () => {
                       onRunCode={handleRunCode}
                       isConnected={socketConnected}
                       remoteUser={remoteUser}
+                      isHost={isHost}
+                      onSendHint={sendHint}
+                      isLoadingHint={isLoadingHint}
+                      showHintSent={showHintSent}
                     />
                   </Panel>
 

@@ -11,9 +11,10 @@ export const generateAIResponse = async (prompt) => {
     const result = await geminiModel.generateContent(prompt)
     return result.response.text()
   } catch (error) {
+    console.error("DEBUG GEMINI ERROR:", error);
     if (error.status === 429) {
       throw new Error('AI service is busy. Please try again in a moment.')
     }
-    throw new Error('AI service unavailable')
+    throw new Error('AI service unavailable: ' + error.message)
   }
 }

@@ -10,7 +10,11 @@ export const CodeEditorPanel = ({
   onCodeChange,
   onRunCode,
   isConnected = false,
-  remoteUser = null,   // { name, role } of the remote participant if they are typing
+  remoteUser = null,
+  isHost = false,
+  onSendHint,
+  isLoadingHint,
+  showHintSent
 }) => {
   return (
     <div className="h-full bg-base-300 flex flex-col">
@@ -54,6 +58,41 @@ export const CodeEditorPanel = ({
               <span className="text-xs text-base-content/60">
                 {remoteUser.name} is typing…
               </span>
+            </div>
+          )}
+
+          {isHost && (
+            <div className="flex items-center gap-2">
+              {showHintSent && (
+                <p className="text-success text-xs font-bold flex items-center gap-1 animate-in fade-in duration-300 mr-2">
+                  ✅ Hint sent
+                </p>
+              )}
+              <button
+                onClick={onSendHint}
+                disabled={isLoadingHint}
+                className="
+                  flex items-center gap-2
+                  bg-[#111111] border border-[#22c55e]
+                  text-[#22c55e] text-xs font-bold uppercase tracking-wider
+                  h-8 px-3 rounded-lg cursor-pointer
+                  hover:bg-[#22c55e] hover:text-[#111111]
+                  transition-all duration-300
+                  disabled:opacity-50 disabled:cursor-not-allowed
+                "
+              >
+                {isLoadingHint ? (
+                  <>
+                    <Loader2Icon className="size-3 animate-spin" />
+                    <span>Generating...</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-sm">💡</span>
+                    <span>Send AI Hint</span>
+                  </>
+                )}
+              </button>
             </div>
           )}
 

@@ -62,4 +62,5 @@ model Session {
   updatedAt          DateTime @updatedAt
   host               User     @relation("HostSessions", fields: [hostId], references: [clerkId])
   participant        User?    @relation("ParticipantSessions", fields: [participantClerkId], references: [clerkId])
+  hints              Json     @default("[]")
 }

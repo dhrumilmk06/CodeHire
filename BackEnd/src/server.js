@@ -17,6 +17,7 @@ import sessionRoutes from './routes/sessionRoutes.js'
 import problemRoutes from './routes/problemRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
+import aiRoutes from './routes/aiRoutes.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -82,6 +83,13 @@ io.on("connection", (socket) => {
         socket.to(roomId).emit("problem-change", { problemTitle, difficulty });
     });
 
+    // When host sends a hint
+    socket.on('send-hint', ({ sessionId, hint }) => {
+        // Send hint ONLY to candidate in same session room
+        // NOT back to host
+        socket.to(sessionId).emit('receive-hint', { hint })
+    })
+
     socket.on("disconnect", () => {
         // Room cleanup is automatic via socket.io
     });
@@ -113,6 +121,7 @@ app.use('/api/sessions', sessionRoutes)
 app.use('/api/problems', problemRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/admin', adminRoutes)
+app.use('/api/ai', aiRoutes)
 
 // Deployment: serve built frontend
 if (ENV.NODE_ENV === "production") {

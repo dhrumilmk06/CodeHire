@@ -84,10 +84,9 @@ io.on("connection", (socket) => {
     });
 
     // When host sends a hint
-    socket.on('send-hint', ({ sessionId, hint }) => {
+    socket.on('send-hint', ({ roomId, sessionId, hint }) => {
         // Send hint ONLY to candidate in same session room
-        // NOT back to host
-        socket.to(sessionId).emit('receive-hint', { hint })
+        socket.to(roomId).emit('receive-hint', { sessionId, hint })
     })
 
     socket.on("disconnect", () => {

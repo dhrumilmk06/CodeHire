@@ -32,6 +32,11 @@ export const SessionPage = () => {
   const [autoScoreResults, setAutoScoreResults] = useState(null);
   const [isScoring, setIsScoring] = useState(false);
 
+  // AI Hint State
+  const [isLoadingHint, setIsLoadingHint] = useState(false);
+  const [showHintSent, setShowHintSent] = useState(false);
+  const [receivedHint, setReceivedHint] = useState("");
+
   // Track remote typing state for the indicator
   const remoteTypingTimer = useRef(null);
   const lastProblemRef = useRef(null);
@@ -153,11 +158,21 @@ export const SessionPage = () => {
       }
     };
 
+    const handleReceiveHint = (data) => {
+      if (data.sessionId === id && !isHost) {
+        setReceivedHint(data.hint);
+        setTimeout(() => setReceivedHint(""), 15000);
+      }
+    };
+
     socket.on('autoScoreResults', handleAutoScore);
     socket.on('scoring-started', handleScoringStarted);
+    socket.on('receive-hint', handleReceiveHint);
+
     return () => {
       socket.off('autoScoreResults', handleAutoScore);
       socket.off('scoring-started', handleScoringStarted);
+      socket.off('receive-hint', handleReceiveHint);
     };
   }, [socket, id, isHost]);
 
@@ -263,6 +278,36 @@ export const SessionPage = () => {
       setIsRunning(false);
     }
   }
+
+  const sendHint = async () => {
+    setIsLoadingHint(true);
+    setShowHintSent(false);
+
+    try {
+      const response = await axiosInstance.post('/ai/hint', {
+        sessionId: id,
+        problemTitle: session.problem,
+        problemDescription: problemData?.description?.text || "No description provided",
+        candidateCode: code
+      });
+
+      if (response.data.hint) {
+        socket.emit('send-hint', {
+          roomId: roomId,
+          sessionId: id,
+          hint: response.data.hint
+        });
+
+        setShowHintSent(true);
+        setTimeout(() => setShowHintSent(false), 3000);
+      }
+    } catch (error) {
+      console.error('Error sending hint:', error);
+      toast.error(error.response?.data?.error || 'Failed to send AI hint');
+    } finally {
+      setIsLoadingHint(false);
+    }
+  };
 
   const handleProblemSwitch = async (newProblem) => {
     if (!isHost || isProblemLoading) return;
@@ -535,6 +580,10 @@ export const SessionPage = () => {
                       onRunCode={handleRunCode}
                       isConnected={socketConnected}
                       remoteUser={remoteUser}
+                      isHost={isHost}
+                      onSendHint={sendHint}
+                      isLoadingHint={isLoadingHint}
+                      showHintSent={showHintSent}
                     />
                   </Panel>
 
@@ -613,6 +662,27 @@ export const SessionPage = () => {
             <h2 className="text-3xl font-black text-base-content uppercase tracking-[0.3em]">New Problem Loading...</h2>
             <p className="text-base-content/50 font-medium">Please wait while the host switches the problem</p>
           </div>
+        </div>
+      )}
+
+      {/* CANDIDATE HINT OVERLAY */}
+      {!isHost && receivedHint && (
+        <div className="
+          fixed top-24 left-1/2 -translate-x-1/2 z-50
+          bg-[#111111] border-2 border-[#22c55e]
+          p-6 rounded-2xl shadow-[0_0_50px_rgba(34,197,94,0.3)]
+          max-w-lg
+          animate-in slide-in-from-top-10 fade-in duration-500
+        ">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-2xl animate-bounce">💡</span>
+            <h3 className="text-[#22c55e] font-black uppercase tracking-widest text-sm">
+              Hint from Interviewer
+            </h3>
+          </div>
+          <p className="text-white text-sm leading-relaxed font-medium">
+            {receivedHint}
+          </p>
         </div>
       )}
     </div>

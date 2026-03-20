@@ -21,6 +21,7 @@ import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '../lib/axios';
 import { sessionApi } from '../api/sessions';
 import { toast } from 'react-hot-toast';
+import { motion, AnimatePresence } from "framer-motion";
 
 export const SessionPage = () => {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ export const SessionPage = () => {
   const [isProblemLoading, setIsProblemLoading] = useState(false);
   const [autoScoreResults, setAutoScoreResults] = useState(null);
   const [isScoring, setIsScoring] = useState(false);
+  const [showEndSessionModal, setShowEndSessionModal] = useState(false);
 
   // AI Hint State
   const [isLoadingHint, setIsLoadingHint] = useState(false);
@@ -371,10 +373,13 @@ export const SessionPage = () => {
   };
 
   const handleEndSession = () => {
-    if (confirm("Are you sure you want to end this session? All participants will be notified.")) {
-      endSessionMutation.mutate(id, { onSuccess: () => navigate('/dashboard') })
-    }
+    setShowEndSessionModal(true);
   }
+
+  const confirmEndSession = () => {
+    endSessionMutation.mutate(id, { onSuccess: () => navigate('/dashboard') });
+    setShowEndSessionModal(false);
+  };
 
   return (
     <div className='h-screen bg-base-100 flex flex-col'>
@@ -685,6 +690,53 @@ export const SessionPage = () => {
           </p>
         </div>
       )}
+      {/* END SESSION MODAL */}
+      <AnimatePresence>
+        {showEndSessionModal && (
+          <div className="fixed inset-0 z-9999 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowEndSessionModal(false)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-md"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-md bg-base-200 border-2 border-error/20 rounded-[32px] overflow-hidden shadow-[0_0_50px_-12px_rgba(239,68,68,0.2)]"
+            >
+              <div className="p-8">
+                <div className="size-16 bg-error/10 rounded-2xl flex items-center justify-center mb-6 ring-1 ring-error/20">
+                  <PhoneOffIcon className="size-8 text-error" />
+                </div>
+                
+                <h2 className="text-2xl font-black text-white uppercase tracking-tight mb-2">End Interview?</h2>
+                <p className="text-base-content/60 text-sm leading-relaxed mb-8">
+                  Are you sure you want to terminate this session? Both you and the candidate will be disconnected, and the report will be finalized.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button 
+                    onClick={confirmEndSession}
+                    disabled={endSessionMutation.isPending}
+                    className="flex-1 btn btn-error rounded-xl font-black uppercase tracking-widest text-[11px] h-12 shadow-[0_0_20px_rgba(239,68,68,0.2)]"
+                  >
+                    {endSessionMutation.isPending ? <Loader2Icon className="size-4 animate-spin" /> : "Terminate Session"}
+                  </button>
+                  <button 
+                    onClick={() => setShowEndSessionModal(false)}
+                    className="flex-1 btn btn-ghost hover:bg-white/5 rounded-xl font-black uppercase tracking-widest text-[11px] h-12 border border-white/5"
+                  >
+                    Keep Interviewing
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

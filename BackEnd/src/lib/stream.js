@@ -13,7 +13,7 @@ if (!apiKey || !apiSecret) {
 export const chatClient = StreamChat.getInstance(apiKey, apiSecret);
 
 //this is for video-calling
-export const streamClient = new StreamClient(apiKey, apiSecret);
+export const streamClient = new StreamClient(apiKey, apiSecret, { timeout: 10000 });
 
 //this is for viewing stream user in console
 export const serverClient = StreamChat.getInstance(apiKey, apiSecret);

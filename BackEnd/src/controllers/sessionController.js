@@ -334,11 +334,19 @@ export async function endSession(req, res) {
         if (session.hostId !== clerkId) return res.status(403).json({ message: "Only the host can end the session" });
         if (session.status === "completed") return res.status(400).json({ message: "Session is already completed" })
 
-        const call = streamClient.video.call("default", session.callId)
-        await call.delete({ hard: true })
+        try {
+            const call = streamClient.video.call("default", session.callId)
+            await call.delete({ hard: true })
+        } catch (streamErr) {
+            console.error(`Stream call removal skipped: ${streamErr.message}`);
+        }
 
-        const channel = chatClient.channel("messaging", session.callId)
-        await channel.delete()
+        try {
+            const channel = chatClient.channel("messaging", session.callId)
+            await channel.delete()
+        } catch (chatErr) {
+            console.error(`Stream chat removal skipped: ${chatErr.message}`);
+        }
 
         const updatedSession = await prisma.session.update({
             where: { id },

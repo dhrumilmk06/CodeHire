@@ -213,7 +213,7 @@ const ComparisonModal = ({ selectedSessions, onClose, onUpdateDecision }) => {
 
 // ── Session Card ──────────────────────────────────────────────────────────────
 
-const SessionCard = ({ session, userClerkId, onSelect, isSelected, compareMode }) => {
+const SessionCard = ({ session, userClerkId, onSelect, isSelected, compareMode, handleGenerateReport, reportLoading, reportStep, reportError }) => {
   const isHost = session.host?.clerkId === userClerkId;
   const queryClient = useQueryClient();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -362,14 +362,50 @@ const SessionCard = ({ session, userClerkId, onSelect, isSelected, compareMode }
             {new Date(session.updatedAt).toDateString()}
           </span>
           {isHost && (
-            <button
-              onClick={() => setIsExpanded(!isExpanded)}
-              className={`btn btn-xs rounded-lg gap-1 border-none shadow-sm transition-all duration-300 ${isExpanded ? "bg-red-500/10 text-red-400 hover:bg-red-500/20" : "bg-primary/10 text-primary hover:bg-primary/20"}`}
-            >
-              <FileTextIcon className="size-3" />
-              {isExpanded ? "Close" : "View Notes"}
-              {isExpanded ? <ChevronUpIcon className="size-3" /> : <ChevronDownIcon className="size-3" />}
-            </button>
+            <div className="flex flex-col gap-2 w-full">
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className={`btn btn-xs w-full rounded-lg gap-1 border-none shadow-sm transition-all duration-300 ${isExpanded ? "bg-red-500/10 text-red-400 hover:bg-red-500/20" : "bg-primary/10 text-primary hover:bg-primary/20"}`}
+              >
+                <FileTextIcon className="size-3" />
+                {isExpanded ? "Close" : "View Notes"}
+                {isExpanded ? <ChevronUpIcon className="size-3" /> : <ChevronDownIcon className="size-3" />}
+              </button>
+
+              <button
+                onClick={() => handleGenerateReport(session)}
+                disabled={reportLoading[session._id]}
+                className={`
+                  flex items-center justify-center gap-2
+                  w-full px-4 py-2 rounded-lg
+                  text-[10px] font-black cursor-pointer
+                  transition-all duration-300
+                  disabled:opacity-50 disabled:cursor-not-allowed
+                  ${reportError[session._id]
+                    ? 'bg-[#111111] border border-red-500 text-red-500'
+                    : 'bg-[#111111] border border-[#22c55e] text-[#22c55e] hover:bg-[#22c55e] hover:text-black shadow-[0_0_15px_-5px_rgba(34,197,94,0.3)]'
+                  }
+                `}
+              >
+                {reportLoading[session._id] ? (
+                  <>
+                    <Loader className="size-3 animate-spin" />
+                    <span className="uppercase tracking-widest">
+                      {reportStep[session._id] === 'review'
+                        ? 'AI Review...'
+                        : 'PDF...'}
+                    </span>
+                  </>
+                ) : reportError[session._id] ? (
+                  <span className="uppercase tracking-widest">❌ Failed — Try Again</span>
+                ) : (
+                  <>
+                     <LayersIcon className="size-3" />
+                    <span className="uppercase tracking-widest text-[10px]">Report Card</span>
+                  </>
+                )}
+              </button>
+            </div>
           )}
         </div>
 
@@ -477,6 +513,74 @@ export const RecentSession = ({ sessions, isLoading, userClerkId }) => {
   const [isCompareMode, setIsCompareMode] = useState(false);
   const [showCompareModal, setShowCompareModal] = useState(false);
   const [isSameProblemFilter, setIsSameProblemFilter] = useState(false);
+
+  const [reportLoading, setReportLoading] = useState({});
+  const [reportStep, setReportStep] = useState({});
+  const [reportError, setReportError] = useState({});
+
+  const handleGenerateReport = async (session) => {
+    // Set loading state for this specific session card
+    setReportLoading(prev => ({ ...prev, [session._id]: true }));
+    setReportError(prev => ({ ...prev, [session._id]: false }));
+    setReportStep(prev => ({ ...prev, [session._id]: "review" }));
+
+    try {
+      const token = await window.Clerk?.session?.getToken();
+      const apiUrl = import.meta.env.VITE_API_URL || "";
+
+      // Step 1 — Generate AI Code Review
+      const reviewRes = await fetch(`${apiUrl}/ai/review`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          sessionId: session._id,
+          problemTitle: session.problem || "Coding Problem",
+          problemDescription: "",
+          candidateCode: Object.values(session.problemCodes || {})[0] || "",
+          score: session.testCasesPassed || "0/0",
+          timeTaken: session.timeTaken ? `${session.timeTaken}:00` : "12:00",
+          language: "JavaScript",
+        }),
+      });
+
+      if (!reviewRes.ok) throw new Error("AI review failed");
+
+      // Step 2 — Generate PDF
+      setReportStep(prev => ({ ...prev, [session._id]: "pdf" }));
+
+      const reportRes = await fetch(`${apiUrl}/reports/${session._id}/generate`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!reportRes.ok) throw new Error("PDF generation failed");
+
+      // Step 3 — Auto download PDF
+      const blob = await reportRes.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `CodeHire-Report-${session._id.slice(0, 8)}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Report generation error:", error);
+      setReportError(prev => ({ ...prev, [session._id]: true }));
+
+      // Reset error after 3 seconds
+      setTimeout(() => {
+        setReportError(prev => ({ ...prev, [session._id]: false }));
+      }, 3000);
+    } finally {
+      setReportLoading(prev => ({ ...prev, [session._id]: false }));
+      setReportStep(prev => ({ ...prev, [session._id]: null }));
+    }
+  };
 
   const queryClient = useQueryClient();
 
@@ -628,6 +732,10 @@ export const RecentSession = ({ sessions, isLoading, userClerkId }) => {
               onSelect={handleSelect}
               isSelected={selectedIds.includes(session._id)}
               compareMode={isCompareMode}
+              handleGenerateReport={handleGenerateReport}
+              reportLoading={reportLoading}
+              reportStep={reportStep}
+              reportError={reportError}
             />
           ))}
         </div>

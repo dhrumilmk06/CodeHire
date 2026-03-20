@@ -18,6 +18,7 @@ import problemRoutes from './routes/problemRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
 import aiRoutes from './routes/aiRoutes.js'
+import reportRoutes from './routes/reportRoutes.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -125,6 +126,10 @@ app.use('/api/problems', problemRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/ai', aiRoutes)
+app.use('/api/reports', reportRoutes)
+
+// Serve reports folder statically
+app.use('/reports', express.static('reports'))
 
 // Deployment: serve built frontend
 if (ENV.NODE_ENV === "production") {

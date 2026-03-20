@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router";
 import { getDifficultyBadgeClass } from "../lib/utils";
 import toast from "react-hot-toast";
+import HostSessionCard from "./dashboard/HostSessionCard";
 
 export const ActiveSessions = ({ sessions, isLoading, isUserInSession }) => {
   return (
@@ -20,7 +21,7 @@ export const ActiveSessions = ({ sessions, isLoading, isUserInSession }) => {
         <div className="flex items-center justify-between mb-6">
           {/* TITLE AND ICON */}
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-primary to-secondary rounded-xl">
+            <div className="p-2 bg-linear-to-br from-primary to-secondary rounded-xl">
               <ZapIcon className="size-5" />
             </div>
             <h2 className="text-2xl font-black">Live Sessions</h2>
@@ -50,7 +51,7 @@ export const ActiveSessions = ({ sessions, isLoading, isUserInSession }) => {
 
                     {/* LEFT SIDE */}
                     <div className="flex items-center gap-4 flex-1">
-                      <div className="relative size-14 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                      <div className="relative size-14 rounded-xl bg-linear-to-br from-primary to-secondary flex items-center justify-center">
                         <Code2Icon className="size-7 text-white" />
                         <div className="absolute -top-1 -right-1 size-4 bg-success rounded-full border-2 border-base-100 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.4)]" />
                       </div>
@@ -87,17 +88,7 @@ export const ActiveSessions = ({ sessions, isLoading, isUserInSession }) => {
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => {
-                          const link = `${window.location.origin}/session/${session._id}`;
-                          navigator.clipboard.writeText(link);
-                          toast.success("Invite link copied!");
-                        }}
-                        className="btn btn-ghost btn-sm btn-square"
-                        title="Copy Invite Link"
-                      >
-                        <LinkIcon className="size-4" />
-                      </button>
+                       {session.session_code && <HostSessionCard session={session} />}
 
                       {session.participant && !isUserInSession(session) ? (
                         <button className="btn btn-disabled btn-sm">Full</button>
@@ -114,7 +105,7 @@ export const ActiveSessions = ({ sessions, isLoading, isUserInSession }) => {
             })
           ) : (
             <div className="text-center py-16">
-              <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl flex items-center justify-center">
+              <div className="w-20 h-20 mx-auto mb-4 bg-linear-to-br from-primary/20 to-secondary/20 rounded-3xl flex items-center justify-center">
                 <SparklesIcon className="w-10 h-10 text-primary/50" />
               </div>
               <p className="text-lg font-semibold opacity-70 mb-1">No active sessions</p>

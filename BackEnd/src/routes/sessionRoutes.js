@@ -7,6 +7,8 @@ import {
     getMyReecentSessions,
     getSessionById,
     joinSession,
+    joinSessionByCode,
+    joinSessionLimiter,
     getNotes,
     saveNotes,
     setDecision,
@@ -25,6 +27,7 @@ router.post("/", protectRoute, createSession);
 router.get("/active", protectRoute, getActiveSessions);
 router.get("/my-recent", protectRoute, getMyReecentSessions);
 
+router.post("/join", protectRoute, joinSessionLimiter, joinSessionByCode);
 router.get("/:id", protectRoute, getSessionById);
 router.post("/:id/join", protectRoute, joinSession);
 router.post("/:id/end", protectRoute, endSession);

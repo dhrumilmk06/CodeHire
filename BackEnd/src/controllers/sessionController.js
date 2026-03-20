@@ -4,11 +4,34 @@ import { mapId, getFileExecution } from "../lib/utils.js";
 import { inngest } from "../lib/inngest.js";
 import { emitToRoom } from "../lib/socket.js";
 import { runAutoScore } from "../lib/scoring.js";
+import { generateSessionCode, extractSessionIdFromUrl, detectInputType } from "../utils/sessionHelpers.js";
+import rateLimit from 'express-rate-limit';
 
 export async function createSession(req, res) {
     try {
-        const { problems } = req.body
-        const clerkId = req.user.clerkId; // Using clerkId for relationships
+        let { problems, problemIds, hostId } = req.body
+        const clerkId = req.user?.clerkId || hostId; // Use clerkId from auth or hostId from body (Postman)
+
+        // If 'problemIds' are provided instead of full 'problems' objects (as suggested in some READMEs)
+        if (!problems && problemIds) {
+            const ids = Array.isArray(problemIds) ? problemIds : [problemIds];
+            // Try to fetch them from our CustomProblem table first
+            const foundProblems = await prisma.customProblem.findMany({
+                where: { id: { in: ids } }
+            });
+            
+            // Map found problems or create placeholder objects if not found
+            problems = ids.map(id => {
+                const found = foundProblems.find(p => p.id === id);
+                return found ? { 
+                    title: found.title, 
+                    difficulty: found.difficulty.toLowerCase() 
+                } : { 
+                    title: id, 
+                    difficulty: "medium" // fallback
+                };
+            });
+        }
 
         if (!problems || !Array.isArray(problems) || problems.length === 0) {
             return res.status(400).json({ message: "At least one problem is required" })
@@ -24,6 +47,18 @@ export async function createSession(req, res) {
 
         const callId = `session_${Date.now()}_${Math.random().toString(36).substring(7)}`;
 
+        // Generate unique session code
+        let sessionCode;
+        let isUnique = false;
+
+        while (!isUnique) {
+            sessionCode = generateSessionCode();
+            const existing = await prisma.session.findUnique({
+                where: { session_code: sessionCode }
+            });
+            if (!existing) isUnique = true;
+        }
+
         console.log("Creating session in DB for host:", clerkId);
         const session = await prisma.session.create({
             data: {
@@ -31,6 +66,7 @@ export async function createSession(req, res) {
                 problem: activeProblem,
                 difficulty: activeDifficulty,
                 hostId: clerkId,
+                session_code: sessionCode,
                 callId,
                 timings: [],
                 problemCodes: {}
@@ -63,7 +99,10 @@ export async function createSession(req, res) {
         await channel.create();
         console.log("Stream session fully created.");
 
-        res.status(201).json({ session: mapId(session) });
+        res.status(201).json({
+            success: true,
+            session: mapId(session)
+        });
     } catch (error) {
         console.error("❌ Error in createSession controller:", error);
         res.status(500).json({ message: "Internal Server Error", error: error.message });
@@ -169,6 +208,118 @@ export async function joinSession(req, res) {
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
+// Rate limiter — max 10 join attempts per minute per IP
+export const joinSessionLimiter = rateLimit({
+    windowMs: 60 * 1000,       // 1 minute
+    max: 10,                    // max 10 attempts
+    message: {
+        error: 'Too many join attempts. Please wait a minute and try again.'
+    }
+})
+
+// POST /api/sessions/join
+export const joinSessionByCode = async (req, res) => {
+    try {
+        const { code, link, session_code } = req.body;
+        const finalCode = code || session_code;
+        const clerkId = req.user?.clerkId;
+
+        // Must provide either code or link
+        if (!finalCode && !link) {
+            return res.status(400).json({
+                error: 'Please provide a session code or link'
+            })
+        }
+
+        let session = null
+
+        if (finalCode) {
+            // Join by short code
+            // Always normalize to UPPERCASE before lookup
+            const normalizedCode = finalCode.trim().toUpperCase()
+
+            session = await prisma.session.findUnique({
+                where: { session_code: normalizedCode },
+                include: { host: { select: { id: true, name: true, clerkId: true } } }
+            })
+
+        } else if (link) {
+            // Join by full URL — extract session ID
+            const inputType = detectInputType(link)
+
+            if (inputType !== 'url') {
+                return res.status(400).json({
+                    error: 'Invalid link format. Please paste a valid session URL.'
+                })
+            }
+
+            const sessionId = extractSessionIdFromUrl(link)
+
+            if (!sessionId) {
+                return res.status(400).json({
+                    error: 'Could not extract session ID from this link.'
+                })
+            }
+
+            session = await prisma.session.findUnique({
+                where: { id: sessionId },
+                include: { host: { select: { id: true, name: true, clerkId: true } } }
+            })
+        }
+
+        // Session not found
+        if (!session) {
+            return res.status(404).json({
+                error: 'Invalid link or code. Please check and try again.'
+            })
+        }
+
+        // Session has ended
+        if (session.status === 'ended' || session.status === 'completed') {
+            return res.status(400).json({
+                error: 'This session has ended and is no longer available.'
+            })
+        }
+
+        // Check if participant trying to join their own hosted session
+        if (session.hostId === clerkId) {
+            return res.status(400).json({
+                error: 'You cannot join a session you are hosting.'
+            })
+        }
+
+        // Check if session is full
+        if (session.participantClerkId && session.participantClerkId !== clerkId) {
+            return res.status(400).json({
+                error: 'This session is full. Maximum 2 participants allowed.'
+            })
+        }
+
+        // Update session with participant
+        await prisma.session.update({
+            where: { id: session.id },
+            data: { participantClerkId: clerkId }
+        })
+
+        // Also add to stream chat channel
+        const channel = chatClient.channel("messaging", session.callId)
+        await channel.addMembers([clerkId]);
+
+        return res.json({
+            success: true,
+            sessionId: session.id,
+            redirectUrl: `/session/${session.id}`,
+            hostName: session.host.name
+        })
+
+    } catch (error) {
+        console.error('Join session error:', error)
+        return res.status(500).json({
+            error: 'Could not join session. Please try again.'
+        })
+    }
+}
 
 export async function endSession(req, res) {
     try {

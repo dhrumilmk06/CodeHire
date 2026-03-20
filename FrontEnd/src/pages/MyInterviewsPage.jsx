@@ -3,6 +3,7 @@ import { useMyRecentSessions } from '../hooks/useSessions';
 import { ParticipantWelcomeSection } from '../components/ParticipantWelcomeSection.jsx';
 import { ParticipantStats } from '../components/ParticipantStats.jsx';
 import { RecentSession } from '../components/RecentSession.jsx';
+import QuickJoinCard from '../components/dashboard/QuickJoinCard';
 
 export const MyInterviewsPage = () => {
   const { user } = useUser();
@@ -49,6 +50,7 @@ export const MyInterviewsPage = () => {
 
           {/* Sessions List */}
           <div className="lg:col-span-3 -mt-12">
+            <QuickJoinCard />
             <RecentSession
               sessions={sessions}
               isLoading={isLoading}

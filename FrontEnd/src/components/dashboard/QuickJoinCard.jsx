@@ -50,7 +50,7 @@ export default function QuickJoinCard() {
   }
 
   return (
-    <div className="
+    <div id="quick-join" className="
       bg-base-200 border-2 border-base-300
       rounded-xl p-6 mb-6
       transition-all duration-300

@@ -64,4 +64,7 @@ model Session {
   participant        User?    @relation("ParticipantSessions", fields: [participantClerkId], references: [clerkId])
   session_code       String?  @unique
   hints              Json     @default("[]")
+  ai_review        Json?
+  report_generated Boolean @default(false)
+  report_url       String?
 }

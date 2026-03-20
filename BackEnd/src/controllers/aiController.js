@@ -83,3 +83,100 @@ Hint:
     })
   }
 }
+
+export const generateCodeReview = async (req, res) => {
+  try {
+    const {
+      sessionId,
+      problemTitle,
+      problemDescription,
+      candidateCode,
+      score,
+      timeTaken,
+      language
+    } = req.body
+
+    // Only host can generate review
+    if (req.user.role !== 'host') {
+      return res.status(403).json({
+        error: 'Only host can generate code review'
+      })
+    }
+
+    // Build Gemini prompt for structured review
+    const prompt = `
+You are an expert technical interviewer and code reviewer.
+
+Analyze this coding interview submission:
+
+Problem: ${problemTitle}
+Description: ${problemDescription}
+Language: ${language || 'JavaScript'}
+Time Taken: ${timeTaken}
+Auto Score: ${score}
+
+Candidate's Code:
+${candidateCode}
+
+Provide a detailed structured code review.
+Return ONLY a valid JSON object with NO extra text:
+
+{
+  "summary": "2-3 sentence overall assessment",
+  "timeComplexity": "O(?) with brief explanation",
+  "spaceComplexity": "O(?) with brief explanation",
+  "strengths": ["strength 1", "strength 2", "strength 3"],
+  "improvements": ["improvement 1", "improvement 2"],
+  "codeQuality": "Excellent/Good/Average/Poor",
+  "problemSolvingApproach": "brief description of their approach",
+  "overallRating": 8,
+  "recommendation": "Strong Hire/Hire/Maybe/No Hire",
+  "recommendationReason": "one sentence reason"
+}
+`
+
+    const aiResponse = await generateAIResponse(prompt)
+
+    // Parse JSON response from Gemini
+    let review
+    try {
+      // Clean response in case Gemini adds backticks
+      const cleaned = aiResponse
+        .replace(/```json/g, '')
+        .replace(/```/g, '')
+        .trim()
+      review = JSON.parse(cleaned)
+    } catch {
+      // Fallback if JSON parsing fails
+      review = {
+        summary: aiResponse,
+        timeComplexity: 'Not analyzed',
+        spaceComplexity: 'Not analyzed',
+        strengths: ['Code submitted successfully'],
+        improvements: ['Manual review recommended'],
+        codeQuality: 'Average',
+        problemSolvingApproach: 'Solution provided',
+        overallRating: 5,
+        recommendation: 'Maybe',
+        recommendationReason: 'Manual review recommended'
+      }
+    }
+
+    // Save AI review to session
+    await prisma.session.update({
+      where: { id: sessionId },
+      data: { ai_review: review }
+    })
+
+    return res.json({
+      success: true,
+      review
+    })
+
+  } catch (error) {
+    console.error('AI code review error:', error)
+    return res.status(500).json({
+      error: error.message || 'Could not generate code review'
+    })
+  }
+}

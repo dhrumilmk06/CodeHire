@@ -6,6 +6,7 @@ import { useMyProblems, useCreateProblem, useUpdateProblem, useDeleteProblem } f
 import { PROBLEMS } from "../data/problems";
 import toast from "react-hot-toast";
 import { BulkImportModal } from "../components/BulkImportModal";
+import GenerateProblemModal from '../components/problemBank/GenerateProblemModal'
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 const DIFFICULTY_CLASSES = {
@@ -453,6 +454,7 @@ export const ProblemBankPage = () => {
     const [typeFilter, setTypeFilter] = useState("All"); // All | Built-in | Custom
     const [showForm, setShowForm] = useState(false);
     const [showBulkModal, setShowBulkModal] = useState(false);
+    const [showGenerateModal, setShowGenerateModal] = useState(false)
     const [editingProblem, setEditingProblem] = useState(null);
 
     // Merge both lists
@@ -532,6 +534,20 @@ export const ProblemBankPage = () => {
                             >
                                 <Upload className="w-5 h-5" />
                                 Bulk Import
+                            </button>
+                            <button
+                                onClick={() => setShowGenerateModal(true)}
+                                className="
+                                    flex items-center gap-2
+                                    bg-[#111111] border border-[#22c55e]
+                                    text-[#22c55e] text-sm font-semibold
+                                    px-4 py-2 rounded-lg cursor-pointer
+                                    hover:bg-[#22c55e] hover:text-black
+                                    transition-all duration-300
+                                "
+                            >
+                                <span>✨</span>
+                                <span>Generate with AI</span>
                             </button>
                             <button
                                 className="btn btn-primary gap-2 shadow-lg"
@@ -628,6 +644,16 @@ export const ProblemBankPage = () => {
                 <BulkImportModal
                     onClose={() => setShowBulkModal(false)}
                     onRefresh={() => {
+                        queryClient.invalidateQueries({ queryKey: ["my-problems"] });
+                    }}
+                />
+            )}
+
+            {showGenerateModal && (
+                <GenerateProblemModal
+                    onClose={() => setShowGenerateModal(false)}
+                    onSaved={() => {
+                        setShowGenerateModal(false)
                         queryClient.invalidateQueries({ queryKey: ["my-problems"] });
                     }}
                 />

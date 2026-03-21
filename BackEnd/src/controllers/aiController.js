@@ -180,3 +180,110 @@ Return ONLY a valid JSON object with NO extra text:
     })
   }
 }
+
+export const generateProblem = async (req, res) => {
+  try {
+    const { difficulty, topic, companyStyle } = req.body
+
+    // Only host can generate problems
+    if (req.user.role !== 'host') {
+      return res.status(403).json({
+        error: 'Only hosts can generate problems'
+      })
+    }
+
+    // Validate required fields
+    if (!difficulty || !topic) {
+      return res.status(400).json({
+        error: 'Difficulty and topic are required'
+      })
+    }
+
+    const prompt = `
+You are an expert coding interview problem creator.
+
+Generate a unique and original coding interview problem with these specs:
+Difficulty: ${difficulty}
+Topic: ${topic}
+Company Style: ${companyStyle || 'General'}
+
+Rules:
+- Problem must be completely original — not a copy of existing LeetCode problems
+- Must be solvable in 20-30 minutes for the given difficulty
+- Examples must have clear input and output
+- Hidden test cases must cover edge cases
+- Starter code must have correct function signature
+- For javascript hiddenTestCases use console.log(JSON.stringify(result))
+- For python hiddenTestCases use import json; print(json.dumps(result, separators=(',',':')))
+
+Return ONLY a valid JSON object with NO extra text, NO markdown, NO backticks:
+
+{
+  "title": "Problem Title Here",
+  "difficulty": "${difficulty}",
+  "category": "topic tags here like Array • Hash Table",
+  "description": {
+    "text": "Full problem description here",
+    "notes": ["note 1", "note 2"]
+  },
+  "constraints": ["constraint 1", "constraint 2"],
+  "examples": [
+    {
+      "input": "example input",
+      "output": "example output",
+      "explanation": "explanation here"
+    }
+  ],
+  "starterCode": {
+    "javascript": "function solve() {\\n  // Write your solution here\\n}",
+    "python": "def solve():\\n    # Write your solution here\\n    pass",
+    "java": "class Solution {\\n    public void solve() {\\n        // Write your solution here\\n    }\\n}",
+    "cpp": "#include <bits/stdc++.h>\\nusing namespace std;\\n\\nclass Solution {\\npublic:\\n    void solve() {\\n        // Write your solution here\\n    }\\n};"
+  },
+  "hiddenTestCases": [
+    {
+      "id": 1,
+      "description": "Basic case",
+      "inputCode": {
+        "javascript": "console.log(JSON.stringify(solve(input)));",
+        "python": "import json\\nprint(json.dumps(solve(input), separators=(',',':')))"
+      },
+      "expectedOutput": "expected result here"
+    }
+  ]
+}
+`
+
+    const aiResponse = await generateAIResponse(prompt)
+
+    // Clean and parse JSON response from Gemini
+    let generatedProblem
+    try {
+      const cleaned = aiResponse
+        .replace(/```json/g, '')
+        .replace(/```/g, '')
+        .trim()
+      generatedProblem = JSON.parse(cleaned)
+    } catch {
+      return res.status(500).json({
+        error: 'AI returned invalid format. Please try again.'
+      })
+    }
+
+    return res.json({
+      success: true,
+      problem: generatedProblem
+    })
+
+  } catch (error) {
+    console.error('AI problem generation error:', error)
+    if (error.status === 429) {
+      return res.status(429).json({
+        error: 'AI service busy. Please wait a moment and try again.'
+      })
+    }
+    return res.status(500).json({
+      error: 'Could not generate problem. Please try again.'
+    })
+  }
+}

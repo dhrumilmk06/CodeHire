@@ -1431,7 +1431,106 @@ int main() {
     },
   },
 
+  "product-of-array-except-self": {
+    id: "product-of-array-except-self",
+    title: "Product of Array Except Self",
+    difficulty: "Medium",
+    category: "Array • Prefix Sum",
+    description: {
+      text: "Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].",
+      notes: [
+        "The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.",
+        "You must write an algorithm that runs in O(n) time and without using the division operation.",
+      ],
+    },
+    examples: [
+      {
+        input: "nums = [1,2,3,4]",
+        output: "[24,12,8,6]",
+      },
+      {
+        input: "nums = [-1,1,0,-3,3]",
+        output: "[0,0,9,0,0]",
+      },
+    ],
+    constraints: [
+      "2 ≤ nums.length ≤ 10⁵",
+      "-30 ≤ nums[i] ≤ 30",
+      "The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.",
+    ],
+    starterCode: {
+      javascript: `function productExceptSelf(nums) {
+  // Write your solution here
+  
+}
 
+// Test cases
+console.log(JSON.stringify(productExceptSelf([1,2,3,4]))); // Expected: [24,12,8,6]
+console.log(JSON.stringify(productExceptSelf([-1,1,0,-3,3]))); // Expected: [0,0,9,0,0]`,
+      python: `import json
+def productExceptSelf(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(productExceptSelf([1,2,3,4]), separators=(',', ':')))  # Expected: [24,12,8,6]
+print(json.dumps(productExceptSelf([-1,1,0,-3,3]), separators=(',', ':')))  # Expected: [0,0,9,0,0]`,
+      java: `import java.util.*;
+
+class Solution {
+    public static int[] productExceptSelf(int[] nums) {
+        // Write your solution here
+        
+        return new int[0];
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(productExceptSelf(new int[]{1,2,3,4}))); // Expected: [24, 12, 8, 6]
+        System.out.println(Arrays.toString(productExceptSelf(new int[]{-1,1,0,-3,3}))); // Expected: [0, 0, 9, 0, 0]
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        // Write your solution here
+        
+        return {};
+    }
+};
+
+string vectorToString(vector<int> res) {
+    string s = "[";
+    for (int i = 0; i < res.size(); i++) {
+        s += to_string(res[i]) + (i == res.size() - 1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> nums1 = {1, 2, 3, 4};
+    cout << vectorToString(sol.productExceptSelf(nums1)) << endl;
+    vector<int> nums2 = {-1, 1, 0, -3, 3};
+    cout << vectorToString(sol.productExceptSelf(nums2)) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "[24,12,8,6]\n[0,0,9,0,0]",
+      python: "[24,12,8,6]\n[0,0,9,0,0]",
+      java: "[24, 12, 8, 6]\n[0, 0, 9, 0, 0]",
+      cpp: "[24,12,8,6]\n[0,0,9,0,0]",
+    },
+  },
 };
 
 export const LANGUAGE_CONFIG = {

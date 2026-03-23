@@ -1531,6 +1531,103 @@ int main() {
       cpp: "[24,12,8,6]\n[0,0,9,0,0]",
     },
   },
+
+  "valid-parentheses": {
+    id: "valid-parentheses",
+    title: "Valid Parentheses",
+    difficulty: "Easy",
+    category: "String • Stack",
+    description: {
+      text: "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.",
+      notes: [
+        "An input string is valid if:",
+        "1. Open brackets must be closed by the same type of brackets.",
+        "2. Open brackets must be closed in the correct order.",
+        "3. Every close bracket has a corresponding open bracket of the same type.",
+      ],
+    },
+    examples: [
+      {
+        input: 's = "()"',
+        output: "true",
+      },
+      {
+        input: 's = "()[]{}"',
+        output: "true",
+      },
+      {
+        input: 's = "(]"',
+        output: "false",
+      },
+    ],
+    constraints: [
+      "1 ≤ s.length ≤ 10⁴",
+      "s consists of parentheses only '()[]{}'.",
+    ],
+    starterCode: {
+      javascript: `function isValid(s) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(isValid("()")); // Expected: true
+console.log(isValid("()[]{}")); // Expected: true
+console.log(isValid("(]")); // Expected: false`,
+      python: `def isValid(s):
+    # Write your solution here
+    pass
+
+# Test cases
+print(isValid("()"))  # Expected: True
+print(isValid("()[]{}"))  # Expected: True
+print(isValid("(]"))  # Expected: False`,
+      java: `class Solution {
+    public static boolean isValid(String s) {
+        // Write your solution here
+        
+        return false;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(isValid("()")); // Expected: true
+        System.out.println(isValid("()[]{}")); // Expected: true
+        System.out.println(isValid("(]")); // Expected: false
+    }
+}`,
+      cpp: `#include <iostream>
+#include <string>
+#include <stack>
+#include <unordered_map>
+
+using namespace std;
+
+class Solution {
+public:
+    bool isValid(string s) {
+        // Write your solution here
+        
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << (sol.isValid("()") ? "true" : "false") << endl;
+    cout << (sol.isValid("()[]{}") ? "true" : "false") << endl;
+    cout << (sol.isValid("(]") ? "true" : "false") << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "true\ntrue\nfalse",
+      python: "True\nTrue\nFalse",
+      java: "true\ntrue\nfalse",
+      cpp: "true\ntrue\nfalse",
+    },
+  },
 };
 
 export const LANGUAGE_CONFIG = {

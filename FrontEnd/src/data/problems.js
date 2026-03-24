@@ -1628,6 +1628,116 @@ int main() {
       cpp: "true\ntrue\nfalse",
     },
   },
+
+  "number-of-islands": {
+    id: "number-of-islands",
+    title: "Number of Islands",
+    difficulty: "Medium",
+    category: "Array • DFS • BFS",
+    description: {
+      text: "Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: 'grid = [["1","1","1","1","0"],["1","1","0","1","0"],["1","1","0","0","0"],["0","0","0","0","0"]]',
+        output: "1",
+      },
+      {
+        input: 'grid = [["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]]',
+        output: "3",
+      },
+    ],
+    constraints: [
+      "m == grid.length",
+      "n == grid[i].length",
+      "1 ≤ m, n ≤ 300",
+      "grid[i][j] is '0' or '1'.",
+    ],
+    starterCode: {
+      javascript: `function numIslands(grid) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(numIslands([["1","1","1","1","0"],["1","1","0","1","0"],["1","1","0","0","0"],["0","0","0","0","0"]])); // Expected: 1
+console.log(numIslands([["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]])); // Expected: 3`,
+      python: `def numIslands(grid):
+    # Write your solution here
+    pass
+
+# Test cases
+print(numIslands([["1","1","1","1","0"],["1","1","0","1","0"],["1","1","0","0","0"],["0","0","0","0","0"]]))  # Expected: 1
+print(numIslands([["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]]))  # Expected: 3`,
+      java: `class Solution {
+    public static int numIslands(char[][] grid) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        char[][] g1 = {
+            {'1','1','1','1','0'},
+            {'1','1','0','1','0'},
+            {'1','1','0','0','0'},
+            {'0','0','0','0','0'}
+        };
+        System.out.println(numIslands(g1)); // Expected: 1
+        
+        char[][] g2 = {
+            {'1','1','0','0','0'},
+            {'1','1','0','0','0'},
+            {'0','0','1','0','0'},
+            {'0','0','0','1','1'}
+        };
+        System.out.println(numIslands(g2)); // Expected: 3
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<vector<char>> g1 = {
+        {'1','1','1','1','0'},
+        {'1','1','0','1','0'},
+        {'1','1','0','0','0'},
+        {'0','0','0','0','0'}
+    };
+    cout << sol.numIslands(g1) << endl;
+    
+    vector<vector<char>> g2 = {
+        {'1','1','0','0','0'},
+        {'1','1','0','0','0'},
+        {'0','0','1','0','0'},
+        {'0','0','0','1','1'}
+    };
+    cout << sol.numIslands(g2) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "1\n3",
+      python: "1\n3",
+      java: "1\n3",
+      cpp: "1\n3",
+    },
+  },
 };
 
 export const LANGUAGE_CONFIG = {

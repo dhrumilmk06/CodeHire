@@ -56,7 +56,7 @@ function TagInput({ label, values, onChange, placeholder }) {
                         {v}
                         <button type="button" onClick={() => onChange(values.filter((_, j) => j !== i))}>
                             <X className="w-3 h-3" />
-                        </button>
+                        </button>                                                                           
                     </span>
                 ))}
             </div>

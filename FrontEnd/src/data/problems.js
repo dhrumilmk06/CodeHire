@@ -1738,6 +1738,500 @@ int main() {
       cpp: "1\n3",
     },
   },
+
+  "rotate-image": {
+    id: "rotate-image",
+    title: "Rotate Image",
+    difficulty: "Medium",
+    category: "Array • Matrix",
+    description: {
+      text: "You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise). You have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "matrix = [[1,2,3],[4,5,6],[7,8,9]]",
+        output: "[[7,4,1],[8,5,2],[9,6,3]]",
+      },
+      {
+        input: "matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]",
+        output: "[[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]",
+      },
+    ],
+    constraints: [
+      "n == matrix.length == matrix[i].length",
+      "1 ≤ n ≤ 20",
+      "-1000 ≤ matrix[i][j] ≤ 1000",
+    ],
+    starterCode: {
+      javascript: `function rotate(matrix) {
+  // Write your solution here
+  
+}
+
+// Test cases
+let m1 = [[1,2,3],[4,5,6],[7,8,9]];
+rotate(m1);
+console.log(JSON.stringify(m1));
+let m2 = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]];
+rotate(m2);
+console.log(JSON.stringify(m2));`,
+      python: `import json
+def rotate(matrix):
+    # Write your solution here
+    pass
+
+# Test cases
+m1 = [[1,2,3],[4,5,6],[7,8,9]]
+rotate(m1)
+print(json.dumps(m1, separators=(',', ':')))
+m2 = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]
+rotate(m2)
+print(json.dumps(m2, separators=(',', ':')))`,
+      java: `import java.util.*;
+
+class Solution {
+    public static void rotate(int[][] matrix) {
+        // Write your solution here
+        
+    }
+    
+    public static void main(String[] args) {
+        int[][] m1 = {{1,2,3},{4,5,6},{7,8,9}};
+        rotate(m1);
+        System.out.println(Arrays.deepToString(m1));
+        
+        int[][] m2 = {{5,1,9,11},{2,4,8,10},{13,3,6,7},{15,14,12,16}};
+        rotate(m2);
+        System.out.println(Arrays.deepToString(m2));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        // Write your solution here
+        
+    }
+};
+
+string matrixToString(vector<vector<int>>& m) {
+    string s = "[";
+    for(int i=0; i<m.size(); i++){
+        s += "[";
+        for(int j=0; j<m[i].size(); j++){
+            s += to_string(m[i][j]) + (j==m[i].size()-1 ? "" : ",");
+        }
+        s += "]" + (i==m.size()-1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<vector<int>> m1 = {{1,2,3},{4,5,6},{7,8,9}};
+    sol.rotate(m1);
+    cout << matrixToString(m1) << endl;
+    
+    vector<vector<int>> m2 = {{5,1,9,11},{2,4,8,10},{13,3,6,7},{15,14,12,16}};
+    sol.rotate(m2);
+    cout << matrixToString(m2) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "[[7,4,1],[8,5,2],[9,6,3]]\n[[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]",
+      python: "[[7,4,1],[8,5,2],[9,6,3]]\n[[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]",
+      java: "[[7, 4, 1], [8, 5, 2], [9, 6, 3]]\n[[15, 13, 2, 5], [14, 3, 4, 1], [12, 6, 8, 9], [16, 7, 10, 11]]",
+      cpp: "[[7,4,1],[8,5,2],[9,6,3]]\n[[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]",
+    },
+  },
+
+  "climbing-stairs": {
+    id: "climbing-stairs",
+    title: "Climbing Stairs",
+    difficulty: "Easy",
+    category: "Dynamic Programming",
+    description: {
+      text: "You are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "n = 2",
+        output: "2",
+        explanation: "There are two ways to climb to the top: 1. 1 step + 1 step, 2. 2 steps",
+      },
+      {
+        input: "n = 3",
+        output: "3",
+        explanation: "There are three ways to climb to the top: 1. 1 step + 1 step + 1 step, 2. 1 step + 2 steps, 3. 2 steps + 1 step",
+      },
+    ],
+    constraints: [
+      "1 ≤ n ≤ 45",
+    ],
+    starterCode: {
+      javascript: `function climbStairs(n) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(climbStairs(2)); // Expected: 2
+console.log(climbStairs(3)); // Expected: 3
+console.log(climbStairs(5)); // Expected: 8`,
+      python: `def climbStairs(n):
+    # Write your solution here
+    pass
+
+# Test cases
+print(climbStairs(2))  # Expected: 2
+print(climbStairs(3))  # Expected: 3
+print(climbStairs(5))  # Expected: 8`,
+      java: `class Solution {
+    public static int climbStairs(int n) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(climbStairs(2)); // Expected: 2
+        System.out.println(climbStairs(3)); // Expected: 3
+        System.out.println(climbStairs(5)); // Expected: 8
+    }
+}`,
+      cpp: `#include <iostream>
+
+using namespace std;
+
+class Solution {
+public:
+    int climbStairs(int n) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << sol.climbStairs(2) << endl;
+    cout << sol.climbStairs(3) << endl;
+    cout << sol.climbStairs(5) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "2\n3\n8",
+      python: "2\n3\n8",
+      java: "2\n3\n8",
+      cpp: "2\n3\n8",
+    },
+  },
+
+  "set-matrix-zeroes": {
+    id: "set-matrix-zeroes",
+    title: "Set Matrix Zeroes",
+    difficulty: "Medium",
+    category: "Array • Matrix",
+    description: {
+      text: "Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's. You must do it in place.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "matrix = [[1,1,1],[1,0,1],[1,1,1]]",
+        output: "[[1,0,1],[0,0,0],[1,0,1]]",
+      },
+      {
+        input: "matrix = [[0,1,2,0],[3,4,5,2],[1,3,1,5]]",
+        output: "[[0,0,0,0],[0,4,5,0],[0,3,1,0]]",
+      },
+    ],
+    constraints: [
+      "m == matrix.length",
+      "n == matrix[0].length",
+      "1 ≤ m, n ≤ 200",
+      "-2³¹ ≤ matrix[i][j] ≤ 2³¹ - 1",
+    ],
+    starterCode: {
+      javascript: `function setZeroes(matrix) {
+  // Write your solution here
+  
+}
+
+// Test cases
+let m1 = [[1,1,1],[1,0,1],[1,1,1]];
+setZeroes(m1);
+console.log(JSON.stringify(m1));
+let m2 = [[0,1,2,0],[3,4,5,2],[1,3,1,5]];
+setZeroes(m2);
+console.log(JSON.stringify(m2));`,
+      python: `import json
+def setZeroes(matrix):
+    # Write your solution here
+    pass
+
+# Test cases
+m1 = [[1,1,1],[1,0,1],[1,1,1]]
+setZeroes(m1)
+print(json.dumps(m1, separators=(',', ':')))
+m2 = [[0,1,2,0],[3,4,5,2],[1,3,1,5]]
+setZeroes(m2)
+print(json.dumps(m2, separators=(',', ':')))`,
+      java: `import java.util.*;
+
+class Solution {
+    public static void setZeroes(int[][] matrix) {
+        // Write your solution here
+        
+    }
+    
+    public static void main(String[] args) {
+        int[][] m1 = {{1,1,1},{1,0,1},{1,1,1}};
+        setZeroes(m1);
+        System.out.println(Arrays.deepToString(m1));
+        
+        int[][] m2 = {{0,1,2,0},{3,4,5,2},{1,3,1,5}};
+        setZeroes(m2);
+        System.out.println(Arrays.deepToString(m2));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        // Write your solution here
+        
+    }
+};
+
+string matrixToString(vector<vector<int>>& m) {
+    string s = "[";
+    for(int i=0; i<m.size(); i++){
+        s += "[";
+        for(int j=0; j<m[i].size(); j++){
+            s += to_string(m[i][j]) + (j==m[i].size()-1 ? "" : ",");
+        }
+        s += "]" + (i==m.size()-1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<vector<int>> m1 = {{1,1,1},{1,0,1},{1,1,1}};
+    sol.setZeroes(m1);
+    cout << matrixToString(m1) << endl;
+    
+    vector<vector<int>> m2 = {{0,1,2,0},{3,4,5,2},{1,3,1,5}};
+    sol.setZeroes(m2);
+    cout << matrixToString(m2) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "[[1,0,1],[0,0,0],[1,0,1]]\n[[0,0,0,0],[0,4,5,0],[0,3,1,0]]",
+      python: "[[1,0,1],[0,0,0],[1,0,1]]\n[[0,0,0,0],[0,4,5,0],[0,3,1,0]]",
+      java: "[[1, 0, 1], [0, 0, 0], [1, 0, 1]]\n[[0, 0, 0, 0], [0, 4, 5, 0], [0, 3, 1, 0]]",
+      cpp: "[[1,0,1],[0,0,0],[1,0,1]]\n[[0,0,0,0],[0,4,5,0],[0,3,1,0]]",
+    },
+  },
+
+  "longest-common-prefix": {
+    id: "longest-common-prefix",
+    title: "Longest Common Prefix",
+    difficulty: "Easy",
+    category: "String",
+    description: {
+      text: "Write a function to find the longest common prefix string amongst an array of strings. If there is no common prefix, return an empty string \"\".",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "strs = [\"flower\",\"flow\",\"flight\"]",
+        output: "\"fl\"",
+      },
+      {
+        input: "strs = [\"dog\",\"racecar\",\"car\"]",
+        output: "\"\"",
+        explanation: "There is no common prefix among the input strings.",
+      },
+    ],
+    constraints: [
+      "1 ≤ strs.length ≤ 200",
+      "0 ≤ strs[i].length ≤ 200",
+      "strs[i] consists of only lowercase English letters.",
+    ],
+    starterCode: {
+      javascript: `function longestCommonPrefix(strs) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(longestCommonPrefix(["flower","flow","flight"])); // Expected: "fl"
+console.log(longestCommonPrefix(["dog","racecar","car"])); // Expected: ""`,
+      python: `def longestCommonPrefix(strs):
+    # Write your solution here
+    pass
+
+# Test cases
+print(longestCommonPrefix(["flower","flow","flight"]))  # Expected: "fl"
+print(longestCommonPrefix(["dog","racecar","car"]))  # Expected: ""`,
+      java: `class Solution {
+    public static String longestCommonPrefix(String[] strs) {
+        // Write your solution here
+        
+        return "";
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(longestCommonPrefix(new String[]{"flower","flow","flight"})); // Expected: "fl"
+        System.out.println(longestCommonPrefix(new String[]{"dog","racecar","car"})); // Expected: ""
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        // Write your solution here
+        
+        return "";
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<string> s1 = {"flower","flow","flight"};
+    cout << sol.longestCommonPrefix(s1) << endl;
+    vector<string> s2 = {"dog","racecar","car"};
+    cout << sol.longestCommonPrefix(s2) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "fl\n",
+      python: "fl\n",
+      java: "fl\n",
+      cpp: "fl\n",
+    },
+  },
+
+  "kth-largest-element-in-an-array": {
+    id: "kth-largest-element-in-an-array",
+    title: "Kth Largest Element in an Array",
+    difficulty: "Medium",
+    category: "Array • Heap • Sorting",
+    description: {
+      text: "Given an integer array nums and an integer k, return the kth largest element in the array. Note that it is the kth largest element in the sorted order, not the kth distinct element.",
+      notes: [
+        "Can you solve it without sorting in O(n) time complexity?",
+      ],
+    },
+    examples: [
+      {
+        input: "nums = [3,2,1,5,6,4], k = 2",
+        output: "5",
+      },
+      {
+        input: "nums = [3,2,3,1,2,4,5,5,6], k = 4",
+        output: "4",
+      },
+    ],
+    constraints: [
+      "1 ≤ k ≤ nums.length ≤ 10⁵",
+      "-10⁴ ≤ nums[i] ≤ 10⁴",
+    ],
+    starterCode: {
+      javascript: `function findKthLargest(nums, k) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(findKthLargest([3,2,1,5,6,4], 2)); // Expected: 5
+console.log(findKthLargest([3,2,3,1,2,4,5,5,6], 4)); // Expected: 4`,
+      python: `def findKthLargest(nums, k):
+    # Write your solution here
+    pass
+
+# Test cases
+print(findKthLargest([3,2,1,5,6,4], 2))  # Expected: 5
+print(findKthLargest([3,2,3,1,2,4,5,5,6], 4))  # Expected: 4`,
+      java: `class Solution {
+    public static int findKthLargest(int[] nums, int k) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(findKthLargest(new int[]{3,2,1,5,6,4}, 2)); // Expected: 5
+        System.out.println(findKthLargest(new int[]{3,2,3,1,2,4,5,5,6}, 4)); // Expected: 4
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> n1 = {3, 2, 1, 5, 6, 4};
+    cout << sol.findKthLargest(n1, 2) << endl;
+    vector<int> n2 = {3, 2, 3, 1, 2, 4, 5, 5, 6};
+    cout << sol.findKthLargest(n2, 4) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "5\n4",
+      python: "5\n4",
+      java: "5\n4",
+      cpp: "5\n4",
+    },
+  },
 };
 
 export const LANGUAGE_CONFIG = {

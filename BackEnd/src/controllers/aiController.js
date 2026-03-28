@@ -287,3 +287,86 @@ Return ONLY a valid JSON object with NO extra text, NO markdown, NO backticks:
     })
   }
 }
+
+export const generateSolution = async (req, res) => {
+  try {
+    const {
+      problemTitle,
+      problemDescription,
+      difficulty,
+      language
+    } = req.body
+
+    if (!problemTitle || !problemDescription) {
+      return res.status(400).json({
+        error: 'Problem title and description are required'
+      })
+    }
+
+    const prompt = `
+You are an expert coding interview coach.
+
+Generate a complete solution for this coding problem:
+Problem: ${problemTitle}
+Difficulty: ${difficulty || 'Medium'}
+Description: ${problemDescription}
+Language: ${language || 'javascript'}
+
+Return ONLY a valid JSON object with NO extra text NO markdown NO backticks:
+
+{
+  "approach": "Clear explanation of the approach and algorithm used in 3-4 sentences",
+  "timeComplexity": "O(?) with brief explanation",
+  "spaceComplexity": "O(?) with brief explanation",
+  "keyInsights": ["insight 1", "insight 2", "insight 3"],
+  "solutions": {
+    "javascript": "complete working javascript solution code here",
+    "python": "complete working python solution code here",
+    "java": "complete working java solution code here",
+    "cpp": "complete working cpp solution code here"
+  }
+}
+`
+
+    const aiResponse = await generateAIResponse(prompt)
+
+    // Clean and parse JSON response from Gemini
+    let solution
+    try {
+      // Find the first { and last } to extract JSON from potential extra text
+      const startJson = aiResponse.indexOf('{')
+      const endJson = aiResponse.lastIndexOf('}')
+      
+      if (startJson === -1 || endJson === -1) {
+        throw new Error('No valid JSON found')
+      }
+
+      const cleaned = aiResponse.substring(startJson, endJson + 1)
+      solution = JSON.parse(cleaned)
+    } catch (parseError) {
+      console.error('JSON Parsing Error:', parseError, 'Raw Response:', aiResponse)
+      return res.status(500).json({
+        error: 'AI returned invalid format. Please try again.'
+      })
+    }
+
+
+    return res.json({
+      success: true,
+      solution
+    })
+
+  } catch (error) {
+    console.error('Solution generation error:', error)
+    if (error.status === 429 || error.message?.includes('busy')) {
+      return res.status(429).json({
+        error: 'AI is busy. Please wait a moment and try again.'
+      })
+    }
+    return res.status(500).json({
+      error: error.message || 'Could not generate solution. Please try again.'
+    })
+  }
+
+}
+

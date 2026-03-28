@@ -5,6 +5,7 @@ import { PROBLEMS } from '../data/problems.js'
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { ProblemDescription } from "../components/ProblemDescription.jsx"
 import { CodeEditorPanel } from '../components/CodeEditorPanel.jsx'
+import SolutionTab from '../components/problems/SolutionTab'
 import { OutputPanel } from '../components/OutputPanel.jsx'
 import { executeCode } from '../lib/piston.js'
 import toast from "react-hot-toast";
@@ -20,6 +21,7 @@ export const ProblemPage = () => {
     const [code, setCode] = useState(PROBLEMS[currentProblemId].starterCode.javascript)
     const [output, setOutput] = useState(null)
     const [isRunning, setIsRunning] = useState(false)
+    const [activeTab, setActiveTab] = useState('description')
 
     const currentProblem = PROBLEMS[currentProblemId]
 
@@ -116,12 +118,50 @@ export const ProblemPage = () => {
 
                     {/* left panel- problem desc */}
                     <Panel defaultSize={40} minSize={30}>
-                        <ProblemDescription
-                            problem={currentProblem}
-                            currentProblemId={currentProblemId}
-                            onProblemChange={handelProblemChange}
-                            allProblems={Object.values(PROBLEMS)}
-                        />
+                        <div className="flex border-b border-[#2a2a2a] mb-4 flex-shrink-0">
+                            <button
+                                onClick={() => setActiveTab('description')}
+                                className={`
+                                    px-4 py-3 text-sm font-semibold
+                                    transition-all duration-200 cursor-pointer
+                                    border-b-2
+                                    ${activeTab === 'description'
+                                        ? 'text-white border-[#22c55e]'
+                                        : 'text-[#888888] border-transparent hover:text-white'
+                                    }
+                                `}
+                            >
+                                📄 Description
+                            </button>
+
+                            <button
+                                onClick={() => setActiveTab('solution')}
+                                className={`
+                                    px-4 py-3 text-sm font-semibold
+                                    transition-all duration-200 cursor-pointer
+                                    border-b-2
+                                    ${activeTab === 'solution'
+                                        ? 'text-white border-[#22c55e]'
+                                        : 'text-[#888888] border-transparent hover:text-white'
+                                    }
+                                `}
+                            >
+                                💡 Solution
+                            </button>
+                        </div>
+
+                        {activeTab === 'description' && (
+                            <ProblemDescription
+                                problem={currentProblem}
+                                currentProblemId={currentProblemId}
+                                onProblemChange={handelProblemChange}
+                                allProblems={Object.values(PROBLEMS)}
+                            />
+                        )}
+
+                        {activeTab === 'solution' && (
+                            <SolutionTab problem={currentProblem} />
+                        )}
                     </Panel>
 
                     <PanelResizeHandle className='w-2 bg-base-300 hover:bg-primary transition-colors cursor-col-resize' />

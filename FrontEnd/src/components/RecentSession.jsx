@@ -503,7 +503,7 @@ const SessionCard = ({ session, userClerkId, onSelect, isSelected, compareMode, 
 
 // ── Main Component ────────────────────────────────────────────────────────────
 
-export const RecentSession = ({ sessions, isLoading, userClerkId }) => {
+export const RecentSession = ({ sessions, isLoading, userClerkId, hideCompare = false }) => {
   const [search, setSearch] = useState("");
   const [ratingFilter, setRatingFilter] = useState("all");
   const [decisionFilter, setDecisionFilter] = useState("all");
@@ -596,7 +596,10 @@ export const RecentSession = ({ sessions, isLoading, userClerkId }) => {
   };
 
   const selectedSessions = useMemo(() => sessions.filter(s => selectedIds.includes(s._id)), [sessions, selectedIds]);
-  const viewerIsHost = useMemo(() => sessions.some((s) => s.host?.clerkId === userClerkId), [sessions, userClerkId]);
+  const viewerIsHost = useMemo(() => {
+    if (hideCompare) return false;
+    return sessions.some((s) => s.host?.clerkId === userClerkId);
+  }, [sessions, userClerkId, hideCompare]);
 
   const updateDecisionMutation = useMutation({
     mutationFn: ({ id, decision }) => sessionApi.setSessionDecision({ id, decision }),

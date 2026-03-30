@@ -55,6 +55,7 @@ export const MyInterviewsPage = () => {
               sessions={sessions}
               isLoading={isLoading}
               userClerkId={user?.id}
+              hideCompare={true}
             />
           </div>
         </div>

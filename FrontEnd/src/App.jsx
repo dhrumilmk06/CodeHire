@@ -8,6 +8,7 @@ import { Navbar } from './components/Navbar.jsx';
 import { PageTransition } from './components/PageTransition.jsx';
 import { DashBoardPage } from './pages/DashBoardPage.jsx';
 import { HomePage } from './pages/HomePage.jsx';
+import LandingPage from './pages/LandingPage.jsx';
 import { ProblemPage } from './pages/ProblemPage.jsx';
 import { ProblemsPage } from './pages/ProblemsPage';
 import { SessionPage } from './pages/SessionPage.jsx';
@@ -91,9 +92,11 @@ function App() {
 
           {/* Public / Landing */}
           <Route path='/' element={
-            <PageTransition>
-              {!isSignedIn ? <HomePage /> : <LandingRedirect />}
-            </PageTransition>
+            !isSignedIn ? <LandingPage /> : (
+              <PageTransition>
+                <LandingRedirect />
+              </PageTransition>
+            )
           } />
 
           <Route path='/select-role' element={

@@ -29,7 +29,7 @@ const httpServer = http.createServer(app);
 // ── Socket.io Setup ────────────────────────────────────────────────────────
 const io = new SocketIOServer(httpServer, {
     cors: {
-        origin: ENV.CLIENT_URL,
+        origin: ['http://localhost:5173', 'http://localhost:5174', ENV.CLIENT_URL],
         methods: ["GET", "POST"],
         credentials: true,
     },
@@ -102,7 +102,21 @@ app.use((req, res, next) => {
     next();
 });
 app.use(express.json());
-app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }))
+const allowedOrigins = [
+    ENV.CLIENT_URL,
+    'http://localhost:5173',
+    'http://localhost:5174',
+];
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error(`CORS blocked: ${origin}`));
+        }
+    },
+    credentials: true
+}))
 app.use(clerkMiddleware())
 
 // Attach socket.io to req for controllers

@@ -16,3 +16,18 @@
   Removed the Shadcn Zinc variables that were overriding the DaisyUI Forest theme. 
   DaisyUI uses data-theme="forest" on the html tag to apply the forest colors.
 */
+
+/* ── Clerk UserButton Dropdown Hover Fixes ───────────────────────────────── */
+/* Ensure text stays visible on hover in the Clerk popover */
+.cl-userButtonPopoverActionButton:hover,
+.cl-userButtonPopoverActionButton:hover .cl-userButtonPopoverActionButtonText,
+.cl-userButtonPopoverActionButton:focus,
+.cl-userButtonPopoverActionButton:focus .cl-userButtonPopoverActionButtonText {
+  color: #ffffff !important;
+  background-color: #1a1a1a !important;
+}
+
+.cl-userButtonPopoverActionButton:hover .cl-userButtonPopoverActionButtonIcon svg,
+.cl-userButtonPopoverActionButton:hover .cl-userButtonPopoverActionButtonIcon {
+  color: #22c55e !important;
+}

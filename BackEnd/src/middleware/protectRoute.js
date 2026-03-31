@@ -4,10 +4,19 @@ import { mapId } from '../lib/utils.js'
 import { upsertStreamUser } from '../lib/stream.js'
 
 export const protectRoute = [
-    requireAuth(),
+    // Manual auth check — returns 401 JSON instead of redirecting (which breaks API clients)
+    (req, res, next) => {
+        const { userId } = getAuth(req);
+        if (!userId) {
+            return res.status(401).json({ message: "Unauthorized - no valid session token" });
+        }
+        next();
+    },
     async (req, res, next) => {
         try {
             const { userId: clerkId } = getAuth(req)
+
+            console.log(`🔍 [AUTH] Incoming clerkId from browser: ${clerkId}`)
 
             if (!clerkId) return res.status(401).json({ message: "Unauthorized - invalid token" })
 

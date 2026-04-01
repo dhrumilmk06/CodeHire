@@ -30,4 +30,96 @@
 .cl-userButtonPopoverActionButton:hover .cl-userButtonPopoverActionButtonIcon svg,
 .cl-userButtonPopoverActionButton:hover .cl-userButtonPopoverActionButtonIcon {
   color: #22c55e !important;
-}
+}
+
+/* ── Landing Page Scroll Animations ─────────────────────────────────────── */
+
+/* Base state — hidden before intersection */
+.fade-up {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-in {
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+.scale-in {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Animated state — added by IntersectionObserver */
+.animate-in.fade-up,
+.animate-in.fade-left,
+.animate-in.fade-right,
+.animate-in.fade-in,
+.animate-in.scale-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Stagger delays for children */
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+.stagger-5 { transition-delay: 0.5s; }
+.stagger-6 { transition-delay: 0.6s; }
+
+/* Floating animation for hero editor mockup */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Typing cursor blink */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+.cursor-blink::after {
+  content: '|';
+  color: #22c55e;
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
+}
+
+/* Shimmer for trusted-by logos */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+.logo-shimmer:hover {
+  background: linear-gradient(90deg, #555555 0%, #22c55e 50%, #555555 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 1s linear;
+}
+
+/* Code editor float — GPU compositor, unaffected by React re-renders */
+@keyframes editorFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+.editor-float {
+  animation: editorFloat 4s ease-in-out infinite;
+  will-change: transform;
+}
+

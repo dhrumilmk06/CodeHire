@@ -8,6 +8,10 @@ CodeHire is a high-performance web application designed for real-time collaborat
 
 - **⚡ Real-Time Collaborative Editor**: Powered by **Monaco Editor** and **Socket.io**. Experience seamless, Google Docs-style code synchronization with live typing indicators and role-based cursor tracking.
 - **🚀 Enhanced Multi-Language support**: Full execution support for **JavaScript, Python, Java, and C++**. High-performance runner with synchronized output and error handling for all session participants.
+- **🤖 AI-Powered Interview Coach**: Leverage the **Gemini API** for real-time "AI Hints" for candidates, structured "AI Reviews", and "AI Solutions", providing objective feedback.
+- **✨ AI Problem Generator**: Generate unique, tailored coding problems instantly using **Gemini API**, saving hosts hours of manual problem creation.
+- **📄 Interview Report Card (PDF)**: Automated generation of professional, stylised PDF reports featuring AI reviews, scoring metrics, and code snapshots, powered by **Puppeteer**.
+- **👑 Role-Based Access Control**: Granular permissions featuring distinct experiences for **Admins** (platform monitoring), **Hosts** (interviewer capabilities), and **Participants** (candidate view).
 - **📥 Bulk Problem Import**: Import up to 50 problems at once via **JSON**. Features a downloadable template, drag-and-drop UI, real-time validation preview, and multi-language test case support.
 - **📁 Custom Problem Bank**: Create and manage a private library of coding problems. Supports full CRUD, custom categories, starter code for multiple languages, and **hidden test cases** for automated evaluation.
 - **📊 Automated Session Scoring**: Smart scoring logic that evaluates performance based on test case pass rates, code quality, and completion time.
@@ -33,6 +37,8 @@ CodeHire is a high-performance web application designed for real-time collaborat
 - **Framework**: [Express.js](https://expressjs.com/)
 - **Database**: [PostgreSQL](https://www.postgresql.org/) with [Prisma ORM](https://www.prisma.io/)
 - **Execution Engine**: [Piston API](https://github.com/engineer-man/piston) (configured with GCC for C++ support)
+- **AI Integration**: [Google Gemini API](https://ai.google.dev/)
+- **Reporting**: [Puppeteer](https://pptr.dev/) (Automated PDF generation)
 - **Storage**: [Cloudinary](https://cloudinary.com/) (for problem/profile assets)
 - **Workflow**: [Inngest](https://www.inngest.com/)
 - **Webhooks**: [Svix](https://www.svix.com/)
@@ -42,7 +48,7 @@ CodeHire is a high-performance web application designed for real-time collaborat
 ### Prerequisites
 - Node.js (v18+)
 - PostgreSQL instance (Local or Neon/Supabase)
-- Clerk, Stream, and Cloudinary accounts
+- Clerk, Stream, Cloudinary accounts, and Google Gemini API key
 
 ### Installation
 
@@ -63,6 +69,8 @@ CodeHire is a high-performance web application designed for real-time collaborat
    STREAM_SECRET_KEY=your_stream_secret_key
    CLOUDINARY_URL=your_cloudinary_url
    CLIENT_URL=http://localhost:5173
+   GEMINI_API_KEY=your_gemini_api_key
+   STITCH_API_KEY=your_stitch_api_key
    ```
 
    Create a `.env` file in the `FrontEnd` directory:

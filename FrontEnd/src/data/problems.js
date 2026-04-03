@@ -2232,6 +2232,465 @@ int main() {
       cpp: "5\n4",
     },
   },
+
+  "search-a-2d-matrix": {
+    id: "search-a-2d-matrix",
+    title: "Search a 2D Matrix",
+    difficulty: "Medium",
+    category: "Array • Binary Search • Matrix",
+    description: {
+      text: "You are given an m x n integer matrix matrix with the following two properties: 1. Each row is sorted in non-decreasing order. 2. The first integer of each row is greater than the last integer of the previous row. Given an integer target, return true if target is in matrix or false otherwise. You must write a solution in O(log(m * n)) time complexity.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3",
+        output: "true",
+      },
+      {
+        input: "matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 13",
+        output: "false",
+      },
+    ],
+    constraints: [
+      "m == matrix.length",
+      "n == matrix[i].length",
+      "1 ≤ m, n ≤ 100",
+      "-10⁴ ≤ matrix[i][j], target ≤ 10⁴",
+    ],
+    starterCode: {
+      javascript: `function searchMatrix(matrix, target) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 3)); // Expected: true
+console.log(searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 13)); // Expected: false`,
+      python: `def searchMatrix(matrix, target):
+    # Write your solution here
+    pass
+
+# Test cases
+print(searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 3))  # Expected: True
+print(searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 13))  # Expected: False`,
+      java: `class Solution {
+    public static boolean searchMatrix(int[][] matrix, int target) {
+        // Write your solution here
+        
+        return false;
+    }
+    
+    public static void main(String[] args) {
+        int[][] m1 = {{1,3,5,7},{10,11,16,20},{23,30,34,60}};
+        System.out.println(searchMatrix(m1, 3)); // Expected: true
+        System.out.println(searchMatrix(m1, 13)); // Expected: false
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        // Write your solution here
+        
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<vector<int>> m1 = {{1,3,5,7},{10,11,16,20},{23,30,34,60}};
+    cout << (sol.searchMatrix(m1, 3) ? "true" : "false") << endl;
+    cout << (sol.searchMatrix(m1, 13) ? "true" : "false") << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "true\nfalse",
+      python: "True\nFalse",
+      java: "true\nfalse",
+      cpp: "true\nfalse",
+    },
+  },
+
+  "maximum-product-subarray": {
+    id: "maximum-product-subarray",
+    title: "Maximum Product Subarray",
+    difficulty: "Medium",
+    category: "Array • Dynamic Programming",
+    description: {
+      text: "Given an integer array nums, find a subarray that has the largest product, and return the product. The test cases are generated so that the answer will fit in a 32-bit integer.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "nums = [2,3,-2,4]",
+        output: "6",
+        explanation: "[2,3] has the largest product 6.",
+      },
+      {
+        input: "nums = [-2,0,-1]",
+        output: "0",
+        explanation: "The result cannot be 2, because [-2,-1] is not a subarray.",
+      },
+    ],
+    constraints: [
+      "1 ≤ nums.length ≤ 2 * 10⁴",
+      "-10 ≤ nums[i] ≤ 10",
+      "The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.",
+    ],
+    starterCode: {
+      javascript: `function maxProduct(nums) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(maxProduct([2,3,-2,4])); // Expected: 6
+console.log(maxProduct([-2,0,-1])); // Expected: 0`,
+      python: `def maxProduct(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(maxProduct([2,3,-2,4]))  # Expected: 6
+print(maxProduct([-2,0,-1]))  # Expected: 0`,
+      java: `class Solution {
+    public static int maxProduct(int[] nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(maxProduct(new int[]{2,3,-2,4})); // Expected: 6
+        System.out.println(maxProduct(new int[]{-2,0,-1})); // Expected: 0
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> n1 = {2, 3, -2, 4};
+    cout << sol.maxProduct(n1) << endl;
+    vector<int> n2 = {-2, 0, -1};
+    cout << sol.maxProduct(n2) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "6\n0",
+      python: "6\n0",
+      java: "6\n0",
+      cpp: "6\n0",
+    },
+  },
+
+  "jump-game": {
+    id: "jump-game",
+    title: "Jump Game",
+    difficulty: "Medium",
+    category: "Array • Dynamic Programming • Greedy",
+    description: {
+      text: "You are given an integer array nums. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position. Return true if you can reach the last index, or false otherwise.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "nums = [2,3,1,1,4]",
+        output: "true",
+        explanation: "Jump 1 step from index 0 to 1, then 3 steps to the last index.",
+      },
+      {
+        input: "nums = [3,2,1,0,4]",
+        output: "false",
+        explanation: "You will always arrive at index 3 no matter what. Its maximum jump length is 0, which makes it impossible to reach the last index.",
+      },
+    ],
+    constraints: [
+      "1 ≤ nums.length ≤ 10⁴",
+      "0 ≤ nums[i] ≤ 10⁵",
+    ],
+    starterCode: {
+      javascript: `function canJump(nums) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(canJump([2,3,1,1,4])); // Expected: true
+console.log(canJump([3,2,1,0,4])); // Expected: false`,
+      python: `def canJump(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(canJump([2,3,1,1,4]))  # Expected: True
+print(canJump([3,2,1,0,4]))  # Expected: False`,
+      java: `class Solution {
+    public static boolean canJump(int[] nums) {
+        // Write your solution here
+        
+        return false;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(canJump(new int[]{2,3,1,1,4})); // Expected: true
+        System.out.println(canJump(new int[]{3,2,1,0,4})); // Expected: false
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        // Write your solution here
+        
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> n1 = {2, 3, 1, 1, 4};
+    cout << (sol.canJump(n1) ? "true" : "false") << endl;
+    vector<int> n2 = {3, 2, 1, 0, 4};
+    cout << (sol.canJump(n2) ? "true" : "false") << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "true\nfalse",
+      python: "True\nFalse",
+      java: "true\nfalse",
+      cpp: "true\nfalse",
+    },
+  },
+
+  "contains-duplicate": {
+    id: "contains-duplicate",
+    title: "Contains Duplicate",
+    difficulty: "Easy",
+    category: "Array • Hash Table • Sorting",
+    description: {
+      text: "Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "nums = [1,2,3,1]",
+        output: "true",
+      },
+      {
+        input: "nums = [1,2,3,4]",
+        output: "false",
+      },
+      {
+        input: "nums = [1,1,1,3,3,4,3,2,4,2]",
+        output: "true",
+      },
+    ],
+    constraints: [
+      "1 ≤ nums.length ≤ 10⁵",
+      "-10⁹ ≤ nums[i] ≤ 10⁹",
+    ],
+    starterCode: {
+      javascript: `function containsDuplicate(nums) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(containsDuplicate([1,2,3,1])); // Expected: true
+console.log(containsDuplicate([1,2,3,4])); // Expected: false
+console.log(containsDuplicate([1,1,1,3,3,4,3,2,4,2])); // Expected: true`,
+      python: `def containsDuplicate(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(containsDuplicate([1,2,3,1]))  # Expected: True
+print(containsDuplicate([1,2,3,4]))  # Expected: False
+print(containsDuplicate([1,1,1,3,3,4,3,2,4,2]))  # Expected: True`,
+      java: `import java.util.*;
+
+class Solution {
+    public static boolean containsDuplicate(int[] nums) {
+        // Write your solution here
+        
+        return false;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(containsDuplicate(new int[]{1,2,3,1})); // Expected: true
+        System.out.println(containsDuplicate(new int[]{1,2,3,4})); // Expected: false
+        System.out.println(containsDuplicate(new int[]{1,1,1,3,3,4,3,2,4,2})); // Expected: true
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <unordered_set>
+
+using namespace std;
+
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        // Write your solution here
+        
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> n1 = {1, 2, 3, 1};
+    cout << (sol.containsDuplicate(n1) ? "true" : "false") << endl;
+    vector<int> n2 = {1, 2, 3, 4};
+    cout << (sol.containsDuplicate(n2) ? "true" : "false") << endl;
+    vector<int> n3 = {1, 1, 1, 3, 3, 4, 3, 2, 4, 2};
+    cout << (sol.containsDuplicate(n3) ? "true" : "false") << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "true\nfalse\ntrue",
+      python: "True\nFalse\nTrue",
+      java: "true\nfalse\ntrue",
+      cpp: "true\nfalse\ntrue",
+    },
+  },
+
+  "spiral-matrix": {
+    id: "spiral-matrix",
+    title: "Spiral Matrix",
+    difficulty: "Medium",
+    category: "Array • Matrix • Simulation",
+    description: {
+      text: "Given an m x n matrix, return all elements of the matrix in spiral order.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "matrix = [[1,2,3],[4,5,6],[7,8,9]]",
+        output: "[1,2,3,6,9,8,7,4,5]",
+      },
+      {
+        input: "matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]",
+        output: "[1,2,3,4,8,12,11,10,9,5,6,7]",
+      },
+    ],
+    constraints: [
+      "m == matrix.length",
+      "n == matrix[i].length",
+      "1 ≤ m, n ≤ 10",
+      "-100 ≤ matrix[i][j] ≤ 100",
+    ],
+    starterCode: {
+      javascript: `function spiralOrder(matrix) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(JSON.stringify(spiralOrder([[1,2,3],[4,5,6],[7,8,9]]))); // Expected: [1,2,3,6,9,8,7,4,5]
+console.log(JSON.stringify(spiralOrder([[1,2,3,4],[5,6,7,8],[9,10,11,12]]))); // Expected: [1,2,3,4,8,12,11,10,9,5,6,7]`,
+      python: `import json
+def spiralOrder(matrix):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(spiralOrder([[1,2,3],[4,5,6],[7,8,9]]), separators=(',', ':')))
+print(json.dumps(spiralOrder([[1,2,3,4],[5,6,7,8],[9,10,11,12]]), separators=(',', ':')))`,
+      java: `import java.util.*;
+
+class Solution {
+    public static List<Integer> spiralOrder(int[][] matrix) {
+        // Write your solution here
+        
+        return new ArrayList<>();
+    }
+    
+    public static void main(String[] args) {
+        int[][] m1 = {{1,2,3},{4,5,6},{7,8,9}};
+        System.out.println(spiralOrder(m1));
+        
+        int[][] m2 = {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+        System.out.println(spiralOrder(m2));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        // Write your solution here
+        
+        return {};
+    }
+};
+
+string vectorToString(vector<int> res) {
+    string s = "[";
+    for (int i = 0; i < res.size(); i++) {
+        s += to_string(res[i]) + (i == res.size() - 1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<vector<int>> m1 = {{1,2,3},{4,5,6},{7,8,9}};
+    cout << vectorToString(sol.spiralOrder(m1)) << endl;
+    vector<vector<int>> m2 = {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+    cout << vectorToString(sol.spiralOrder(m2)) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "[1,2,3,6,9,8,7,4,5]\n[1,2,3,4,8,12,11,10,9,5,6,7]",
+      python: "[1,2,3,6,9,8,7,4,5]\n[1,2,3,4,8,12,11,10,9,5,6,7]",
+      java: "[1, 2, 3, 6, 9, 8, 7, 4, 5]\n[1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7]",
+      cpp: "[1,2,3,6,9,8,7,4,5]\n[1,2,3,4,8,12,11,10,9,5,6,7]",
+    },
+  },
 };
 
 export const LANGUAGE_CONFIG = {

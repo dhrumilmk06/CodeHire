@@ -3124,6 +3124,460 @@ int main() {
       cpp: "4\n12",
     },
   },
+
+  "find-all-anagrams-in-a-string": {
+    id: "find-all-anagrams-in-a-string",
+    title: "Find All Anagrams in a String",
+    difficulty: "Medium",
+    category: "String • Sliding Window • Hash Table",
+    description: {
+      text: "Given two strings s and p, return an array of all the start indices of p's anagrams in s. You may return the answer in any order.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: 's = "cbaebabacd", p = "abc"',
+        output: "[0,6]",
+        explanation: "The substring with start index = 0 is \"cba\", which is an anagram of \"abc\". The substring with start index = 6 is \"bac\", which is an anagram of \"abc\".",
+      },
+      {
+        input: 's = "abab", p = "ab"',
+        output: "[0,1,2]",
+        explanation: "The substring with start index = 0 is \"ab\", which is an anagram of \"ab\". The substring with start index = 1 is \"ba\", which is an anagram of \"ab\". The substring with start index = 2 is \"ab\", which is an anagram of \"ab\".",
+      },
+    ],
+    constraints: [
+      "1 ≤ s.length, p.length ≤ 3 * 10⁴",
+      "s and p consist of lowercase English letters.",
+    ],
+    starterCode: {
+      javascript: `function findAnagrams(s, p) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(JSON.stringify(findAnagrams("cbaebabacd", "abc"))); // Expected: [0,6]
+console.log(JSON.stringify(findAnagrams("abab", "ab"))); // Expected: [0,1,2]`,
+      python: `import json
+def findAnagrams(s, p):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(findAnagrams("cbaebabacd", "abc"), separators=(',', ':')))  # Expected: [0,6]
+print(json.dumps(findAnagrams("abab", "ab"), separators=(',', ':')))  # Expected: [0,1,2]`,
+      java: `import java.util.*;
+
+class Solution {
+    public static List<Integer> findAnagrams(String s, String p) {
+        // Write your solution here
+        
+        return new ArrayList<>();
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(findAnagrams("cbaebabacd", "abc"));
+        System.out.println(findAnagrams("abab", "ab"));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        // Write your solution here
+        
+        return {};
+    }
+};
+
+string vectorToString(vector<int> res) {
+    string s = "[";
+    for (int i = 0; i < res.size(); i++) {
+        s += to_string(res[i]) + (i == res.size() - 1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << vectorToString(sol.findAnagrams("cbaebabacd", "abc")) << endl;
+    cout << vectorToString(sol.findAnagrams("abab", "ab")) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "[0,6]\n[0,1,2]",
+      python: "[0,6]\n[0,1,2]",
+      java: "[0, 6]\n[0, 1, 2]",
+      cpp: "[0,6]\n[0,1,2]",
+    },
+  },
+
+  "non-overlapping-intervals": {
+    id: "non-overlapping-intervals",
+    title: "Non-overlapping Intervals",
+    difficulty: "Medium",
+    category: "Array • Greedy • Sorting",
+    description: {
+      text: "Given an array of intervals intervals where intervals[i] = [starti, endi], return the minimum number of intervals you need to remove to make the rest of the intervals non-overlapping.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "intervals = [[1,2],[2,3],[3,4],[1,3]]",
+        output: "1",
+        explanation: "[1,3] can be removed and the rest of the intervals are non-overlapping.",
+      },
+      {
+        input: "intervals = [[1,2],[1,2],[1,2]]",
+        output: "2",
+      },
+    ],
+    constraints: [
+      "1 ≤ intervals.length ≤ 10⁵",
+      "intervals[i].length == 2",
+      "-5 * 10⁴ ≤ starti < endi ≤ 5 * 10⁴",
+    ],
+    starterCode: {
+      javascript: `function eraseOverlapIntervals(intervals) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(eraseOverlapIntervals([[1,2],[2,3],[3,4],[1,3]])); // Expected: 1
+console.log(eraseOverlapIntervals([[1,2],[1,2],[1,2]])); // Expected: 2`,
+      python: `def eraseOverlapIntervals(intervals):
+    # Write your solution here
+    pass
+
+# Test cases
+print(eraseOverlapIntervals([[1,2],[2,3],[3,4],[1,3]]))  # Expected: 1
+print(eraseOverlapIntervals([[1,2],[1,2],[1,2]]))  # Expected: 2`,
+      java: `import java.util.*;
+
+class Solution {
+    public static int eraseOverlapIntervals(int[][] intervals) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        int[][] i1 = {{1,2},{2,3},{3,4},{1,3}};
+        System.out.println(eraseOverlapIntervals(i1));
+        
+        int[][] i2 = {{1,2},{1,2},{1,2}};
+        System.out.println(eraseOverlapIntervals(i2));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<vector<int>> i1 = {{1,2},{2,3},{3,4},{1,3}};
+    cout << sol.eraseOverlapIntervals(i1) << endl;
+    
+    vector<vector<int>> i2 = {{1,2},{1,2},{1,2}};
+    cout << sol.eraseOverlapIntervals(i2) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "1\n2",
+      python: "1\n2",
+      java: "1\n2",
+      cpp: "1\n2",
+    },
+  },
+
+  "valid-palindrome-ii": {
+    id: "valid-palindrome-ii",
+    title: "Valid Palindrome II",
+    difficulty: "Easy",
+    category: "String • Two Pointers",
+    description: {
+      text: "Given a string s, return true if the s can be palindrome after deleting at most one character from it.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: 's = "aba"',
+        output: "true",
+      },
+      {
+        input: 's = "abca"',
+        output: "true",
+        explanation: "You could delete the character 'c'.",
+      },
+      {
+        input: 's = "abc"',
+        output: "false",
+      },
+    ],
+    constraints: [
+      "1 ≤ s.length ≤ 10⁵",
+      "s consists of lowercase English letters.",
+    ],
+    starterCode: {
+      javascript: `function validPalindrome(s) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(validPalindrome("aba")); // Expected: true
+console.log(validPalindrome("abca")); // Expected: true
+console.log(validPalindrome("abc")); // Expected: false`,
+      python: `def validPalindrome(s):
+    # Write your solution here
+    pass
+
+# Test cases
+print(validPalindrome("aba"))  # Expected: True
+print(validPalindrome("abca"))  # Expected: True
+print(validPalindrome("abc"))  # Expected: False`,
+      java: `class Solution {
+    public static boolean validPalindrome(String s) {
+        // Write your solution here
+        
+        return false;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(validPalindrome("aba"));
+        System.out.println(validPalindrome("abca"));
+        System.out.println(validPalindrome("abc"));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    bool validPalindrome(string s) {
+        // Write your solution here
+        
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << (sol.validPalindrome("aba") ? "true" : "false") << endl;
+    cout << (sol.validPalindrome("abca") ? "true" : "false") << endl;
+    cout << (sol.validPalindrome("abc") ? "true" : "false") << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "true\ntrue\nfalse",
+      python: "True\nTrue\nFalse",
+      java: "true\ntrue\nfalse",
+      cpp: "true\ntrue\nfalse",
+    },
+  },
+
+  "single-number": {
+    id: "single-number",
+    title: "Single Number",
+    difficulty: "Easy",
+    category: "Array • Bit Manipulation",
+    description: {
+      text: "Given a non-empty array of integers nums, every element appears twice except for one. Find that single one. You must implement a solution with a linear runtime complexity and use only constant extra space.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "nums = [2,2,1]",
+        output: "1",
+      },
+      {
+        input: "nums = [4,1,2,1,2]",
+        output: "4",
+      },
+    ],
+    constraints: [
+      "1 ≤ nums.length ≤ 3 * 10⁴",
+      "-3 * 10⁴ ≤ nums[i] ≤ 3 * 10⁴",
+      "Each element in the array appears twice except for one element which appears only once.",
+    ],
+    starterCode: {
+      javascript: `function singleNumber(nums) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(singleNumber([2,2,1])); // Expected: 1
+console.log(singleNumber([4,1,2,1,2])); // Expected: 4`,
+      python: `def singleNumber(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(singleNumber([2,2,1]))  # Expected: 1
+print(singleNumber([4,1,2,1,2]))  # Expected: 4`,
+      java: `class Solution {
+    public static int singleNumber(int[] nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(singleNumber(new int[]{2,2,1}));
+        System.out.println(singleNumber(new int[]{4,1,2,1,2}));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> n1 = {2, 2, 1};
+    cout << sol.singleNumber(n1) << endl;
+    vector<int> n2 = {4, 1, 2, 1, 2};
+    cout << sol.singleNumber(n2) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "1\n4",
+      python: "1\n4",
+      java: "1\n4",
+      cpp: "1\n4",
+    },
+  },
+
+  "minimum-window-substring": {
+    id: "minimum-window-substring",
+    title: "Minimum Window Substring",
+    difficulty: "Hard",
+    category: "String • Sliding Window • Hash Table",
+    description: {
+      text: "Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string \"\". The testcases will be generated such that the answer is unique.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: 's = "ADOBECODEBANC", t = "ABC"',
+        output: '"BANC"',
+      },
+      {
+        input: 's = "a", t = "a"',
+        output: '"a"',
+      },
+      {
+        input: 's = "a", t = "aa"',
+        output: '""',
+      },
+    ],
+    starterCode: {
+      javascript: `function minWindow(s, t) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(minWindow("ADOBECODEBANC", "ABC")); // Expected: "BANC"
+console.log(minWindow("a", "a")); // Expected: "a"
+console.log(minWindow("a", "aa")); // Expected: ""`,
+      python: `def minWindow(s, t):
+    # Write your solution here
+    pass
+
+# Test cases
+print(minWindow("ADOBECODEBANC", "ABC"))  # Expected: "BANC"
+print(minWindow("a", "a"))  # Expected: "a"
+print(minWindow("a", "aa"))  # Expected: ""`,
+      java: `class Solution {
+    public static String minWindow(String s, String t) {
+        // Write your solution here
+        
+        return "";
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(minWindow("ADOBECODEBANC", "ABC"));
+        System.out.println(minWindow("a", "a"));
+        System.out.println(minWindow("a", "aa"));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        // Write your solution here
+        
+        return "";
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << sol.minWindow("ADOBECODEBANC", "ABC") << endl;
+    cout << sol.minWindow("a", "a") << endl;
+    cout << sol.minWindow("a", "aa") << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "BANC\na\n",
+      python: "BANC\na\n",
+      java: "BANC\na\n",
+      cpp: "BANC\na\n",
+    },
+  },
 };
 
 export const LANGUAGE_CONFIG = {

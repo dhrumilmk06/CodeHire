@@ -2691,6 +2691,439 @@ int main() {
       cpp: "[1,2,3,6,9,8,7,4,5]\n[1,2,3,4,8,12,11,10,9,5,6,7]",
     },
   },
+
+  "group-anagrams": {
+    id: "group-anagrams",
+    title: "Group Anagrams",
+    difficulty: "Medium",
+    category: "Array • Hash Table • String",
+    description: {
+      text: "Given an array of strings strs, group the anagrams together. You can return the answer in any order.",
+      notes: [
+        "An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.",
+      ],
+    },
+    examples: [
+      {
+        input: 'strs = ["eat","tea","tan","ate","nat","bat"]',
+        output: '[["bat"],["nat","tan"],["ate","eat","tea"]]',
+      },
+    ],
+    constraints: [
+      "1 ≤ strs.length ≤ 10⁴",
+      "0 ≤ strs[i].length ≤ 100",
+      "strs[i] consists of lowercase English letters.",
+    ],
+    starterCode: {
+      javascript: `function groupAnagrams(strs) {
+  // Write your solution here
+  
+}
+
+// Test cases (formatted for easy comparison)
+const res = groupAnagrams(["eat","tea","tan","ate","nat","bat"]);
+res.forEach(row => row.sort());
+res.sort((a, b) => a.length - b.length || a[0].localeCompare(b[0]));
+console.log(JSON.stringify(res));`,
+      python: `import json
+def groupAnagrams(strs):
+    # Write your solution here
+    pass
+
+# Test cases
+res = groupAnagrams(["eat","tea","tan","ate","nat","bat"])
+for row in res: row.sort()
+res.sort(key=lambda x: (len(x), x[0]))
+print(json.dumps(res, separators=(',', ':')))`,
+      java: `import java.util.*;
+
+class Solution {
+    public static List<List<String>> groupAnagrams(String[] strs) {
+        // Write your solution here
+        
+        return new ArrayList<>();
+    }
+    
+    public static void main(String[] args) {
+        List<List<String>> res = groupAnagrams(new String[]{"eat","tea","tan","ate","nat","bat"});
+        for (List<String> row : res) Collections.sort(row);
+        res.sort((a, b) -> a.size() != b.size() ? a.size() - b.size() : a.get(0).compareTo(b.get(0)));
+        System.out.println(res);
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <map>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        // Write your solution here
+        
+        return {};
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<string> s1 = {"eat","tea","tan","ate","nat","bat"};
+    vector<vector<string>> res = sol.groupAnagrams(s1);
+    for(auto& row : res) sort(row.begin(), row.end());
+    sort(res.begin(), res.end(), [](const vector<string>& a, const vector<string>& b){
+        return a.size() != b.size() ? a.size() < b.size() : a[0] < b[0];
+    });
+    
+    cout << "[";
+    for(int i=0; i<res.size(); i++){
+        cout << "[";
+        for(int j=0; j<res[i].size(); j++) cout << "\\"" << res[i][j] << "\\"" << (j==res[i].size()-1 ? "" : ",");
+        cout << "]" << (i==res.size()-1 ? "" : ",");
+    }
+    cout << "]" << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: '[["bat"],["nat","tan"],["ate","eat","tea"]]',
+      python: '[["bat"],["nat","tan"],["ate","eat","tea"]]',
+      java: "[[\"bat\"], [\"nat\", \"tan\"], [\"ate\", \"eat\", \"tea\"]]",
+      cpp: '[["bat"],["nat","tan"],["ate","eat","tea"]]',
+    },
+  },
+
+  "longest-palindromic-substring": {
+    id: "longest-palindromic-substring",
+    title: "Longest Palindromic Substring",
+    difficulty: "Medium",
+    category: "String • Dynamic Programming",
+    description: {
+      text: "Given a string s, return the longest palindromic substring in s.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: 's = "babad"',
+        output: '"bab"',
+        explanation: '"aba" is also a valid answer.',
+      },
+      {
+        input: 's = "cbbd"',
+        output: '"bb"',
+      },
+    ],
+    constraints: [
+      "1 ≤ s.length ≤ 1000",
+      "s consists of only digits and English letters.",
+    ],
+    starterCode: {
+      javascript: `function longestPalindrome(s) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(longestPalindrome("babad"));
+console.log(longestPalindrome("cbbd"));`,
+      python: `def longestPalindrome(s):
+    # Write your solution here
+    pass
+
+# Test cases
+print(longestPalindrome("babad"))
+print(longestPalindrome("cbbd"))`,
+      java: `class Solution {
+    public static String longestPalindrome(String s) {
+        // Write your solution here
+        
+        return "";
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(longestPalindrome("babad"));
+        System.out.println(longestPalindrome("cbbd"));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        // Write your solution here
+        
+        return "";
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << sol.longestPalindrome("babad") << endl;
+    cout << sol.longestPalindrome("cbbd") << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "bab\nbb",
+      python: "bab\nbb",
+      java: "bab\nbb",
+      cpp: "bab\nbb",
+    },
+  },
+
+  "merge-sorted-array": {
+    id: "merge-sorted-array",
+    title: "Merge Sorted Array",
+    difficulty: "Easy",
+    category: "Array • Two Pointers • Sorting",
+    description: {
+      text: "You are given two integer arrays nums1 and nums2, sorted in non-decreasing order, and two integers m and n, representing the number of elements in nums1 and nums2 respectively. Merge nums1 and nums2 into a single array sorted in non-decreasing order. The final sorted array should not be returned by the function, but instead be stored inside the array nums1. To accommodate this, nums1 has a length of m + n, where the first m elements denote the elements that should be merged, and the last n elements are set to 0 and should be ignored. nums2 has a length of n.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3",
+        output: "[1,2,2,3,5,6]",
+      },
+    ],
+    starterCode: {
+      javascript: `function merge(nums1, m, nums2, n) {
+  // Write your solution here
+  
+}
+
+// Test cases
+let n1 = [1,2,3,0,0,0];
+merge(n1, 3, [2,5,6], 3);
+console.log(JSON.stringify(n1));`,
+      python: `import json
+def merge(nums1, m, nums2, n):
+    # Write your solution here
+    pass
+
+# Test cases
+n1 = [1,2,3,0,0,0]
+merge(n1, 3, [2,5,6], 3)
+print(json.dumps(n1, separators=(',', ':')))`,
+      java: `import java.util.*;
+
+class Solution {
+    public static void merge(int[] nums1, int m, int[] nums2, int n) {
+        // Write your solution here
+        
+    }
+    
+    public static void main(String[] args) {
+        int[] n1 = {1,2,3,0,0,0};
+        merge(n1, 3, new int[]{2,5,6}, 3);
+        System.out.println(Arrays.toString(n1));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        // Write your solution here
+        
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> n1 = {1, 2, 3, 0, 0, 0};
+    vector<int> n2 = {2, 5, 6};
+    sol.merge(n1, 3, n2, 3);
+    cout << "[";
+    for(int i=0; i<n1.size(); i++) cout << n1[i] << (i==n1.size()-1 ? "" : ",");
+    cout << "]" << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "[1,2,2,3,5,6]",
+      python: "[1,2,2,3,5,6]",
+      java: "[1, 2, 2, 3, 5, 6]",
+      cpp: "[1,2,2,3,5,6]",
+    },
+  },
+
+  "valid-sudoku": {
+    id: "valid-sudoku",
+    title: "Valid Sudoku",
+    difficulty: "Medium",
+    category: "Array • Hash Table • Matrix",
+    description: {
+      text: "Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules: 1. Each row must contain the digits 1-9 without repetition. 2. Each column must contain the digits 1-9 without repetition. 3. Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.",
+      notes: [
+        "A Sudoku board (partially filled) could be valid but is not necessarily solvable.",
+        "Only the filled cells need to be validated according to the mentioned rules.",
+      ],
+    },
+    examples: [
+      {
+        input: 'board = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".",","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]',
+        output: "true",
+      },
+    ],
+    starterCode: {
+      javascript: `function isValidSudoku(board) {
+  // Write your solution here
+  
+}
+
+// Test cases
+const b1 = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]];
+console.log(isValidSudoku(b1));`,
+      python: `def isValidSudoku(board):
+    # Write your solution here
+    pass
+
+# Test cases
+b1 = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]
+print(isValidSudoku(b1))`,
+      java: `class Solution {
+    public static boolean isValidSudoku(char[][] board) {
+        // Write your solution here
+        
+        return false;
+    }
+    
+    public static void main(String[] args) {
+        char[][] b1 = {{'5','3','.','.','7','.','.','.','.'},{'6','.','.','1','9','5','.','.','.'},{'.','9','8','.','.','.','.','6','.'},{'8','.','.','.','6','.','.','.','3'},{'4','.','.','8','.','3','.','.','1'},{'7','.','.','.','2','.','.','.','6'},{'.','6','.','.','.','.','2','8','.'},{'.','.','.','4','1','9','.','.','5'},{'.','.','.','.','8','.','.','7','9'}};
+        System.out.println(isValidSudoku(b1));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        // Write your solution here
+        
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<vector<char>> b1 = {{'5','3','.','.','7','.','.','.','.'},{'6','.','.','1','9','5','.','.','.'},{'.','9','8','.','.','.','.','6','.'},{'8','.','.','.','6','.','.','.','3'},{'4','.','.','8','.','3','.','.','1'},{'7','.','.','.','2','.','.','.','6'},{'.','6','.','.','.','.','2','8','.'},{'.','.','.','4','1','9','.','.','5'},{'.','.','.','.','8','.','.','7','9'}};
+    cout << (sol.isValidSudoku(b1) ? "true" : "false") << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "true",
+      python: "True",
+      java: "true",
+      cpp: "true",
+    },
+  },
+
+  "house-robber": {
+    id: "house-robber",
+    title: "House Robber",
+    difficulty: "Medium",
+    category: "Array • Dynamic Programming",
+    description: {
+      text: "You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security systems connected and it will automatically contact the police if two adjacent houses were broken into on the same night. Given an integer array nums representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "nums = [1,2,3,1]",
+        output: "4",
+        explanation: "Rob house 1 (money = 1) and then rob house 3 (money = 3). Total amount = 1 + 3 = 4.",
+      },
+      {
+        input: "nums = [2,7,9,3,1]",
+        output: "12",
+        explanation: "Rob house 1 (money = 2), rob house 3 (money = 9) and rob house 5 (money = 1). Total amount = 2 + 9 + 1 = 12.",
+      },
+    ],
+    starterCode: {
+      javascript: `function rob(nums) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(rob([1,2,3,1])); // Expected: 4
+console.log(rob([2,7,9,3,1])); // Expected: 12`,
+      python: `def rob(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(rob([1,2,3,1]))  # Expected: 4
+print(rob([2,7,9,3,1]))  # Expected: 12`,
+      java: `class Solution {
+    public static int rob(int[] nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(rob(new int[]{1,2,3,1})); // Expected: 4
+        System.out.println(rob(new int[]{2,7,9,3,1})); // Expected: 12
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> n1 = {1, 2, 3, 1};
+    cout << sol.rob(n1) << endl;
+    vector<int> n2 = {2, 7, 9, 3, 1};
+    cout << sol.rob(n2) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "4\n12",
+      python: "4\n12",
+      java: "4\n12",
+      cpp: "4\n12",
+    },
+  },
 };
 
 export const LANGUAGE_CONFIG = {

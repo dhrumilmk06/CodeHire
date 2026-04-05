@@ -3578,6 +3578,468 @@ int main() {
       cpp: "BANC\na\n",
     },
   },
+
+  "subarray-sum-equals-k": {
+    id: "subarray-sum-equals-k",
+    title: "Subarray Sum Equals K",
+    difficulty: "Medium",
+    category: "Array • Hash Table",
+    description: {
+      text: "Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.",
+      notes: [
+        "A subarray is a contiguous non-empty sequence of elements within an array.",
+      ],
+    },
+    examples: [
+      {
+        input: "nums = [1,1,1], k = 2",
+        output: "2",
+      },
+      {
+        input: "nums = [1,2,3], k = 3",
+        output: "2",
+      },
+    ],
+    constraints: [
+      "1 ≤ nums.length ≤ 2 * 10⁴",
+      "-1000 ≤ nums[i] ≤ 1000",
+      "-10⁷ ≤ k ≤ 10⁷",
+    ],
+    starterCode: {
+      javascript: `function subarraySum(nums, k) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(subarraySum([1,1,1], 2)); // Expected: 2
+console.log(subarraySum([1,2,3], 3)); // Expected: 2`,
+      python: `def subarraySum(nums, k):
+    # Write your solution here
+    pass
+
+# Test cases
+print(subarraySum([1,1,1], 2))  # Expected: 2
+print(subarraySum([1,2,3], 3))  # Expected: 2`,
+      java: `import java.util.*;
+
+class Solution {
+    public static int subarraySum(int[] nums, int k) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(subarraySum(new int[]{1,1,1}, 2));
+        System.out.println(subarraySum(new int[]{1,2,3}, 3));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> n1 = {1, 1, 1};
+    cout << sol.subarraySum(n1, 2) << endl;
+    vector<int> n2 = {1, 2, 3};
+    cout << sol.subarraySum(n2, 3) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "2\n2",
+      python: "2\n2",
+      java: "2\n2",
+      cpp: "2\n2",
+    },
+  },
+
+  "word-break": {
+    id: "word-break",
+    title: "Word Break",
+    difficulty: "Medium",
+    category: "Dynamic Programming • Hash Table",
+    description: {
+      text: "Given a string s and a dictionary of strings wordDict, return true if s can be segmented into a space-separated sequence of one or more dictionary words.",
+      notes: [
+        "Note that the same word in the dictionary may be reused multiple times in the segmentation.",
+      ],
+    },
+    examples: [
+      {
+        input: 's = "leetcode", wordDict = ["leet","code"]',
+        output: "true",
+        explanation: "Return true because \"leetcode\" can be segmented as \"leet code\".",
+      },
+      {
+        input: 's = "applepenapple", wordDict = ["apple","pen"]',
+        output: "true",
+        explanation: "Return true because \"applepenapple\" can be segmented as \"apple pen apple\".",
+      },
+    ],
+    constraints: [
+      "1 ≤ s.length ≤ 300",
+      "1 ≤ wordDict.length ≤ 1000",
+      "1 ≤ wordDict[i].length ≤ 20",
+    ],
+    starterCode: {
+      javascript: `function wordBreak(s, wordDict) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(wordBreak("leetcode", ["leet","code"])); // Expected: true
+console.log(wordBreak("applepenapple", ["apple","pen"])); // Expected: true`,
+      python: `def wordBreak(s, wordDict):
+    # Write your solution here
+    pass
+
+# Test cases
+print(wordBreak("leetcode", ["leet","code"]))  # Expected: True
+print(wordBreak("applepenapple", ["apple","pen"]))  # Expected: True`,
+      java: `import java.util.*;
+
+class Solution {
+    public static boolean wordBreak(String s, List<String> wordDict) {
+        // Write your solution here
+        
+        return false;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(wordBreak("leetcode", Arrays.asList("leet","code")));
+        System.out.println(wordBreak("applepenapple", Arrays.asList("apple","pen")));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+#include <unordered_set>
+
+using namespace std;
+
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        // Write your solution here
+        
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<string> d1 = {"leet","code"};
+    cout << (sol.wordBreak("leetcode", d1) ? "true" : "false") << endl;
+    vector<string> d2 = {"apple","pen"};
+    cout << (sol.wordBreak("applepenapple", d2) ? "true" : "false") << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "true\ntrue",
+      python: "True\nTrue",
+      java: "true\ntrue",
+      cpp: "true\ntrue",
+    },
+  },
+
+  "daily-temperatures": {
+    id: "daily-temperatures",
+    title: "Daily Temperatures",
+    difficulty: "Medium",
+    category: "Array • Stack • Monotonic Stack",
+    description: {
+      text: "Given an array of integers temperatures represents the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the ith day to get a warmer temperature. If there is no future day for which this is possible, keep answer[i] == 0 instead.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "temperatures = [73,74,75,71,69,72,76,73]",
+        output: "[1,1,4,2,1,1,0,0]",
+      },
+      {
+        input: "temperatures = [30,40,50,60]",
+        output: "[1,1,1,0]",
+      },
+    ],
+    starterCode: {
+      javascript: `function dailyTemperatures(temperatures) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(JSON.stringify(dailyTemperatures([73,74,75,71,69,72,76,73]))); // Expected: [1,1,4,2,1,1,0,0]
+console.log(JSON.stringify(dailyTemperatures([30,40,50,60]))); // Expected: [1,1,1,0]`,
+      python: `import json
+def dailyTemperatures(temperatures):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(dailyTemperatures([73,74,75,71,69,72,76,73]), separators=(',', ':')))
+print(json.dumps(dailyTemperatures([30,40,50,60]), separators=(',', ':')))`,
+      java: `import java.util.*;
+
+class Solution {
+    public static int[] dailyTemperatures(int[] temperatures) {
+        // Write your solution here
+        
+        return new int[0];
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(dailyTemperatures(new int[]{73,74,75,71,69,72,76,73})));
+        System.out.println(Arrays.toString(dailyTemperatures(new int[]{30,40,50,60})));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <stack>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        // Write your solution here
+        
+        return {};
+    }
+};
+
+string vectorToString(vector<int> res) {
+    string s = "[";
+    for (int i = 0; i < res.size(); i++) {
+        s += to_string(res[i]) + (i == res.size() - 1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> t1 = {73,74,75,71,69,72,76,73};
+    cout << vectorToString(sol.dailyTemperatures(t1)) << endl;
+    vector<int> t2 = {30,40,50,60};
+    cout << vectorToString(sol.dailyTemperatures(t2)) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "[1,1,4,2,1,1,0,0]\n[1,1,1,0]",
+      python: "[1,1,4,2,1,1,0,0]\n[1,1,1,0]",
+      java: "[1, 1, 4, 2, 1, 1, 0, 0]\n[1, 1, 1, 0]",
+      cpp: "[1,1,4,2,1,1,0,0]\n[1,1,1,0]",
+    },
+  },
+
+  "sort-colors": {
+    id: "sort-colors",
+    title: "Sort Colors",
+    difficulty: "Medium",
+    category: "Array • Two Pointers • Sorting",
+    description: {
+      text: "Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue. We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively. You must solve this problem without using the library's sort function.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "nums = [2,0,2,1,1,0]",
+        output: "[0,0,1,1,2,2]",
+      },
+      {
+        input: "nums = [2,0,1]",
+        output: "[0,1,2]",
+      },
+    ],
+    starterCode: {
+      javascript: `function sortColors(nums) {
+  // Write your solution here
+  
+}
+
+// Test cases
+let n1 = [2,0,2,1,1,0];
+sortColors(n1);
+console.log(JSON.stringify(n1));
+let n2 = [2,0,1];
+sortColors(n2);
+console.log(JSON.stringify(n2));`,
+      python: `import json
+def sortColors(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+n1 = [2,0,2,1,1,0]
+sortColors(n1)
+print(json.dumps(n1, separators=(',', ':')))
+n2 = [2,0,1]
+sortColors(n2)
+print(json.dumps(n2, separators=(',', ':')))`,
+      java: `import java.util.*;
+
+class Solution {
+    public static void sortColors(int[] nums) {
+        // Write your solution here
+        
+    }
+    
+    public static void main(String[] args) {
+        int[] n1 = {2,0,2,1,1,0};
+        sortColors(n1);
+        System.out.println(Arrays.toString(n1));
+        
+        int[] n2 = {2,0,1};
+        sortColors(n2);
+        System.out.println(Arrays.toString(n2));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        // Write your solution here
+        
+    }
+};
+
+string vectorToString(vector<int> res) {
+    string s = "[";
+    for (int i = 0; i < res.size(); i++) {
+        s += to_string(res[i]) + (i == res.size() - 1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> n1 = {2,0,2,1,1,0};
+    sol.sortColors(n1);
+    cout << vectorToString(n1) << endl;
+    vector<int> n2 = {2,0,1};
+    sol.sortColors(n2);
+    cout << vectorToString(n2) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "[0,0,1,1,2,2]\n[0,1,2]",
+      python: "[0,0,1,1,2,2]\n[0,1,2]",
+      java: "[0, 0, 1, 1, 2, 2]\n[0, 1, 2]",
+      cpp: "[0,0,1,1,2,2]\n[0,1,2]",
+    },
+  },
+
+  "unique-paths": {
+    id: "unique-paths",
+    title: "Unique Paths",
+    difficulty: "Medium",
+    category: "Dynamic Programming • Combinatorics",
+    description: {
+      text: "There is a robot on an m x n grid. The robot is initially located at the top-left corner. The robot tries to move to the bottom-right corner. The robot can only move either down or right at any point in time. Given the two integers m and n, return the number of possible unique paths that the robot can take to reach the bottom-right corner.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "m = 3, n = 7",
+        output: "28",
+      },
+      {
+        input: "m = 3, n = 2",
+        output: "3",
+        explanation: "From the top-left corner, there are a total of 3 ways to reach the bottom-right corner: 1. Right -> Down -> Down, 2. Down -> Down -> Right, 3. Down -> Right -> Down",
+      },
+    ],
+    starterCode: {
+      javascript: `function uniquePaths(m, n) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(uniquePaths(3, 7)); // Expected: 28
+console.log(uniquePaths(3, 2)); // Expected: 3`,
+      python: `def uniquePaths(m, n):
+    # Write your solution here
+    pass
+
+# Test cases
+print(uniquePaths(3, 7))  # Expected: 28
+print(uniquePaths(3, 2))  # Expected: 3`,
+      java: `class Solution {
+    public static int uniquePaths(int m, int n) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(uniquePaths(3, 7));
+        System.out.println(uniquePaths(3, 2));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << sol.uniquePaths(3, 7) << endl;
+    cout << sol.uniquePaths(3, 2) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "28\n3",
+      python: "28\n3",
+      java: "28\n3",
+      cpp: "28\n3",
+    },
+  },
 };
 
 export const LANGUAGE_CONFIG = {

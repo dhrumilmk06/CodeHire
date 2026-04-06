@@ -4040,6 +4040,478 @@ int main() {
       cpp: "28\n3",
     },
   },
+
+  "binary-search": {
+    id: "binary-search",
+    title: "Binary Search",
+    difficulty: "Easy",
+    category: "Array • Binary Search",
+    description: {
+      text: "Given an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, then return its index. Otherwise, return -1. You must write an algorithm with O(log n) runtime complexity.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "nums = [-1,0,3,5,9,12], target = 9",
+        output: "4",
+        explanation: "9 exists in nums and its index is 4",
+      },
+      {
+        input: "nums = [-1,0,3,5,9,12], target = 2",
+        output: "-1",
+        explanation: "2 does not exist in nums so return -1",
+      },
+    ],
+    constraints: [
+      "1 ≤ nums.length ≤ 10⁴",
+      "-10⁴ < nums[i], target < 10⁴",
+      "All the integers in nums are unique.",
+      "nums is sorted in ascending order.",
+    ],
+    starterCode: {
+      javascript: `function search(nums, target) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(search([-1,0,3,5,9,12], 9)); // Expected: 4
+console.log(search([-1,0,3,5,9,12], 2)); // Expected: -1`,
+      python: `def search(nums, target):
+    # Write your solution here
+    pass
+
+# Test cases
+print(search([-1,0,3,5,9,12], 9))  # Expected: 4
+print(search([-1,0,3,5,9,12], 2))  # Expected: -1`,
+      java: `class Solution {
+    public static int search(int[] nums, int target) {
+        // Write your solution here
+        
+        return -1;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(search(new int[]{-1,0,3,5,9,12}, 9));
+        System.out.println(search(new int[]{-1,0,3,5,9,12}, 2));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        // Write your solution here
+        
+        return -1;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> n1 = {-1,0,3,5,9,12};
+    cout << sol.search(n1, 9) << endl;
+    vector<int> n2 = {-1,0,3,5,9,12};
+    cout << sol.search(n2, 2) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "4\n-1",
+      python: "4\n-1",
+      java: "4\n-1",
+      cpp: "4\n-1",
+    },
+  },
+
+  "search-insert-position": {
+    id: "search-insert-position",
+    title: "Search Insert Position",
+    difficulty: "Easy",
+    category: "Array • Binary Search",
+    description: {
+      text: "Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order. You must write an algorithm with O(log n) runtime complexity.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "nums = [1,3,5,6], target = 5",
+        output: "2",
+      },
+      {
+        input: "nums = [1,3,5,6], target = 2",
+        output: "1",
+      },
+      {
+        input: "nums = [1,3,5,6], target = 7",
+        output: "4",
+      },
+    ],
+    constraints: [
+      "1 ≤ nums.length ≤ 10⁴",
+      "-10⁴ ≤ nums[i], target ≤ 10⁴",
+      "nums contains distinct values sorted in ascending order.",
+    ],
+    starterCode: {
+      javascript: `function searchInsert(nums, target) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(searchInsert([1,3,5,6], 5)); // Expected: 2
+console.log(searchInsert([1,3,5,6], 2)); // Expected: 1
+console.log(searchInsert([1,3,5,6], 7)); // Expected: 4`,
+      python: `def searchInsert(nums, target):
+    # Write your solution here
+    pass
+
+# Test cases
+print(searchInsert([1,3,5,6], 5))  # Expected: 2
+print(searchInsert([1,3,5,6], 2))  # Expected: 1
+print(searchInsert([1,3,5,6], 7))  # Expected: 4`,
+      java: `class Solution {
+    public static int searchInsert(int[] nums, int target) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(searchInsert(new int[]{1,3,5,6}, 5));
+        System.out.println(searchInsert(new int[]{1,3,5,6}, 2));
+        System.out.println(searchInsert(new int[]{1,3,5,6}, 7));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> n1 = {1,3,5,6};
+    cout << sol.searchInsert(n1, 5) << endl;
+    cout << sol.searchInsert(n1, 2) << endl;
+    cout << sol.searchInsert(n1, 7) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "2\n1\n4",
+      python: "2\n1\n4",
+      java: "2\n1\n4",
+      cpp: "2\n1\n4",
+    },
+  },
+
+  "find-first-and-last-position-of-element-in-sorted-array": {
+    id: "find-first-and-last-position-of-element-in-sorted-array",
+    title: "Find First and Last Position of Element in Sorted Array",
+    difficulty: "Medium",
+    category: "Array • Binary Search",
+    description: {
+      text: "Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value. If target is not found in the array, return [-1, -1]. You must write an algorithm with O(log n) runtime complexity.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "nums = [5,7,7,8,8,10], target = 8",
+        output: "[3,4]",
+      },
+      {
+        input: "nums = [5,7,7,8,8,10], target = 6",
+        output: "[-1,-1]",
+      },
+      {
+        input: "nums = [], target = 0",
+        output: "[-1,-1]",
+      },
+    ],
+    constraints: [
+      "0 ≤ nums.length ≤ 10⁵",
+      "-10⁹ ≤ nums[i], target ≤ 10⁹",
+      "nums is a non-decreasing array.",
+    ],
+    starterCode: {
+      javascript: `function searchRange(nums, target) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(JSON.stringify(searchRange([5,7,7,8,8,10], 8))); // Expected: [3,4]
+console.log(JSON.stringify(searchRange([5,7,7,8,8,10], 6))); // Expected: [-1,-1]
+console.log(JSON.stringify(searchRange([], 0))); // Expected: [-1,-1]`,
+      python: `import json
+def searchRange(nums, target):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(searchRange([5,7,7,8,8,10], 8), separators=(',', ':')))
+print(json.dumps(searchRange([5,7,7,8,8,10], 6), separators=(',', ':')))
+print(json.dumps(searchRange([], 0), separators=(',', ':')))`,
+      java: `import java.util.*;
+
+class Solution {
+    public static int[] searchRange(int[] nums, int target) {
+        // Write your solution here
+        
+        return new int[]{-1, -1};
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(searchRange(new int[]{5,7,7,8,8,10}, 8)));
+        System.out.println(Arrays.toString(searchRange(new int[]{5,7,7,8,8,10}, 6)));
+        System.out.println(Arrays.toString(searchRange(new int[]{}, 0)));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        // Write your solution here
+        
+        return {-1, -1};
+    }
+};
+
+string vectorToString(const vector<int>& res) {
+    string s = "[";
+    for (int i = 0; i < res.size(); i++) {
+        s += to_string(res[i]) + (i == res.size() - 1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> n1 = {5,7,7,8,8,10};
+    cout << vectorToString(sol.searchRange(n1, 8)) << endl;
+    cout << vectorToString(sol.searchRange(n1, 6)) << endl;
+    vector<int> n2 = {};
+    cout << vectorToString(sol.searchRange(n2, 0)) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "[3,4]\n[-1,-1]\n[-1,-1]",
+      python: "[3,4]\n[-1,-1]\n[-1,-1]",
+      java: "[3, 4]\n[-1, -1]\n[-1, -1]",
+      cpp: "[3,4]\n[-1,-1]\n[-1,-1]",
+    },
+  },
+
+  "find-minimum-in-rotated-sorted-array": {
+    id: "find-minimum-in-rotated-sorted-array",
+    title: "Find Minimum in Rotated Sorted Array",
+    difficulty: "Medium",
+    category: "Array • Binary Search",
+    description: {
+      text: "Suppose an array of length n sorted in ascending order is rotated between 1 and n times. For example, the array nums = [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2] if it was rotated 4 times. Given the sorted rotated array nums of unique elements, return the minimum element of this array. You must write an algorithm with O(log n) runtime complexity.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "nums = [3,4,5,1,2]",
+        output: "1",
+      },
+      {
+        input: "nums = [4,5,6,7,0,1,2]",
+        output: "0",
+      },
+      {
+        input: "nums = [11,13,15,17]",
+        output: "11",
+      },
+    ],
+    constraints: [
+      "1 ≤ nums.length ≤ 5000",
+      "-5000 ≤ nums[i] ≤ 5000",
+      "All the integers of nums are unique.",
+      "nums is sorted and rotated between 1 and n times.",
+    ],
+    starterCode: {
+      javascript: `function findMin(nums) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(findMin([3,4,5,1,2])); // Expected: 1
+console.log(findMin([4,5,6,7,0,1,2])); // Expected: 0
+console.log(findMin([11,13,15,17])); // Expected: 11`,
+      python: `def findMin(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(findMin([3,4,5,1,2]))  # Expected: 1
+print(findMin([4,5,6,7,0,1,2]))  # Expected: 0
+print(findMin([11,13,15,17]))  # Expected: 11`,
+      java: `class Solution {
+    public static int findMin(int[] nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(findMin(new int[]{3,4,5,1,2}));
+        System.out.println(findMin(new int[]{4,5,6,7,0,1,2}));
+        System.out.println(findMin(new int[]{11,13,15,17}));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> n1 = {3,4,5,1,2};
+    cout << sol.findMin(n1) << endl;
+    vector<int> n2 = {4,5,6,7,0,1,2};
+    cout << sol.findMin(n2) << endl;
+    vector<int> n3 = {11,13,15,17};
+    cout << sol.findMin(n3) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "1\n0\n11",
+      python: "1\n0\n11",
+      java: "1\n0\n11",
+      cpp: "1\n0\n11",
+    },
+  },
+
+  "find-peak-element": {
+    id: "find-peak-element",
+    title: "Find Peak Element",
+    difficulty: "Medium",
+    category: "Array • Binary Search",
+    description: {
+      text: "A peak element is an element that is strictly greater than its neighbors. Given a 0-indexed integer array nums, find a peak element, and return its index. If the array contains multiple peaks, return the index to any of the peaks. You may imagine that nums[-1] = nums[n] = -∞. In other words, an element is always considered to be strictly greater than a neighbor that is outside the array.",
+      notes: [
+        "You must write an algorithm that runs in O(log n) time.",
+      ],
+    },
+    examples: [
+      {
+        input: "nums = [1,2,3,1]",
+        output: "2",
+        explanation: "3 is a peak element and your function should return the index number 2.",
+      },
+      {
+        input: "nums = [1,2,1,3,5,6,4]",
+        output: "5",
+        explanation: "Your function can return either index number 1 where the peak element is 2, or index number 5 where the peak element is 6.",
+      },
+    ],
+    starterCode: {
+      javascript: `function findPeakElement(nums) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(findPeakElement([1,2,3,1])); // Expected: 2
+// Multiple valid answers possible for the second case (1 or 5), but we'll check it manually in production.
+// To keep it deterministic for this example, we expect one of the valid indices.
+let res = findPeakElement([1,2,1,3,5,6,4]);
+console.log(res === 1 || res === 5 ? "true" : "false");`,
+      python: `def findPeakElement(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(findPeakElement([1,2,3,1]))  # Expected: 2
+res = findPeakElement([1,2,1,3,5,6,4])
+print("true" if res == 1 or res == 5 else "false")`,
+      java: `class Solution {
+    public static int findPeakElement(int[] nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(findPeakElement(new int[]{1,2,3,1}));
+        int res = findPeakElement(new int[]{1,2,1,3,5,6,4});
+        System.out.println((res == 1 || res == 5) ? "true" : "false");
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int findPeakElement(vector<int>& nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> n1 = {1,2,3,1};
+    cout << sol.findPeakElement(n1) << endl;
+    vector<int> n2 = {1,2,1,3,5,6,4};
+    int res = sol.findPeakElement(n2);
+    cout << (res == 1 || res == 5 ? "true" : "false") << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "2\ntrue",
+      python: "2\ntrue",
+      java: "2\ntrue",
+      cpp: "2\ntrue",
+    },
+  },
 };
 
 export const LANGUAGE_CONFIG = {

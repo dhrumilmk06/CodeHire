@@ -4512,6 +4512,729 @@ int main() {
       cpp: "2\ntrue",
     },
   },
+
+  "merge-k-sorted-lists": {
+    id: "merge-k-sorted-lists",
+    title: "Merge k Sorted Lists",
+    difficulty: "Hard",
+    category: "Linked List • Heap • Divide and Conquer",
+    description: {
+      text: "You are given an array of k linked-lists lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "lists = [[1,4,5],[1,3,4],[2,6]]",
+        output: "[1,1,2,3,4,4,5,6]",
+      },
+      {
+        input: "lists = []",
+        output: "[]",
+      },
+      {
+        input: "lists = [[]]",
+        output: "[]",
+      },
+    ],
+    constraints: [
+      "k == lists.length",
+      "0 ≤ k ≤ 10⁴",
+      "0 ≤ lists[i].length ≤ 500",
+      "-10⁴ ≤ lists[i][j] ≤ 10⁴",
+      "lists[i] is sorted in ascending order.",
+      "The sum of lists[i].length will not exceed 10⁴.",
+    ],
+    starterCode: {
+      javascript: `// Definition for singly-linked list.
+function ListNode(val, next) {
+  this.val = (val===undefined ? 0 : val)
+  this.next = (next===undefined ? null : next)
+}
+
+function mergeKLists(lists) {
+  // Write your solution here
+  
+}
+
+// Helper to create list
+function createList(arr) {
+  if (!arr.length) return null;
+  let head = new ListNode(arr[0]);
+  let curr = head;
+  for (let i = 1; i < arr.length; i++) {
+    curr.next = new ListNode(arr[i]);
+    curr = curr.next;
+  }
+  return head;
+}
+
+// Helper to stringify list
+function listToString(head) {
+  let res = [];
+  while (head) {
+    res.push(head.val);
+    head = head.next;
+  }
+  return JSON.stringify(res);
+}
+
+// Test cases
+let l1 = createList([1,4,5]);
+let l2 = createList([1,3,4]);
+let l3 = createList([2,6]);
+console.log(listToString(mergeKLists([l1, l2, l3]))); // Expected: [1,1,2,3,4,4,5,6]`,
+      python: `import json
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def mergeKLists(lists):
+    # Write your solution here
+    pass
+
+def createList(arr):
+    if not arr: return None
+    dummy = ListNode(0)
+    curr = dummy
+    for x in arr:
+        curr.next = ListNode(x)
+        curr = curr.next
+    return dummy.next
+
+def listToString(head):
+    res = []
+    while head:
+        res.append(head.val)
+        head = head.next
+    return json.dumps(res, separators=(',', ':'))
+
+# Test cases
+l1 = createList([1,4,5])
+l2 = createList([1,3,4])
+l3 = createList([2,6])
+print(listToString(mergeKLists([l1, l2, l3])))  # Expected: [1,1,2,3,4,4,5,6]`,
+      java: `import java.util.*;
+
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode() {}
+    ListNode(int val) { this.val = val; }
+    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+}
+
+class Solution {
+    public static ListNode mergeKLists(ListNode[] lists) {
+        // Write your solution here
+        
+        return null;
+    }
+    
+    public static ListNode createList(int[] arr) {
+        if (arr.length == 0) return null;
+        ListNode dummy = new ListNode(0);
+        ListNode curr = dummy;
+        for (int x : arr) {
+            curr.next = new ListNode(x);
+            curr = curr.next;
+        }
+        return dummy.next;
+    }
+    
+    public static String listToString(ListNode head) {
+        List<Integer> res = new ArrayList<>();
+        while (head != null) {
+            res.add(head.val);
+            head = head.next;
+        }
+        return res.toString();
+    }
+    
+    public static void main(String[] args) {
+        ListNode l1 = createList(new int[]{1,4,5});
+        ListNode l2 = createList(new int[]{1,3,4});
+        ListNode l3 = createList(new int[]{2,6});
+        System.out.println(listToString(mergeKLists(new ListNode[]{l1, l2, l3})));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <queue>
+#include <string>
+
+using namespace std;
+
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        // Write your solution here
+        
+        return nullptr;
+    }
+};
+
+ListNode* createList(vector<int> arr) {
+    if (arr.empty()) return nullptr;
+    ListNode* dummy = new ListNode(0);
+    ListNode* curr = dummy;
+    for (int x : arr) {
+        curr->next = new ListNode(x);
+        curr = curr->next;
+    }
+    return dummy->next;
+}
+
+string listToString(ListNode* head) {
+    string res = "[";
+    while (head) {
+        res += to_string(head->val);
+        if (head->next) res += ",";
+        head = head->next;
+    }
+    res += "]";
+    return res;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    ListNode* l1 = createList({1,4,5});
+    ListNode* l2 = createList({1,3,4});
+    ListNode* l3 = createList({2,6});
+    vector<ListNode*> lists = {l1, l2, l3};
+    cout << listToString(sol.mergeKLists(lists)) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "[1,1,2,3,4,4,5,6]",
+      python: "[1,1,2,3,4,4,5,6]",
+      java: "[1, 1, 2, 3, 4, 4, 5, 6]",
+      cpp: "[1,1,2,3,4,4,5,6]",
+    },
+  },
+
+  "reverse-nodes-in-k-group": {
+    id: "reverse-nodes-in-k-group",
+    title: "Reverse Nodes in k-Group",
+    difficulty: "Hard",
+    category: "Linked List • Two Pointers",
+    description: {
+      text: "Given the head of a linked list, reverse the nodes of the list k at a time, and return the modified list. k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is.",
+      notes: [
+        "You may not alter the values in the list's nodes, only nodes themselves may be changed.",
+      ],
+    },
+    examples: [
+      {
+        input: "head = [1,2,3,4,5], k = 2",
+        output: "[2,1,4,3,5]",
+      },
+      {
+        input: "head = [1,2,3,4,5], k = 3",
+        output: "[3,2,1,4,5]",
+      },
+    ],
+    starterCode: {
+      javascript: `// Definition for singly-linked list.
+function ListNode(val, next) {
+  this.val = (val===undefined ? 0 : val)
+  this.next = (next===undefined ? null : next)
+}
+
+function reverseKGroup(head, k) {
+  // Write your solution here
+  
+}
+
+// Helper to create list
+function createList(arr) {
+  if (!arr.length) return null;
+  let head = new ListNode(arr[0]);
+  let curr = head;
+  for (let i = 1; i < arr.length; i++) {
+    curr.next = new ListNode(arr[i]);
+    curr = curr.next;
+  }
+  return head;
+}
+
+// Helper to stringify list
+function listToString(head) {
+  let res = [];
+  while (head) {
+    res.push(head.val);
+    head = head.next;
+  }
+  return JSON.stringify(res);
+}
+
+// Test cases
+console.log(listToString(reverseKGroup(createList([1,2,3,4,5]), 2))); // Expected: [2,1,4,3,5]
+console.log(listToString(reverseKGroup(createList([1,2,3,4,5]), 3))); // Expected: [3,2,1,4,5]`,
+      python: `import json
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def reverseKGroup(head, k):
+    # Write your solution here
+    pass
+
+def createList(arr):
+    if not arr: return None
+    dummy = ListNode(0)
+    curr = dummy
+    for x in arr:
+        curr.next = ListNode(x)
+        curr = curr.next
+    return dummy.next
+
+def listToString(head):
+    res = []
+    while head:
+        res.append(head.val)
+        head = head.next
+    return json.dumps(res, separators=(',', ':'))
+
+# Test cases
+print(listToString(reverseKGroup(createList([1,2,3,4,5]), 2)))  # Expected: [2,1,4,3,5]
+print(listToString(reverseKGroup(createList([1,2,3,4,5]), 3)))  # Expected: [3,2,1,4,5]`,
+      java: `import java.util.*;
+
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode() {}
+    ListNode(int val) { this.val = val; }
+    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+}
+
+class Solution {
+    public static ListNode reverseKGroup(ListNode head, int k) {
+        // Write your solution here
+        
+        return null;
+    }
+    
+    public static ListNode createList(int[] arr) {
+        if (arr.length == 0) return null;
+        ListNode dummy = new ListNode(0);
+        ListNode curr = dummy;
+        for (int x : arr) {
+            curr.next = new ListNode(x);
+            curr = curr.next;
+        }
+        return dummy.next;
+    }
+    
+    public static String listToString(ListNode head) {
+        List<Integer> res = new ArrayList<>();
+        while (head != null) {
+            res.add(head.val);
+            head = head.next;
+        }
+        return res.toString();
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(listToString(reverseKGroup(createList(new int[]{1,2,3,4,5}), 2)));
+        System.out.println(listToString(reverseKGroup(createList(new int[]{1,2,3,4,5}), 3)));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        // Write your solution here
+        
+        return nullptr;
+    }
+};
+
+ListNode* createList(vector<int> arr) {
+    if (arr.empty()) return nullptr;
+    ListNode* dummy = new ListNode(0);
+    ListNode* curr = dummy;
+    for (int x : arr) {
+        curr->next = new ListNode(x);
+        curr = curr->next;
+    }
+    return dummy->next;
+}
+
+string listToString(ListNode* head) {
+    string res = "[";
+    while (head) {
+        res += to_string(head->val);
+        if (head->next) res += ",";
+        head = head->next;
+    }
+    res += "]";
+    return res;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << listToString(sol.reverseKGroup(createList({1,2,3,4,5}), 2)) << endl;
+    cout << listToString(sol.reverseKGroup(createList({1,2,3,4,5}), 3)) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "[2,1,4,3,5]\n[3,2,1,4,5]",
+      python: "[2,1,4,3,5]\n[3,2,1,4,5]",
+      java: "[2, 1, 4, 3, 5]\n[3, 2, 1, 4, 5]",
+      cpp: "[2,1,4,3,5]\n[3,2,1,4,5]",
+    },
+  },
+
+  "edit-distance": {
+    id: "edit-distance",
+    title: "Edit Distance",
+    difficulty: "Hard",
+    category: "String • Dynamic Programming",
+    description: {
+      text: "Given two strings word1 and word2, return the minimum number of operations required to convert word1 to word2.",
+      notes: [
+        "You have the following three operations permitted on a word:",
+        "Insert a character",
+        "Delete a character",
+        "Replace a character",
+      ],
+    },
+    examples: [
+      {
+        input: 'word1 = "horse", word2 = "ros"',
+        output: "3",
+        explanation: "horse -> rorse (replace 'h' with 'r'), rorse -> rose (remove 'r'), rose -> ros (remove 'e')",
+      },
+      {
+        input: 'word1 = "intention", word2 = "execution"',
+        output: "5",
+      },
+    ],
+    starterCode: {
+      javascript: `function minDistance(word1, word2) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(minDistance("horse", "ros")); // Expected: 3
+console.log(minDistance("intention", "execution")); // Expected: 5`,
+      python: `def minDistance(word1, word2):
+    # Write your solution here
+    pass
+
+# Test cases
+print(minDistance("horse", "ros"))  # Expected: 3
+print(minDistance("intention", "execution"))  # Expected: 5`,
+      java: `class Solution {
+    public static int minDistance(String word1, String word2) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(minDistance("horse", "ros"));
+        System.out.println(minDistance("intention", "execution"));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int minDistance(string word1, string word2) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << sol.minDistance("horse", "ros") << endl;
+    cout << sol.minDistance("intention", "execution") << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "3\n5",
+      python: "3\n5",
+      java: "3\n5",
+      cpp: "3\n5",
+    },
+  },
+
+  "largest-rectangle-in-histogram": {
+    id: "largest-rectangle-in-histogram",
+    title: "Largest Rectangle in Histogram",
+    difficulty: "Hard",
+    category: "Array • Stack • Monotonic Stack",
+    description: {
+      text: "Given an array of integers heights representing the histogram's bar height where the width of each bar is 1, return the area of the largest rectangle in the histogram.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "heights = [2,1,5,6,2,3]",
+        output: "10",
+        explanation: "The maximum area is 10 (bar 5 and 6 with height 5).",
+      },
+      {
+        input: "heights = [2,4]",
+        output: "4",
+      },
+    ],
+    starterCode: {
+      javascript: `function largestRectangleArea(heights) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(largestRectangleArea([2,1,5,6,2,3])); // Expected: 10
+console.log(largestRectangleArea([2,4])); // Expected: 4`,
+      python: `def largestRectangleArea(heights):
+    # Write your solution here
+    pass
+
+# Test cases
+print(largestRectangleArea([2,1,5,6,2,3]))  # Expected: 10
+print(largestRectangleArea([2,4]))  # Expected: 4`,
+      java: `import java.util.*;
+
+class Solution {
+    public static int largestRectangleArea(int[] heights) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(largestRectangleArea(new int[]{2,1,5,6,2,3}));
+        System.out.println(largestRectangleArea(new int[]{2,4}));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <stack>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> h1 = {2,1,5,6,2,3};
+    cout << sol.largestRectangleArea(h1) << endl;
+    vector<int> h2 = {2,4};
+    cout << sol.largestRectangleArea(h2) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "10\n4",
+      python: "10\n4",
+      java: "10\n4",
+      cpp: "10\n4",
+    },
+  },
+
+  "sudoku-solver": {
+    id: "sudoku-solver",
+    title: "Sudoku Solver",
+    difficulty: "Hard",
+    category: "Array • Hash Table • Backtracking • Matrix",
+    description: {
+      text: "Write a program to solve a Sudoku puzzle by filling the empty cells. A sudoku solution must satisfy all of the following rules:",
+      notes: [
+        "Each of the digits 1-9 must occur exactly once in each row.",
+        "Each of the digits 1-9 must occur exactly once in each column.",
+        "Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.",
+        "The '.' character indicates empty cells.",
+      ],
+    },
+    examples: [
+      {
+        input: 'board = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],["3",".",".",".","8",".",".","7","9"]]',
+        output: "Solved Board",
+      },
+    ],
+    starterCode: {
+      javascript: `function solveSudoku(board) {
+  // Write your solution here
+  
+}
+
+// Helper to print board
+function printBoard(board) {
+  for (let row of board) {
+    console.log(row.join(' '));
+  }
+}
+
+// Test case
+let board = [
+  ["5","3",".",".","7",".",".",".","."],
+  ["6",".",".","1","9","5",".",".","."],
+  [".","9","8",".",".",".",".","6","."],
+  ["8",".",".",".","6",".",".",".","3"],
+  ["4",".",".","8",".","3",".",".","1"],
+  ["7",".",".",".","2",".",".",".","6"],
+  [".","6",".",".",".",".","2","8","."],
+  [".",".",".","4","1","9",".",".","5"],
+  ["3",".",".",".","8",".",".","7","9"]
+];
+solveSudoku(board);
+printBoard(board);`,
+      python: `def solveSudoku(board):
+    # Write your solution here
+    pass
+
+def printBoard(board):
+    for row in board:
+        print(" ".join(row))
+
+# Test case
+board = [
+  ["5","3",".",".","7",".",".",".","."],
+  ["6",".",".","1","9","5",".",".","."],
+  [".","9","8",".",".",".",".","6","."],
+  ["8",".",".",".","6",".",".",".","3"],
+  ["4",".",".","8",".","3",".",".","1"],
+  ["7",".",".",".","2",".",".",".","6"],
+  [".","6",".",".",".",".","2","8","."],
+  [".",".",".","4","1","9",".",".","5"],
+  ["3",".",".",".","8",".",".","7","9"]
+]
+solveSudoku(board)
+printBoard(board)`,
+      java: `class Solution {
+    public static void solveSudoku(char[][] board) {
+        // Write your solution here
+        
+    }
+    
+    public static void printBoard(char[][] board) {
+        for (char[] row : board) {
+            for (char c : row) {
+                System.out.print(c + " ");
+            }
+            System.out.println();
+        }
+    }
+    
+    public static void main(String[] args) {
+        char[][] board = {
+            {'5','3','.','.','7','.','.','.','.'},
+            {'6','.','.','1','9','5','.','.','.'},
+            {'.','9','8','.','.','.','.','6','.'},
+            {'8','.','.','.','6','.','.','.','3'},
+            {'4','.','.','8','.','3','.','.','1'},
+            {'7','.','.','.','2','.','.','.','6'},
+            {'.','6','.','.','.','.','2','8','.'},
+            {'.','.','.','4','1','9','.','.','5'},
+            {'3','.','.','.','8','.','.','7','9'}
+        };
+        solveSudoku(board);
+        printBoard(board);
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    void solveSudoku(vector<vector<char>>& board) {
+        // Write your solution here
+        
+    }
+};
+
+void printBoard(const vector<vector<char>>& board) {
+    for (const auto& row : board) {
+        for (char c : row) cout << c << " ";
+        cout << endl;
+    }
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<vector<char>> board = {
+        {'5','3','.','.','7','.','.','.','.'},
+        {'6','.','.','1','9','5','.','.','.'},
+        {'.','9','8','.','.','.','.','6','.'},
+        {'8','.','.','.','6','.','.','.','3'},
+        {'4','.','.','8','.','3','.','.','1'},
+        {'7','.','.','.','2','.','.','.','6'},
+        {'.','6','.','.','.','.','2','8','.'},
+        {'.','.','.','4','1','9','.','.','5'},
+        {'3','.','.','.','8','.','.','7','9'}
+    };
+    sol.solveSudoku(board);
+    printBoard(board);
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "5 3 4 6 7 8 9 1 2\n6 7 2 1 9 5 3 4 8\n1 9 8 3 4 2 5 6 7\n8 5 9 7 6 1 4 2 3\n4 2 6 8 5 3 7 9 1\n7 1 3 9 2 4 8 5 6\n9 6 1 5 3 7 2 8 4\n2 8 7 4 1 9 6 3 5\n3 4 5 2 8 6 1 7 9",
+      python: "5 3 4 6 7 8 9 1 2\n6 7 2 1 9 5 3 4 8\n1 9 8 3 4 2 5 6 7\n8 5 9 7 6 1 4 2 3\n4 2 6 8 5 3 7 9 1\n7 1 3 9 2 4 8 5 6\n9 6 1 5 3 7 2 8 4\n2 8 7 4 1 9 6 3 5\n3 4 5 2 8 6 1 7 9",
+      java: "5 3 4 6 7 8 9 1 2 \n6 7 2 1 9 5 3 4 8 \n1 9 8 3 4 2 5 6 7 \n8 5 9 7 6 1 4 2 3 \n4 2 6 8 5 3 7 9 1 \n7 1 3 9 2 4 8 5 6 \n9 6 1 5 3 7 2 8 4 \n2 8 7 4 1 9 6 3 5 \n3 4 5 2 8 6 1 7 9 ",
+      cpp: "5 3 4 6 7 8 9 1 2 \n6 7 2 1 9 5 3 4 8 \n1 9 8 3 4 2 5 6 7 \n8 5 9 7 6 1 4 2 3 \n4 2 6 8 5 3 7 9 1 \n7 1 3 9 2 4 8 5 6 \n9 6 1 5 3 7 2 8 4 \n2 8 7 4 1 9 6 3 5 \n3 4 5 2 8 6 1 7 9 ",
+    },
+  },
 };
 
 export const LANGUAGE_CONFIG = {

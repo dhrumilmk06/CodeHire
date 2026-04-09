@@ -13,19 +13,20 @@ CodeHire is a high-performance web application designed for real-time collaborat
 - **📄 Interview Report Card (PDF)**: Automated generation of professional, stylised PDF reports featuring AI reviews, scoring metrics, and code snapshots, powered by **Puppeteer**.
 - **👑 Role-Based Access Control**: Granular permissions featuring distinct experiences for **Admins** (platform monitoring), **Hosts** (interviewer capabilities), and **Participants** (candidate view).
 - **📥 Bulk Problem Import**: Import up to 50 problems at once via **JSON**. Features a downloadable template, drag-and-drop UI, real-time validation preview, and multi-language test case support.
-- **📁 Custom Problem Bank**: Create and manage a private library of coding problems. Supports full CRUD, custom categories, starter code for multiple languages, and **hidden test cases** for automated evaluation.
+- **📁 Comprehensive Problem Bank**: Create a private library or use our built-in curated algorithmic datasets (including LeetCode Hard challenges & Binary Search problems). Supports full CRUD, custom categories, starter code, and **hidden test cases**.
+- **⚖️ Candidate Compare Mode**: Advanced host dashboard feature allowing interviewers to view and compare multiple candidate session report cards, code quality, and performance metrics side-by-side.
 - **📊 Automated Session Scoring**: Smart scoring logic that evaluates performance based on test case pass rates, code quality, and completion time.
 - **⏳ Persistent Timer System**: Advanced state management that preserves elapsed time across page refreshes and problem switches, ensuring zero-loss tracking.
 - **🛡️ Enterprise-Grade Security**: Fully hardened endpoints featuring **Rate Limiting**, **XSS Sanitization (DOMPurify)**, JSON depth checks, and atomic **Prisma Transactions** for data integrity.
 - **📹 Live Video Calls & Chat**: Integrated high-quality video conferencing and instant messaging powered by **Stream SDK**, keeping the interview focus within the app.
 - **🔐 Secure Identity**: Modern authentication handled by **Clerk**, providing seamless onboarding and secure dashboard redirection.
-- **🎨 State-of-the-Art UI**: Built with **Tailwind CSS 4.0**, **DaisyUI**, and **Framer Motion**, delivering a premium dark-mode experience with glassmorphism and smooth animations.
+- **🎨 State-of-the-Art UI**: Built with **React** and **Tailwind CSS 4.0**, utilizing highly optimized native CSS keyframes and Intersection Observers to deliver a premium, buttery-smooth dark-mode experience.
 
 ## 🛠️ Tech Stack
 
 ### Frontend
 - **Framework**: [React 19](https://react.dev/)
-- **Styling**: [Tailwind CSS 4.0](https://tailwindcss.com/), [DaisyUI](https://daisyui.com/), & [Framer Motion](https://www.framer.com/motion/)
+- **Styling**: [Tailwind CSS 4.0](https://tailwindcss.com/) with native CSS Animations, [DaisyUI](https://daisyui.com/), & [Framer Motion](https://www.framer.com/motion/)
 - **Auth**: [Clerk](https://clerk.com/)
 - **Data Management**: [TanStack Query v5](https://tanstack.com/query/latest)
 - **Real-time Engine**: [Socket.io-client](https://socket.io/)

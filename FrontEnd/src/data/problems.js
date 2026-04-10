@@ -5235,7 +5235,492 @@ int main() {
       cpp: "5 3 4 6 7 8 9 1 2 \n6 7 2 1 9 5 3 4 8 \n1 9 8 3 4 2 5 6 7 \n8 5 9 7 6 1 4 2 3 \n4 2 6 8 5 3 7 9 1 \n7 1 3 9 2 4 8 5 6 \n9 6 1 5 3 7 2 8 4 \n2 8 7 4 1 9 6 3 5 \n3 4 5 2 8 6 1 7 9 ",
     },
   },
+
+  "generate-parentheses": {
+    id: "generate-parentheses",
+    title: "Generate Parentheses",
+    difficulty: "Medium",
+    category: "String • Dynamic Programming • Backtracking",
+    description: {
+      text: "Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "n = 3",
+        output: '["((()))","(()())","(())()","()(())","()()()"]',
+      },
+      {
+        input: "n = 1",
+        output: '["()"]',
+      },
+    ],
+    constraints: [
+      "1 ≤ n ≤ 8",
+    ],
+    starterCode: {
+      javascript: `function generateParenthesis(n) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(JSON.stringify(generateParenthesis(3).sort()));
+console.log(JSON.stringify(generateParenthesis(1).sort()));`,
+      python: `import json
+def generateParenthesis(n):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(sorted(generateParenthesis(3)), separators=(',', ':')))
+print(json.dumps(sorted(generateParenthesis(1)), separators=(',', ':')))`,
+      java: `import java.util.*;
+
+class Solution {
+    public static List<String> generateParenthesis(int n) {
+        // Write your solution here
+        
+        return new ArrayList<>();
+    }
+    
+    public static void main(String[] args) {
+        List<String> res1 = generateParenthesis(3);
+        Collections.sort(res1);
+        System.out.println(res1);
+        List<String> res2 = generateParenthesis(1);
+        Collections.sort(res2);
+        System.out.println(res2);
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        // Write your solution here
+        
+        return {};
+    }
 };
+
+string vectorToString(const vector<string>& res) {
+    string s = "[";
+    for (int i = 0; i < res.size(); i++) {
+        s += "\\"" + res[i] + "\\"" + (i == res.size() - 1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<string> res1 = sol.generateParenthesis(3);
+    sort(res1.begin(), res1.end());
+    cout << vectorToString(res1) << endl;
+    vector<string> res2 = sol.generateParenthesis(1);
+    sort(res2.begin(), res2.end());
+    cout << vectorToString(res2) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: '["((()))","(()())","(())()","()(())","()()()"]\n["()"]',
+      python: '["((()))","(()())","(())()","()(())","()()()"]\n["()"]',
+      java: "[((())), (()()), (())(), ()(()), ()()()]\n[()]",
+      cpp: '["((()))","(()())","(())()","()(())","()()()"]\n["()"]',
+    },
+  },
+
+  "course-schedule": {
+    id: "course-schedule",
+    title: "Course Schedule",
+    difficulty: "Medium",
+    category: "Depth-First Search • Breadth-First Search • Graph • Topological Sort",
+    description: {
+      text: "There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai. Return true if you can finish all courses. Otherwise, return false.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "numCourses = 2, prerequisites = [[1,0]]",
+        output: "true",
+        explanation: "There are a total of 2 courses to take. To take course 1 you should have finished course 0. So it is possible.",
+      },
+      {
+        input: "numCourses = 2, prerequisites = [[1,0],[0,1]]",
+        output: "false",
+        explanation: "To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible.",
+      },
+    ],
+    constraints: [
+      "1 ≤ numCourses ≤ 2000",
+      "0 ≤ prerequisites.length ≤ 5000",
+      "prerequisites[i].length == 2",
+      "0 ≤ ai, bi < numCourses",
+      "All the pairs prerequisites[i] are unique.",
+    ],
+    starterCode: {
+      javascript: `function canFinish(numCourses, prerequisites) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(canFinish(2, [[1,0]])); // Expected: true
+console.log(canFinish(2, [[1,0],[0,1]])); // Expected: false`,
+      python: `def canFinish(numCourses, prerequisites):
+    # Write your solution here
+    pass
+
+# Test cases
+print("true" if canFinish(2, [[1,0]]) else "false")
+print("true" if canFinish(2, [[1,0],[0,1]]) else "false")`,
+      java: `class Solution {
+    public static boolean canFinish(int numCourses, int[][] prerequisites) {
+        // Write your solution here
+        
+        return false;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(canFinish(2, new int[][]{{1,0}}));
+        System.out.println(canFinish(2, new int[][]{{1,0},{0,1}}));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        // Write your solution here
+        
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<vector<int>> p1 = {{1,0}};
+    cout << (sol.canFinish(2, p1) ? "true" : "false") << endl;
+    vector<vector<int>> p2 = {{1,0},{0,1}};
+    cout << (sol.canFinish(2, p2) ? "true" : "false") << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "true\nfalse",
+      python: "true\nfalse",
+      java: "true\nfalse",
+      cpp: "true\nfalse",
+    },
+  },
+
+  "insert-interval": {
+    id: "insert-interval",
+    title: "Insert Interval",
+    difficulty: "Medium",
+    category: "Array",
+    description: {
+      text: "You are given an array of non-overlapping intervals intervals where intervals[i] = [starti, endi] represent the start and the end of the ith interval and intervals is sorted in ascending order by starti. You are also given an interval newInterval = [start, end] that represents the start and end of another interval. Insert newInterval into intervals such that intervals is still sorted in ascending order by starti and intervals still does not have any overlapping intervals (merge overlapping intervals if necessary).",
+      notes: [
+        "Return intervals after the insertion.",
+        "You don't need to modify intervals in-place. You can make a new array and return it."
+      ],
+    },
+    examples: [
+      {
+        input: "intervals = [[1,3],[6,9]], newInterval = [2,5]",
+        output: "[[1,5],[6,9]]",
+      },
+      {
+        input: "intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]",
+        output: "[[1,2],[3,10],[12,16]]",
+        explanation: "Because the new interval [4,8] overlaps with [3,5],[6,7],[8,10].",
+      },
+    ],
+    constraints: [
+      "0 ≤ intervals.length ≤ 10⁴",
+      "intervals[i].length == 2",
+      "0 ≤ starti ≤ endi ≤ 10⁵",
+      "intervals is sorted by starti in ascending order.",
+      "newInterval.length == 2",
+      "0 ≤ start ≤ end ≤ 10⁵",
+    ],
+    starterCode: {
+      javascript: `function insert(intervals, newInterval) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(JSON.stringify(insert([[1,3],[6,9]], [2,5])));
+console.log(JSON.stringify(insert([[1,2],[3,5],[6,7],[8,10],[12,16]], [4,8])));`,
+      python: `import json
+def insert(intervals, newInterval):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(insert([[1,3],[6,9]], [2,5]), separators=(',', ':')))
+print(json.dumps(insert([[1,2],[3,5],[6,7],[8,10],[12,16]], [4,8]), separators=(',', ':')))`,
+      java: `import java.util.*;
+
+class Solution {
+    public static int[][] insert(int[][] intervals, int[] newInterval) {
+        // Write your solution here
+        
+        return new int[0][0];
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(Arrays.deepToString(insert(new int[][]{{1,3},{6,9}}, new int[]{2,5})));
+        System.out.println(Arrays.deepToString(insert(new int[][]{{1,2},{3,5},{6,7},{8,10},{12,16}}, new int[]{4,8})));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        // Write your solution here
+        
+        return {};
+    }
+};
+
+string vectorToString(const vector<vector<int>>& res) {
+    string s = "[";
+    for (int i = 0; i < res.size(); i++) {
+        s += "[" + to_string(res[i][0]) + "," + to_string(res[i][1]) + "]";
+        if (i < res.size() - 1) s += ",";
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<vector<int>> i1 = {{1,3},{6,9}};
+    vector<int> n1 = {2,5};
+    cout << vectorToString(sol.insert(i1, n1)) << endl;
+    vector<vector<int>> i2 = {{1,2},{3,5},{6,7},{8,10},{12,16}};
+    vector<int> n2 = {4,8};
+    cout << vectorToString(sol.insert(i2, n2)) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "[[1,5],[6,9]]\n[[1,2],[3,10],[12,16]]",
+      python: "[[1,5],[6,9]]\n[[1,2],[3,10],[12,16]]",
+      java: "[[1, 5], [6, 9]]\n[[1, 2], [3, 10], [12, 16]]",
+      cpp: "[[1,5],[6,9]]\n[[1,2],[3,10],[12,16]]",
+    },
+  },
+
+  "longest-consecutive-sequence": {
+    id: "longest-consecutive-sequence",
+    title: "Longest Consecutive Sequence",
+    difficulty: "Medium",
+    category: "Array • Hash Table • Union Find",
+    description: {
+      text: "Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.",
+      notes: [
+        "You must write an algorithm that runs in O(n) time.",
+      ],
+    },
+    examples: [
+      {
+        input: "nums = [100,4,200,1,3,2]",
+        output: "4",
+        explanation: "The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.",
+      },
+      {
+        input: "nums = [0,3,7,2,5,8,4,6,0,1]",
+        output: "9",
+      },
+    ],
+    constraints: [
+      "0 ≤ nums.length ≤ 10⁵",
+      "-10⁹ ≤ nums[i] ≤ 10⁹",
+    ],
+    starterCode: {
+      javascript: `function longestConsecutive(nums) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(longestConsecutive([100,4,200,1,3,2])); // Expected: 4
+console.log(longestConsecutive([0,3,7,2,5,8,4,6,0,1])); // Expected: 9`,
+      python: `def longestConsecutive(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(longestConsecutive([100,4,200,1,3,2]))  # Expected: 4
+print(longestConsecutive([0,3,7,2,5,8,4,6,0,1]))  # Expected: 9`,
+      java: `class Solution {
+    public static int longestConsecutive(int[] nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(longestConsecutive(new int[]{100,4,200,1,3,2}));
+        System.out.println(longestConsecutive(new int[]{0,3,7,2,5,8,4,6,0,1}));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> n1 = {100,4,200,1,3,2};
+    cout << sol.longestConsecutive(n1) << endl;
+    vector<int> n2 = {0,3,7,2,5,8,4,6,0,1};
+    cout << sol.longestConsecutive(n2) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "4\n9",
+      python: "4\n9",
+      java: "4\n9",
+      cpp: "4\n9",
+    },
+  },
+
+  "decode-ways": {
+    id: "decode-ways",
+    title: "Decode Ways",
+    difficulty: "Medium",
+    category: "String • Dynamic Programming",
+    description: {
+      text: "A message containing letters from A-Z can be encoded into numbers using the following mapping: 'A' -> \"1\", 'B' -> \"2\", ... 'Z' -> \"26\". To decode an encoded message, all the digits must be grouped then mapped back into letters using the reverse of the mapping above (there may be multiple ways).",
+      notes: [
+        "For example, \"11106\" can be mapped into:",
+        "\"AAJF\" with the grouping (1 1 10 6)",
+        "\"KJF\" with the grouping (11 10 6)",
+        "Given a string s containing only digits, return the number of ways to decode it."
+      ],
+    },
+    examples: [
+      {
+        input: 's = "12"',
+        output: "2",
+        explanation: 'It could be decoded as "AB" (1 2) or "L" (12).',
+      },
+      {
+        input: 's = "226"',
+        output: "3",
+        explanation: 'It could be decoded as "BZ" (2 26), "VF" (22 6), or "BBF" (2 2 6).',
+      },
+      {
+        input: 's = "06"',
+        output: "0",
+        explanation: '"06" cannot be mapped to "F" because of the leading zero ("6" is different from "06").',
+      },
+    ],
+    constraints: [
+      "1 ≤ s.length ≤ 100",
+      "s contains only digits and may contain leading zero(s).",
+    ],
+    starterCode: {
+      javascript: `function numDecodings(s) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(numDecodings("12")); // Expected: 2
+console.log(numDecodings("226")); // Expected: 3
+console.log(numDecodings("06")); // Expected: 0`,
+      python: `def numDecodings(s):
+    # Write your solution here
+    pass
+
+# Test cases
+print(numDecodings("12"))  # Expected: 2
+print(numDecodings("226"))  # Expected: 3
+print(numDecodings("06"))  # Expected: 0`,
+      java: `class Solution {
+    public static int numDecodings(String s) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(numDecodings("12"));
+        System.out.println(numDecodings("226"));
+        System.out.println(numDecodings("06"));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    int numDecodings(string s) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << sol.numDecodings("12") << endl;
+    cout << sol.numDecodings("226") << endl;
+    cout << sol.numDecodings("06") << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "2\n3\n0",
+      python: "2\n3\n0",
+      java: "2\n3\n0",
+      cpp: "2\n3\n0",
+    },
+  }
+
 
 export const LANGUAGE_CONFIG = {
   javascript: {

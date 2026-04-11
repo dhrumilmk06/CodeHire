@@ -5719,9 +5719,547 @@ int main() {
       java: "2\n3\n0",
       cpp: "2\n3\n0",
     },
+  },
+
+  "palindrome-number": {
+    id: "palindrome-number",
+    title: "Palindrome Number",
+    difficulty: "Easy",
+    category: "Math",
+    description: {
+      text: "Given an integer x, return true if x is a palindrome, and false otherwise.",
+      notes: [
+        "An integer is a palindrome when it reads the same forward and backward.",
+      ],
+    },
+    examples: [
+      {
+        input: "x = 121",
+        output: "true",
+        explanation: "121 reads as 121 from left to right and from right to left.",
+      },
+      {
+        input: "x = -121",
+        output: "false",
+        explanation: "From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome.",
+      },
+      {
+        input: "x = 10",
+        output: "false",
+        explanation: "Reads 01 from right to left. Therefore it is not a palindrome.",
+      },
+    ],
+    constraints: [
+      "-2³¹ ≤ x ≤ 2³¹ - 1",
+    ],
+    starterCode: {
+      javascript: `function isPalindrome(x) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(isPalindrome(121)); // Expected: true
+console.log(isPalindrome(-121)); // Expected: false
+console.log(isPalindrome(10)); // Expected: false`,
+      python: `import json
+def isPalindrome(x):
+    # Write your solution here
+    pass
+
+# Test cases
+print("true" if isPalindrome(121) else "false")
+print("true" if isPalindrome(-121) else "false")
+print("true" if isPalindrome(10) else "false")`,
+      java: `class Solution {
+    public static boolean isPalindrome(int x) {
+        // Write your solution here
+        
+        return false;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(isPalindrome(121));
+        System.out.println(isPalindrome(-121));
+        System.out.println(isPalindrome(10));
+    }
+}`,
+      cpp: `#include <iostream>
+
+using namespace std;
+
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        // Write your solution here
+        
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << (sol.isPalindrome(121) ? "true" : "false") << endl;
+    cout << (sol.isPalindrome(-121) ? "true" : "false") << endl;
+    cout << (sol.isPalindrome(10) ? "true" : "false") << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "true\nfalse\nfalse",
+      python: "true\nfalse\nfalse",
+      java: "true\nfalse\nfalse",
+      cpp: "true\nfalse\nfalse",
+    },
+  },
+
+  "roman-to-integer": {
+    id: "roman-to-integer",
+    title: "Roman to Integer",
+    difficulty: "Easy",
+    category: "Hash Table • Math • String",
+    description: {
+      text: "Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M. Given a roman numeral, convert it to an integer.",
+      notes: [
+        "Symbol       Value",
+        "I             1",
+        "V             5",
+        "X             10",
+        "L             50",
+        "C             100",
+        "D             500",
+        "M             1000",
+        "Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV."
+      ],
+    },
+    examples: [
+      {
+        input: 's = "III"',
+        output: "3",
+        explanation: 'III = 3.',
+      },
+      {
+        input: 's = "LVIII"',
+        output: "58",
+        explanation: 'L = 50, V= 5, III = 3.',
+      },
+      {
+        input: 's = "MCMXCIV"',
+        output: "1994",
+        explanation: 'M = 1000, CM = 900, XC = 90 and IV = 4.',
+      },
+    ],
+    constraints: [
+      "1 ≤ s.length ≤ 15",
+      "s contains only the characters ('I', 'V', 'X', 'L', 'C', 'D', 'M').",
+      "It is guaranteed that s is a valid roman numeral in the range [1, 3999]."
+    ],
+    starterCode: {
+      javascript: `function romanToInt(s) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(romanToInt("III")); // Expected: 3
+console.log(romanToInt("LVIII")); // Expected: 58
+console.log(romanToInt("MCMXCIV")); // Expected: 1994`,
+      python: `def romanToInt(s):
+    # Write your solution here
+    pass
+
+# Test cases
+print(romanToInt("III"))
+print(romanToInt("LVIII"))
+print(romanToInt("MCMXCIV"))`,
+      java: `class Solution {
+    public static int romanToInt(String s) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(romanToInt("III"));
+        System.out.println(romanToInt("LVIII"));
+        System.out.println(romanToInt("MCMXCIV"));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    int romanToInt(string s) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << sol.romanToInt("III") << endl;
+    cout << sol.romanToInt("LVIII") << endl;
+    cout << sol.romanToInt("MCMXCIV") << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "3\n58\n1994",
+      python: "3\n58\n1994",
+      java: "3\n58\n1994",
+      cpp: "3\n58\n1994",
+    },
+  },
+
+  "majority-element": {
+    id: "majority-element",
+    title: "Majority Element",
+    difficulty: "Easy",
+    category: "Array • Hash Table • Divide and Conquer • Sorting • Counting",
+    description: {
+      text: "Given an array nums of size n, return the majority element.",
+      notes: [
+        "The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array."
+      ],
+    },
+    examples: [
+      {
+        input: "nums = [3,2,3]",
+        output: "3",
+      },
+      {
+        input: "nums = [2,2,1,1,1,2,2]",
+        output: "2",
+      },
+    ],
+    constraints: [
+      "n == nums.length",
+      "1 ≤ n ≤ 5 * 10⁴",
+      "-10⁹ ≤ nums[i] ≤ 10⁹"
+    ],
+    starterCode: {
+      javascript: `function majorityElement(nums) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(majorityElement([3,2,3])); // Expected: 3
+console.log(majorityElement([2,2,1,1,1,2,2])); // Expected: 2`,
+      python: `def majorityElement(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(majorityElement([3,2,3]))
+print(majorityElement([2,2,1,1,1,2,2]))`,
+      java: `class Solution {
+    public static int majorityElement(int[] nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(majorityElement(new int[]{3,2,3}));
+        System.out.println(majorityElement(new int[]{2,2,1,1,1,2,2}));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> nums1 = {3,2,3};
+    cout << sol.majorityElement(nums1) << endl;
+    vector<int> nums2 = {2,2,1,1,1,2,2};
+    cout << sol.majorityElement(nums2) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "3\n2",
+      python: "3\n2",
+      java: "3\n2",
+      cpp: "3\n2",
+    },
+  },
+
+  "move-zeroes": {
+    id: "move-zeroes",
+    title: "Move Zeroes",
+    difficulty: "Easy",
+    category: "Array • Two Pointers",
+    description: {
+      text: "Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.",
+      notes: [
+        "Note that you must do this in-place without making a copy of the array."
+      ],
+    },
+    examples: [
+      {
+        input: "nums = [0,1,0,3,12]",
+        output: "[1,3,12,0,0]",
+      },
+      {
+        input: "nums = [0]",
+        output: "[0]",
+      },
+    ],
+    constraints: [
+      "1 ≤ nums.length ≤ 10⁴",
+      "-2³¹ ≤ nums[i] ≤ 2³¹ - 1"
+    ],
+    starterCode: {
+      javascript: `function moveZeroes(nums) {
+  // Write your solution here
+  
+}
+
+// Test cases
+let nums1 = [0,1,0,3,12];
+moveZeroes(nums1);
+console.log(JSON.stringify(nums1)); // Expected: [1,3,12,0,0]
+
+let nums2 = [0];
+moveZeroes(nums2);
+console.log(JSON.stringify(nums2)); // Expected: [0]`,
+      python: `import json
+def moveZeroes(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+nums1 = [0,1,0,3,12]
+moveZeroes(nums1)
+print(json.dumps(nums1, separators=(',', ':')))
+
+nums2 = [0]
+moveZeroes(nums2)
+print(json.dumps(nums2, separators=(',', ':')))`,
+      java: `import java.util.*;
+
+class Solution {
+    public static void moveZeroes(int[] nums) {
+        // Write your solution here
+        
+    }
+    
+    public static void main(String[] args) {
+        int[] nums1 = {0,1,0,3,12};
+        moveZeroes(nums1);
+        System.out.println(Arrays.toString(nums1));
+        
+        int[] nums2 = {0};
+        moveZeroes(nums2);
+        System.out.println(Arrays.toString(nums2));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        // Write your solution here
+        
+    }
+};
+
+string vectorToString(const vector<int>& res) {
+    string s = "[";
+    for (int i = 0; i < res.size(); i++) {
+        s += to_string(res[i]) + (i == res.size() - 1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> nums1 = {0,1,0,3,12};
+    sol.moveZeroes(nums1);
+    cout << vectorToString(nums1) << endl;
+    
+    vector<int> nums2 = {0};
+    sol.moveZeroes(nums2);
+    cout << vectorToString(nums2) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "[1,3,12,0,0]\n[0]",
+      python: "[1,3,12,0,0]\n[0]",
+      java: "[1, 3, 12, 0, 0]\n[0]",
+      cpp: "[1,3,12,0,0]\n[0]",
+    },
+  },
+
+  "permutations": {
+    id: "permutations",
+    title: "Permutations",
+    difficulty: "Medium",
+    category: "Array • Backtracking",
+    description: {
+      text: "Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "nums = [1,2,3]",
+        output: "[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]",
+      },
+      {
+        input: "nums = [0,1]",
+        output: "[[0,1],[1,0]]",
+      },
+      {
+        input: "nums = [1]",
+        output: "[[1]]",
+      },
+    ],
+    constraints: [
+      "1 ≤ nums.length ≤ 6",
+      "-10 ≤ nums[i] ≤ 10",
+      "All the integers of nums are unique."
+    ],
+    starterCode: {
+      javascript: `function permute(nums) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(JSON.stringify(permute([1,2,3]).sort())); 
+console.log(JSON.stringify(permute([0,1]).sort()));
+console.log(JSON.stringify(permute([1]).sort()));`,
+      python: `import json
+def permute(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(sorted(permute([1,2,3])), separators=(',', ':')))
+print(json.dumps(sorted(permute([0,1])), separators=(',', ':')))
+print(json.dumps(sorted(permute([1])), separators=(',', ':')))`,
+      java: `import java.util.*;
+
+class Solution {
+    public static List<List<Integer>> permute(int[] nums) {
+        // Write your solution here
+        
+        return new ArrayList<>();
+    }
+    
+    // Helper used for deterministic tests
+    public static void main(String[] args) {
+        List<List<Integer>> res1 = permute(new int[]{1,2,3});
+        res1.sort((a,b) -> {
+            for(int i=0; i<a.size(); i++) {
+                if(!a.get(i).equals(b.get(i))) return a.get(i) - b.get(i);
+            }
+            return 0;
+        });
+        System.out.println(res1);
+        
+        List<List<Integer>> res2 = permute(new int[]{0,1});
+        res2.sort((a,b) -> {
+            for(int i=0; i<a.size(); i++) {
+                if(!a.get(i).equals(b.get(i))) return a.get(i) - b.get(i);
+            }
+            return 0;
+        });
+        System.out.println(res2);
+        
+        List<List<Integer>> res3 = permute(new int[]{1});
+        System.out.println(res3);
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        // Write your solution here
+        
+        return {};
+    }
+};
+
+string vectorToString(const vector<vector<int>>& res) {
+    if (res.empty()) return "[]";
+    string s = "[";
+    for (int i = 0; i < res.size(); i++) {
+        s += "[";
+        for (int j = 0; j < res[i].size(); j++) {
+            s += to_string(res[i][j]) + (j == res[i].size() - 1 ? "" : ",");
+        }
+        s += (i == res.size() - 1 ? "]" : "],");
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> nums1 = {1,2,3};
+    vector<vector<int>> res1 = sol.permute(nums1);
+    sort(res1.begin(), res1.end());
+    cout << vectorToString(res1) << endl;
+    
+    vector<int> nums2 = {0,1};
+    vector<vector<int>> res2 = sol.permute(nums2);
+    sort(res2.begin(), res2.end());
+    cout << vectorToString(res2) << endl;
+    
+    vector<int> nums3 = {1};
+    vector<vector<int>> res3 = sol.permute(nums3);
+    sort(res3.begin(), res3.end());
+    cout << vectorToString(res3) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]\n[[0,1],[1,0]]\n[[1]]",
+      python: "[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]\n[[0,1],[1,0]]\n[[1]]",
+      java: "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]\n[[0, 1], [1, 0]]\n[[1]]",
+      cpp: "[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]\n[[0,1],[1,0]]\n[[1]]",
+    },
   }
-
-
+};
 export const LANGUAGE_CONFIG = {
   javascript: {
     name: "JavaScript",

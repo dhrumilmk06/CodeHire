@@ -1,0 +1,82 @@
+# CodeHire Problem Catalog
+# Format: id | title | difficulty | category
+# Last updated: 2026-04-16
+# Total: 60+ problems
+# =============================================
+# HOW TO USE: Before adding a new problem, search this file for the problem name.
+# If it exists, skip it. If not, add it at the bottom and update the total count.
+# =============================================
+
+# ---- EASY ----
+two-sum | Two Sum | Easy | Array • Hash Table
+reverse-string | Reverse String | Easy | String • Two Pointers
+valid-palindrome | Valid Palindrome | Easy | String • Two Pointers
+valid-anagram | Valid Anagram | Easy | String • Hash Table
+best-time-to-buy-and-sell-stock | Best Time to Buy and Sell Stock | Easy | Array • Dynamic Programming
+climbing-stairs | Climbing Stairs | Easy | Dynamic Programming
+valid-parentheses | Valid Parentheses | Easy | String • Stack
+contains-duplicate | Contains Duplicate | Easy | Array • Hash Table • Sorting
+merge-sorted-array | Merge Sorted Array | Easy | Array • Two Pointers • Sorting
+single-number | Single Number | Easy | Array • Bit Manipulation
+search-insert-position | Search Insert Position | Easy | Array • Binary Search
+binary-search | Binary Search | Easy | Array • Binary Search
+longest-common-prefix | Longest Common Prefix | Easy | String
+valid-palindrome-ii | Valid Palindrome II | Easy | String • Two Pointers
+palindrome-number | Palindrome Number | Easy | Math
+roman-to-integer | Roman to Integer | Easy | Hash Table • Math • String
+majority-element | Majority Element | Easy | Array • Hash Table • Divide and Conquer • Sorting • Counting
+move-zeroes | Move Zeroes | Easy | Array • Two Pointers
+reverse-linked-list | Reverse Linked List | Easy | Linked List • Recursion
+merge-two-sorted-lists | Merge Two Sorted Lists | Easy | Linked List • Recursion
+
+# ---- MEDIUM ----
+maximum-subarray | Maximum Subarray | Medium | Array • Dynamic Programming
+container-with-most-water | Container With Most Water | Medium | Array • Two Pointers
+3sum | 3Sum | Medium | Array • Two Pointers
+merge-intervals | Merge Intervals | Medium | Array • Sorting
+search-in-rotated-sorted-array | Search in Rotated Sorted Array | Medium | Array • Binary Search
+word-search | Word Search | Medium | Array • Backtracking • Matrix
+product-of-array-except-self | Product of Array Except Self | Medium | Array • Prefix Sum
+number-of-islands | Number of Islands | Medium | Array • DFS • BFS
+rotate-image | Rotate Image | Medium | Array • Matrix
+set-matrix-zeroes | Set Matrix Zeroes | Medium | Array • Matrix
+kth-largest-element-in-array | Kth Largest Element in an Array | Medium | Array • Heap • Sorting
+search-a-2d-matrix | Search a 2D Matrix | Medium | Array • Binary Search • Matrix
+maximum-product-subarray | Maximum Product Subarray | Medium | Array • Dynamic Programming
+jump-game | Jump Game | Medium | Array • Dynamic Programming • Greedy
+spiral-matrix | Spiral Matrix | Medium | Array • Matrix • Simulation
+group-anagrams | Group Anagrams | Medium | Array • Hash Table • String
+longest-palindromic-substring | Longest Palindromic Substring | Medium | String • Dynamic Programming
+valid-sudoku | Valid Sudoku | Medium | Array • Hash Table • Matrix
+house-robber | House Robber | Medium | Array • Dynamic Programming
+find-all-anagrams-in-a-string | Find All Anagrams in a String | Medium | String • Sliding Window • Hash Table
+non-overlapping-intervals | Non-overlapping Intervals | Medium | Array • Greedy • Sorting
+subarray-sum-equals-k | Subarray Sum Equals K | Medium | Array • Hash Table
+word-break | Word Break | Medium | Dynamic Programming • Hash Table
+daily-temperatures | Daily Temperatures | Medium | Array • Stack • Monotonic Stack
+sort-colors | Sort Colors | Medium | Array • Two Pointers • Sorting
+unique-paths | Unique Paths | Medium | Dynamic Programming • Combinatorics
+find-first-and-last-position | Find First and Last Position of Element in Sorted Array | Medium | Array • Binary Search
+find-minimum-in-rotated-sorted-array | Find Minimum in Rotated Sorted Array | Medium | Array • Binary Search
+find-peak-element | Find Peak Element | Medium | Array • Binary Search
+longest-substring-without-repeating | Longest Substring Without Repeating Characters | Medium | String • Sliding Window
+generate-parentheses | Generate Parentheses | Medium | String • Dynamic Programming • Backtracking
+course-schedule | Course Schedule | Medium | DFS/BFS • Graph • Topological Sort
+insert-interval | Insert Interval | Medium | Array
+longest-consecutive-sequence | Longest Consecutive Sequence | Medium | Array • Hash Table • Union Find
+decode-ways | Decode Ways | Medium | String • Dynamic Programming
+permutations | Permutations | Medium | Array • Backtracking
+validate-binary-search-tree | Validate Binary Search Tree | Medium | Tree • Depth-First Search • Binary Search Tree • Binary Tree
+binary-tree-level-order-traversal | Binary Tree Level Order Traversal | Medium | Tree • Breadth-First Search • Binary Tree
+longest-increasing-subsequence | Longest Increasing Subsequence | Medium | Array • Binary Search • Dynamic Programming
+
+# ---- HARD ----
+trapping-rain-water | Trapping Rain Water | Hard | Array • Two Pointers • Dynamic Programming
+median-of-two-sorted-arrays | Median of Two Sorted Arrays | Hard | Array • Binary Search
+first-missing-positive | First Missing Positive | Hard | Array • Hash Table
+merge-k-sorted-lists | Merge k Sorted Lists | Hard | Linked List • Heap • Divide and Conquer
+reverse-nodes-in-k-group | Reverse Nodes in k-Group | Hard | Linked List • Two Pointers
+edit-distance | Edit Distance | Hard | String • Dynamic Programming
+largest-rectangle-in-histogram | Largest Rectangle in Histogram | Hard | Array • Stack • Monotonic Stack
+sudoku-solver | Sudoku Solver | Hard | Array • Hash Table • Backtracking • Matrix
+minimum-window-substring | Minimum Window Substring | Hard | String • Sliding Window • Hash Table

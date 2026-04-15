@@ -6258,8 +6258,776 @@ int main() {
       java: "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]\n[[0, 1], [1, 0]]\n[[1]]",
       cpp: "[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]\n[[0,1],[1,0]]\n[[1]]",
     },
+    },
+
+     "reverse-linked-list": {
+    id: "reverse-linked-list",
+    title: "Reverse Linked List",
+    difficulty: "Easy",
+    category: "Linked List • Recursion",
+    description: {
+      text: "Given the head of a singly linked list, reverse the list, and return the reversed list.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "head = [1,2,3,4,5]",
+        output: "[5,4,3,2,1]",
+      },
+      {
+        input: "head = [1,2]",
+        output: "[2,1]",
+      },
+      {
+        input: "head = []",
+        output: "[]",
+      },
+    ],
+    constraints: [
+      "The number of nodes in the list is the range [0, 5000].",
+      "-5000 ≤ Node.val ≤ 5000",
+    ],
+    starterCode: {
+      javascript: `/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+function reverseList(head) {
+  // Write your solution here
+  
+}
+
+// Test helper
+function createList(arr) {
+  if (!arr.length) return null;
+  let head = {val: arr[0], next: null};
+  let curr = head;
+  for (let i = 1; i < arr.length; i++) {
+    curr.next = {val: arr[i], next: null};
+    curr = curr.next;
   }
+  return head;
+}
+
+function listToArray(head) {
+  let res = [];
+  while (head) {
+    res.push(head.val);
+    head = head.next;
+  }
+  return res;
+}
+
+// Test cases
+console.log(JSON.stringify(listToArray(reverseList(createList([1,2,3,4,5])))));
+console.log(JSON.stringify(listToArray(reverseList(createList([1,2])))));
+console.log(JSON.stringify(listToArray(reverseList(createList([])))));`,
+      python: `import json
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def reverseList(head):
+    # Write your solution here
+    pass
+
+def createList(arr):
+    if not arr: return None
+    head = ListNode(arr[0])
+    curr = head
+    for i in range(1, len(arr)):
+        curr.next = ListNode(arr[i])
+        curr = curr.next
+    return head
+
+def listToArray(head):
+    res = []
+    while head:
+        res.append(head.val)
+        head = head.next
+    return res
+
+# Test cases
+print(json.dumps(listToArray(reverseList(createList([1,2,3,4,5]))), separators=(',', ':')))
+print(json.dumps(listToArray(reverseList(createList([1,2]))), separators=(',', ':')))
+print(json.dumps(listToArray(reverseList(createList([]))), separators=(',', ':')))`,
+      java: `import java.util.*;
+
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int val) { this.val = val; }
+}
+
+class Solution {
+    public static ListNode reverseList(ListNode head) {
+        // Write your solution here
+        
+        return head;
+    }
+    
+    public static ListNode createList(int[] arr) {
+        if (arr.length == 0) return null;
+        ListNode head = new ListNode(arr[0]);
+        ListNode curr = head;
+        for (int i = 1; i < arr.length; i++) {
+            curr.next = new ListNode(arr[i]);
+            curr = curr.next;
+        }
+        return head;
+    }
+    
+    public static void printList(ListNode head) {
+        List<Integer> res = new ArrayList<>();
+        while (head != null) {
+            res.add(head.val);
+            head = head.next;
+        }
+        System.out.println(res);
+    }
+    
+    public static void main(String[] args) {
+        printList(reverseList(createList(new int[]{1,2,3,4,5})));
+        printList(reverseList(createList(new int[]{1,2})));
+        printList(reverseList(createList(new int[]{})));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode(int x) : val(x), next(NULL) {}
 };
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        // Write your solution here
+        
+        return head;
+    }
+};
+
+ListNode* createList(vector<int> arr) {
+    if (arr.empty()) return NULL;
+    ListNode* head = new ListNode(arr[0]);
+    ListNode* curr = head;
+    for (int i = 1; i < arr.size(); i++) {
+        curr->next = new ListNode(arr[i]);
+        curr = curr->next;
+    }
+    return head;
+}
+
+void printList(ListNode* head) {
+    cout << "[";
+    while (head) {
+        cout << head->val << (head->next ? "," : "");
+        head = head->next;
+    }
+    cout << "]" << endl;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    printList(sol.reverseList(createList({1,2,3,4,5})));
+    printList(sol.reverseList(createList({1,2})));
+    printList(sol.reverseList(createList({})));
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "[5,4,3,2,1]\n[2,1]\n[]",
+      python: "[5,4,3,2,1]\n[2,1]\n[]",
+      java: "[5, 4, 3, 2, 1]\n[2, 1]\n[]",
+      cpp: "[5,4,3,2,1]\n[2,1]\n[]",
+    },
+  },
+
+  "merge-two-sorted-lists": {
+    id: "merge-two-sorted-lists",
+    title: "Merge Two Sorted Lists",
+    difficulty: "Easy",
+    category: "Linked List • Recursion",
+    description: {
+      text: "You are given the heads of two sorted linked lists list1 and list2. Merge the two lists into one sorted list. The list should be made by splicing together the nodes of the first two lists. Return the head of the merged linked list.",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "list1 = [1,2,4], list2 = [1,3,4]",
+        output: "[1,1,2,3,4,4]",
+      },
+      {
+        input: "list1 = [], list2 = []",
+        output: "[]",
+      },
+      {
+        input: "list1 = [], list2 = [0]",
+        output: "[0]",
+      },
+    ],
+    constraints: [
+      "The number of nodes in both lists is in the range [0, 50].",
+      "-100 ≤ Node.val ≤ 100",
+      "Both list1 and list2 are sorted in non-decreasing order.",
+    ],
+    starterCode: {
+      javascript: `function mergeTwoLists(list1, list2) {
+  // Write your solution here
+  
+}
+
+// Test helper
+function createList(arr) {
+  if (!arr.length) return null;
+  let head = {val: arr[0], next: null};
+  let curr = head;
+  for (let i = 1; i < arr.length; i++) {
+    curr.next = {val: arr[i], next: null};
+    curr = curr.next;
+  }
+  return head;
+}
+
+function listToArray(head) {
+  let res = [];
+  while (head) {
+    res.push(head.val);
+    head = head.next;
+  }
+  return res;
+}
+
+// Test cases
+console.log(JSON.stringify(listToArray(mergeTwoLists(createList([1,2,4]), createList([1,3,4])))));
+console.log(JSON.stringify(listToArray(mergeTwoLists(createList([]), createList([])))));
+console.log(JSON.stringify(listToArray(mergeTwoLists(createList([]), createList([0])))));`,
+      python: `import json
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def mergeTwoLists(list1, list2):
+    # Write your solution here
+    pass
+
+def createList(arr):
+    if not arr: return None
+    head = ListNode(arr[0])
+    curr = head
+    for i in range(1, len(arr)):
+        curr.next = ListNode(arr[i])
+        curr = curr.next
+    return head
+
+def listToArray(head):
+    res = []
+    while head:
+        res.append(head.val)
+        head = head.next
+    return res
+
+# Test cases
+print(json.dumps(listToArray(mergeTwoLists(createList([1,2,4]), createList([1,3,4]))), separators=(',', ':')))
+print(json.dumps(listToArray(mergeTwoLists(createList([]), createList([]))), separators=(',', ':')))
+print(json.dumps(listToArray(mergeTwoLists(createList([]), createList([0]))), separators=(',', ':')))`,
+      java: `import java.util.*;
+
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int val) { this.val = val; }
+}
+
+class Solution {
+    public static ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        // Write your solution here
+        
+        return null;
+    }
+    
+    public static ListNode createList(int[] arr) {
+        if (arr.length == 0) return null;
+        ListNode head = new ListNode(arr[0]);
+        ListNode curr = head;
+        for (int i = 1; i < arr.length; i++) {
+            curr.next = new ListNode(arr[i]);
+            curr = curr.next;
+        }
+        return head;
+    }
+    
+    public static void printList(ListNode head) {
+        List<Integer> res = new ArrayList<>();
+        while (head != null) {
+            res.add(head.val);
+            head = head.next;
+        }
+        System.out.println(res);
+    }
+    
+    public static void main(String[] args) {
+        printList(mergeTwoLists(createList(new int[]{1,2,4}), createList(new int[]{1,3,4})));
+        printList(mergeTwoLists(createList(new int[]{}), createList(new int[]{})));
+        printList(mergeTwoLists(createList(new int[]{}), createList(new int[]{0})));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode(int x) : val(x), next(NULL) {}
+};
+
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        // Write your solution here
+        
+        return NULL;
+    }
+};
+
+ListNode* createList(vector<int> arr) {
+    if (arr.empty()) return NULL;
+    ListNode* head = new ListNode(arr[0]);
+    ListNode* curr = head;
+    for (int i = 1; i < arr.size(); i++) {
+        curr->next = new ListNode(arr[i]);
+        curr = curr->next;
+    }
+    return head;
+}
+
+void printList(ListNode* head) {
+    cout << "[";
+    while (head) {
+        cout << head->val << (head->next ? "," : "");
+        head = head->next;
+    }
+    cout << "]" << endl;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    printList(sol.mergeTwoLists(createList({1,2,4}), createList({1,3,4})));
+    printList(sol.mergeTwoLists(createList({}), createList({})));
+    printList(sol.mergeTwoLists(createList({}), createList({0})));
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "[1,1,2,3,4,4]\n[]\n[0]",
+      python: "[1,1,2,3,4,4]\n[]\n[0]",
+      java: "[1, 1, 2, 3, 4, 4]\n[]\n[0]",
+      cpp: "[1,1,2,3,4,4]\n[]\n[0]",
+    },
+  },
+
+  "validate-binary-search-tree": {
+    id: "validate-binary-search-tree",
+    title: "Validate Binary Search Tree",
+    difficulty: "Medium",
+    category: "Tree • Depth-First Search • Binary Search Tree • Binary Tree",
+    description: {
+      text: "Given the root of a binary tree, determine if it is a valid binary search tree (BST).",
+      notes: [
+        "A valid BST is defined as follows:",
+        "The left subtree of a node contains only nodes with keys less than the node's key.",
+        "The right subtree of a node contains only nodes with keys greater than the node's key.",
+        "Both the left and right subtrees must also be binary search trees."
+      ],
+    },
+    examples: [
+      {
+        input: "root = [2,1,3]",
+        output: "true",
+      },
+      {
+        input: "root = [5,1,4,null,null,3,6]",
+        output: "false",
+        explanation: "The root node's value is 5 but its right child's value is 4.",
+      },
+    ],
+    constraints: [
+      "The number of nodes in the tree is in the range [1, 10⁴].",
+      "-2³¹ ≤ Node.val ≤ 2³¹ - 1",
+    ],
+    starterCode: {
+      javascript: `/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+function isValidBST(root) {
+  // Write your solution here
+  
+}
+
+// Test cases
+// Tree [2,1,3]
+let t1 = {val: 2, left: {val: 1}, right: {val: 3}};
+console.log(isValidBST(t1)); // Expected: true
+
+// Tree [5,1,4,null,null,3,6]
+let t2 = {val: 5, left: {val: 1}, right: {val: 4, left: {val: 3}, right: {val: 6}}};
+console.log(isValidBST(t2)); // Expected: false`,
+      python: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def isValidBST(root):
+    # Write your solution here
+    pass
+
+# Test cases
+t1 = TreeNode(2, TreeNode(1), TreeNode(3))
+print("true" if isValidBST(t1) else "false")
+
+t2 = TreeNode(5, TreeNode(1), TreeNode(4, TreeNode(3), TreeNode(6)))
+print("true" if isValidBST(t2) else "false")`,
+      java: `class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int val) { this.val = val; }
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+class Solution {
+    public static boolean isValidBST(TreeNode root) {
+        // Write your solution here
+        
+        return false;
+    }
+    
+    public static void main(String[] args) {
+        TreeNode t1 = new TreeNode(2, new TreeNode(1), new TreeNode(3));
+        System.out.println(isValidBST(t1));
+        
+        TreeNode t2 = new TreeNode(5, new TreeNode(1), new TreeNode(4, new TreeNode(3), new TreeNode(6)));
+        System.out.println(isValidBST(t2));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <climits>
+
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        // Write your solution here
+        
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    TreeNode* t1 = new TreeNode(2, new TreeNode(1), new TreeNode(3));
+    cout << (sol.isValidBST(t1) ? "true" : "false") << endl;
+    
+    TreeNode* t2 = new TreeNode(5, new TreeNode(1), new TreeNode(4, new TreeNode(3), new TreeNode(6)));
+    cout << (sol.isValidBST(t2) ? "true" : "false") << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "true\nfalse",
+      python: "true\nfalse",
+      java: "true\nfalse",
+      cpp: "true\nfalse",
+    },
+  },
+
+  "binary-tree-level-order-traversal": {
+    id: "binary-tree-level-order-traversal",
+    title: "Binary Tree Level Order Traversal",
+    difficulty: "Medium",
+    category: "Tree • Breadth-First Search • Binary Tree",
+    description: {
+      text: "Given the root of a binary tree, return the level order traversal of its nodes' values. (i.e., from left to right, level by level).",
+      notes: [],
+    },
+    examples: [
+      {
+        input: "root = [3,9,20,null,null,15,7]",
+        output: "[[3],[9,20],[15,7]]",
+      },
+      {
+        input: "root = [1]",
+        output: "[[1]]",
+      },
+      {
+        input: "root = []",
+        output: "[]",
+      },
+    ],
+    constraints: [
+      "The number of nodes in the tree is in the range [0, 2000].",
+      "-1000 ≤ Node.val ≤ 1000",
+    ],
+    starterCode: {
+      javascript: `function levelOrder(root) {
+  // Write your solution here
+  
+}
+
+// Test cases
+let t1 = {val: 3, left: {val: 9}, right: {val: 20, left: {val: 15}, right: {val: 7}}};
+console.log(JSON.stringify(levelOrder(t1)));
+
+let t2 = {val: 1};
+console.log(JSON.stringify(levelOrder(t2)));
+
+console.log(JSON.stringify(levelOrder(null)));`,
+      python: `import json
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def levelOrder(root):
+    # Write your solution here
+    pass
+
+# Test cases
+t1 = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))
+print(json.dumps(levelOrder(t1), separators=(',', ':')))
+
+t2 = TreeNode(1)
+print(json.dumps(levelOrder(t2), separators=(',', ':')))
+
+print(json.dumps(levelOrder(None), separators=(',', ':')))`,
+      java: `import java.util.*;
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int val) { this.val = val; }
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val; this.left = left; this.right = right;
+    }
+}
+
+class Solution {
+    public static List<List<Integer>> levelOrder(TreeNode root) {
+        // Write your solution here
+        
+        return new ArrayList<>();
+    }
+    
+    public static void main(String[] args) {
+        TreeNode t1 = new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)));
+        System.out.println(levelOrder(t1));
+        
+        TreeNode t2 = new TreeNode(1);
+        System.out.println(levelOrder(t2));
+        
+        System.out.println(levelOrder(null));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <string>
+#include <queue>
+
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        // Write your solution here
+        
+        return {};
+    }
+};
+
+string resToString(const vector<vector<int>>& res) {
+    string s = "[";
+    for(int i=0; i<res.size(); i++) {
+        s += "[";
+        for(int j=0; j<res[i].size(); j++) {
+            s += to_string(res[i][j]) + (j == res[i].size()-1 ? "" : ",");
+        }
+        s += "]" + string(i == res.size()-1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    TreeNode* t1 = new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)));
+    cout << resToString(sol.levelOrder(t1)) << endl;
+    
+    TreeNode* t2 = new TreeNode(1);
+    cout << resToString(sol.levelOrder(t2)) << endl;
+    
+    cout << resToString(sol.levelOrder(NULL)) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "[[3],[9,20],[15,7]]\n[[1]]\n[]",
+      python: "[[3],[9,20],[15,7]]\n[[1]]\n[]",
+      java: "[[3], [9, 20], [15, 7]]\n[[1]]\n[]",
+      cpp: "[[3],[9,20],[15,7]]\n[[1]]\n[]",
+    },
+  },
+
+  "longest-increasing-subsequence": {
+    id: "longest-increasing-subsequence",
+    title: "Longest Increasing Subsequence",
+    difficulty: "Medium",
+    category: "Array • Binary Search • Dynamic Programming",
+    description: {
+      text: "Given an integer array nums, return the length of the longest strictly increasing subsequence.",
+      notes: [
+        "A subsequence is an array that can be derived from another array by deleting some or no elements without changing the order of the remaining elements."
+      ],
+    },
+    examples: [
+      {
+        input: "nums = [10,9,2,5,3,7,101,18]",
+        output: "4",
+        explanation: "The longest increasing subsequence is [2,3,7,101], therefore the length is 4.",
+      },
+      {
+        input: "nums = [0,1,0,3,2,3]",
+        output: "4",
+      },
+      {
+        input: "nums = [7,7,7,7,7,7,7]",
+        output: "1",
+      },
+    ],
+    constraints: [
+      "1 ≤ nums.length ≤ 2500",
+      "-10⁴ ≤ nums[i] ≤ 10⁴",
+    ],
+    starterCode: {
+      javascript: `function lengthOfLIS(nums) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(lengthOfLIS([10,9,2,5,3,7,101,18])); // Expected: 4
+console.log(lengthOfLIS([0,1,0,3,2,3])); // Expected: 4
+console.log(lengthOfLIS([7,7,7,7,7,7,7])); // Expected: 1`,
+      python: `def lengthOfLIS(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(lengthOfLIS([10,9,2,5,3,7,101,18]))
+print(lengthOfLIS([0,1,0,3,2,3]))
+print(lengthOfLIS([7,7,7,7,7,7,7]))`,
+      java: `class Solution {
+    public static int lengthOfLIS(int[] nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(lengthOfLIS(new int[]{10,9,2,5,3,7,101,18}));
+        System.out.println(lengthOfLIS(new int[]{0,1,0,3,2,3}));
+        System.out.println(lengthOfLIS(new int[]{7,7,7,7,7,7,7}));
+    }
+}`,
+      cpp: `#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        // Write your solution here
+        
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> n1 = {10,9,2,5,3,7,101,18};
+    cout << sol.lengthOfLIS(n1) << endl;
+    vector<int> n2 = {0,1,0,3,2,3};
+    cout << sol.lengthOfLIS(n2) << endl;
+    vector<int> n3 = {7,7,7,7,7,7,7};
+    cout << sol.lengthOfLIS(n3) << endl;
+    return 0;
+}
+#endif`,
+    },
+    expectedOutput: {
+      javascript: "4\n4\n1",
+      python: "4\n4\n1",
+      java: "4\n4\n1",
+      cpp: "4\n4\n1",
+    },
+  },
+}
+
+ 
+
 export const LANGUAGE_CONFIG = {
   javascript: {
     name: "JavaScript",

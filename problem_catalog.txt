@@ -28,6 +28,7 @@ majority-element | Majority Element | Easy | Array • Hash Table • Divide and
 move-zeroes | Move Zeroes | Easy | Array • Two Pointers
 reverse-linked-list | Reverse Linked List | Easy | Linked List • Recursion
 merge-two-sorted-lists | Merge Two Sorted Lists | Easy | Linked List • Recursion
+pascals-triangle | Pascal's Triangle | Easy | Array • Dynamic Programming
 
 # ---- MEDIUM ----
 maximum-subarray | Maximum Subarray | Medium | Array • Dynamic Programming
@@ -69,6 +70,7 @@ permutations | Permutations | Medium | Array • Backtracking
 validate-binary-search-tree | Validate Binary Search Tree | Medium | Tree • Depth-First Search • Binary Search Tree • Binary Tree
 binary-tree-level-order-traversal | Binary Tree Level Order Traversal | Medium | Tree • Breadth-First Search • Binary Tree
 longest-increasing-subsequence | Longest Increasing Subsequence | Medium | Array • Binary Search • Dynamic Programming
+letter-combinations-phone-number | Letter Combinations of a Phone Number | Medium | String • Backtracking • Hash Table
 
 # ---- HARD ----
 trapping-rain-water | Trapping Rain Water | Hard | Array • Two Pointers • Dynamic Programming

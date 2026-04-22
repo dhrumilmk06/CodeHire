@@ -7024,6 +7024,222 @@ int main() {
       cpp: "4\n4\n1",
     },
   },
+  "pascals-triangle": {
+  id: "pascals-triangle",
+  title: "Pascal's Triangle",
+  difficulty: "Easy",
+  category: "Array • Dynamic Programming",
+  description: {
+    text: "Given an integer numRows, return the first numRows of Pascal's triangle. In Pascal's triangle, each number is the sum of the two numbers directly above it.",
+    notes: [
+      "The first and last element of each row is always 1.",
+      "Each interior element is the sum of the two elements above it.",
+    ],
+  },
+  examples: [
+    {
+      input: "numRows = 5",
+      output: "[[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]",
+      explanation: "Each row is built by summing adjacent elements from the previous row.",
+    },
+    {
+      input: "numRows = 1",
+      output: "[[1]]",
+    },
+  ],
+  constraints: [
+    "1 ≤ numRows ≤ 30",
+  ],
+  starterCode: {
+    javascript: `function generate(numRows) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(JSON.stringify(generate(5))); // Expected: [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]
+console.log(JSON.stringify(generate(1))); // Expected: [[1]]`,
+
+    python: `import json
+
+def generate(numRows):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(generate(5), separators=(',', ':')))  # Expected: [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]
+print(json.dumps(generate(1), separators=(',', ':')))  # Expected: [[1]]`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static List<List<Integer>> generate(int numRows) {
+        // Write your solution here
+        
+        return new ArrayList<>();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(generate(5)); // Expected: [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]
+        System.out.println(generate(1)); // Expected: [[1]]
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<int>> generate(int numRows) {
+        // Write your solution here
+        
+        return {};
+    }
+};
+
+string triangleToString(vector<vector<int>> res) {
+    string s = "[";
+    for (int i = 0; i < res.size(); i++) {
+        s += "[";
+        for (int j = 0; j < res[i].size(); j++) {
+            s += to_string(res[i][j]) + (j == (int)res[i].size() - 1 ? "" : ",");
+        }
+        s += "]" + (i == (int)res.size() - 1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << triangleToString(sol.generate(5)) << endl;
+    cout << triangleToString(sol.generate(1)) << endl;
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "[[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]\n[[1]]",
+    python: "[[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]\n[[1]]",
+    java: "[[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1]]\n[[1]]",
+    cpp: "[[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]\n[[1]]",
+  },
+},
+
+"letter-combinations-phone-number": {
+  id: "letter-combinations-phone-number",
+  title: "Letter Combinations of a Phone Number",
+  difficulty: "Medium",
+  category: "String • Backtracking • Hash Table",
+  description: {
+    text: "Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.",
+    notes: [
+      "A mapping of digits to letters (just like on a phone keypad) is given: 2→abc, 3→def, 4→ghi, 5→jkl, 6→mno, 7→pqrs, 8→tuv, 9→wxyz.",
+      "If the input is an empty string, return an empty list.",
+    ],
+  },
+  examples: [
+    {
+      input: `digits = "23"`,
+      output: `["ad","ae","af","bd","be","bf","cd","ce","cf"]`,
+      explanation: "2 maps to abc and 3 maps to def. All combinations of one letter from each.",
+    },
+    {
+      input: `digits = ""`,
+      output: `[]`,
+    },
+    {
+      input: `digits = "2"`,
+      output: `["a","b","c"]`,
+    },
+  ],
+  constraints: [
+    "0 ≤ digits.length ≤ 4",
+    "digits[i] is a digit in the range ['2', '9']",
+  ],
+  starterCode: {
+    javascript: `function letterCombinations(digits) {
+  // Write your solution here
+  
+}
+
+// Test cases
+console.log(JSON.stringify(letterCombinations("23")));  // Expected: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+console.log(JSON.stringify(letterCombinations("")));    // Expected: []
+console.log(JSON.stringify(letterCombinations("2")));   // Expected: ["a","b","c"]`,
+
+    python: `import json
+
+def letterCombinations(digits):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(letterCombinations("23"), separators=(',', ':')))  # Expected: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+print(json.dumps(letterCombinations(""), separators=(',', ':')))    # Expected: []
+print(json.dumps(letterCombinations("2"), separators=(',', ':')))   # Expected: ["a","b","c"]`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static List<String> letterCombinations(String digits) {
+        // Write your solution here
+        
+        return new ArrayList<>();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(letterCombinations("23")); // Expected: [ad, ae, af, bd, be, bf, cd, ce, cf]
+        System.out.println(letterCombinations(""));   // Expected: []
+        System.out.println(letterCombinations("2"));  // Expected: [a, b, c]
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        // Write your solution here
+        
+        return {};
+    }
+};
+
+string vecToString(vector<string> res) {
+    string s = "[";
+    for (int i = 0; i < res.size(); i++) {
+        s += "\"" + res[i] + "\"" + (i == (int)res.size() - 1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << vecToString(sol.letterCombinations("23")) << endl;
+    cout << vecToString(sol.letterCombinations("")) << endl;
+    cout << vecToString(sol.letterCombinations("2")) << endl;
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: `["ad","ae","af","bd","be","bf","cd","ce","cf"]\n[]\n["a","b","c"]`,
+    python: `["ad","ae","af","bd","be","bf","cd","ce","cf"]\n[]\n["a","b","c"]`,
+    java: "[ad, ae, af, bd, be, bf, cd, ce, cf]\n[]\n[a, b, c]",
+    cpp: `["ad","ae","af","bd","be","bf","cd","ce","cf"]\n[]\n["a","b","c"]`,
+  },
+},
 };
 
  

@@ -7240,6 +7240,299 @@ int main() {
     cpp: `["ad","ae","af","bd","be","bf","cd","ce","cf"]\n[]\n["a","b","c"]`,
   },
 },
+"maximum-depth-of-binary-tree": {
+  id: "maximum-depth-of-binary-tree",
+  title: "Maximum Depth of Binary Tree",
+  difficulty: "Easy",
+  category: "Tree • Depth-First Search • Breadth-First Search • Binary Tree",
+  description: {
+    text: "Given the root of a binary tree, return its maximum depth. A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.",
+    notes: [
+      "A leaf is a node with no children.",
+      "The depth of an empty tree is 0.",
+    ],
+  },
+  examples: [
+    {
+      input: "root = [3,9,20,null,null,15,7]",
+      output: "3",
+      explanation: "The longest path is 3 → 20 → 15 (or 3 → 20 → 7), which has 3 nodes.",
+    },
+    {
+      input: "root = [1,null,2]",
+      output: "2",
+    },
+  ],
+  constraints: [
+    "The number of nodes in the tree is in the range [0, 10⁴]",
+    "-100 ≤ Node.val ≤ 100",
+  ],
+  starterCode: {
+    javascript: `class TreeNode {
+  constructor(val, left = null, right = null) {
+    this.val = val;
+    this.left = left;
+    this.right = right;
+  }
+}
+
+function buildTree(arr) {
+  if (!arr || arr.length === 0) return null;
+  const root = new TreeNode(arr[0]);
+  const queue = [root];
+  let i = 1;
+  while (i < arr.length) {
+    const node = queue.shift();
+    if (arr[i] !== null) { node.left = new TreeNode(arr[i]); queue.push(node.left); }
+    i++;
+    if (i < arr.length && arr[i] !== null) { node.right = new TreeNode(arr[i]); queue.push(node.right); }
+    i++;
+  }
+  return root;
+}
+
+function maxDepth(root) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(maxDepth(buildTree([3,9,20,null,null,15,7]))); // Expected: 3
+console.log(maxDepth(buildTree([1,null,2])));               // Expected: 2
+console.log(maxDepth(buildTree([])));                       // Expected: 0`,
+
+    python: `from collections import deque
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def buildTree(arr):
+    if not arr:
+        return None
+    root = TreeNode(arr[0])
+    queue = deque([root])
+    i = 1
+    while i < len(arr):
+        node = queue.popleft()
+        if i < len(arr) and arr[i] is not None:
+            node.left = TreeNode(arr[i])
+            queue.append(node.left)
+        i += 1
+        if i < len(arr) and arr[i] is not None:
+            node.right = TreeNode(arr[i])
+            queue.append(node.right)
+        i += 1
+    return root
+
+def maxDepth(root):
+    # Write your solution here
+    pass
+
+# Test cases
+print(maxDepth(buildTree([3,9,20,None,None,15,7])))  # Expected: 3
+print(maxDepth(buildTree([1,None,2])))               # Expected: 2
+print(maxDepth(buildTree([])))                       # Expected: 0`,
+
+    java: `import java.util.*;
+
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int val) { this.val = val; }
+}
+
+class Solution {
+    public static TreeNode buildTree(Integer[] arr) {
+        if (arr == null || arr.length == 0) return null;
+        TreeNode root = new TreeNode(arr[0]);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int i = 1;
+        while (i < arr.length) {
+            TreeNode node = queue.poll();
+            if (i < arr.length && arr[i] != null) { node.left = new TreeNode(arr[i]); queue.add(node.left); }
+            i++;
+            if (i < arr.length && arr[i] != null) { node.right = new TreeNode(arr[i]); queue.add(node.right); }
+            i++;
+        }
+        return root;
+    }
+
+    public static int maxDepth(TreeNode root) {
+        // Write your solution here
+
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(maxDepth(buildTree(new Integer[]{3,9,20,null,null,15,7}))); // Expected: 3
+        System.out.println(maxDepth(buildTree(new Integer[]{1,null,2})));               // Expected: 2
+        System.out.println(maxDepth(buildTree(new Integer[]{})));                       // Expected: 0
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+TreeNode* buildTree(vector<int> arr) {
+    if (arr.empty()) return nullptr;
+    TreeNode* root = new TreeNode(arr[0]);
+    queue<TreeNode*> q;
+    q.push(root);
+    int i = 1;
+    while (i < (int)arr.size()) {
+        TreeNode* node = q.front(); q.pop();
+        if (i < (int)arr.size() && arr[i] != -1) { node->left = new TreeNode(arr[i]); q.push(node->left); }
+        i++;
+        if (i < (int)arr.size() && arr[i] != -1) { node->right = new TreeNode(arr[i]); q.push(node->right); }
+        i++;
+    }
+    return root;
+}
+
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        // Write your solution here
+
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << sol.maxDepth(buildTree({3,9,20,-1,-1,15,7})) << endl; // Expected: 3
+    cout << sol.maxDepth(buildTree({1,-1,2})) << endl;             // Expected: 2
+    cout << sol.maxDepth(nullptr) << endl;                         // Expected: 0
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "3\n2\n0",
+    python: "3\n2\n0",
+    java: "3\n2\n0",
+    cpp: "3\n2\n0",
+  },
+},
+
+"coin-change": {
+  id: "coin-change",
+  title: "Coin Change",
+  difficulty: "Medium",
+  category: "Array • Dynamic Programming • Breadth-First Search",
+  description: {
+    text: "You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money. Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.",
+    notes: [
+      "You may assume that you have an infinite number of each kind of coin.",
+      "The answer is guaranteed to fit in a signed 32-bit integer.",
+    ],
+  },
+  examples: [
+    {
+      input: "coins = [1,5,11], amount = 15",
+      output: "3",
+      explanation: "15 = 11 + 3×1 is not optimal. 15 = 5 + 5 + 5 uses 3 coins.",
+    },
+    {
+      input: "coins = [2], amount = 3",
+      output: "-1",
+      explanation: "Amount 3 cannot be made with only coin denomination 2.",
+    },
+    {
+      input: "coins = [1], amount = 0",
+      output: "0",
+    },
+  ],
+  constraints: [
+    "1 ≤ coins.length ≤ 12",
+    "1 ≤ coins[i] ≤ 2³¹ - 1",
+    "0 ≤ amount ≤ 10⁴",
+  ],
+  starterCode: {
+    javascript: `function coinChange(coins, amount) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(coinChange([1,5,11], 15)); // Expected: 3
+console.log(coinChange([2], 3));       // Expected: -1
+console.log(coinChange([1], 0));       // Expected: 0`,
+
+    python: `def coinChange(coins, amount):
+    # Write your solution here
+    pass
+
+# Test cases
+print(coinChange([1,5,11], 15))  # Expected: 3
+print(coinChange([2], 3))        # Expected: -1
+print(coinChange([1], 0))        # Expected: 0`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static int coinChange(int[] coins, int amount) {
+        // Write your solution here
+
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(coinChange(new int[]{1,5,11}, 15)); // Expected: 3
+        System.out.println(coinChange(new int[]{2}, 3));       // Expected: -1
+        System.out.println(coinChange(new int[]{1}, 0));       // Expected: 0
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        // Write your solution here
+
+        return -1;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> c1 = {1,5,11};
+    cout << sol.coinChange(c1, 15) << endl; // Expected: 3
+    vector<int> c2 = {2};
+    cout << sol.coinChange(c2, 3) << endl;  // Expected: -1
+    vector<int> c3 = {1};
+    cout << sol.coinChange(c3, 0) << endl;  // Expected: 0
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "3\n-1\n0",
+    python: "3\n-1\n0",
+    java: "3\n-1\n0",
+    cpp: "3\n-1\n0",
+  },
+},
 };
 
  

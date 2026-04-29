@@ -7533,6 +7533,120 @@ int main() {
     cpp: "3\n-1\n0",
   },
 },
+"flood-fill": {
+  id: "flood-fill",
+  title: "Flood Fill",
+  difficulty: "Easy",
+  category: "Array • Depth-First Search • Breadth-First Search • Matrix",
+  description: {
+    text: "An image is represented by an m x n integer grid image where image[i][j] represents the pixel value of the image. You are given three integers sr, sc, and color. Perform a flood fill starting from the pixel image[sr][sc]. To perform a flood fill, consider the starting pixel, plus any pixels connected 4-directionally to the starting pixel of the same color as the starting pixel, and any pixels connected 4-directionally to those pixels (also with the same color), and so on. Replace the color of all of the aforementioned pixels with color. Return the modified image after performing the flood fill.",
+    notes: [
+      "Only 4-directional neighbors (up, down, left, right) are considered connected.",
+      "If the starting pixel already has the target color, no changes are needed.",
+    ],
+  },
+  examples: [
+    {
+      input: "image = [[1,1,1],[1,1,0],[1,0,1]], sr = 1, sc = 1, color = 2",
+      output: "[[2,2,2],[2,2,0],[2,0,1]]",
+      explanation: "Starting from center pixel (1,1) with value 1, all connected 1s are replaced with 2. The bottom-right 1 is not connected.",
+    },
+    {
+      input: "image = [[0,0,0],[0,0,0]], sr = 0, sc = 0, color = 0",
+      output: "[[0,0,0],[0,0,0]]",
+      explanation: "The starting pixel already has color 0, so no changes are made.",
+    },
+  ],
+  constraints: [
+    "m == image.length",
+    "n == image[i].length",
+    "1 ≤ m, n ≤ 50",
+    "0 ≤ image[i][j], color < 2¹⁶",
+    "0 ≤ sr < m",
+    "0 ≤ sc < n",
+  ],
+  starterCode: {
+    javascript: `function floodFill(image, sr, sc, color) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(JSON.stringify(floodFill([[1,1,1],[1,1,0],[1,0,1]], 1, 1, 2))); // Expected: [[2,2,2],[2,2,0],[2,0,1]]
+console.log(JSON.stringify(floodFill([[0,0,0],[0,0,0]], 0, 0, 0)));          // Expected: [[0,0,0],[0,0,0]]`,
+
+    python: `import json
+
+def floodFill(image, sr, sc, color):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(floodFill([[1,1,1],[1,1,0],[1,0,1]], 1, 1, 2), separators=(',', ':')))  # Expected: [[2,2,2],[2,2,0],[2,0,1]]
+print(json.dumps(floodFill([[0,0,0],[0,0,0]], 0, 0, 0), separators=(',', ':')))           # Expected: [[0,0,0],[0,0,0]]`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        // Write your solution here
+
+        return image;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Arrays.deepToString(floodFill(new int[][]{{1,1,1},{1,1,0},{1,0,1}}, 1, 1, 2))); // Expected: [[2, 2, 2], [2, 2, 0], [2, 0, 1]]
+        System.out.println(Arrays.deepToString(floodFill(new int[][]{{0,0,0},{0,0,0}}, 0, 0, 0)));          // Expected: [[0, 0, 0], [0, 0, 0]]
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        // Write your solution here
+
+        return image;
+    }
+};
+
+string matrixToString(vector<vector<int>> mat) {
+    string s = "[";
+    for (int i = 0; i < (int)mat.size(); i++) {
+        s += "[";
+        for (int j = 0; j < (int)mat[i].size(); j++) {
+            s += to_string(mat[i][j]) + (j == (int)mat[i].size() - 1 ? "" : ",");
+        }
+        s += "]" + (i == (int)mat.size() - 1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<vector<int>> img1 = {{1,1,1},{1,1,0},{1,0,1}};
+    cout << matrixToString(sol.floodFill(img1, 1, 1, 2)) << endl; // Expected: [[2,2,2],[2,2,0],[2,0,1]]
+    vector<vector<int>> img2 = {{0,0,0},{0,0,0}};
+    cout << matrixToString(sol.floodFill(img2, 0, 0, 0)) << endl;  // Expected: [[0,0,0],[0,0,0]]
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "[[2,2,2],[2,2,0],[2,0,1]]\n[[0,0,0],[0,0,0]]",
+    python: "[[2,2,2],[2,2,0],[2,0,1]]\n[[0,0,0],[0,0,0]]",
+    java: "[[2, 2, 2], [2, 2, 0], [2, 0, 1]]\n[[0, 0, 0], [0, 0, 0]]",
+    cpp: "[[2,2,2],[2,2,0],[2,0,1]]\n[[0,0,0],[0,0,0]]",
+  },
+},
+
 };
 
  

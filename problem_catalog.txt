@@ -31,6 +31,7 @@ merge-two-sorted-lists | Merge Two Sorted Lists | Easy | Linked List • Recursi
 pascals-triangle | Pascal's Triangle | Easy | Array • Dynamic Programming
 maximum-depth-of-binary-tree | Maximum Depth of Binary Tree | Easy | Tree • Depth-First Search • Breadth-First Search • Binary Tree
 
+
 # ---- MEDIUM ----
 maximum-subarray | Maximum Subarray | Medium | Array • Dynamic Programming
 container-with-most-water | Container With Most Water | Medium | Array • Two Pointers
@@ -73,6 +74,7 @@ binary-tree-level-order-traversal | Binary Tree Level Order Traversal | Medium |
 longest-increasing-subsequence | Longest Increasing Subsequence | Medium | Array • Binary Search • Dynamic Programming
 letter-combinations-phone-number | Letter Combinations of a Phone Number | Medium | String • Backtracking • Hash Table
 coin-change | Coin Change | Medium | Array • Dynamic Programming • Breadth-First Search
+rotate-array | Rotate Array | Medium | Array • Two Pointers • Math
 
 # ---- HARD ----
 trapping-rain-water | Trapping Rain Water | Hard | Array • Two Pointers • Dynamic Programming

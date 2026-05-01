@@ -7646,6 +7646,129 @@ int main() {
     cpp: "[[2,2,2],[2,2,0],[2,0,1]]\n[[0,0,0],[0,0,0]]",
   },
 },
+"rotate-array": {
+  id: "rotate-array",
+  title: "Rotate Array",
+  difficulty: "Medium",
+  category: "Array • Two Pointers • Math",
+  description: {
+    text: "Given an integer array nums, rotate the array to the right by k steps, where k is non-negative.",
+    notes: [
+      "There are at least three different ways to solve this problem.",
+      "Could you do it in-place with O(1) extra space?",
+      "k is taken modulo nums.length, so rotating by k = nums.length results in the original array.",
+    ],
+  },
+  examples: [
+    {
+      input: "nums = [1,2,3,4,5,6,7], k = 3",
+      output: "[5,6,7,1,2,3,4]",
+      explanation: "Rotate right by 1: [7,1,2,3,4,5,6]. By 2: [6,7,1,2,3,4,5]. By 3: [5,6,7,1,2,3,4].",
+    },
+    {
+      input: "nums = [-1,-100,3,99], k = 2",
+      output: "[3,99,-1,-100]",
+      explanation: "Rotate right by 1: [99,-1,-100,3]. By 2: [3,99,-1,-100].",
+    },
+  ],
+  constraints: [
+    "1 ≤ nums.length ≤ 10⁵",
+    "-2³¹ ≤ nums[i] ≤ 2³¹ - 1",
+    "0 ≤ k ≤ 10⁵",
+  ],
+  starterCode: {
+    javascript: `function rotate(nums, k) {
+  // Write your solution here (modify nums in-place)
+
+}
+
+// Test cases
+const a = [1,2,3,4,5,6,7];
+rotate(a, 3);
+console.log(JSON.stringify(a)); // Expected: [5,6,7,1,2,3,4]
+
+const b = [-1,-100,3,99];
+rotate(b, 2);
+console.log(JSON.stringify(b)); // Expected: [3,99,-1,-100]`,
+
+    python: `import json
+
+def rotate(nums, k):
+    # Write your solution here (modify nums in-place)
+    pass
+
+# Test cases
+a = [1,2,3,4,5,6,7]
+rotate(a, 3)
+print(json.dumps(a, separators=(',', ':')))  # Expected: [5,6,7,1,2,3,4]
+
+b = [-1,-100,3,99]
+rotate(b, 2)
+print(json.dumps(b, separators=(',', ':')))  # Expected: [3,99,-1,-100]`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static void rotate(int[] nums, int k) {
+        // Write your solution here (modify nums in-place)
+
+    }
+
+    public static void main(String[] args) {
+        int[] a = {1,2,3,4,5,6,7};
+        rotate(a, 3);
+        System.out.println(Arrays.toString(a)); // Expected: [5, 6, 7, 1, 2, 3, 4]
+
+        int[] b = {-1,-100,3,99};
+        rotate(b, 2);
+        System.out.println(Arrays.toString(b)); // Expected: [3, 99, -1, -100]
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+        // Write your solution here (modify nums in-place)
+
+    }
+};
+
+string vecToString(vector<int>& v) {
+    string s = "[";
+    for (int i = 0; i < (int)v.size(); i++) {
+        s += to_string(v[i]) + (i == (int)v.size() - 1 ? "" : ",");
+    }
+    s += "]";
+    return s;
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> a = {1,2,3,4,5,6,7};
+    sol.rotate(a, 3);
+    cout << vecToString(a) << endl; // Expected: [5,6,7,1,2,3,4]
+
+    vector<int> b = {-1,-100,3,99};
+    sol.rotate(b, 2);
+    cout << vecToString(b) << endl; // Expected: [3,99,-1,-100]
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "[5,6,7,1,2,3,4]\n[3,99,-1,-100]",
+    python: "[5,6,7,1,2,3,4]\n[3,99,-1,-100]",
+    java: "[5, 6, 7, 1, 2, 3, 4]\n[3, 99, -1, -100]",
+    cpp: "[5,6,7,1,2,3,4]\n[3,99,-1,-100]",
+  },
+},
 
 };
 

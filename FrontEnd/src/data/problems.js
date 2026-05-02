@@ -7770,6 +7770,194 @@ int main() {
   },
 },
 
+"symmetric-tree": {
+  id: "symmetric-tree",
+  title: "Symmetric Tree",
+  difficulty: "Easy",
+  category: "Tree • Depth-First Search • Breadth-First Search • Binary Tree",
+  description: {
+    text: "Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).",
+    notes: [
+      "A tree is symmetric if the left subtree is a mirror reflection of the right subtree.",
+      "Can you solve it both recursively and iteratively?",
+    ],
+  },
+  examples: [
+    {
+      input: "root = [1,2,2,3,4,4,3]",
+      output: "true",
+      explanation: "The tree is symmetric — left and right subtrees are mirror images of each other.",
+    },
+    {
+      input: "root = [1,2,2,null,3,null,3]",
+      output: "false",
+      explanation: "The tree is not symmetric — the right children differ between the two sides.",
+    },
+  ],
+  constraints: [
+    "The number of nodes in the tree is in the range [1, 1000]",
+    "-100 ≤ Node.val ≤ 100",
+  ],
+  starterCode: {
+    javascript: `class TreeNode {
+  constructor(val, left = null, right = null) {
+    this.val = val;
+    this.left = left;
+    this.right = right;
+  }
+}
+
+function buildTree(arr) {
+  if (!arr || arr.length === 0) return null;
+  const root = new TreeNode(arr[0]);
+  const queue = [root];
+  let i = 1;
+  while (i < arr.length) {
+    const node = queue.shift();
+    if (arr[i] !== null) { node.left = new TreeNode(arr[i]); queue.push(node.left); }
+    i++;
+    if (i < arr.length && arr[i] !== null) { node.right = new TreeNode(arr[i]); queue.push(node.right); }
+    i++;
+  }
+  return root;
+}
+
+function isSymmetric(root) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(isSymmetric(buildTree([1,2,2,3,4,4,3])));         // Expected: true
+console.log(isSymmetric(buildTree([1,2,2,null,3,null,3])));   // Expected: false`,
+
+    python: `from collections import deque
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def buildTree(arr):
+    if not arr:
+        return None
+    root = TreeNode(arr[0])
+    queue = deque([root])
+    i = 1
+    while i < len(arr):
+        node = queue.popleft()
+        if i < len(arr) and arr[i] is not None:
+            node.left = TreeNode(arr[i])
+            queue.append(node.left)
+        i += 1
+        if i < len(arr) and arr[i] is not None:
+            node.right = TreeNode(arr[i])
+            queue.append(node.right)
+        i += 1
+    return root
+
+def isSymmetric(root):
+    # Write your solution here
+    pass
+
+# Test cases
+print(isSymmetric(buildTree([1,2,2,3,4,4,3])))        # Expected: True
+print(isSymmetric(buildTree([1,2,2,None,3,None,3])))  # Expected: False`,
+
+    java: `import java.util.*;
+
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int val) { this.val = val; }
+}
+
+class Solution {
+    public static TreeNode buildTree(Integer[] arr) {
+        if (arr == null || arr.length == 0) return null;
+        TreeNode root = new TreeNode(arr[0]);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int i = 1;
+        while (i < arr.length) {
+            TreeNode node = queue.poll();
+            if (i < arr.length && arr[i] != null) { node.left = new TreeNode(arr[i]); queue.add(node.left); }
+            i++;
+            if (i < arr.length && arr[i] != null) { node.right = new TreeNode(arr[i]); queue.add(node.right); }
+            i++;
+        }
+        return root;
+    }
+
+    public static boolean isSymmetric(TreeNode root) {
+        // Write your solution here
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isSymmetric(buildTree(new Integer[]{1,2,2,3,4,4,3})));        // Expected: true
+        System.out.println(isSymmetric(buildTree(new Integer[]{1,2,2,null,3,null,3})));  // Expected: false
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+TreeNode* buildTree(vector<int> arr) {
+    if (arr.empty()) return nullptr;
+    TreeNode* root = new TreeNode(arr[0]);
+    queue<TreeNode*> q;
+    q.push(root);
+    int i = 1;
+    while (i < (int)arr.size()) {
+        TreeNode* node = q.front(); q.pop();
+        if (i < (int)arr.size() && arr[i] != -1) { node->left = new TreeNode(arr[i]); q.push(node->left); }
+        i++;
+        if (i < (int)arr.size() && arr[i] != -1) { node->right = new TreeNode(arr[i]); q.push(node->right); }
+        i++;
+    }
+    return root;
+}
+
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        // Write your solution here
+
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << boolalpha << sol.isSymmetric(buildTree({1,2,2,3,4,4,3})) << endl;        // Expected: true
+    cout << boolalpha << sol.isSymmetric(buildTree({1,2,2,-1,3,-1,3})) << endl;      // Expected: false
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "true\nfalse",
+    python: "True\nFalse",
+    java: "true\nfalse",
+    cpp: "true\nfalse",
+  },
+},
+
+
 };
 
  

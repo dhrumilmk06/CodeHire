@@ -7,7 +7,8 @@ import { runAutoScore } from "../lib/scoring.js";
 import { generateSessionCode, extractSessionIdFromUrl, detectInputType } from "../utils/sessionHelpers.js";
 import rateLimit from 'express-rate-limit';
 
-export async function createSession(req, res) {
+export async function createSession(req, res, next) {
+
     try {
         let { problems, problemIds, hostId } = req.body
         const clerkId = req.user?.clerkId || hostId; // Use clerkId from auth or hostId from body (Postman)
@@ -104,12 +105,13 @@ export async function createSession(req, res) {
             session: mapId(session)
         });
     } catch (error) {
-        console.error("❌ Error in createSession controller:", error);
-        res.status(500).json({ message: "Internal Server Error", error: error.message });
+        next(error);
     }
 }
 
-export async function getActiveSessions(_, res) {
+
+export async function getActiveSessions(_, res, next) {
+
     try {
         const sessions = await prisma.session.findMany({
             where: { status: "active" },
@@ -127,12 +129,13 @@ export async function getActiveSessions(_, res) {
 
         res.status(200).json({ sessions: mapId(sessions) });
     } catch (error) {
-        console.error("Error in getActiveSessions controller", error.message)
-        res.status(500).json({ message: "Internal server error" })
+        next(error);
     }
 };
 
-export async function getMyReecentSessions(req, res) {
+
+export async function getMyReecentSessions(req, res, next) {
+
     try {
         const clerkId = req.user.clerkId
 
@@ -154,12 +157,13 @@ export async function getMyReecentSessions(req, res) {
 
         res.status(200).json({ sessions: mapId(sessions) })
     } catch (error) {
-        console.error("Error in getMyReecentSessions controller", error.message)
-        res.status(500).json({ message: "Internal server error" })
+        next(error);
     }
 };
 
-export async function getSessionById(req, res) {
+
+export async function getSessionById(req, res, next) {
+
     try {
         const { id } = req.params
 
@@ -175,12 +179,13 @@ export async function getSessionById(req, res) {
 
         res.status(200).json({ session: mapId(session) })
     } catch (error) {
-        console.error("Error in getSessionById controller:", error.message);
-        res.status(500).json({ message: "Internal Server Error" });
+        next(error);
     }
 };
 
-export async function joinSession(req, res) {
+
+export async function joinSession(req, res, next) {
+
     try {
         const { id } = req.params
         const clerkId = req.user.clerkId
@@ -204,10 +209,10 @@ export async function joinSession(req, res) {
 
         res.status(200).json({ session: mapId(updatedSession) })
     } catch (error) {
-        console.error("Error in joinSession controller:", error.message);
-        res.status(500).json({ message: "Internal Server Error" });
+        next(error);
     }
 };
+
 
 // Rate limiter — max 10 join attempts per minute per IP
 export const joinSessionLimiter = rateLimit({
@@ -219,7 +224,8 @@ export const joinSessionLimiter = rateLimit({
 })
 
 // POST /api/sessions/join
-export const joinSessionByCode = async (req, res) => {
+export const joinSessionByCode = async (req, res, next) => {
+
     try {
         const { code, link, session_code } = req.body;
         const finalCode = code || session_code;
@@ -314,14 +320,13 @@ export const joinSessionByCode = async (req, res) => {
         })
 
     } catch (error) {
-        console.error('Join session error:', error)
-        return res.status(500).json({
-            error: 'Could not join session. Please try again.'
-        })
+        next(error);
     }
 }
 
-export async function endSession(req, res) {
+
+export async function endSession(req, res, next) {
+
     try {
         const { id } = req.params;
         const clerkId = req.user.clerkId;
@@ -355,12 +360,13 @@ export async function endSession(req, res) {
 
         res.status(200).json({ session: mapId(updatedSession), message: "Session ended successfully" })
     } catch (error) {
-        console.error("Error in endSession controller:", error.message);
-        res.status(500).json({ message: "Internal Server Error" });
+        next(error);
     }
 };
 
-export async function getNotes(req, res) {
+
+export async function getNotes(req, res, next) {
+
     try {
         const { id } = req.params;
         const clerkId = req.user.clerkId;
@@ -380,12 +386,13 @@ export async function getNotes(req, res) {
             timings: session.timings,
         });
     } catch (error) {
-        console.error("Error in getNotes controller:", error.message);
-        res.status(500).json({ message: "Internal Server Error" });
+        next(error);
     }
 }
 
-export async function saveNotes(req, res) {
+
+export async function saveNotes(req, res, next) {
+
     try {
         const { id } = req.params;
         const clerkId = req.user.clerkId;
@@ -417,12 +424,13 @@ export async function saveNotes(req, res) {
             testCasesPassed: updatedSession.testCasesPassed
         });
     } catch (error) {
-        console.error("Error in saveNotes controller:", error.message);
-        res.status(500).json({ message: "Internal Server Error" });
+        next(error);
     }
 }
 
-export async function setDecision(req, res) {
+
+export async function setDecision(req, res, next) {
+
     try {
         const { id } = req.params;
         const clerkId = req.user.clerkId;
@@ -445,12 +453,13 @@ export async function setDecision(req, res) {
 
         res.status(200).json({ message: "Decision saved", decision: updatedSession.decision });
     } catch (error) {
-        console.error("Error in setDecision controller:", error.message);
-        res.status(500).json({ message: "Internal Server Error" });
+        next(error);
     }
 }
 
-export async function updateTimings(req, res) {
+
+export async function updateTimings(req, res, next) {
+
     try {
         const { id } = req.params;
         const clerkId = req.user.clerkId;
@@ -469,12 +478,13 @@ export async function updateTimings(req, res) {
 
         res.status(200).json({ message: "Timings updated", timings: updatedSession.timings });
     } catch (error) {
-        console.error("Error in updateTimings controller:", error.message);
-        res.status(500).json({ message: "Internal Server Error" });
+        next(error);
     }
 }
 
-export async function updateActiveProblem(req, res) {
+
+export async function updateActiveProblem(req, res, next) {
+
     try {
         const { id } = req.params;
         const clerkId = req.user.clerkId;
@@ -507,12 +517,13 @@ export async function updateActiveProblem(req, res) {
             problemCodes: updatedSession.problemCodes
         });
     } catch (error) {
-        console.error("Error in updateActiveProblem controller:", error.message);
-        res.status(500).json({ message: "Internal Server Error" });
+        next(error);
     }
 }
 
-export async function saveProblemCode(req, res) {
+
+export async function saveProblemCode(req, res, next) {
+
     try {
         const { id, problemId } = req.params;
         const { code } = req.body;
@@ -532,12 +543,13 @@ export async function saveProblemCode(req, res) {
 
         res.status(200).json({ message: "Code saved for problem", problemId });
     } catch (error) {
-        console.error("Error in saveProblemCode controller:", error.message);
-        res.status(500).json({ message: "Internal Server Error" });
+        next(error);
     }
 }
 
-export async function getProblemCode(req, res) {
+
+export async function getProblemCode(req, res, next) {
+
     try {
         const { id, problemId } = req.params;
 
@@ -549,12 +561,13 @@ export async function getProblemCode(req, res) {
         const code = session.problemCodes[problemId] || "";
         res.status(200).json({ code });
     } catch (error) {
-        console.error("Error in getProblemCode controller:", error.message);
-        res.status(500).json({ message: "Internal Server Error" });
+        next(error);
     }
 }
 
-export async function runCode(req, res) {
+
+export async function runCode(req, res, next) {
+
     try {
         const { code, language, sessionId, problemId } = req.body;
 
@@ -601,15 +614,14 @@ export async function runCode(req, res) {
         // });
 
     } catch (error) {
-        console.error("Error in runCode controller:", error.message);
-        if (!res.headersSent) {
-            res.status(500).json({ message: "Internal Server Error" });
-        }
+        next(error);
     }
 }
 
 
-export async function updateSessionScore(req, res) {
+
+export async function updateSessionScore(req, res, next) {
+
     try {
         const { id } = req.params;
         const { score } = req.body;
@@ -621,7 +633,7 @@ export async function updateSessionScore(req, res) {
 
         res.status(200).json({ message: "Score updated", score: updatedSession.testCasesPassed });
     } catch (error) {
-        console.error("Error in updateSessionScore controller:", error.message);
-        res.status(500).json({ message: "Internal Server Error" });
+        next(error);
     }
 }
+

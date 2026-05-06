@@ -1,5 +1,8 @@
 import express from "express"
 import { protectRoute } from "../middleware/protectRoute.js";
+import validate from "../middleware/validate.js";
+import { sessionSchema, joinSessionSchema } from "../schemas/validationSchemas.js";
+
 import {
     createSession,
     endSession,
@@ -23,11 +26,13 @@ import {
 
 const router = express.Router();
 
-router.post("/", protectRoute, createSession);
+router.post("/", protectRoute, validate(sessionSchema), createSession);
+
 router.get("/active", protectRoute, getActiveSessions);
 router.get("/my-recent", protectRoute, getMyReecentSessions);
 
-router.post("/join", protectRoute, joinSessionLimiter, joinSessionByCode);
+router.post("/join", protectRoute, joinSessionLimiter, validate(joinSessionSchema), joinSessionByCode);
+
 router.get("/:id", protectRoute, getSessionById);
 router.post("/:id/join", protectRoute, joinSession);
 router.post("/:id/end", protectRoute, endSession);

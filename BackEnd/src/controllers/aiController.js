@@ -1,7 +1,8 @@
 import { generateAIResponse } from '../lib/gemini.js'
 import { prisma } from '../lib/db.js'
 
-export const generateCodeHint = async (req, res) => {
+export const generateCodeHint = async (req, res, next) => {
+
   try {
     const {
       sessionId,
@@ -77,14 +78,13 @@ Hint:
     })
 
   } catch (error) {
-    console.error('AI hint error:', error)
-    return res.status(500).json({
-      error: error.message || 'Could not generate hint'
-    })
+    next(error);
   }
 }
 
-export const generateCodeReview = async (req, res) => {
+
+export const generateCodeReview = async (req, res, next) => {
+
   try {
     const {
       sessionId,
@@ -174,14 +174,13 @@ Return ONLY a valid JSON object with NO extra text:
     })
 
   } catch (error) {
-    console.error('AI code review error:', error)
-    return res.status(500).json({
-      error: error.message || 'Could not generate code review'
-    })
+    next(error);
   }
 }
 
-export const generateProblem = async (req, res) => {
+
+export const generateProblem = async (req, res, next) => {
+
   try {
     const { difficulty, topic, companyStyle } = req.body
 
@@ -276,19 +275,13 @@ Return ONLY a valid JSON object with NO extra text, NO markdown, NO backticks:
     })
 
   } catch (error) {
-    console.error('AI problem generation error:', error)
-    if (error.status === 429) {
-      return res.status(429).json({
-        error: 'AI service busy. Please wait a moment and try again.'
-      })
-    }
-    return res.status(500).json({
-      error: 'Could not generate problem. Please try again.'
-    })
+    next(error);
   }
 }
 
-export const generateSolution = async (req, res) => {
+
+export const generateSolution = async (req, res, next) => {
+
   try {
     const {
       problemTitle,
@@ -357,16 +350,9 @@ Return ONLY a valid JSON object with NO extra text NO markdown NO backticks:
     })
 
   } catch (error) {
-    console.error('Solution generation error:', error)
-    if (error.status === 429 || error.message?.includes('busy')) {
-      return res.status(429).json({
-        error: 'AI is busy. Please wait a moment and try again.'
-      })
-    }
-    return res.status(500).json({
-      error: error.message || 'Could not generate solution. Please try again.'
-    })
+    next(error);
   }
 
 }
+
 

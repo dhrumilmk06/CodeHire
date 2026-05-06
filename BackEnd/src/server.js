@@ -19,6 +19,8 @@ import userRoutes from './routes/userRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
 import aiRoutes from './routes/aiRoutes.js'
 import reportRoutes from './routes/reportRoutes.js'
+import { notFoundHandler, globalErrorHandler } from './middleware/errorHandler.js';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -144,6 +146,10 @@ app.use('/api/reports', reportRoutes)
 
 // Serve reports folder statically
 app.use('/reports', express.static('reports'))
+
+app.use(notFoundHandler);
+app.use(globalErrorHandler);
+
 
 // Deployment: serve built frontend
 if (ENV.NODE_ENV === "production") {

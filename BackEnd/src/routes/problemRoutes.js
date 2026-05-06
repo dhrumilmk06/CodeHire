@@ -1,6 +1,9 @@
 import express from "express";
 import rateLimit from "express-rate-limit";
 import { protectRoute } from "../middleware/protectRoute.js";
+import validate from "../middleware/validate.js";
+import { problemSchema } from "../schemas/validationSchemas.js";
+
 import { 
     getMyProblems, 
     createProblem, 
@@ -24,7 +27,8 @@ const bulkImportLimiter = rateLimit({
 
 router.get("/", protectRoute, getMyProblems);
 router.get("/find", protectRoute, getProblemByTitle);  // Must be before /:id
-router.post("/", protectRoute, createProblem);
+router.post("/", protectRoute, validate(problemSchema), createProblem);
+
 router.post("/bulk", protectRoute, bulkImportLimiter, bulkImportProblems);
 router.put("/:id", protectRoute, updateProblem);
 router.delete("/:id", protectRoute, deleteProblem);

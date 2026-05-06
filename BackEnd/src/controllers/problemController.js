@@ -3,7 +3,8 @@ import { mapId } from "../lib/utils.js";
 import { getAuth } from "@clerk/express";
 
 /** GET /api/problems/find?title=... — find any custom problem by title (no ownership check, for session participants) */
-export const getProblemByTitle = async (req, res) => {
+export const getProblemByTitle = async (req, res, next) => {
+
     try {
         const { title } = req.query;
         if (!title) return res.status(400).json({ message: "title query param required" });
@@ -13,12 +14,14 @@ export const getProblemByTitle = async (req, res) => {
         if (!problem) return res.status(404).json({ message: "Problem not found" });
         res.json({ problem: mapId(problem) });
     } catch (err) {
-        res.status(500).json({ message: "Failed to fetch problem", error: err.message });
+        next(err);
     }
 };
 
+
 /** GET /api/problems — get all custom problems for the current user */
-export const getMyProblems = async (req, res) => {
+export const getMyProblems = async (req, res, next) => {
+
     try {
         const { userId } = getAuth(req);
         const problems = await prisma.customProblem.findMany({
@@ -27,12 +30,14 @@ export const getMyProblems = async (req, res) => {
         });
         res.json({ problems: mapId(problems) });
     } catch (err) {
-        res.status(500).json({ message: "Failed to fetch problems", error: err.message });
+        next(err);
     }
 };
 
+
 /** POST /api/problems — create a new custom problem */
-export const createProblem = async (req, res) => {
+export const createProblem = async (req, res, next) => {
+
     try {
         const { userId } = getAuth(req);
         const body = req.body;
@@ -56,12 +61,14 @@ export const createProblem = async (req, res) => {
 
         res.status(201).json({ problem: mapId(problem) });
     } catch (err) {
-        res.status(500).json({ message: "Failed to create problem", error: err.message });
+        next(err);
     }
 };
 
+
 /** PUT /api/problems/:id — update a custom problem */
-export const updateProblem = async (req, res) => {
+export const updateProblem = async (req, res, next) => {
+
     try {
         const { userId } = getAuth(req);
         const { id } = req.params;
@@ -82,12 +89,14 @@ export const updateProblem = async (req, res) => {
 
         res.json({ problem: mapId(updatedProblem) });
     } catch (err) {
-        res.status(500).json({ message: "Failed to update problem", error: err.message });
+        next(err);
     }
 };
 
+
 /** DELETE /api/problems/:id — delete a custom problem */
-export const deleteProblem = async (req, res) => {
+export const deleteProblem = async (req, res, next) => {
+
     try {
         const { userId } = getAuth(req);
         const { id } = req.params;
@@ -104,9 +113,10 @@ export const deleteProblem = async (req, res) => {
 
         res.json({ message: "Problem deleted" });
     } catch (err) {
-        res.status(500).json({ message: "Failed to delete problem", error: err.message });
+        next(err);
     }
 };
+
 
 // ── Backend helpers ────────────────────────────────────────────────────────
 
@@ -179,7 +189,8 @@ async function checkDuplicates(problems, ownerClerkId) {
 }
 
 /** POST /api/problems/bulk — bulk import problems */
-export const bulkImportProblems = async (req, res) => {
+export const bulkImportProblems = async (req, res, next) => {
+
     try {
         const { problems } = req.body;
 
@@ -273,7 +284,7 @@ export const bulkImportProblems = async (req, res) => {
         });
 
     } catch (err) {
-        console.error("Bulk import error:", err);
-        res.status(500).json({ message: "Import failed. Please try again.", error: err.message });
+        next(err);
     }
 };
+

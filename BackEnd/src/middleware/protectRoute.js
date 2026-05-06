@@ -16,7 +16,6 @@ export const protectRoute = [
         try {
             const { userId: clerkId } = getAuth(req)
 
-            console.log(`🔍 [AUTH] Incoming clerkId from browser: ${clerkId}`)
 
             if (!clerkId) return res.status(401).json({ message: "Unauthorized - invalid token" })
 

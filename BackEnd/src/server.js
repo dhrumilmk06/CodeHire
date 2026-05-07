@@ -92,6 +92,28 @@ io.on("connection", (socket) => {
         socket.to(roomId).emit('receive-hint', { sessionId, hint })
     })
 
+    // Handle reconnection re-join
+    socket.on("rejoin-session", async ({ roomId }) => {
+        try {
+            socket.join(roomId);
+            
+            // Fetch latest code from DB for this session
+            const { prisma } = await import("./lib/db.js");
+            const session = await prisma.session.findFirst({
+                where: { callId: roomId }
+            });
+
+            if (session) {
+                const currentCode = session.problemCodes[session.problem] || "";
+                socket.emit("session-rejoined", { 
+                    code: currentCode
+                });
+            }
+        } catch (error) {
+            console.error("[Socket] Rejoin error:", error);
+        }
+    });
+
     socket.on("disconnect", () => {
         // Room cleanup is automatic via socket.io
     });

@@ -25,6 +25,8 @@ export const useCollabEditor = ({
     onProblemChange,
 }) => {
     const [socket, setSocket] = useState(null);
+    const [isReconnecting, setIsReconnecting] = useState(false);
+    const [reconnected, setReconnected] = useState(false);
 
     useEffect(() => {
         if (!roomId || !userId) return;
@@ -32,12 +34,35 @@ export const useCollabEditor = ({
         const s = io(SOCKET_URL, {
             transports: ["websocket", "polling"],
             withCredentials: true,
+            reconnection: true,
+            reconnectionAttempts: 10,
+            reconnectionDelay: 1000,
         });
 
         setSocket(s);
 
         s.on("connect", () => {
-            s.emit("join-room", { roomId, userId, role });
+            console.log("[Socket] Connected:", s.id);
+            // If we were in a reconnecting state, it means we just reconnected
+            if (isReconnecting) {
+                s.emit("rejoin-session", { roomId, userId, role });
+            } else {
+                s.emit("join-room", { roomId, userId, role });
+            }
+        });
+
+        s.on("disconnect", (reason) => {
+            console.warn("[Socket] Disconnected:", reason);
+            if (reason === "io server disconnect" || reason === "transport close" || reason === "transport error") {
+                setIsReconnecting(true);
+            }
+        });
+
+        s.on("session-rejoined", ({ code, language }) => {
+            console.log("[Socket] Session rejoined successfully");
+            if (code !== undefined) onCodeChange?.(code, language);
+            setIsReconnecting(false);
+            setReconnected(true);
         });
 
         // Remote participant changed code
@@ -71,7 +96,7 @@ export const useCollabEditor = ({
             setSocket(null);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [roomId, userId, role]);
+    }, [roomId, userId, role, isReconnecting]);
 
     /** Emit a code change to all other participants */
     const emitCodeChange = useCallback((code, language) => {
@@ -98,6 +123,9 @@ export const useCollabEditor = ({
         emitLanguageChange,
         emitOutputUpdate,
         emitProblemChange,
-        socket
+        socket,
+        isReconnecting,
+        reconnected,
+        setReconnected
     };
 };

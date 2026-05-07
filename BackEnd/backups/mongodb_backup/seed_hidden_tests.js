@@ -56,7 +56,7 @@ const seedHiddenTests = async () => {
                 title: problemTitle,
                 id: "two-sum",
                 difficulty: "Easy",
-                ownerClerkId: clerkId,
+                createdBy: clerkId,
                 hiddenTestCases,
                 description: { text: "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target." },
                 starterCode: {

@@ -19,6 +19,8 @@ model User {
   banned       Boolean   @default(false)
   sessions     Session[] @relation("HostSessions")
   participants Session[] @relation("ParticipantSessions")
+
+  @@index([clerkId])
 }
 
 
@@ -67,4 +69,9 @@ model Session {
   ai_review        Json?
   report_generated Boolean @default(false)
   report_url       String?
+
+  @@index([hostId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([session_code])
 }

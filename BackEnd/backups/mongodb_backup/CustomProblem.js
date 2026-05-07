@@ -8,7 +8,7 @@ const exampleSchema = new mongoose.Schema({
 
 const customProblemSchema = new mongoose.Schema({
     // Owner — the Clerk user ID so we can filter per-user
-    ownerClerkId: {
+    createdBy: {
         type: String,
         required: true,
         index: true,

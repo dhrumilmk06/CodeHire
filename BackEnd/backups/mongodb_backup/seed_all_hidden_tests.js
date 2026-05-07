@@ -253,7 +253,7 @@ const seedAllHiddenTests = async () => {
                         category: problemData.category,
                         description: problemData.description,
                         starterCode: problemData.starterCode,
-                        ownerClerkId: CLERK_ID
+                        createdBy: CLERK_ID
                     }
                 },
                 { upsert: true, new: true }

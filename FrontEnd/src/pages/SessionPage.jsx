@@ -103,7 +103,16 @@ export const SessionPage = () => {
 
   const [socketConnected, setSocketConnected] = useState(false);
 
-  const { emitCodeChange, emitLanguageChange, emitOutputUpdate, emitProblemChange, socket } = useCollabEditor({
+  const { 
+    emitCodeChange, 
+    emitLanguageChange, 
+    emitOutputUpdate, 
+    emitProblemChange, 
+    socket,
+    isReconnecting,
+    reconnected,
+    setReconnected
+  } = useCollabEditor({
     roomId,
     userId: user?.id,
     role,
@@ -128,6 +137,16 @@ export const SessionPage = () => {
       setOutput(remoteOutput);
     },
   });
+
+  // Handle auto-hiding the "Reconnected" banner after 3 seconds
+  useEffect(() => {
+    if (reconnected) {
+      const timer = setTimeout(() => {
+        setReconnected(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [reconnected, setReconnected]);
 
   // Listen for host-only auto-score results
   useEffect(() => {
@@ -382,7 +401,33 @@ export const SessionPage = () => {
   };
 
   return (
-    <div className='h-screen bg-base-100 flex flex-col'>
+    <div className='h-screen bg-base-100 flex flex-col relative'>
+      {/* RECONNECTION BANNERS */}
+      <AnimatePresence>
+        {isReconnecting && (
+          <motion.div
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -50, opacity: 0 }}
+            className="fixed top-0 left-0 right-0 z-[9999] bg-amber-500 text-white py-2 px-4 text-center font-bold shadow-lg flex items-center justify-center gap-2"
+          >
+            <Loader2Icon className="w-4 h-4 animate-spin" />
+            Reconnecting to session...
+          </motion.div>
+        )}
+        
+        {reconnected && !isReconnecting && (
+          <motion.div
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -50, opacity: 0 }}
+            className="fixed top-0 left-0 right-0 z-[9999] bg-success text-success-content py-2 px-4 text-center font-bold shadow-lg"
+          >
+            Reconnected ✅
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className='flex-1'>
         <PanelGroup direction='horizontal' id='main-horizontal-group' autoSaveId='main-horizontal-layout'>
           {/* LEFT PANEL - CODE EDITOR & PROBLEM DETAILS */}

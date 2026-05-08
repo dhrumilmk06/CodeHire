@@ -7,6 +7,7 @@ import {
   CrownIcon, PlusCircleIcon, MinusCircleIcon, LayersIcon
 } from "lucide-react";
 import { getDifficultyBadgeClass } from "../lib/utils";
+import { SkeletonCard } from "./ui/SkeletonCard";
 import { formatDistanceToNow } from "date-fns";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { sessionApi } from "../api/sessions";
@@ -721,9 +722,10 @@ export const RecentSession = ({ sessions, isLoading, userClerkId, hideCompare = 
       )}
 
       {isLoading ? (
-        <div className="flex flex-col items-center justify-center py-32 gap-4">
-          <Loader className="w-12 h-12 animate-spin text-primary opacity-20" />
-          <span className="text-xs font-black text-zinc-600 uppercase tracking-widest">Synchronizing...</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(4)].map((_, i) => (
+            <SkeletonCard key={i} variant="session" />
+          ))}
         </div>
       ) : filtered.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

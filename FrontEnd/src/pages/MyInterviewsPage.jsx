@@ -3,6 +3,7 @@ import { useMyRecentSessions } from '../hooks/useSessions';
 import { ParticipantWelcomeSection } from '../components/ParticipantWelcomeSection.jsx';
 import { ParticipantStats } from '../components/ParticipantStats.jsx';
 import { RecentSession } from '../components/RecentSession.jsx';
+import { SkeletonCard } from '../components/ui/SkeletonCard';
 import QuickJoinCard from '../components/dashboard/QuickJoinCard';
 
 export const MyInterviewsPage = () => {
@@ -42,11 +43,19 @@ export const MyInterviewsPage = () => {
       <div className='container mx-auto px-6 pb-16 mt-8'>
         <div className='grid grid-cols-1 lg:grid-cols-4 gap-8'>
           {/* Stats Sidebar */}
-          <ParticipantStats 
-            totalInterviews={totalInterviews}
-            avgScore={avgScore}
-            problemsSolved={solvedCount}
-          />
+          {isLoading ? (
+            <div className="lg:col-span-1 grid grid-cols-1 gap-6">
+              {[...Array(3)].map((_, i) => (
+                <SkeletonCard key={i} variant="stat" />
+              ))}
+            </div>
+          ) : (
+            <ParticipantStats 
+              totalInterviews={totalInterviews}
+              avgScore={avgScore}
+              problemsSolved={solvedCount}
+            />
+          )}
 
           {/* Sessions List */}
           <div className="lg:col-span-3 -mt-12">

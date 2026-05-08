@@ -2,7 +2,7 @@ import { TrophyIcon, UsersIcon } from "lucide-react";
 
 export const StatsCards = ({ activeSessionsCount, recentSessionsCount }) =>{
   return (
-    <div className="lg:col-span-1 grid grid-cols-1 gap-6">
+    <div className="lg:col-span-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 sm:gap-6">
       {/* Active Count */}
       <div className="card bg-base-100 border-2 border-primary/20 hover:border-primary/40">
         <div className="card-body">
@@ -12,8 +12,8 @@ export const StatsCards = ({ activeSessionsCount, recentSessionsCount }) =>{
             </div>
             <div className="badge badge-primary">Live</div>
           </div>
-          <div className="text-4xl font-black mb-1">{activeSessionsCount}</div>
-          <div className="text-sm opacity-60">Active Sessions</div>
+          <div className="text-3xl sm:text-4xl font-black mb-1">{activeSessionsCount}</div>
+          <div className="text-xs sm:text-sm opacity-60 font-bold uppercase tracking-widest">Active Sessions</div>
         </div>
       </div>
 
@@ -25,8 +25,8 @@ export const StatsCards = ({ activeSessionsCount, recentSessionsCount }) =>{
               <TrophyIcon className="w-7 h-7 text-secondary" />
             </div>
           </div>
-          <div className="text-4xl font-black mb-1">{recentSessionsCount}</div>
-          <div className="text-sm opacity-60">Total Sessions</div>
+          <div className="text-3xl sm:text-4xl font-black mb-1">{recentSessionsCount}</div>
+          <div className="text-xs sm:text-sm opacity-60 font-bold uppercase tracking-widest">Total Sessions</div>
         </div>
       </div>
     </div>

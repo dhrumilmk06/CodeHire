@@ -266,7 +266,7 @@ const SessionCard = ({ session, userClerkId, onSelect, isSelected, compareMode, 
   return (
     <div
       className={`card relative border transition-all duration-500 group/card ${isExpanded
-        ? "bg-[#0f1117] border-primary/40 col-span-1 md:col-span-2 lg:col-span-3 h-auto"
+        ? "bg-[#0f1117] border-primary/40 col-span-1 sm:col-span-2 lg:col-span-3 h-auto"
         : isSelected
           ? "bg-base-200 border-primary shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)] scale-[1.02]"
           : "bg-base-200 border-base-300 hover:border-primary/30 h-full"
@@ -645,90 +645,94 @@ export const RecentSession = ({ sessions, isLoading, userClerkId, hideCompare = 
 
   return (
     <div className="mt-12 relative">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-        <div className="flex items-center gap-4">
-          <div className="p-3 bg-linear-to-br from-accent to-secondary rounded-2xl shadow-lg shadow-accent/20">
-            <Clock className="w-6 h-6 text-white" />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="p-2 sm:p-3 bg-linear-to-br from-accent to-secondary rounded-xl sm:rounded-2xl shadow-lg shadow-accent/20">
+            <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           </div>
           <div>
-            <h2 className="text-3xl font-black text-white tracking-tight leading-none mb-1">Your Past Sessions</h2>
-            <p className="text-xs text-zinc-500 font-bold uppercase tracking-widest">History of your coding interviews</p>
+            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-none mb-1">Recent Sessions</h2>
+            <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">History of your coding interviews</p>
           </div>
         </div>
         {sessions.length > 0 && (
-          <div className="flex items-center gap-2 text-primary font-black text-xs uppercase bg-primary/10 px-4 py-2 rounded-xl border border-primary/20">
-            <Trophy className="size-4" />
-            {sessions.length} Sessions Total
+          <div className="flex items-center gap-2 text-primary font-black text-[10px] sm:text-xs uppercase bg-primary/10 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl border border-primary/20 self-start sm:self-auto">
+            <Trophy className="size-3 sm:size-4" />
+            {sessions.length} Sessions
           </div>
         )}
       </div>
 
       {sessions.length > 0 && (
-        <div className="flex flex-wrap items-center gap-4 mb-10 p-5 bg-[#1a1f2e]/50 backdrop-blur-md rounded-3xl border border-white/5 relative overflow-hidden group">
-          <div className="flex items-center gap-3 bg-[#0f1117] border border-white/10 rounded-2xl px-5 py-3 flex-1 min-w-[280px] group-hover:border-primary/30 transition-colors duration-500">
-            <SearchIcon className="size-5 text-zinc-600 shrink-0" />
-            <input type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} className="bg-transparent text-sm outline-none w-full text-white placeholder:text-zinc-700 font-medium" />
+        <div className="flex flex-col gap-4 mb-10 p-4 sm:p-5 bg-[#1a1f2e]/50 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-white/5 relative overflow-hidden group">
+          <div className="flex items-center gap-3 bg-[#0f1117] border border-white/10 rounded-xl sm:rounded-2xl px-4 py-2.5 sm:px-5 sm:py-3 w-full group-hover:border-primary/30 transition-colors duration-500">
+            <SearchIcon className="size-4 sm:size-5 text-zinc-600 shrink-0" />
+            <input type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} className="bg-transparent text-xs sm:text-sm outline-none w-full text-white placeholder:text-zinc-700 font-medium" />
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             {viewerIsHost && (
               <button
                 onClick={() => {
                   setIsCompareMode(!isCompareMode);
                   if (isCompareMode) setSelectedIds([]);
                 }}
-                className={`btn btn-sm rounded-xl gap-2 font-black uppercase tracking-widest transition-all ${isCompareMode ? "bg-primary text-white border-primary" : "bg-white/5 border-white/10 text-white hover:bg-white/10"}`}
+                className={`btn btn-xs sm:btn-sm rounded-lg sm:rounded-xl gap-2 font-black uppercase tracking-widest transition-all ${isCompareMode ? "bg-primary text-white border-primary" : "bg-white/5 border-white/10 text-white hover:bg-white/10"}`}
               >
-                <LayersIcon className="size-4" />
-                {isCompareMode ? "Exit Select" : "Compare Mode"}
+                <LayersIcon className="size-3 sm:size-4" />
+                <span className="hidden xs:inline">{isCompareMode ? "Exit Select" : "Compare Mode"}</span>
+                <span className="xs:hidden">{isCompareMode ? "Exit" : "Compare"}</span>
               </button>
             )}
 
             {viewerIsHost && isCompareMode && selectedIds.length > 0 && (
               <button
                 onClick={() => setIsSameProblemFilter(!isSameProblemFilter)}
-                className={`btn btn-sm rounded-xl gap-2 font-black uppercase tracking-widest transition-all ${isSameProblemFilter ? "bg-secondary text-white border-secondary" : "bg-white/5 border-white/10 text-white hover:bg-white/10"}`}
+                className={`btn btn-xs sm:btn-sm rounded-lg sm:rounded-xl gap-2 font-black uppercase tracking-widest transition-all ${isSameProblemFilter ? "bg-secondary text-white border-secondary" : "bg-white/5 border-white/10 text-white hover:bg-white/10"}`}
               >
-                <Code2 className="size-4" />
-                Same Problem Only
+                <Code2 className="size-3 sm:size-4" />
+                <span className="hidden xs:inline">Same Problem</span>
+                <span className="xs:hidden">Filter</span>
               </button>
             )}
 
-            <div className="w-px h-6 bg-white/10 mx-2 hidden md:block" />
+            <div className="w-px h-6 bg-white/10 mx-1 hidden sm:block" />
 
-            {viewerIsHost && (
-              <select value={ratingFilter} onChange={(e) => setRatingFilter(e.target.value)} className="bg-[#0f1117] border border-white/10 text-white text-[10px] font-black rounded-xl px-4 py-2.5 outline-none cursor-pointer">
-                <option value="all">ALL RATINGS</option>
-                {[5, 4, 3, 2, 1].map(s => <option key={s} value={s}>{s} STARS</option>)}
+            <div className="flex items-center gap-2 flex-wrap">
+              {viewerIsHost && (
+                <select value={ratingFilter} onChange={(e) => setRatingFilter(e.target.value)} className="bg-[#0f1117] border border-white/10 text-white text-[9px] sm:text-[10px] font-black rounded-lg sm:rounded-xl px-2 sm:px-4 py-2 sm:py-2.5 outline-none cursor-pointer">
+                  <option value="all">RATINGS</option>
+                  {[5, 4, 3, 2, 1].map(s => <option key={s} value={s}>{s} STARS</option>)}
+                </select>
+              )}
+
+              {viewerIsHost && (
+                <select value={decisionFilter} onChange={(e) => setDecisionFilter(e.target.value)} className="bg-[#0f1117] border border-white/10 text-white text-[9px] sm:text-[10px] font-black rounded-lg sm:rounded-xl px-2 sm:px-4 py-2 sm:py-2.5 outline-none cursor-pointer">
+                  <option value="all">DECISIONS</option>
+                  <option value="move_forward">MOVE FORWARD</option>
+                  <option value="on_hold">ON HOLD</option>
+                  <option value="rejected">REJECTED</option>
+                </select>
+              )}
+
+              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="bg-[#0f1117] border border-white/10 text-white text-[9px] sm:text-[10px] font-black rounded-lg sm:rounded-xl px-2 sm:px-4 py-2 sm:py-2.5 outline-none cursor-pointer">
+                <option value="newest">NEWEST</option>
+                <option value="oldest">OLDEST</option>
+                {viewerIsHost && <option value="highest_rated">BY RATING</option>}
               </select>
-            )}
-
-            {viewerIsHost && (
-              <select value={decisionFilter} onChange={(e) => setDecisionFilter(e.target.value)} className="bg-[#0f1117] border border-white/10 text-white text-[10px] font-black rounded-xl px-4 py-2.5 outline-none cursor-pointer">
-                <option value="all">ALL DECISIONS</option>
-                <option value="move_forward">MOVE FORWARD</option>
-                <option value="on_hold">ON HOLD</option>
-                <option value="rejected">REJECTED</option>
-              </select>
-            )}
-
-            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="bg-[#0f1117] border border-white/10 text-white text-[10px] font-black rounded-xl px-4 py-2.5 outline-none cursor-pointer">
-              <option value="newest">NEWEST</option>
-              <option value="oldest">OLDEST</option>
-              {viewerIsHost && <option value="highest_rated">BY RATING</option>}
-            </select>
+            </div>
           </div>
         </div>
       )}
 
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {[...Array(4)].map((_, i) => (
             <SkeletonCard key={i} variant="session" />
           ))}
         </div>
       ) : filtered.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filtered.map((session) => (
             <SessionCard
               key={session._id}

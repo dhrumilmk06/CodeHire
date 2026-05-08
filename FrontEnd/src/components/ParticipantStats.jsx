@@ -2,7 +2,7 @@ import { TrophyIcon, Code2Icon, CalendarIcon } from "lucide-react";
 
 export const ParticipantStats = ({ totalInterviews, avgScore, problemsSolved }) => {
   return (
-    <div className="lg:col-span-1 grid grid-cols-1 gap-6">
+    <div className="lg:col-span-1 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4 sm:gap-6">
       {/* Total Interviews */}
       <div className="card bg-base-100 border-2 border-primary/20 hover:border-primary/40">
         <div className="card-body">
@@ -12,8 +12,8 @@ export const ParticipantStats = ({ totalInterviews, avgScore, problemsSolved }) 
             </div>
             <div className="badge badge-primary">Total</div>
           </div>
-          <div className="text-4xl font-black mb-1">{totalInterviews}</div>
-          <div className="text-sm opacity-60">Interviews Participated</div>
+          <div className="text-3xl sm:text-4xl font-black mb-1">{totalInterviews}</div>
+          <div className="text-[10px] sm:text-xs opacity-60 font-bold uppercase tracking-widest">Interviews</div>
         </div>
       </div>
 
@@ -26,8 +26,8 @@ export const ParticipantStats = ({ totalInterviews, avgScore, problemsSolved }) 
             </div>
             <div className="badge badge-secondary">Avg Score</div>
           </div>
-          <div className="text-4xl font-black mb-1">{avgScore}%</div>
-          <div className="text-sm opacity-60">Success Rate</div>
+          <div className="text-3xl sm:text-4xl font-black mb-1">{avgScore}%</div>
+          <div className="text-[10px] sm:text-xs opacity-60 font-bold uppercase tracking-widest">Success Rate</div>
         </div>
       </div>
 
@@ -40,8 +40,8 @@ export const ParticipantStats = ({ totalInterviews, avgScore, problemsSolved }) 
             </div>
             <div className="badge badge-accent">Solved</div>
           </div>
-          <div className="text-4xl font-black mb-1">{problemsSolved}</div>
-          <div className="text-sm opacity-60">Problems Solved</div>
+          <div className="text-3xl sm:text-4xl font-black mb-1">{problemsSolved}</div>
+          <div className="text-[10px] sm:text-xs opacity-60 font-bold uppercase tracking-widest">Solved</div>
         </div>
       </div>
     </div>

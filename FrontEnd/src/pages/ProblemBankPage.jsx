@@ -100,16 +100,16 @@ function ProblemFormModal({ initial, onClose, onSave, isSaving }) {
 
     return (
         <div className="modal modal-open">
-            <div className="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
-                <div className="flex items-center justify-between mb-6">
-                    <h3 className="font-bold text-2xl">{initial ? "Edit Problem" : "Create Custom Problem"}</h3>
+            <div className="modal-box w-[95vw] max-w-4xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+                <div className="flex items-center justify-between mb-4 sm:mb-6">
+                    <h3 className="font-bold text-xl sm:text-2xl">{initial ? "Edit Problem" : "Create Problem"}</h3>
                     <button className="btn btn-ghost btn-sm btn-circle" onClick={onClose}><X /></button>
                 </div>
 
                 {/* Tabs */}
-                <div className="tabs tabs-boxed mb-6">
+                <div className="tabs tabs-boxed mb-6 flex-wrap justify-center sm:justify-start">
                     {["basic", "examples", "code", "tests"].map((t) => (
-                        <button key={t} className={`tab capitalize ${tab === t ? "tab-active" : ""}`} onClick={() => setTab(t)}>
+                        <button key={t} className={`tab tab-sm sm:tab-md capitalize ${tab === t ? "tab-active" : ""}`} onClick={() => setTab(t)}>
                             {t === "tests" ? "Test Cases" : t}
                         </button>
                     ))}
@@ -118,12 +118,12 @@ function ProblemFormModal({ initial, onClose, onSave, isSaving }) {
                 <form onSubmit={handleSubmit} className="space-y-5">
                     {/* ── BASIC ─────────────────────────────────────────────────── */}
                     {tab === "basic" && (
-                        <div className="space-y-5">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="col-span-2 space-y-1">
-                                    <label className="label-text font-semibold">Title *</label>
+                        <div className="space-y-4 sm:space-y-5">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="sm:col-span-2 space-y-1">
+                                    <label className="label-text font-semibold text-xs sm:text-sm">Title *</label>
                                     <input
-                                        className="input input-bordered w-full"
+                                        className="input input-bordered input-sm sm:input-md w-full"
                                         value={form.title}
                                         onChange={(e) => set("title", e.target.value)}
                                         placeholder="e.g. Binary Search"
@@ -131,9 +131,9 @@ function ProblemFormModal({ initial, onClose, onSave, isSaving }) {
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="label-text font-semibold">Difficulty *</label>
+                                    <label className="label-text font-semibold text-xs sm:text-sm">Difficulty *</label>
                                     <select
-                                        className="select select-bordered w-full"
+                                        className="select select-bordered select-sm sm:select-md w-full"
                                         value={form.difficulty}
                                         onChange={(e) => set("difficulty", e.target.value)}
                                     >
@@ -143,12 +143,12 @@ function ProblemFormModal({ initial, onClose, onSave, isSaving }) {
                                     </select>
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="label-text font-semibold">Category</label>
+                                    <label className="label-text font-semibold text-xs sm:text-sm">Category</label>
                                     <input
-                                        className="input input-bordered w-full"
+                                        className="input input-bordered input-sm sm:input-md w-full"
                                         value={form.category}
                                         onChange={(e) => set("category", e.target.value)}
-                                        placeholder="e.g. Array • Binary Search"
+                                        placeholder="e.g. Array • String"
                                     />
                                 </div>
                             </div>
@@ -408,7 +408,7 @@ function ProblemCard({ problem, isCustom, onEdit, onDelete, isDeleting }) {
                 </div>
 
                 {isCustom && (
-                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                    <div className="flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0">
                         <button
                             className="btn btn-ghost btn-xs text-white hover:text-green-500"
                             onClick={(e) => { e.stopPropagation(); onEdit(problem); }}
@@ -505,100 +505,102 @@ export const ProblemBankPage = () => {
         <div className="min-h-screen bg-base-300">
             {/* Hero header */}
             <div className="bg-linear-to-br from-primary/20 via-base-200 to-secondary/10 border-b border-base-300">
-                <div className="container mx-auto px-6 py-12">
-                    <div className="flex items-center justify-between gap-6 flex-wrap">
-                        <div>
-                            <div className="flex items-center gap-3 mb-2">
-                                <div className="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center">
-                                    <BookOpenIcon className="w-5 h-5 text-primary" />
+                <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
+                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                        <div className="text-center lg:text-left">
+                            <div className="flex items-center justify-center lg:justify-start gap-3 mb-2">
+                                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/20 rounded-xl flex items-center justify-center">
+                                    <BookOpenIcon className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                                 </div>
-                                <h1 className="text-4xl font-bold">Problem Bank</h1>
+                                <h1 className="text-3xl sm:text-4xl font-bold">Problem Bank</h1>
                             </div>
-                            <p className="text-base-content/60 text-lg">
+                            <p className="text-base-content/60 text-sm sm:text-lg max-w-2xl mx-auto lg:mx-0">
                                 Browse built-in problems or create your own private problems for interview sessions.
                             </p>
-                            <div className="flex items-center gap-4 mt-3 text-sm text-base-content/50">
+                            <div className="flex items-center justify-center lg:justify-start gap-4 mt-3 text-xs sm:text-sm text-base-content/50">
                                 <span className="flex items-center gap-1.5">
                                     <CodeIcon className="w-4 h-4" />
                                     {BUILT_IN_LIST.length} built-in
                                 </span>
                                 <span className="flex items-center gap-1.5">
                                     <Lock className="w-4 h-4" />
-                                    {customProblems.length} custom (private)
+                                    {customProblems.length} custom
                                 </span>
                             </div>
                         </div>
-                        <div className="flex gap-3">
+                        <div className="flex flex-col sm:flex-row gap-3 sm:justify-center lg:justify-end">
                             <button
-                                className="btn bg-[#0a0a0a] hover:bg-[#22c55e]/10 border-[#2a2a2a] hover:border-[#22c55e] text-[#22c55e] gap-2 transition-all duration-300"
+                                className="btn btn-sm sm:btn-md bg-[#0a0a0a] hover:bg-[#22c55e]/10 border-[#2a2a2a] hover:border-[#22c55e] text-[#22c55e] gap-2 transition-all duration-300"
                                 onClick={() => setShowBulkModal(true)}
                             >
-                                <Upload className="w-5 h-5" />
-                                Bulk Import
+                                <Upload className="w-4 h-4 sm:w-5 sm:h-5" />
+                                <span className="text-xs sm:text-sm">Bulk Import</span>
                             </button>
                             <button
                                 onClick={() => setShowGenerateModal(true)}
                                 className="
-                                    flex items-center gap-2
+                                    flex items-center justify-center gap-2
                                     bg-[#111111] border border-[#22c55e]
-                                    text-[#22c55e] text-sm font-semibold
+                                    text-[#22c55e] text-xs sm:text-sm font-semibold
                                     px-4 py-2 rounded-lg cursor-pointer
                                     hover:bg-[#22c55e] hover:text-black
                                     transition-all duration-300
                                 "
                             >
                                 <span>✨</span>
-                                <span>Generate with AI</span>
+                                <span>AI Generate</span>
                             </button>
                             <button
-                                className="btn btn-primary gap-2 shadow-lg"
+                                className="btn btn-sm sm:btn-md btn-primary gap-2 shadow-lg"
                                 onClick={() => { setEditingProblem(null); setShowForm(true); }}
                             >
-                                <Plus className="w-5 h-5" />
-                                New Custom Problem
+                                <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
+                                <span className="text-xs sm:text-sm">New Problem</span>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="container mx-auto px-6 py-8">
+            <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
                 {/* Filters */}
-                <div className="flex flex-wrap items-center gap-3 mb-8">
-                    <div className="relative flex-1 min-w-48">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
+                    <div className="relative flex-1">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-base-content/40 w-4 h-4" />
                         <input
-                            className="input input-bordered w-full pl-9"
+                            className="input input-bordered w-full pl-9 text-sm"
                             placeholder="Search problems..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
 
-                    <select
-                        className="select select-bordered"
-                        value={diffFilter}
-                        onChange={(e) => setDiffFilter(e.target.value)}
-                    >
-                        <option>All</option>
-                        <option>Easy</option>
-                        <option>Medium</option>
-                        <option>Hard</option>
-                    </select>
+                    <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 no-scrollbar">
+                        <select
+                            className="select select-bordered select-sm sm:select-md"
+                            value={diffFilter}
+                            onChange={(e) => setDiffFilter(e.target.value)}
+                        >
+                            <option>All</option>
+                            <option>Easy</option>
+                            <option>Medium</option>
+                            <option>Hard</option>
+                        </select>
 
-                    <div className="join">
-                        {["All", "Built-in", "Custom"].map((t) => (
-                            <button
-                                key={t}
-                                className={`btn btn-sm join-item ${typeFilter === t ? "btn-primary" : "btn-ghost btn-outline"}`}
-                                onClick={() => setTypeFilter(t)}
-                            >
-                                {t}
-                            </button>
-                        ))}
+                        <div className="join">
+                            {["All", "Built-in", "Custom"].map((t) => (
+                                <button
+                                    key={t}
+                                    className={`btn btn-xs sm:btn-sm join-item ${typeFilter === t ? "btn-primary" : "btn-ghost btn-outline"}`}
+                                    onClick={() => setTypeFilter(t)}
+                                >
+                                    {t}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
-                    <span className="text-sm text-base-content/50 ml-auto">
+                    <span className="text-xs sm:text-sm text-base-content/50 sm:ml-auto">
                         {filtered.length} problem{filtered.length !== 1 ? "s" : ""}
                     </span>
                 </div>

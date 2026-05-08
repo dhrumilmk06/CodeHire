@@ -40,26 +40,30 @@ export const MyInterviewsPage = () => {
       </div>
 
       {/* Grid layout */}
-      <div className='container mx-auto px-6 pb-16 mt-8'>
-        <div className='grid grid-cols-1 lg:grid-cols-4 gap-8'>
+      <div className='container mx-auto px-4 sm:px-6 pb-12 sm:pb-16 mt-6 sm:mt-8'>
+        <div className='grid grid-cols-1 lg:grid-cols-4 gap-6 sm:gap-8'>
           {/* Stats Sidebar */}
           {isLoading ? (
-            <div className="lg:col-span-1 grid grid-cols-1 gap-6">
+            <div className="lg:col-span-1 grid grid-cols-1 gap-4 sm:gap-6">
               {[...Array(3)].map((_, i) => (
                 <SkeletonCard key={i} variant="stat" />
               ))}
             </div>
           ) : (
-            <ParticipantStats 
-              totalInterviews={totalInterviews}
-              avgScore={avgScore}
-              problemsSolved={solvedCount}
-            />
+            <div className="lg:col-span-1">
+              <ParticipantStats 
+                totalInterviews={totalInterviews}
+                avgScore={avgScore}
+                problemsSolved={solvedCount}
+              />
+            </div>
           )}
 
           {/* Sessions List */}
-          <div className="lg:col-span-3 -mt-12">
-            <QuickJoinCard />
+          <div className="lg:col-span-3 lg:-mt-12">
+            <div className="mb-6">
+              <QuickJoinCard />
+            </div>
             <RecentSession
               sessions={sessions}
               isLoading={isLoading}

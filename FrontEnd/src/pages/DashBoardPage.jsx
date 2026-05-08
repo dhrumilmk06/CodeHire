@@ -59,17 +59,21 @@ export const DashBoardPage = () => {
         </div>
 
         {/* Grid layout */}
-        <div className='container mx-auto px-6 pb-16'>
+        <div className='container mx-auto px-4 sm:px-6 pb-12 sm:pb-16'>
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
-            <StatsCards
-              activeSessionsCount={activeSession.length}
-              recentSessionsCount={recentSession.length}
-            />
-            <ActiveSessions
-              sessions={activeSession}
-              isLoading={loadingActiveSessions}
-              isUserInSession={isUserInsession}
-            />
+            <div className='lg:col-span-1'>
+              <StatsCards
+                activeSessionsCount={activeSession.length}
+                recentSessionsCount={recentSession.length}
+              />
+            </div>
+            <div className='lg:col-span-2'>
+              <ActiveSessions
+                sessions={activeSession}
+                isLoading={loadingActiveSessions}
+                isUserInSession={isUserInsession}
+              />
+            </div>
           </div>
 
           <RecentSession

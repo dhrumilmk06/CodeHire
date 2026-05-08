@@ -4,6 +4,7 @@ import { PROBLEMS } from '../data/problems.js'
 import { Link } from 'react-router'
 import { ChevronRightIcon, Code2Icon, SearchIcon } from 'lucide-react'
 import { getDifficultyBadgeClass } from '../lib/utils.js'
+import { SkeletonCard } from '../components/ui/SkeletonCard'
 
 
 export const ProblemsPage = () => {
@@ -13,6 +14,13 @@ export const ProblemsPage = () => {
 
   const allProblems = Object.values(PROBLEMS)
   const categories = ['All', ...new Set(allProblems.map(p => p.category))]
+
+  const [isLoading, setIsLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 500)
+    return () => clearTimeout(timer)
+  }, [])
 
   const filteredProblems = allProblems.filter(problem => {
     const searchLower = searchQuery.toLowerCase()
@@ -128,7 +136,11 @@ export const ProblemsPage = () => {
 
             {/* PROBLEMS LIST */}
             <div className='space-y-4'>
-              {problems.length > 0 ? (
+              {isLoading ? (
+                [...Array(6)].map((_, i) => (
+                  <SkeletonCard key={i} variant="row" />
+                ))
+              ) : problems.length > 0 ? (
                 problems.map((problem) => (
                   <Link
                     key={problem.id}

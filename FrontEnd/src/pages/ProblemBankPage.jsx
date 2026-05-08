@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Plus, Pencil, Trash2, Search, Lock, X, Check, Upload } from "lucide-react";
 import { BookOpenIcon, CodeIcon, Loader2Icon } from "lucide-react";
+import { SkeletonCard } from "../components/ui/SkeletonCard";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMyProblems, useCreateProblem, useUpdateProblem, useDeleteProblem } from "../hooks/useCustomProblems";
 import { PROBLEMS } from "../data/problems";
@@ -604,8 +605,10 @@ export const ProblemBankPage = () => {
 
                 {/* Grid */}
                 {isLoading ? (
-                    <div className="flex items-center justify-center py-24">
-                        <Loader2Icon className="w-10 h-10 animate-spin text-primary" />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        {[...Array(6)].map((_, i) => (
+                            <SkeletonCard key={i} variant="problem" />
+                        ))}
                     </div>
                 ) : filtered.length === 0 ? (
                     <div className="text-center py-24 text-base-content/40">

@@ -1,5 +1,6 @@
 import { generateAIResponse } from '../lib/gemini.js'
 import { prisma } from '../lib/db.js'
+import { executeCode } from '../services/codeExecutionService.js'
 
 export const generateCodeHint = async (req, res, next) => {
 
@@ -103,7 +104,74 @@ export const generateCodeReview = async (req, res, next) => {
       })
     }
 
-    // Build Gemini prompt for structured review
+    // ── Phase 3: Run code against hidden test cases ──────────────────────────
+    // Defaults used when execution is skipped or fails gracefully
+    let executionSummary = 'Test execution not available'
+    let testCasesPassed  = null   // Will update session if we get a real result
+    let failedTestsInfo  = ''
+
+    try {
+      // 1. Fetch the session to get session.problem (CustomProblem ID)
+      const session = await prisma.session.findUnique({
+        where: { id: sessionId }
+      })
+
+      if (session) {
+        // 2. Determine which code to execute:
+        //    Prefer the live code stored in session.problemCodes[language],
+        //    fall back to candidateCode sent in the request body.
+        const resolvedLanguage = language || session.language || 'javascript'
+        const codeToRun =
+          (session.problemCodes && session.problemCodes[resolvedLanguage])
+          || candidateCode
+
+        // 3. Fetch CustomProblem to get hiddenTestCases
+        const customProblem = await prisma.customProblem.findUnique({
+          where: { id: session.problem }
+        })
+
+        const testCases = Array.isArray(customProblem?.hiddenTestCases)
+          ? customProblem.hiddenTestCases
+          : []
+
+        if (codeToRun && testCases.length > 0) {
+          // 4. Execute code against hidden test cases
+          const execResult = await executeCode(codeToRun, resolvedLanguage, testCases)
+
+          testCasesPassed = execResult.testCasesPassed   // "X/Y" string
+
+          const [passedStr, totalStr] = execResult.testCasesPassed.split('/')
+          const passed = parseInt(passedStr, 10) || 0
+          const total  = parseInt(totalStr,  10) || 0
+          const passRate = total > 0 ? Math.round((passed / total) * 100) : 0
+
+          // Build a human-readable summary for the Gemini prompt
+          executionSummary = `Passed ${passed} of ${total} hidden test cases (${passRate}% pass rate).`
+
+          if (execResult.failedTests?.length > 0) {
+            const failDetails = execResult.failedTests
+              .slice(0, 3) // Only show first 3 failures to keep prompt concise
+              .map(ft =>
+                `  - Test ${ft.index}: expected "${ft.expectedOutput}", got "${ft.actualOutput || ft.stderr || 'no output'}"`
+              )
+              .join('\n')
+            failedTestsInfo = `\nFailed test details (first ${Math.min(3, execResult.failedTests.length)}):\n${failDetails}`
+          }
+
+          if (execResult.status === 'TIMEOUT') {
+            executionSummary = `Code timed out during execution (exceeded 3s limit).`
+          } else if (execResult.status === 'RUNTIME_ERROR') {
+            executionSummary = `Runtime error during execution. ${passed} of ${total} tests passed before crash.`
+          }
+        }
+      }
+    } catch (execErr) {
+      // Non-fatal — log and continue with review without execution data
+      console.warn('[generateCodeReview] Code execution skipped:', execErr.message)
+    }
+    // ────────────────────────────────────────────────────────────────────────
+
+    // Build enriched Gemini prompt with real test execution results
     const prompt = `
 You are an expert technical interviewer and code reviewer.
 
@@ -115,19 +183,23 @@ Language: ${language || 'JavaScript'}
 Time Taken: ${timeTaken}
 Auto Score: ${score}
 
+Test Execution Results:
+${executionSummary}${failedTestsInfo}
+
 Candidate's Code:
 ${candidateCode}
 
-Provide a detailed structured code review.
+Provide a detailed structured code review. Factor in the test execution results when assessing correctness.
 Return ONLY a valid JSON object with NO extra text:
 
 {
-  "summary": "2-3 sentence overall assessment",
+  "summary": "2-3 sentence overall assessment mentioning test results",
   "timeComplexity": "O(?) with brief explanation",
   "spaceComplexity": "O(?) with brief explanation",
   "strengths": ["strength 1", "strength 2", "strength 3"],
   "improvements": ["improvement 1", "improvement 2"],
   "codeQuality": "Excellent/Good/Average/Poor",
+  "correctness": "brief comment on test pass rate and correctness",
   "problemSolvingApproach": "brief description of their approach",
   "overallRating": 8,
   "recommendation": "Strong Hire/Hire/Maybe/No Hire",
@@ -155,6 +227,7 @@ Return ONLY a valid JSON object with NO extra text:
         strengths: ['Code submitted successfully'],
         improvements: ['Manual review recommended'],
         codeQuality: 'Average',
+        correctness: executionSummary,
         problemSolvingApproach: 'Solution provided',
         overallRating: 5,
         recommendation: 'Maybe',
@@ -162,15 +235,28 @@ Return ONLY a valid JSON object with NO extra text:
       }
     }
 
-    // Save AI review to session
+    // Attach execution metadata to the stored review object
+    review.executionResult = {
+      testCasesPassed: testCasesPassed || '0/0',
+      summary: executionSummary
+    }
+
+    // Save AI review + testCasesPassed back to session
+    const sessionUpdateData = { ai_review: review }
+    if (testCasesPassed) {
+      sessionUpdateData.testCasesPassed = testCasesPassed
+    }
+
     await prisma.session.update({
       where: { id: sessionId },
-      data: { ai_review: review }
+      data: sessionUpdateData
     })
 
     return res.json({
       success: true,
-      review
+      review,
+      testCasesPassed: testCasesPassed || '0/0',
+      executionSummary
     })
 
   } catch (error) {

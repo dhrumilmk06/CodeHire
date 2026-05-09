@@ -19,6 +19,7 @@ import userRoutes from './routes/userRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
 import aiRoutes from './routes/aiRoutes.js'
 import reportRoutes from './routes/reportRoutes.js'
+import codeExecutionRoutes from './routes/codeExecutionRoutes.js'
 import { notFoundHandler, globalErrorHandler } from './middleware/errorHandler.js';
 
 
@@ -165,6 +166,7 @@ app.use('/api/users', userRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/ai', aiRoutes)
 app.use('/api/reports', reportRoutes)
+app.use('/api/code', codeExecutionRoutes)
 
 // Serve reports folder statically
 app.use('/reports', express.static('reports'))

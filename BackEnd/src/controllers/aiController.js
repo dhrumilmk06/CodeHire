@@ -1,6 +1,6 @@
 import { generateAIResponse } from '../lib/gemini.js'
 import { prisma } from '../lib/db.js'
-import { executeCode } from '../services/codeExecutionService.js'
+import { executeCode, validateCodeHintForSession } from '../services/codeExecutionService.js'
 
 export const generateCodeHint = async (req, res, next) => {
 
@@ -26,8 +26,8 @@ export const generateCodeHint = async (req, res, next) => {
       })
     }
 
-    // Build Gemini prompt
-    const prompt = `
+    // ── Step 1: Generate the text hint (unchanged behaviour) ──────────────
+    const textPrompt = `
 You are a helpful coding interview assistant.
 
 Problem: ${problemTitle}
@@ -49,33 +49,123 @@ Strict Rules:
 
 Hint:
 `
+    const hint = await generateAIResponse(textPrompt)
 
-    const hint = await generateAIResponse(prompt)
-
-    // Save hint to session database
+    // ── Step 2: Fetch session to get language + problem ID ─────────────
     const session = await prisma.session.findUnique({
       where: { id: sessionId }
     })
 
-    const existingHints = session.hints || []
+    const existingHints = session?.hints || []
+    const sessionLanguage = session?.language || 'javascript'
+
+    // ── Step 3: Generate a code scaffold hint via Gemini ──────────────
+    // This is a PARTIAL scaffold — not a full solution, just enough to
+    // guide the candidate toward the right approach.
+    let codeHint          = null
+    let codeHintValidation = null
+
+    try {
+      const scaffoldPrompt = `
+You are a helpful coding interview assistant.
+
+Problem: ${problemTitle}
+Description: ${problemDescription}
+Language: ${sessionLanguage}
+
+Candidate's current (incomplete/incorrect) code:
+${candidateCode}
+
+Generate a PARTIAL code scaffold that:
+- Shows the correct structure/approach without revealing the full solution
+- Has TODO comments for the parts the candidate still needs to fill in
+- Is runnable (syntactically valid)
+- Nudges the candidate toward the right algorithm
+
+Strict Rules:
+- Return ONLY the code, no explanation, no markdown backticks
+- Must be valid ${sessionLanguage} code
+- Leave the core logic as TODO for the candidate to implement
+- Should be shorter than the full solution
+
+Scaffold:
+`
+      const rawScaffold = await generateAIResponse(scaffoldPrompt)
+
+      // Strip any accidental markdown fences
+      const cleanScaffold = rawScaffold
+        .replace(/```[a-z]*/gi, '')
+        .replace(/```/g, '')
+        .trim()
+
+      if (cleanScaffold) {
+        // ── Step 4 (Phase 5 core): Validate the scaffold against hidden test cases
+        const validation = await validateCodeHintForSession(
+          sessionId,
+          cleanScaffold,
+          sessionLanguage
+        )
+
+        codeHint = cleanScaffold
+        codeHintValidation = {
+          isValid:         validation.isValid,
+          testCasesPassed: validation.testCasesPassed,
+          passRate:        validation.passRate,
+          status:          validation.status,
+        }
+
+        // Log outcome for visibility
+        console.log(
+          `[generateCodeHint] Scaffold validation for session ${sessionId}:`,
+          `${validation.testCasesPassed} passed, isValid=${validation.isValid}`
+        )
+      }
+    } catch (scaffoldErr) {
+      // Non-fatal — text hint still saves even if scaffold generation fails
+      console.warn('[generateCodeHint] Code scaffold generation/validation skipped:', scaffoldErr.message)
+    }
+
+    // ── Step 5: Build hint entry ───────────────────────────────────────
+    // Always store the text hint.
+    // Only attach codeHint if it passed validation (or validation was skipped
+    // due to no test cases / no code — status NO_TEST_CASES / NO_CODE).
+    const hintEntry = {
+      hint:      hint.trim(),
+      timestamp: new Date().toISOString(),
+      problemTitle,
+    }
+
+    const codeHintStorable =
+      codeHint &&
+      codeHintValidation &&
+      (
+        codeHintValidation.isValid ||
+        codeHintValidation.status === 'NO_TEST_CASES' ||
+        codeHintValidation.status === 'NO_CODE'
+      )
+
+    if (codeHintStorable) {
+      hintEntry.codeHint           = codeHint
+      hintEntry.codeHintValidation = codeHintValidation
+    }
 
     await prisma.session.update({
       where: { id: sessionId },
       data: {
         hints: [
           ...existingHints,
-          {
-            hint: hint.trim(),
-            timestamp: new Date().toISOString(),
-            problemTitle
-          }
+          hintEntry,
         ]
       }
     })
 
     return res.json({
-      success: true,
-      hint: hint.trim()
+      success:   true,
+      hint:      hint.trim(),
+      ...(codeHintStorable && {
+        codeHint,
+        codeHintValidation,
+      }),
     })
 
   } catch (error) {

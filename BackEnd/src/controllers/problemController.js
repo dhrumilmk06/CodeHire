@@ -1,6 +1,7 @@
 import { prisma } from "../lib/db.js";
 import { mapId } from "../lib/utils.js";
 import { getAuth } from "@clerk/express";
+import { executeCode } from "../services/codeExecutionService.js";
 
 /** GET /api/problems/find?title=... — find any custom problem by title (no ownership check, for session participants) */
 export const getProblemByTitle = async (req, res, next) => {
@@ -188,6 +189,69 @@ async function checkDuplicates(problems, ownerClerkId) {
     };
 }
 
+
+// ── Phase 4 helper ─────────────────────────────────────────────────────────
+
+/**
+ * Attempt to execute a problem's sample solution against its own
+ * hiddenTestCases via Piston.
+ *
+ * Returns: { passed: bool, testCasesPassed: "X/Y", status, error }
+ *
+ * We use the first language found in starterCode as the execution language
+ * if no explicit language is provided.
+ * Non-fatal — if Piston is unreachable we resolve as skipped (not rejected).
+ */
+async function validateSolutionCode(problem, language) {
+    const testCases = Array.isArray(problem.hiddenTestCases)
+        ? problem.hiddenTestCases
+        : [];
+
+    // No test cases → can't validate, treat as skipped (still allow import)
+    if (testCases.length === 0) {
+        return { passed: true, skipped: true, testCasesPassed: '0/0', status: 'NO_TEST_CASES' };
+    }
+
+    // Pick the language to use: explicit param → first starterCode key → 'javascript'
+    const resolvedLang =
+        language ||
+        (problem.starterCode && Object.keys(problem.starterCode)[0]) ||
+        'javascript';
+
+    // Pick the code to run: look for a sampleSolution field, then starterCode
+    const code =
+        (problem.sampleSolution && problem.sampleSolution[resolvedLang]) ||
+        (problem.starterCode    && problem.starterCode[resolvedLang])     ||
+        null;
+
+    if (!code) {
+        // No runnable code provided for this language — skip execution
+        return { passed: true, skipped: true, testCasesPassed: '0/0', status: 'NO_CODE' };
+    }
+
+    try {
+        const result = await executeCode(code, resolvedLang, testCases);
+
+        const [passedStr, totalStr] = result.testCasesPassed.split('/');
+        const passed = parseInt(passedStr, 10) || 0;
+        const total  = parseInt(totalStr,  10) || 0;
+
+        return {
+            passed:          passed === total && total > 0 && result.status === 'SUCCESS',
+            skipped:         false,
+            testCasesPassed: result.testCasesPassed,
+            passRate:        total > 0 ? passed / total : 0,
+            status:          result.status,
+            error:           result.error,
+            language:        resolvedLang,
+        };
+    } catch (err) {
+        // Piston unreachable — log and skip (don't block the import)
+        console.warn(`[bulkImport] Execution skipped for "${problem.title}":`, err.message);
+        return { passed: true, skipped: true, testCasesPassed: '0/0', status: 'EXECUTION_UNAVAILABLE' };
+    }
+}
+
 /** POST /api/problems/bulk — bulk import problems */
 export const bulkImportProblems = async (req, res, next) => {
 
@@ -239,9 +303,44 @@ export const bulkImportProblems = async (req, res, next) => {
             });
         }
 
+        // ── Phase 4: Execution validation ─────────────────────────────────
+        // Run each problem's sample solution against its own hiddenTestCases.
+        // Problems whose code fails execution are moved to executionRejected.
+        const executionRejected = [];
+        const executionPassed   = [];
+
+        // Run all validations concurrently for speed
+        const execResults = await Promise.all(
+            newProblems.map(p => validateSolutionCode(p))
+        );
+
+        newProblems.forEach((p, i) => {
+            const exec = execResults[i];
+            if (exec.skipped || exec.passed) {
+                executionPassed.push({ problem: p, exec });
+            } else {
+                executionRejected.push({
+                    title:           p.title,
+                    testCasesPassed: exec.testCasesPassed,
+                    passRate:        exec.passRate,
+                    status:          exec.status,
+                    language:        exec.language,
+                    error:           exec.error || `Solution failed: ${exec.testCasesPassed} test cases passed`,
+                });
+            }
+        });
+
+        if (executionPassed.length === 0) {
+            return res.status(400).json({
+                message: 'All problems failed solution validation against their hidden test cases',
+                executionRejected,
+            });
+        }
+        // ──────────────────────────────────────────────────────────────────
+
         // Save in a single transaction (all or nothing)
         await prisma.$transaction(async (tx) => {
-            const data = newProblems.map(p => {
+            const data = executionPassed.map(({ problem: p }) => {
                 const baseId = p.title.trim()
                     .toLowerCase()
                     .replace(/[^a-z0-9]+/g, "-")
@@ -275,12 +374,18 @@ export const bulkImportProblems = async (req, res, next) => {
 
         // Return detailed summary
         return res.status(200).json({
-            created:           newProblems.length,
-            skipped:           databaseDuplicates.length,
-            skippedInvalid:    invalidProblems.length,
+            created:            executionPassed.length,
+            skipped:            databaseDuplicates.length,
+            skippedInvalid:     invalidProblems.length,
+            executionRejected:  executionRejected.length,
+            executionRejectedDetails: executionRejected,
             internalDuplicates,
-            duplicates:        databaseDuplicates,
-            message:           `Successfully imported ${newProblems.length} problem${newProblems.length !== 1 ? 's' : ''}`
+            duplicates:         databaseDuplicates,
+            message:            `Successfully imported ${executionPassed.length} problem${executionPassed.length !== 1 ? 's' : ''}${
+                executionRejected.length > 0
+                    ? `. ${executionRejected.length} rejected (solution failed test cases).`
+                    : '.'
+            }`,
         });
 
     } catch (err) {

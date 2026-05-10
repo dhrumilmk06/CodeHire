@@ -17,6 +17,7 @@ import { useCollabEditor } from '../hooks/useCollabEditor';
 import { LiveNotesPanel } from '../components/LiveNotesPanel';
 import { TimeTracker } from '../components/TimeTracker';
 import { AutoScorePanel } from '../components/AutoScorePanel';
+import { AgentStatusPanel } from '../components/interview/AgentStatusPanel';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '../lib/axios';
 import { sessionApi } from '../api/sessions';
@@ -33,6 +34,7 @@ export const SessionPage = () => {
   const [autoScoreResults, setAutoScoreResults] = useState(null);
   const [isScoring, setIsScoring] = useState(false);
   const [showEndSessionModal, setShowEndSessionModal] = useState(false);
+  const [agentActive, setAgentActive] = useState(false);
 
   // AI Hint State
   const [isLoadingHint, setIsLoadingHint] = useState(false);
@@ -43,6 +45,8 @@ export const SessionPage = () => {
   const remoteTypingTimer = useRef(null);
   const lastProblemRef = useRef(null);
   const [remoteUser, setRemoteUser] = useState(null);
+  const codeSaveTimerRef = useRef(null); // debounce timer for DB persistence
+  const broadcastTimerRef = useRef(null); // debounce timer for socket broadcast
 
   const { data: sessionData, isLoading: loadingSession, refetch } = useSessionById(id);
 
@@ -186,14 +190,26 @@ export const SessionPage = () => {
       }
     };
 
+    const handleAgentStarted = (data) => {
+      if (data.sessionId === id) setAgentActive(true);
+    };
+
+    const handleAgentStopped = (data) => {
+      if (data.sessionId === id) setAgentActive(false);
+    };
+
     socket.on('autoScoreResults', handleAutoScore);
     socket.on('scoring-started', handleScoringStarted);
     socket.on('receive-hint', handleReceiveHint);
+    socket.on('agent:started', handleAgentStarted);
+    socket.on('agent:stopped', handleAgentStopped);
 
     return () => {
       socket.off('autoScoreResults', handleAutoScore);
       socket.off('scoring-started', handleScoringStarted);
       socket.off('receive-hint', handleReceiveHint);
+      socket.off('agent:started', handleAgentStarted);
+      socket.off('agent:stopped', handleAgentStopped);
     };
   }, [socket, id, isHost]);
 
@@ -201,6 +217,18 @@ export const SessionPage = () => {
   useEffect(() => {
     setSocketConnected(!!(roomId && user?.id));
   }, [roomId, user?.id]);
+
+  // Initial fetch for agentActive state for the header badge
+  useEffect(() => {
+    if (!id) return;
+    axiosInstance.get(`/agent/status/${id}`)
+      .then((res) => {
+        if (res.data.success) {
+          setAgentActive(res.data.agentActive);
+        }
+      })
+      .catch((err) => console.error("Failed to fetch initial agent status", err));
+  }, [id]);
   // ────────────────────────────────────────────────────────────────────────
 
   // Auto-join session if user is not already a participant and not the host
@@ -247,8 +275,24 @@ export const SessionPage = () => {
 
   const handleCodeChange = (value) => {
     setCode(value);
-    // Broadcast every keystroke to partner
-    emitCodeChange(value, selectedLanguage);
+    
+    // 1. Debounce broadcast to partner (100ms) to reduce socket traffic & prevent proxy errors
+    clearTimeout(broadcastTimerRef.current);
+    broadcastTimerRef.current = setTimeout(() => {
+      emitCodeChange(value, selectedLanguage);
+    }, 100);
+
+    // 2. Debounce-persist code to DB every 3s so the AI agent can read it
+    if (session?.problem && id) {
+      clearTimeout(codeSaveTimerRef.current);
+      codeSaveTimerRef.current = setTimeout(async () => {
+        try {
+          await sessionApi.saveProblemCode(id, session.problem, value);
+        } catch (err) {
+          console.warn('[Session] Failed to auto-save code to DB:', err?.message);
+        }
+      }, 3000);
+    }
   }
 
   const handleRunCode = async () => {
@@ -396,6 +440,9 @@ export const SessionPage = () => {
   }
 
   const confirmEndSession = () => {
+    if (isHost && socket) {
+      socket.emit('agent:stop', { sessionId: id });
+    }
     endSessionMutation.mutate(id, { onSuccess: () => navigate('/dashboard') });
     setShowEndSessionModal(false);
   };
@@ -461,6 +508,13 @@ export const SessionPage = () => {
                           <div className="badge badge-outline border-secondary/40 text-secondary font-black uppercase tracking-widest text-[10px] py-3 px-4">
                             Candidate Mode
                           </div>
+                        )}
+                        
+                        {isHost && agentActive && (
+                          <span className="flex items-center gap-1 text-xs text-green-500 font-bold ml-2">
+                            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                            Agent Active
+                          </span>
                         )}
                         
                         {isHost && session && session.status === "active" && (
@@ -683,12 +737,20 @@ export const SessionPage = () => {
                   </div>
                 </div>
               ) : (
-                <div className='h-full'>
-                  <StreamVideo client={streamClient}>
-                    <StreamCall call={call}>
-                      <VideoCallUI chatClient={chatClient} channel={channel} />
-                    </StreamCall>
-                  </StreamVideo>
+                <div className='h-full flex flex-col gap-4'>
+                  <div className='flex-1 min-h-[300px]'>
+                    <StreamVideo client={streamClient}>
+                      <StreamCall call={call}>
+                        <VideoCallUI chatClient={chatClient} channel={channel} />
+                      </StreamCall>
+                    </StreamVideo>
+                  </div>
+                  
+                  {isHost && (
+                    <div className='shrink-0 pb-4'>
+                      <AgentStatusPanel sessionId={id} roomId={roomId} isHost={isHost} socket={socket} />
+                    </div>
+                  )}
                 </div>
               )}
             </div>

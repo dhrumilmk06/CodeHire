@@ -384,6 +384,7 @@ export async function getNotes(req, res, next) {
             timeTaken: session.timeTaken,
             testCasesPassed: session.testCasesPassed,
             timings: session.timings,
+            agentSummary: session.agentSummary,
         });
     } catch (error) {
         next(error);
@@ -591,10 +592,15 @@ export async function runCode(req, res, next) {
         });
 
         const normalResult = await normalResponse.json();
-        const output = normalResult.run.output || "";
+        const output = normalResult.run.stdout || normalResult.run.output || "";
         const stderr = normalResult.run.stderr || "";
 
-        res.json({ success: true, output, stderr });
+        res.json({ 
+            success: normalResult.run.code === 0, 
+            output, 
+            error: stderr, // Map stderr to error for frontend consistency
+            stderr 
+        });
 
         // Broadcast "Scoring Started" to the room so Host/Participant see the loader
         const session = await prisma.session.findUnique({ where: { id: sessionId } });

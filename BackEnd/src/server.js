@@ -20,6 +20,7 @@ import adminRoutes from './routes/adminRoutes.js'
 import aiRoutes from './routes/aiRoutes.js'
 import reportRoutes from './routes/reportRoutes.js'
 import codeExecutionRoutes from './routes/codeExecutionRoutes.js'
+import agentRoutes from './routes/agentRoutes.js'
 import { notFoundHandler, globalErrorHandler } from './middleware/errorHandler.js';
 
 
@@ -115,6 +116,37 @@ io.on("connection", (socket) => {
         }
     });
 
+    // ── Agent Orchestration Events ──────────────────────────────────────────
+
+    socket.on('host:join-room', ({ sessionId }) => {
+        socket.join(`host:${sessionId}`);
+        console.log(`[Socket] Host joined room host:${sessionId}`);
+    });
+
+    socket.on('host:leave-room', ({ sessionId }) => {
+        socket.leave(`host:${sessionId}`);
+    });
+
+    socket.on('agent:start', async ({ sessionId }) => {
+        try {
+            const { startAgent } = await import('./services/agentService.js');
+            await startAgent(sessionId, io);
+            socket.emit('agent:started', { sessionId, message: 'Agent is now monitoring this session' });
+        } catch (error) {
+            console.error('[Socket] agent:start error:', error);
+        }
+    });
+
+    socket.on('agent:stop', async ({ sessionId }) => {
+        try {
+            const { stopAgent } = await import('./services/agentService.js');
+            await stopAgent(sessionId, io);
+            socket.emit('agent:stopped', { sessionId, message: 'Agent has stopped' });
+        } catch (error) {
+            console.error('[Socket] agent:stop error:', error);
+        }
+    });
+
     socket.on("disconnect", () => {
         // Room cleanup is automatic via socket.io
     });
@@ -142,6 +174,16 @@ app.use(cors({
     },
     credentials: true
 }))
+// Sanitize Authorization header to prevent Clerk JWT parsing crashes (strips quotes, backslashes, and 'null' strings)
+app.use((req, res, next) => {
+    if (req.headers.authorization) {
+        req.headers.authorization = req.headers.authorization
+            .replace(/['"\\]/g, '')
+            .replace(/^Bearer (null|undefined)$/i, '');
+    }
+    next();
+});
+
 app.use(clerkMiddleware())
 
 // Attach socket.io to req for controllers
@@ -167,12 +209,20 @@ app.use('/api/admin', adminRoutes)
 app.use('/api/ai', aiRoutes)
 app.use('/api/reports', reportRoutes)
 app.use('/api/code', codeExecutionRoutes)
+app.use('/api/agent', agentRoutes)
 
 // Serve reports folder statically
 app.use('/reports', express.static('reports'))
 
 app.use(notFoundHandler);
-app.use(globalErrorHandler);
+app.use((err, req, res, next) => {
+    console.error(`[${new Date().toISOString()}] ERROR ${err.status || 500} - ${req.method} ${req.url} - ${err.message}`);
+    if (err.stack) console.error(err.stack);
+    res.status(err.status || 500).json({
+        success: false,
+        error: err.message || 'Internal Server Error'
+    });
+});
 
 
 // Deployment: serve built frontend

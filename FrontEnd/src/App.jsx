@@ -19,6 +19,7 @@ import { AdminRoute, HostRoute, ParticipantRoute, AuthenticatedRoute } from './c
 import { AdminPanelPage } from './pages/AdminPanelPage.jsx';
 import { MyInterviewsPage } from './pages/MyInterviewsPage.jsx';
 import { SelectRolePage } from './pages/SelectRolePage.jsx';
+import SessionLayout from './layouts/SessionLayout.jsx';
 
 function LandingRedirect() {
   const { user, isLoaded } = useUser();
@@ -89,7 +90,7 @@ function App() {
       {isSignedIn && <Navbar />}
 
       <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
+        <Routes location={location}>
 
           {/* Public / Landing */}
           <Route path='/' element={
@@ -164,19 +165,30 @@ function App() {
             </ParticipantRoute>
           } />
 
-          {/* Shared Routes (Interview Session) */}
-          <Route path='/session/:id' element={
-            <PageTransition>
-              {isSignedIn ? <SessionPage /> : <Navigate to={'/'} />}
-            </PageTransition>
-          } />
-
-          {/* Whiteboard Route */}
-          <Route path='/interview/:sessionId/whiteboard' element={
-            <PageTransition>
-              {isSignedIn ? <WhiteboardPage /> : <Navigate to={'/'} />}
-            </PageTransition>
-          } />
+          {/* Shared Routes (Interview Session) — wrapped in SessionLayout to keep socket alive */}
+          <Route
+            path='/session/:sessionId'
+            element={isSignedIn ? <SessionLayout /> : <Navigate to='/' />}
+          >
+            {/* Index: the coding page */}
+            <Route
+              index
+              element={
+                <PageTransition>
+                  <SessionPage />
+                </PageTransition>
+              }
+            />
+            {/* Whiteboard page (same session context, socket stays alive) */}
+            <Route
+              path='whiteboard'
+              element={
+                <PageTransition>
+                  <WhiteboardPage />
+                </PageTransition>
+              }
+            />
+          </Route>
 
         </Routes>
       </AnimatePresence>

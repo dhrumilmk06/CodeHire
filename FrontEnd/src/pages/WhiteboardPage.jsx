@@ -4,12 +4,14 @@ import { useUser } from '@clerk/clerk-react';
 import { Excalidraw, exportToBlob } from '@excalidraw/excalidraw';
 import '@excalidraw/excalidraw/index.css';
 import { useSessionById } from '../hooks/useSessions';
-import { useCollabEditor } from '../hooks/useCollabEditor';
+import { useSessionSocket } from '../context/SessionContext';
 import { whiteboardApi } from '../api/whiteboard';
 import { WhiteboardSnapshots } from '../components/whiteboard/WhiteboardSnapshots';
 import { AIWhiteboardReview } from '../components/whiteboard/AIWhiteboardReview';
 import { toast } from 'react-hot-toast';
 import { ArrowLeftIcon, Loader2Icon, MonitorIcon } from 'lucide-react';
+import { useOutletContext } from 'react-router';
+import { VideoCallUI } from '../components/VideoCallUI';
 
 export const WhiteboardPage = () => {
     const { sessionId } = useParams();
@@ -32,13 +34,13 @@ export const WhiteboardPage = () => {
     const userRole = isHost ? 'host' : 'participant';
     const roomId = session?.callId;
 
-    // Connect to the same socket room to listen for navigation events
-    const { socket } = useCollabEditor({
-        roomId,
-        userId: user?.id,
-        role: userRole,
-    });
+    // Get the shared socket from SessionContext — no new connection created here
+    const { socket } = useSessionSocket();
 
+    // Get video call context from SessionLayout
+    const { chatClient, channel, isInitializingCall } = useOutletContext();
+
+    // Listen for host-initiated "back to code" navigation
     useEffect(() => {
         if (!socket) return;
         
@@ -150,68 +152,51 @@ export const WhiteboardPage = () => {
         );
     }
 
-    if (!session) {
-        return (
-            <div className="h-screen bg-gray-950 flex items-center justify-center text-white">
-                Session not found.
-            </div>
-        );
-    }
-
     return (
-        <div className="h-screen bg-gray-950 flex flex-col overflow-hidden">
-            {/* ── Top Bar ─────────────────────────────────────────────────── */}
-            <div className="flex items-center justify-between px-4 py-2.5 bg-gray-900 border-b border-gray-700 shrink-0">
-                {/* Left: Session info */}
-                <div className="flex items-center gap-3 min-w-0">
-                    <MonitorIcon className="w-5 h-5 text-violet-400 shrink-0" />
-                    <div className="min-w-0">
-                        <h1 className="text-white font-bold text-sm truncate">
-                            System Design Whiteboard
-                        </h1>
-                        <p className="text-gray-400 text-xs truncate">
-                            {session.host?.name}
-                            {session.participant ? ` · ${session.participant.name}` : ''}
-                            <span className="ml-2 text-violet-400 font-bold uppercase text-[10px]">
-                                {userRole}
-                            </span>
-                        </p>
-                    </div>
-                </div>
-
-                {/* Right: Actions */}
-                <div className="flex items-center gap-2 shrink-0">
-                    {isHost && (
-                        <>
-                            <button
-                                onClick={() => handleSaveSnapshot({ label: 'Quick Save' })}
-                                disabled={isSaving || !excalidrawAPI}
-                                className="btn btn-sm bg-violet-600 hover:bg-violet-500 border-none text-white gap-2 rounded-lg font-bold disabled:opacity-50"
-                                id="whiteboard-save-snapshot-btn"
-                            >
-                                {isSaving
-                                    ? <Loader2Icon className="w-4 h-4 animate-spin" />
-                                    : '📸'
-                                }
-                                Save Snapshot
-                            </button>
-
-                            <button
-                                onClick={() => {
-                                    if (socket && isHost) {
-                                        socket.emit('navigate-code', { roomId, sessionId });
-                                    }
-                                    navigate(`/session/${sessionId}`);
-                                }}
-                                className="btn btn-sm bg-gray-700 hover:bg-gray-600 border-none text-gray-200 gap-2 rounded-lg font-bold"
-                                id="whiteboard-back-btn"
-                            >
-                                <ArrowLeftIcon className="w-4 h-4" />
-                                Back to Code
-                            </button>
-                        </>
+        <div className="h-screen bg-gray-950 flex flex-col">
+            {/* ── Top Bar ──────────────────────────────────────────────── */}
+            <div className="h-14 bg-gray-900 border-b border-gray-700 flex items-center justify-between px-4 shrink-0">
+                <div className="flex items-center gap-3">
+                    <MonitorIcon className="w-5 h-5 text-violet-400" />
+                    <span className="font-bold text-white text-sm">
+                        System Design Whiteboard
+                    </span>
+                    {session?.problem && (
+                        <span className="text-gray-500 text-xs">— {session.problem}</span>
                     )}
                 </div>
+
+                {isHost && (
+                    <>
+                        <button
+                            onClick={handleSaveSnapshot}
+                            disabled={isSaving}
+                            className="btn btn-sm bg-violet-600 hover:bg-violet-500 border-none text-white gap-2 font-bold"
+                            id="save-snapshot-btn"
+                        >
+                            {isSaving ? (
+                                <Loader2Icon className="w-4 h-4 animate-spin" />
+                            ) : (
+                                '📸'
+                            )}
+                            Save Snapshot
+                        </button>
+
+                        <button
+                            onClick={() => {
+                                if (socket) {
+                                    socket.emit('navigate-code', { roomId, sessionId });
+                                }
+                                navigate(`/session/${sessionId}`);
+                            }}
+                            className="btn btn-sm btn-ghost text-gray-300 hover:text-white gap-2"
+                            id="back-to-code-btn"
+                        >
+                            <ArrowLeftIcon className="w-4 h-4" />
+                            Back to Code
+                        </button>
+                    </>
+                )}
             </div>
 
             {/* ── Main Content: Canvas + Sidebar ──────────────────────────── */}
@@ -245,8 +230,23 @@ export const WhiteboardPage = () => {
                     />
                 </div>
 
-                {/* Snapshots Sidebar + AI Review */}
-                <div className="w-72 min-w-[288px] flex flex-col border-l border-gray-700 overflow-y-auto">
+                {/* Snapshots Sidebar + AI Review + Video Call */}
+                <div className="w-80 min-w-[320px] flex flex-col border-l border-gray-700 overflow-y-auto bg-base-200">
+                    {/* Video Call explicitly rendered in sidebar so users can see each other */}
+                    <div className="p-4 border-b border-gray-700 h-64 shrink-0">
+                         {isInitializingCall ? (
+                            <div className="h-full flex items-center justify-center">
+                                <Loader2Icon className="w-8 h-8 animate-spin text-primary" />
+                            </div>
+                        ) : !chatClient ? (
+                            <div className="h-full flex items-center justify-center text-gray-500">
+                                Video call inactive
+                            </div>
+                        ) : (
+                            <VideoCallUI chatClient={chatClient} channel={channel} />
+                        )}
+                    </div>
+
                     <WhiteboardSnapshots
                         ref={snapshotsRef}
                         sessionId={sessionId}

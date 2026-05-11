@@ -12,6 +12,7 @@ import LandingPage from './pages/LandingPage.jsx';
 import { ProblemPage } from './pages/ProblemPage.jsx';
 import { ProblemsPage } from './pages/ProblemsPage';
 import { SessionPage } from './pages/SessionPage.jsx';
+import { WhiteboardPage } from './pages/WhiteboardPage.jsx';
 import { ProblemBankPage } from './pages/ProblemBankPage.jsx';
 
 import { AdminRoute, HostRoute, ParticipantRoute, AuthenticatedRoute } from './components/RoleRoutes.jsx';
@@ -167,6 +168,13 @@ function App() {
           <Route path='/session/:id' element={
             <PageTransition>
               {isSignedIn ? <SessionPage /> : <Navigate to={'/'} />}
+            </PageTransition>
+          } />
+
+          {/* Whiteboard Route */}
+          <Route path='/interview/:sessionId/whiteboard' element={
+            <PageTransition>
+              {isSignedIn ? <WhiteboardPage /> : <Navigate to={'/'} />}
             </PageTransition>
           } />
 

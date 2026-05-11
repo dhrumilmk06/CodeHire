@@ -10,8 +10,9 @@ import rateLimit from 'express-rate-limit';
 export async function createSession(req, res, next) {
 
     try {
-        let { problems, problemIds, hostId } = req.body
+        let { problems, problemIds, hostId, sessionType } = req.body
         const clerkId = req.user?.clerkId || hostId; // Use clerkId from auth or hostId from body (Postman)
+        const resolvedSessionType = ['coding', 'system-design'].includes(sessionType) ? sessionType : 'coding';
 
         // If 'problemIds' are provided instead of full 'problems' objects (as suggested in some READMEs)
         if (!problems && problemIds) {
@@ -70,7 +71,8 @@ export async function createSession(req, res, next) {
                 session_code: sessionCode,
                 callId,
                 timings: [],
-                problemCodes: {}
+                problemCodes: {},
+                sessionType: resolvedSessionType
             },
             include: {
                 host: true

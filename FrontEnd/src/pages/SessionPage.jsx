@@ -7,7 +7,7 @@ import { executeCode } from '../lib/piston';
 
 import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels';
 import { getDifficultyBadgeClass } from "../lib/utils";
-import { Loader2Icon, LogOutIcon, PhoneOffIcon } from "lucide-react";
+import { Loader2Icon, LogOutIcon, PhoneOffIcon, MonitorIcon } from "lucide-react";
 import { CodeEditorPanel } from '../components/CodeEditorPanel';
 import { OutputPanel } from '../components/OutputPanel';
 import { useStreamClient } from '../hooks/useStreamClient'
@@ -542,6 +542,18 @@ export const SessionPage = () => {
                               <LogOutIcon className="w-4 h-4" />
                             )}
                             End Session
+                          </button>
+                        )}
+
+                        {/* Whiteboard button — system-design sessions only */}
+                        {session?.sessionType === 'system-design' && (
+                          <button
+                            onClick={() => navigate(`/interview/${id}/whiteboard`)}
+                            className="btn btn-sm bg-violet-600 hover:bg-violet-500 border-none text-white gap-2 font-bold"
+                            id="open-whiteboard-btn"
+                          >
+                            <MonitorIcon className="w-4 h-4" />
+                            Open Whiteboard →
                           </button>
                         )}
                         {session?.status === "completed" && (

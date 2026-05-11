@@ -9,7 +9,8 @@ import {
   Search,
   X,
   GripVertical,
-  CheckCircle2
+  CheckCircle2,
+  MonitorIcon
 } from "lucide-react";
 import { Reorder, AnimatePresence, motion } from "framer-motion";
 import { getDifficultyBadgeClass, cn } from "../lib/utils";
@@ -78,6 +79,47 @@ export const CreateSessionModel = ({
         </div>
 
         <div className="p-6 space-y-8">
+          {/* SESSION TYPE TOGGLE */}
+          <div className="space-y-2">
+            <label className="label py-0">
+              <span className="label-text font-bold text-base">Interview Type</span>
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                id="session-type-coding"
+                type="button"
+                onClick={() => setRoomConfig(prev => ({ ...prev, sessionType: 'coding' }))}
+                className={`flex items-center gap-3 p-3 rounded-xl border-2 transition-all ${
+                  (roomConfig.sessionType || 'coding') === 'coding'
+                    ? 'border-primary bg-primary/10 text-primary'
+                    : 'border-base-300 bg-base-200/50 text-base-content/60 hover:border-base-400'
+                }`}
+              >
+                <Code2Icon className="w-5 h-5 shrink-0" />
+                <div className="text-left">
+                  <p className="font-bold text-sm">Coding</p>
+                  <p className="text-[10px] opacity-60">Algorithm & DS</p>
+                </div>
+              </button>
+              <button
+                id="session-type-system-design"
+                type="button"
+                onClick={() => setRoomConfig(prev => ({ ...prev, sessionType: 'system-design' }))}
+                className={`flex items-center gap-3 p-3 rounded-xl border-2 transition-all ${
+                  roomConfig.sessionType === 'system-design'
+                    ? 'border-violet-500 bg-violet-500/10 text-violet-400'
+                    : 'border-base-300 bg-base-200/50 text-base-content/60 hover:border-base-400'
+                }`}
+              >
+                <MonitorIcon className="w-5 h-5 shrink-0" />
+                <div className="text-left">
+                  <p className="font-bold text-sm">System Design</p>
+                  <p className="text-[10px] opacity-60">Whiteboard mode</p>
+                </div>
+              </button>
+            </div>
+          </div>
+
           {/* MULTI-SELECT PICKER */}
           <div className="space-y-4">
             <label className="label py-0">

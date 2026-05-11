@@ -26,6 +26,7 @@ export const DashBoardPage = () => {
     createSessionMutation.mutate(
       {
         problems: roomConfig.problems,
+        sessionType: roomConfig.sessionType || 'coding',
       },
       {
         onSuccess: (data) => {

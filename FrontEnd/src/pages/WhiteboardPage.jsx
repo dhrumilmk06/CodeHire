@@ -1,11 +1,13 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { useUser } from '@clerk/clerk-react';
-import { Excalidraw } from '@excalidraw/excalidraw';
+import { Excalidraw, exportToBlob } from '@excalidraw/excalidraw';
 import '@excalidraw/excalidraw/index.css';
 import { useSessionById } from '../hooks/useSessions';
+import { useCollabEditor } from '../hooks/useCollabEditor';
 import { whiteboardApi } from '../api/whiteboard';
 import { WhiteboardSnapshots } from '../components/whiteboard/WhiteboardSnapshots';
+import { AIWhiteboardReview } from '../components/whiteboard/AIWhiteboardReview';
 import { toast } from 'react-hot-toast';
 import { ArrowLeftIcon, Loader2Icon, MonitorIcon } from 'lucide-react';
 
@@ -16,13 +18,57 @@ export const WhiteboardPage = () => {
 
     const [excalidrawAPI, setExcalidrawAPI] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
-    const snapshotsRef = useRef(null); // ref to trigger list refresh
+    const [lastSnapshotId, setLastSnapshotId] = useState(null);
+    const snapshotsRef = useRef(null);
+    
+    // Real-time sync refs
+    const broadcastTimerRef = useRef(null);
+    const isRemoteUpdateRef = useRef(false);
 
     const { data: sessionData, isLoading: loadingSession } = useSessionById(sessionId);
     const session = sessionData?.session;
 
     const isHost = session?.host?.clerkId === user?.id;
     const userRole = isHost ? 'host' : 'participant';
+    const roomId = session?.callId;
+
+    // Connect to the same socket room to listen for navigation events
+    const { socket } = useCollabEditor({
+        roomId,
+        userId: user?.id,
+        role: userRole,
+    });
+
+    useEffect(() => {
+        if (!socket) return;
+        
+        const handleNavigateCode = (data) => {
+            if (data.sessionId === sessionId) {
+                navigate(`/session/${sessionId}`);
+            }
+        };
+
+        socket.on('navigate-code', handleNavigateCode);
+        return () => {
+            socket.off('navigate-code', handleNavigateCode);
+        };
+    }, [socket, sessionId, navigate]);
+
+    // ── Real-time Whiteboard Sync ──────────────────────────────────────────
+    useEffect(() => {
+        if (!socket || !excalidrawAPI) return;
+
+        const handleWhiteboardUpdate = ({ elements }) => {
+            // Flag to prevent the upcoming onChange from broadcasting this back
+            isRemoteUpdateRef.current = true;
+            excalidrawAPI.updateScene({ elements });
+        };
+
+        socket.on('whiteboard-update', handleWhiteboardUpdate);
+        return () => {
+            socket.off('whiteboard-update', handleWhiteboardUpdate);
+        };
+    }, [socket, excalidrawAPI]);
 
     // ── Snapshot Save Logic ────────────────────────────────────────────────
     // Called by both the top bar button and the sidebar's "Save Current"
@@ -34,9 +80,15 @@ export const WhiteboardPage = () => {
         setIsSaving(true);
         try {
             // 1. Export canvas to PNG blob
-            const blob = await excalidrawAPI.exportToBlob({
+            const elements = excalidrawAPI.getSceneElements();
+            const appState = excalidrawAPI.getAppState();
+            const files = excalidrawAPI.getFiles();
+            
+            const blob = await exportToBlob({
+                elements,
+                appState,
+                files,
                 mimeType: 'image/png',
-                quality: 0.85,
                 exportPadding: 16,
             });
 
@@ -49,7 +101,6 @@ export const WhiteboardPage = () => {
             });
 
             // 3. Capture scene elements for later restore
-            const elements = excalidrawAPI.getSceneElements();
             const excalidrawData = JSON.stringify(elements);
 
             // 4. POST to backend
@@ -60,7 +111,9 @@ export const WhiteboardPage = () => {
             });
 
             toast.success(`Snapshot saved: ${label}`);
-            return res.data; // Return so sidebar can refresh
+            // Track last saved snapshot for AI review
+            if (res?.data?.id) setLastSnapshotId(res.data.id);
+            return res.data;
         } catch (err) {
             console.error('[Whiteboard] Save snapshot failed:', err);
             toast.error('Failed to save snapshot');
@@ -128,27 +181,36 @@ export const WhiteboardPage = () => {
 
                 {/* Right: Actions */}
                 <div className="flex items-center gap-2 shrink-0">
-                    <button
-                        onClick={() => handleSaveSnapshot({ label: 'Quick Save' })}
-                        disabled={isSaving || !excalidrawAPI}
-                        className="btn btn-sm bg-violet-600 hover:bg-violet-500 border-none text-white gap-2 rounded-lg font-bold disabled:opacity-50"
-                        id="whiteboard-save-snapshot-btn"
-                    >
-                        {isSaving
-                            ? <Loader2Icon className="w-4 h-4 animate-spin" />
-                            : '📸'
-                        }
-                        Save Snapshot
-                    </button>
+                    {isHost && (
+                        <>
+                            <button
+                                onClick={() => handleSaveSnapshot({ label: 'Quick Save' })}
+                                disabled={isSaving || !excalidrawAPI}
+                                className="btn btn-sm bg-violet-600 hover:bg-violet-500 border-none text-white gap-2 rounded-lg font-bold disabled:opacity-50"
+                                id="whiteboard-save-snapshot-btn"
+                            >
+                                {isSaving
+                                    ? <Loader2Icon className="w-4 h-4 animate-spin" />
+                                    : '📸'
+                                }
+                                Save Snapshot
+                            </button>
 
-                    <button
-                        onClick={() => navigate(`/session/${sessionId}`)}
-                        className="btn btn-sm bg-gray-700 hover:bg-gray-600 border-none text-gray-200 gap-2 rounded-lg font-bold"
-                        id="whiteboard-back-btn"
-                    >
-                        <ArrowLeftIcon className="w-4 h-4" />
-                        Back to Code
-                    </button>
+                            <button
+                                onClick={() => {
+                                    if (socket && isHost) {
+                                        socket.emit('navigate-code', { roomId, sessionId });
+                                    }
+                                    navigate(`/session/${sessionId}`);
+                                }}
+                                className="btn btn-sm bg-gray-700 hover:bg-gray-600 border-none text-gray-200 gap-2 rounded-lg font-bold"
+                                id="whiteboard-back-btn"
+                            >
+                                <ArrowLeftIcon className="w-4 h-4" />
+                                Back to Code
+                            </button>
+                        </>
+                    )}
                 </div>
             </div>
 
@@ -165,16 +227,42 @@ export const WhiteboardPage = () => {
                             },
                         }}
                         theme="dark"
+                        onChange={(elements) => {
+                            if (isRemoteUpdateRef.current) {
+                                // Ignore this change since it came from the socket
+                                isRemoteUpdateRef.current = false;
+                                return;
+                            }
+                            
+                            // Local change -> Broadcast to partner
+                            clearTimeout(broadcastTimerRef.current);
+                            broadcastTimerRef.current = setTimeout(() => {
+                                if (socket) {
+                                    socket.emit('whiteboard-update', { roomId, elements });
+                                }
+                            }, 100);
+                        }}
                     />
                 </div>
 
-                {/* Snapshots Sidebar */}
-                <WhiteboardSnapshots
-                    ref={snapshotsRef}
-                    sessionId={sessionId}
-                    onRestore={handleSnapshotAction}
-                    userRole={userRole}
-                />
+                {/* Snapshots Sidebar + AI Review */}
+                <div className="w-72 min-w-[288px] flex flex-col border-l border-gray-700 overflow-y-auto">
+                    <WhiteboardSnapshots
+                        ref={snapshotsRef}
+                        sessionId={sessionId}
+                        onRestore={handleSnapshotAction}
+                        userRole={userRole}
+                    />
+
+                    {/* AI Review — host only, appears once a snapshot exists */}
+                    {isHost && (
+                        <AIWhiteboardReview
+                            snapshotId={lastSnapshotId}
+                            sessionId={sessionId}
+                            designContext={session?.problem || 'System design interview'}
+                        />
+                    )}
+                </div>
             </div>
         </div>
     );

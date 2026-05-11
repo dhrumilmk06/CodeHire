@@ -22,6 +22,7 @@ import reportRoutes from './routes/reportRoutes.js'
 import codeExecutionRoutes from './routes/codeExecutionRoutes.js'
 import agentRoutes from './routes/agentRoutes.js'
 import whiteboardRoutes from './routes/whiteboardRoutes.js'
+import aiWhiteboardRoutes from './routes/aiWhiteboardRoutes.js'
 import { notFoundHandler, globalErrorHandler } from './middleware/errorHandler.js';
 
 
@@ -87,6 +88,20 @@ io.on("connection", (socket) => {
     // Broadcast problem switch
     socket.on("problem-change", ({ roomId, problemTitle, difficulty }) => {
         socket.to(roomId).emit("problem-change", { problemTitle, difficulty });
+    });
+
+    // Broadcast navigation (Whiteboard <-> Code)
+    socket.on("navigate-whiteboard", ({ roomId, sessionId }) => {
+        socket.to(roomId).emit("navigate-whiteboard", { sessionId });
+    });
+
+    socket.on("navigate-code", ({ roomId, sessionId }) => {
+        socket.to(roomId).emit("navigate-code", { sessionId });
+    });
+
+    // Broadcast real-time whiteboard drawing
+    socket.on("whiteboard-update", ({ roomId, elements }) => {
+        socket.to(roomId).emit("whiteboard-update", { elements });
     });
 
     // When host sends a hint
@@ -212,6 +227,7 @@ app.use('/api/reports', reportRoutes)
 app.use('/api/code', codeExecutionRoutes)
 app.use('/api/agent', agentRoutes)
 app.use('/api/whiteboard', whiteboardRoutes)
+app.use('/api/ai', aiWhiteboardRoutes)
 
 // Serve reports folder statically
 app.use('/reports', express.static('reports'))

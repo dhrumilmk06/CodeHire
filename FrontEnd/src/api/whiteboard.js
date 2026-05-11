@@ -24,4 +24,13 @@ export const whiteboardApi = {
         const response = await axiosInstance.delete(`/whiteboard/${sessionId}/snapshot/${snapshotId}`);
         return response.data;
     },
+
+    reviewDesign: async (snapshotId, sessionId, designContext = '') => {
+        const response = await axiosInstance.post('/ai/whiteboard-review', {
+            snapshotId,
+            sessionId,
+            designContext,
+        });
+        return response.data;
+    },
 };

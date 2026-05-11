@@ -450,7 +450,7 @@ function generateHTMLTemplate(session) {
     ${ai_review ? `
     <section>
         <div class="section-title">AI Code Review</div>
-        <p class="text-summary">${ai_review.summary || ''}</p>
+        <p class="text-summary">${ai_review.summary || session.agentSummary || ''}</p>
         
         <div class="ai-grid">
             <div class="ai-card">

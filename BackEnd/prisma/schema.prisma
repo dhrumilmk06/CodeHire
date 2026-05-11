@@ -12,68 +12,74 @@ model User {
   clerkId      String    @unique
   email        String    @unique
   name         String?
-  profileImage String?
   createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  profileImage String?
   role         String    @default("participant")
+  updatedAt    DateTime  @updatedAt
   banned       Boolean   @default(false)
   sessions     Session[] @relation("HostSessions")
   participants Session[] @relation("ParticipantSessions")
 
-
-  @@index([clerkId])
+  @@index([clerkId], map: "idx_user_clerkid")
 }
-
 
 model CustomProblem {
   id              String   @id
   title           String
   difficulty      String
-  category        String?
-  description     Json
   examples        Json
-  constraints     String[]
   starterCode     Json
-  expectedOutput  Json?
   hiddenTestCases Json
-  ownerClerkId    String
   createdAt       DateTime @default(now())
+  category        String?
+  constraints     String[]
+  expectedOutput  Json?
+  ownerClerkId    String
   updatedAt       DateTime @updatedAt
+  description     Json
 
   @@index([ownerClerkId])
   @@index([title])
 }
 
 model Session {
-  id                 String   @id @default(cuid())
-  problem            String
-  difficulty         String
+  id                 String    @id @default(cuid())
   hostId             String
-  participantClerkId String?
-  problems           Json
-  status             String   @default("active")
-  callId             String?
+  problemCodes       Json
+  timings            Json
   notes              String?
-  rating             Int?     @default(0)
   tags               String[]
   decision           String?
-  timeTaken          Int?     @default(0)
-  testCasesPassed    String?  @default("0/0")
-  timings            Json
-  problemCodes       Json
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  host               User     @relation("HostSessions", fields: [hostId], references: [clerkId])
-  participant        User?    @relation("ParticipantSessions", fields: [participantClerkId], references: [clerkId])
-  session_code       String?  @unique
-  hints              Json     @default("[]")
+  status             String    @default("active")
+  createdAt          DateTime  @default(now())
+  callId             String?
+  difficulty         String
+  participantClerkId String?
+  problem            String
+  problems           Json
+  rating             Int?      @default(0)
+  testCasesPassed    String?   @default("0/0")
+  timeTaken          Int?      @default(0)
+  updatedAt          DateTime  @updatedAt
+  hints              Json      @default("[]")
+  session_code       String?   @unique
   ai_review          Json?
-  report_generated   Boolean  @default(false)
+  report_generated   Boolean   @default(false)
   report_url         String?
-  language           String?  @default("javascript")
+  language           String?   @default("javascript") @db.VarChar(50)
+  agentActive        Boolean?  @default(false)
+  lastCodeSnapshot   String?   @default("")
+  stuckDetectedAt    DateTime? @db.Timestamp(6)
+  hintsGenerated     Int?      @default(0)
+  autoTestsRun       Int?      @default(0)
+  agentSummary       String?
+  lastAgentCheckAt   DateTime? @db.Timestamp(6)
+  timeWarningAt      DateTime? @db.Timestamp(6)
+  host               User      @relation("HostSessions", fields: [hostId], references: [clerkId])
+  participant        User?     @relation("ParticipantSessions", fields: [participantClerkId], references: [clerkId])
 
-  @@index([hostId])
-  @@index([status])
-  @@index([createdAt])
-  @@index([session_code])
+  @@index([session_code], map: "idx_session_code")
+  @@index([createdAt(sort: Desc)], map: "idx_session_createdat")
+  @@index([hostId], map: "idx_session_hostid")
+  @@index([status], map: "idx_session_status")
 }

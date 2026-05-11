@@ -82,7 +82,7 @@ export const WhiteboardSnapshots = ({ sessionId, onRestore, userRole }) => {
     };
 
     return (
-        <div className="h-full flex flex-col bg-gray-900 border-l border-gray-700 w-72 min-w-[288px]">
+        <div className="h-full flex flex-col bg-gray-900 w-72 min-w-[288px]">
             {/* Header */}
             <div className="p-4 border-b border-gray-700 shrink-0">
                 <div className="flex items-center justify-between mb-3">

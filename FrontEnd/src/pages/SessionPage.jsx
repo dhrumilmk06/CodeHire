@@ -198,11 +198,18 @@ export const SessionPage = () => {
       if (data.sessionId === id) setAgentActive(false);
     };
 
+    const handleNavigateWhiteboard = (data) => {
+      if (data.sessionId === id) {
+        navigate(`/interview/${id}/whiteboard`);
+      }
+    };
+
     socket.on('autoScoreResults', handleAutoScore);
     socket.on('scoring-started', handleScoringStarted);
     socket.on('receive-hint', handleReceiveHint);
     socket.on('agent:started', handleAgentStarted);
     socket.on('agent:stopped', handleAgentStopped);
+    socket.on('navigate-whiteboard', handleNavigateWhiteboard);
 
     return () => {
       socket.off('autoScoreResults', handleAutoScore);
@@ -210,6 +217,7 @@ export const SessionPage = () => {
       socket.off('receive-hint', handleReceiveHint);
       socket.off('agent:started', handleAgentStarted);
       socket.off('agent:stopped', handleAgentStopped);
+      socket.off('navigate-whiteboard', handleNavigateWhiteboard);
     };
   }, [socket, id, isHost]);
 
@@ -546,9 +554,14 @@ export const SessionPage = () => {
                         )}
 
                         {/* Whiteboard button — system-design sessions only */}
-                        {session?.sessionType === 'system-design' && (
+                        {isHost && session?.sessionType === 'system-design' && (
                           <button
-                            onClick={() => navigate(`/interview/${id}/whiteboard`)}
+                            onClick={() => {
+                              if (socket && isHost) {
+                                socket.emit('navigate-whiteboard', { roomId, sessionId: id });
+                              }
+                              navigate(`/interview/${id}/whiteboard`);
+                            }}
                             className="btn btn-sm bg-violet-600 hover:bg-violet-500 border-none text-white gap-2 font-bold"
                             id="open-whiteboard-btn"
                           >

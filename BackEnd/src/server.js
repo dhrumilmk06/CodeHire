@@ -21,6 +21,7 @@ import aiRoutes from './routes/aiRoutes.js'
 import reportRoutes from './routes/reportRoutes.js'
 import codeExecutionRoutes from './routes/codeExecutionRoutes.js'
 import agentRoutes from './routes/agentRoutes.js'
+import whiteboardRoutes from './routes/whiteboardRoutes.js'
 import { notFoundHandler, globalErrorHandler } from './middleware/errorHandler.js';
 
 
@@ -158,7 +159,7 @@ app.use((req, res, next) => {
     //console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     next();
 });
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 const allowedOrigins = [
     ENV.CLIENT_URL,
     'http://localhost:5173',
@@ -210,6 +211,7 @@ app.use('/api/ai', aiRoutes)
 app.use('/api/reports', reportRoutes)
 app.use('/api/code', codeExecutionRoutes)
 app.use('/api/agent', agentRoutes)
+app.use('/api/whiteboard', whiteboardRoutes)
 
 // Serve reports folder statically
 app.use('/reports', express.static('reports'))

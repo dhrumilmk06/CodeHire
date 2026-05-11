@@ -11,15 +11,28 @@ export const OutputPanel = ({ output, isRunning }) => {
         {output === null ? (
           <p className='text-base-content/50 text-sm'>Click "Run Code" to see the output here..</p>
         ) : output.success ? (
-          <pre className='text-sm font-mono text-success whitespace-pre-wrap'>{output.output}</pre>
-        ) : (
-          <div>
-            {output.output && (
-              <pre className='text-sm font-mono text-base-content whitespace-pre-wrap mb-2'>
-                {output.output}
+          <div className="space-y-2">
+            {output.output ? (
+              <pre className='text-sm font-mono text-success whitespace-pre-wrap'>{output.output}</pre>
+            ) : (
+              <p className="text-sm font-mono text-base-content/50 italic">✓ Execution finished (no output)</p>
+            )}
+            {(output.stderr || output.error) && (
+              <pre className='text-sm font-mono text-warning whitespace-pre-wrap border-t border-base-300 pt-2 mt-2'>
+                {output.stderr || output.error}
               </pre>
             )}
-            <pre className='text-sm font-mono text-error whitespace-pre-wrap'>{output.error}</pre>
+          </div>
+        ) : (
+          <div>
+            {(output.output || output.stdout) && (
+              <pre className='text-sm font-mono text-base-content whitespace-pre-wrap mb-2 opacity-70'>
+                {output.output || output.stdout}
+              </pre>
+            )}
+            <pre className='text-sm font-mono text-error whitespace-pre-wrap font-bold'>
+              {output.error || output.stderr || "Unknown Error"}
+            </pre>
           </div>
         )}
       </div>

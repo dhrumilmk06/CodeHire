@@ -162,7 +162,7 @@ const ComparisonModal = ({ selectedSessions, onClose, onUpdateDecision }) => {
                   <div className="space-y-3">
                     <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-black">Executive Summary</p>
                     <div className="bg-black/40 rounded-2xl p-5 text-sm text-zinc-400 border border-white/5 italic leading-relaxed h-[200px] overflow-y-auto custom-scrollbar">
-                      {session.notes || "No notes available."}
+                      {session.notes || session.agentSummary || "No notes available."}
                     </div>
                   </div>
                 </div>
@@ -449,7 +449,7 @@ const SessionCard = ({ session, userClerkId, onSelect, isSelected, compareMode, 
 
                     <div className="space-y-3">
                       <p className="text-[10px] text-zinc-500 uppercase font-black">Interview Notes</p>
-                      <textarea readOnly value={notesData?.notes || "No notes."} className="w-full h-40 bg-[#0a0c10] text-zinc-400 border border-white/10 rounded-2xl p-4 text-sm resize-none" />
+                      <textarea readOnly value={notesData?.notes || notesData?.agentSummary || "No notes."} className="w-full h-40 bg-[#0a0c10] text-zinc-400 border border-white/10 rounded-2xl p-4 text-sm resize-none" />
                     </div>
 
                     {notesData?.timings?.length > 0 && (

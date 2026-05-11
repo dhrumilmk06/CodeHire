@@ -9,10 +9,17 @@ const silentWSErrors = (proxy) => {
   const ignore = (err) => {
     if (err?.code === 'ECONNABORTED' || err?.code === 'ECONNRESET' || err?.code === 'EPIPE') return;
     // Only log actual unexpected errors
-    console.error('[proxy error]', err.message);
+    console.error('[proxy error]', err.message || err);
   };
+
   proxy.on('error', ignore);
   proxy.on('proxyReqWsError', ignore);
+  
+  // Also catch errors on the socket itself to prevent them from bubbling up to Vite's logger
+  proxy.on('proxyReqWs', (proxyReq, req, socket) => {
+    socket.on('error', ignore);
+  });
+
   proxy.on('close', () => { }); // Handle unexpected closure quietly
 };
 

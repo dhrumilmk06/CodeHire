@@ -3,17 +3,15 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { useEndSession, useJoinSession, useSessionById } from '../hooks/useSessions';
 import { PROBLEMS } from '../data/problems';
-import { executeCode } from '../lib/piston';
 
 import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels';
 import { getDifficultyBadgeClass } from "../lib/utils";
 import { Loader2Icon, LogOutIcon, PhoneOffIcon, MonitorIcon } from "lucide-react";
 import { CodeEditorPanel } from '../components/CodeEditorPanel';
 import { OutputPanel } from '../components/OutputPanel';
-import { useStreamClient } from '../hooks/useStreamClient'
-import { StreamCall, StreamVideo } from '@stream-io/video-react-sdk';
 import { VideoCallUI } from '../components/VideoCallUI';
 import { useCollabEditor } from '../hooks/useCollabEditor';
+import { useSessionSocket } from '../context/SessionContext';
 import { LiveNotesPanel } from '../components/LiveNotesPanel';
 import { TimeTracker } from '../components/TimeTracker';
 import { AutoScorePanel } from '../components/AutoScorePanel';
@@ -23,10 +21,11 @@ import axiosInstance from '../lib/axios';
 import { sessionApi } from '../api/sessions';
 import { toast } from 'react-hot-toast';
 import { motion, AnimatePresence } from "framer-motion";
+import { useOutletContext } from 'react-router';
 
 export const SessionPage = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { sessionId } = useParams();
   const { user } = useUser();
   const [output, setOutput] = useState(null)
   const [isRunning, setIsRunning] = useState(false)
@@ -48,7 +47,7 @@ export const SessionPage = () => {
   const codeSaveTimerRef = useRef(null); // debounce timer for DB persistence
   const broadcastTimerRef = useRef(null); // debounce timer for socket broadcast
 
-  const { data: sessionData, isLoading: loadingSession, refetch } = useSessionById(id);
+  const { data: sessionData, isLoading: loadingSession, refetch } = useSessionById(sessionId);
 
   const joinSessionMutation = useJoinSession()
   const endSessionMutation = useEndSession()
@@ -57,12 +56,11 @@ export const SessionPage = () => {
   const isHost = session?.host?.clerkId === user?.id;
   const isParticipant = session?.participant?.clerkId === user?.id;
 
-  const { call, channel, chatClient, isInitializingCall, streamClient } = useStreamClient(
-    session,
-    loadingSession,
-    isHost,
-    isParticipant
-  )
+  // Video call state is provided by SessionLayout so it survives navigation
+  const { chatClient, channel, isInitializingCall } = useOutletContext();
+
+  // ── Shared socket from SessionContext (survives navigation to whiteboard) ──
+  const { socket, connected: socketConnected, isReconnecting, reconnected, clearReconnected } = useSessionSocket();
 
   // Find the problem data — first check built-in problems, then fetch custom by title
   const builtInProblem = session?.problem
@@ -105,21 +103,14 @@ export const SessionPage = () => {
     remoteTypingTimer.current = setTimeout(() => setRemoteUser(null), 2000);
   };
 
-  const [socketConnected, setSocketConnected] = useState(false);
-
   const { 
     emitCodeChange, 
     emitLanguageChange, 
     emitOutputUpdate, 
     emitProblemChange, 
-    socket,
-    isReconnecting,
-    reconnected,
-    setReconnected
   } = useCollabEditor({
+    socket,
     roomId,
-    userId: user?.id,
-    role,
     onCodeChange: (remoteCode, remoteLang) => {
       showRemoteTyping();
       setCode(remoteCode);
@@ -129,7 +120,7 @@ export const SessionPage = () => {
     },
     onProblemChange: async (problemTitle, difficulty) => {
       setIsProblemLoading(true);
-      await refetch(); // Fetch latest session state to update problem desc
+      await refetch();
       setTimeout(() => setIsProblemLoading(false), 3000);
     },
     onLanguageChange: (remoteLang, remoteCode) => {
@@ -145,12 +136,10 @@ export const SessionPage = () => {
   // Handle auto-hiding the "Reconnected" banner after 3 seconds
   useEffect(() => {
     if (reconnected) {
-      const timer = setTimeout(() => {
-        setReconnected(false);
-      }, 3000);
+      const timer = setTimeout(() => clearReconnected(), 3000);
       return () => clearTimeout(timer);
     }
-  }, [reconnected, setReconnected]);
+  }, [reconnected, clearReconnected]);
 
   // Listen for host-only auto-score results
   useEffect(() => {
@@ -199,8 +188,8 @@ export const SessionPage = () => {
     };
 
     const handleNavigateWhiteboard = (data) => {
-      if (data.sessionId === id) {
-        navigate(`/interview/${id}/whiteboard`);
+      if (data.sessionId === sessionId) {
+        navigate(`/session/${sessionId}/whiteboard`);
       }
     };
 
@@ -219,24 +208,21 @@ export const SessionPage = () => {
       socket.off('agent:stopped', handleAgentStopped);
       socket.off('navigate-whiteboard', handleNavigateWhiteboard);
     };
-  }, [socket, id, isHost]);
+  }, [socket, sessionId, isHost]);
 
-  // Detect socket connected state by checking if roomId+userId are available
-  useEffect(() => {
-    setSocketConnected(!!(roomId && user?.id));
-  }, [roomId, user?.id]);
+  // (socketConnected now comes from SessionContext)
 
   // Initial fetch for agentActive state for the header badge
   useEffect(() => {
-    if (!id) return;
-    axiosInstance.get(`/agent/status/${id}`)
+    if (!sessionId) return;
+    axiosInstance.get(`/agent/status/${sessionId}`)
       .then((res) => {
         if (res.data.success) {
           setAgentActive(res.data.agentActive);
         }
       })
       .catch((err) => console.error("Failed to fetch initial agent status", err));
-  }, [id]);
+  }, [sessionId]);
   // ────────────────────────────────────────────────────────────────────────
 
   // Auto-join session if user is not already a participant and not the host
@@ -244,13 +230,12 @@ export const SessionPage = () => {
     if (!session || !user || loadingSession) return;
     if (isHost || isParticipant) return
 
-    joinSessionMutation.mutate(id, { onSuccess: refetch })
-  }, [session, user, loadingSession, isHost, isParticipant, id])
+    joinSessionMutation.mutate(sessionId, { onSuccess: refetch })
+  }, [session, user, loadingSession, isHost, isParticipant, sessionId])
 
-  // Redirect the "participant" when session ends
+  // Redirect when session ends
   useEffect(() => {
     if (!session || loadingSession) return
-
     if (session.status === "completed") navigate("/dashboard");
   }, [session, loadingSession, navigate])
 
@@ -315,7 +300,7 @@ export const SessionPage = () => {
       const result = await sessionApi.runCode({
         code,
         language: selectedLanguage,
-        sessionId: id,
+        sessionId,
         problemId: pId
       });
 
@@ -358,7 +343,7 @@ export const SessionPage = () => {
 
     try {
       const response = await axiosInstance.post('/ai/hint', {
-        sessionId: id,
+        sessionId,
         problemTitle: session.problem,
         problemDescription: problemData?.description?.text || "No description provided",
         candidateCode: code
@@ -367,7 +352,7 @@ export const SessionPage = () => {
       if (response.data.hint) {
         socket.emit('send-hint', {
           roomId: roomId,
-          sessionId: id,
+          sessionId,
           hint: response.data.hint
         });
 
@@ -391,7 +376,7 @@ export const SessionPage = () => {
       setIsProblemLoading(true);
 
       // Save current code
-      await sessionApi.updateActiveProblem(id, {
+      await sessionApi.updateActiveProblem(sessionId, {
         problemTitle: newProblem.title,
         difficulty: newProblem.difficulty,
         codeToSave: code,
@@ -405,8 +390,7 @@ export const SessionPage = () => {
       emitOutputUpdate(null);
 
       // Fetch the saved code for the NEW problem (if any)
-      const { code: restoredCode } = await sessionApi.getProblemCode(id, newProblem.title);
-      console.log(`[Switch] Restored code for ${newProblem.title} exists:`, !!restoredCode);
+      const { code: restoredCode } = await sessionApi.getProblemCode(sessionId, newProblem.title);
 
       // If there's saved code, use it. Otherwise use the new problem's starter code.
       if (restoredCode) {
@@ -449,9 +433,9 @@ export const SessionPage = () => {
 
   const confirmEndSession = () => {
     if (isHost && socket) {
-      socket.emit('agent:stop', { sessionId: id });
+      socket.emit('agent:stop', { sessionId });
     }
-    endSessionMutation.mutate(id, { onSuccess: () => navigate('/dashboard') });
+    endSessionMutation.mutate(sessionId, { onSuccess: () => navigate('/dashboard') });
     setShowEndSessionModal(false);
   };
 
@@ -527,7 +511,7 @@ export const SessionPage = () => {
                         
                         {isHost && session && session.status === "active" && (
                           <TimeTracker
-                            sessionId={id}
+                            sessionId={sessionId}
                             currentProblemTitle={session.problem}
                             initialTimings={session.timings}
                           />
@@ -558,9 +542,9 @@ export const SessionPage = () => {
                           <button
                             onClick={() => {
                               if (socket && isHost) {
-                                socket.emit('navigate-whiteboard', { roomId, sessionId: id });
+                                socket.emit('navigate-whiteboard', { roomId, sessionId });
                               }
-                              navigate(`/interview/${id}/whiteboard`);
+                              navigate(`/session/${sessionId}/whiteboard`);
                             }}
                             className="btn btn-sm bg-violet-600 hover:bg-violet-500 border-none text-white gap-2 font-bold"
                             id="open-whiteboard-btn"
@@ -749,7 +733,7 @@ export const SessionPage = () => {
                     <p className="text-lg">Connecting to video call...</p>
                   </div>
                 </div>
-              ) : !streamClient || !call ? (
+              ) : !chatClient ? (
                 <div className="h-full flex items-center justify-center">
                   <div className="card bg-base-100 shadow-xl max-w-md">
                     <div className="card-body items-center text-center">
@@ -764,16 +748,12 @@ export const SessionPage = () => {
               ) : (
                 <div className='h-full flex flex-col gap-4'>
                   <div className='flex-1 min-h-[300px]'>
-                    <StreamVideo client={streamClient}>
-                      <StreamCall call={call}>
-                        <VideoCallUI chatClient={chatClient} channel={channel} />
-                      </StreamCall>
-                    </StreamVideo>
+                    <VideoCallUI chatClient={chatClient} channel={channel} />
                   </div>
                   
                   {isHost && (
                     <div className='shrink-0 pb-4'>
-                      <AgentStatusPanel sessionId={id} roomId={roomId} isHost={isHost} socket={socket} />
+                      <AgentStatusPanel sessionId={sessionId} roomId={roomId} isHost={isHost} socket={socket} />
                     </div>
                   )}
                 </div>
@@ -784,7 +764,7 @@ export const SessionPage = () => {
       </div>
 
       {/* Host-only floating notes panel — rendered outside the panel layout so it never displaces existing UI */}
-      {isHost && <LiveNotesPanel sessionId={id} />}
+      {isHost && <LiveNotesPanel sessionId={sessionId} />}
 
       {/* NEW PROBLEM LOADING OVERLAY */}
       {isProblemLoading && (

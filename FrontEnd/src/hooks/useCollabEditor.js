@@ -1,102 +1,78 @@
-import { useEffect, useRef, useCallback, useState } from "react";
-import { io } from "socket.io-client";
-
-// Relative URL — Vite proxy forwards /socket.io → backend:3000
-const SOCKET_URL = "/";
+import { useEffect, useCallback } from "react";
 
 /**
  * Hook to manage real-time collaborative editor state via Socket.io.
  *
+ * This hook no longer creates its own socket connection. It expects a socket
+ * instance from SessionContext (via useSessionSocket) to be passed in, so the
+ * connection survives navigation between SessionPage and WhiteboardPage.
+ *
  * @param {object} params
- * @param {string} params.roomId      - The session's callId used as the Socket room
- * @param {string} params.userId      - Current user's clerk ID
- * @param {string} params.role        - "host" | "participant"
- * @param {function} params.onCodeChange     - Called when remote user changes code: (code, language) => void
- * @param {function} params.onLanguageChange - Called when remote user changes language: (language, code) => void
- * @param {function} params.onOutputUpdate   - Called when remote user runs code: (output) => void
+ * @param {object} params.socket          - Socket.io instance from SessionContext
+ * @param {string} params.roomId          - The session's callId used as the Socket room
+ * @param {function} params.onCodeChange     - Called when remote user changes code
+ * @param {function} params.onLanguageChange - Called when remote user changes language
+ * @param {function} params.onOutputUpdate   - Called when remote user runs code
+ * @param {function} params.onProblemChange  - Called when host switches problem
  */
 export const useCollabEditor = ({
+    socket,
     roomId,
-    userId,
-    role,
     onCodeChange,
     onLanguageChange,
     onOutputUpdate,
     onProblemChange,
 }) => {
-    const [socket, setSocket] = useState(null);
-    const [isReconnecting, setIsReconnecting] = useState(false);
-    const [reconnected, setReconnected] = useState(false);
-
     useEffect(() => {
-        if (!roomId || !userId) return;
-
-        const s = io(SOCKET_URL, {
-            transports: ["websocket", "polling"],
-            withCredentials: true,
-            reconnection: true,
-            reconnectionAttempts: 10,
-            reconnectionDelay: 1000,
-        });
-
-        setSocket(s);
-
-        s.on("connect", () => {
-            console.log("[Socket] Connected:", s.id);
-            // If we were in a reconnecting state, it means we just reconnected
-            if (isReconnecting) {
-                s.emit("rejoin-session", { roomId, userId, role });
-            } else {
-                s.emit("join-room", { roomId, userId, role });
-            }
-        });
-
-        s.on("disconnect", (reason) => {
-            console.warn("[Socket] Disconnected:", reason);
-            if (reason === "io server disconnect" || reason === "transport close" || reason === "transport error") {
-                setIsReconnecting(true);
-            }
-        });
-
-        s.on("session-rejoined", ({ code, language }) => {
-            console.log("[Socket] Session rejoined successfully");
-            if (code !== undefined) onCodeChange?.(code, language);
-            setIsReconnecting(false);
-            setReconnected(true);
-        });
+        if (!socket || !roomId) return;
 
         // Remote participant changed code
-        s.on("code-change", ({ code, language }) => {
+        const handleCodeChange = ({ code, language }) => {
             onCodeChange?.(code, language);
-        });
+        };
 
         // Remote participant changed language
-        s.on("language-change", ({ language, code }) => {
+        const handleLanguageChange = ({ language, code }) => {
             onLanguageChange?.(language, code);
-        });
+        };
 
         // Remote participant ran code — sync output
-        s.on("output-update", ({ output }) => {
+        const handleOutputUpdate = ({ output }) => {
             onOutputUpdate?.(output);
-        });
+        };
 
         // Remote host changed problem
-        s.on("problem-change", ({ problemTitle, difficulty }) => {
+        const handleProblemChange = ({ problemTitle, difficulty }) => {
             onProblemChange?.(problemTitle, difficulty);
-        });
+        };
 
         // New joiner receives current room state
-        s.on("sync-state", ({ code, language, output }) => {
+        const handleSyncState = ({ code, language, output }) => {
             if (code !== undefined) onCodeChange?.(code, language);
             if (output !== undefined) onOutputUpdate?.(output);
-        });
+        };
+
+        // Session rejoined — restore state
+        const handleSessionRejoined = ({ code, language }) => {
+            if (code !== undefined) onCodeChange?.(code, language);
+        };
+
+        socket.on("code-change", handleCodeChange);
+        socket.on("language-change", handleLanguageChange);
+        socket.on("output-update", handleOutputUpdate);
+        socket.on("problem-change", handleProblemChange);
+        socket.on("sync-state", handleSyncState);
+        socket.on("session-rejoined", handleSessionRejoined);
 
         return () => {
-            s.disconnect();
-            setSocket(null);
+            socket.off("code-change", handleCodeChange);
+            socket.off("language-change", handleLanguageChange);
+            socket.off("output-update", handleOutputUpdate);
+            socket.off("problem-change", handleProblemChange);
+            socket.off("sync-state", handleSyncState);
+            socket.off("session-rejoined", handleSessionRejoined);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [roomId, userId, role, isReconnecting]);
+    }, [socket, roomId, onCodeChange, onLanguageChange, onOutputUpdate, onProblemChange]);
 
     /** Emit a code change to all other participants */
     const emitCodeChange = useCallback((code, language) => {
@@ -123,9 +99,5 @@ export const useCollabEditor = ({
         emitLanguageChange,
         emitOutputUpdate,
         emitProblemChange,
-        socket,
-        isReconnecting,
-        reconnected,
-        setReconnected
     };
 };

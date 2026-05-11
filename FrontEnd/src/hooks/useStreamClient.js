@@ -94,16 +94,10 @@ export const useStreamClient = (session, loadingSession, isHost, isParticipant) 
 
     return () => {
       isMounted = false;
-      const cleanup = async () => {
-        try {
-          if (videoCall) await videoCall.leave();
-          if (chatClientInstance) await chatClientInstance.disconnectUser();
-          await disconnectStreamClient()
-        } catch (error) {
-          console.error("Cleanup error:", error);
-        }
-      };
-      cleanup();
+      // We no longer aggressively call videoCall.leave() or disconnectStreamClient() here.
+      // 1. The React SDK (<StreamCall>) automatically handles leaving the call on unmount.
+      // 2. Disconnecting the global client here causes race conditions when dependencies 
+      //    like `isParticipant` change, because the old effect cleanup runs AFTER the new effect starts.
     }
   }, [session?.callId, loadingSession, isHost, isParticipant])
   return {

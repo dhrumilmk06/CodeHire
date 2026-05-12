@@ -233,7 +233,7 @@ export const WhiteboardPage = () => {
                 {/* Snapshots Sidebar + AI Review + Video Call */}
                 <div className="w-80 min-w-[320px] flex flex-col border-l border-gray-700 overflow-y-auto bg-base-200">
                     {/* Video Call explicitly rendered in sidebar so users can see each other */}
-                    <div className="p-4 border-b border-gray-700 h-64 shrink-0">
+                    <div className="p-2 border-b border-gray-700 h-80 shrink-0">
                          {isInitializingCall ? (
                             <div className="h-full flex items-center justify-center">
                                 <Loader2Icon className="w-8 h-8 animate-spin text-primary" />
@@ -243,7 +243,7 @@ export const WhiteboardPage = () => {
                                 Video call inactive
                             </div>
                         ) : (
-                            <VideoCallUI chatClient={chatClient} channel={channel} />
+                            <VideoCallUI chatClient={chatClient} channel={channel} isWhiteboard={true} />
                         )}
                     </div>
 

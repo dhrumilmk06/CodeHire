@@ -12,7 +12,7 @@ import { Channel, Chat, MessageInput, MessageList, Thread, Window } from "stream
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import "stream-chat-react/dist/css/v2/index.css";
 
-export const VideoCallUI = ({ chatClient, channel }) => {
+export const VideoCallUI = ({ chatClient, channel, isWhiteboard }) => {
   const navigate = useNavigate();
   //useCallStateHooks() is in built hook taht is coming from stream io package
   const { useCallCallingState, useParticipantCount } = useCallStateHooks();
@@ -34,22 +34,22 @@ export const VideoCallUI = ({ chatClient, channel }) => {
 
   return (
     <div className="h-full flex gap-3 relative str-video">
-      <div className="flex-1 flex flex-col gap-3">
+      <div className={`flex-1 flex flex-col ${isWhiteboard ? 'gap-1' : 'gap-3'}`}>
         {/* Participants count badge and Chat Toggle */}
-        <div className="flex items-center justify-between gap-2 bg-base-100 p-3 rounded-lg shadow">
+        <div className={`flex items-center justify-between gap-2 bg-base-100 ${isWhiteboard ? 'p-1.5' : 'p-3'} rounded-lg shadow`}>
           <div className="flex items-center gap-2">
-            <UsersIcon className="w-5 h-5 text-primary" />
-            <span className="font-semibold">
+            <UsersIcon className={`${isWhiteboard ? 'w-4 h-4' : 'w-5 h-5'} text-primary`} />
+            <span className={`font-semibold ${isWhiteboard ? 'text-xs' : ''}`}>
               {participantCount} {participantCount === 1 ? "participant" : "participants"}
             </span>
           </div>
           {chatClient && channel && (
             <button
               onClick={() => setIsChatOpen(!isChatOpen)}
-              className={`btn btn-sm gap-2 ${isChatOpen ? "btn-primary" : "btn-ghost"}`}
+              className={`btn ${isWhiteboard ? 'btn-xs' : 'btn-sm'} gap-2 ${isChatOpen ? "btn-primary" : "btn-ghost"}`}
               title={isChatOpen ? "Hide chat" : "Show chat"}
             >
-              <MessageSquareIcon className="size-4" />
+              <MessageSquareIcon className={isWhiteboard ? 'size-3' : 'size-4'} />
               Chat
             </button>
           )}
@@ -59,7 +59,7 @@ export const VideoCallUI = ({ chatClient, channel }) => {
           <SpeakerLayout />
         </div>
 
-        <div className="bg-base-100 p-3 rounded-lg shadow flex justify-center">
+        <div className={`bg-base-100 ${isWhiteboard ? 'p-1.5' : 'p-3'} rounded-lg shadow flex justify-center`}>
           <CallControls onLeave={() => navigate("/dashboard")} />
         </div>
       </div>

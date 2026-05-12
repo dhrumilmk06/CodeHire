@@ -11,6 +11,7 @@ import { SkeletonCard } from "./ui/SkeletonCard";
 import { formatDistanceToNow } from "date-fns";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { sessionApi } from "../api/sessions";
+import { whiteboardApi } from "../api/whiteboard";
 import { toast } from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -38,6 +39,119 @@ const StarRating = ({ value, onChange, readonly = false, size = "sm" }) => {
     </div>
   );
 };
+
+// ── Whiteboard Design Score (system-design sessions only) ─────────────────────
+
+const WhiteboardDesignScore = ({ session }) => {
+  const [isReviewing, setIsReviewing] = useState(false);
+  const queryClient = useQueryClient();
+
+  const { data: snapshotsData, isLoading } = useQuery({
+    queryKey: ["whiteboard-snapshots", session._id],
+    queryFn: () => whiteboardApi.getSnapshots(session._id),
+    enabled: session.sessionType === "system-design",
+  });
+
+  const snapshots = snapshotsData?.data || [];
+  const latest = snapshots[0] || null; // already ordered desc
+
+  const handleRunAIReview = async () => {
+    if (!latest) {
+      toast.error("No snapshot saved yet — save a snapshot from the whiteboard first.");
+      return;
+    }
+    setIsReviewing(true);
+    try {
+      const result = await whiteboardApi.reviewDesign(
+        latest.id,
+        session._id,
+        session.problem || "System design interview"
+      );
+      toast.success(`AI Review complete! Score: ${result.score}/100`);
+      // Refresh to show new score
+      queryClient.invalidateQueries({ queryKey: ["whiteboard-snapshots", session._id] });
+    } catch (err) {
+      console.error("AI review failed:", err);
+      toast.error("AI review failed — try again");
+    } finally {
+      setIsReviewing(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center gap-2 py-4 text-zinc-500">
+        <Loader className="size-4 animate-spin" />
+        <span className="text-xs font-bold uppercase tracking-widest">Loading snapshots...</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <p className="text-[10px] text-zinc-500 uppercase font-black">Whiteboard Design Score</p>
+
+      {/* Latest snapshot preview */}
+      {latest ? (
+        <div className="rounded-2xl overflow-hidden border border-white/10 bg-black/40">
+          {/* We need to fetch full snapshot with imageData — lazy fetch on expand */}
+          <SnapshotImagePreview snapshotId={latest.id} sessionId={session._id} />
+          <div className="p-3 flex items-center justify-between">
+            <div>
+              <p className="text-xs font-bold text-white">{latest.label || 'Snapshot'}</p>
+              <p className="text-[10px] text-zinc-600">
+                {new Date(latest.createdAt).toLocaleString()}
+              </p>
+            </div>
+            {latest.aiScore != null ? (
+              <div className="text-right">
+                <p className="text-2xl font-black text-violet-400">{latest.aiScore}<span className="text-sm text-zinc-500">/100</span></p>
+                <p className="text-[9px] uppercase tracking-widest text-zinc-500">AI Score</p>
+              </div>
+            ) : (
+              <button
+                onClick={handleRunAIReview}
+                disabled={isReviewing}
+                className="btn btn-xs bg-violet-600 hover:bg-violet-500 border-none text-white gap-1 font-bold"
+              >
+                {isReviewing ? <Loader className="size-3 animate-spin" /> : '🤖'}
+                {isReviewing ? 'Reviewing...' : 'Run AI Review'}
+              </button>
+            )}
+          </div>
+          {/* Show AI feedback summary if available */}
+          {latest.aiFeedback && (
+            <div className="px-3 pb-3">
+              <p className="text-[10px] text-zinc-500 uppercase font-black mb-1">AI Feedback</p>
+              <p className="text-xs text-zinc-400 leading-relaxed line-clamp-4">{latest.aiFeedback}</p>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="p-4 bg-white/2 border border-white/5 border-dashed rounded-2xl text-center">
+          <p className="text-xs text-zinc-600 font-bold">No whiteboard snapshots saved for this session.</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Lazy-loads the full imageData only when the card is expanded
+const SnapshotImagePreview = ({ snapshotId, sessionId }) => {
+  const { data } = useQuery({
+    queryKey: ["snapshot-full", snapshotId],
+    queryFn: () => whiteboardApi.getSnapshotById(sessionId, snapshotId),
+    staleTime: Infinity,
+  });
+  const imageData = data?.data?.imageData;
+  if (!imageData) return (
+    <div className="h-32 flex items-center justify-center bg-black/60">
+      <Loader className="size-5 animate-spin text-zinc-700" />
+    </div>
+  );
+  return <img src={imageData} alt="Whiteboard snapshot" className="w-full object-contain max-h-52 bg-white" />;
+};
+
 
 const DECISION_CONFIG = {
   move_forward: {
@@ -452,6 +566,13 @@ const SessionCard = ({ session, userClerkId, onSelect, isSelected, compareMode, 
                       <textarea readOnly value={notesData?.notes || notesData?.agentSummary || "No notes."} className="w-full h-40 bg-[#0a0c10] text-zinc-400 border border-white/10 rounded-2xl p-4 text-sm resize-none" />
                     </div>
 
+                    {/* Whiteboard Design Score — system-design sessions only */}
+                    {session.sessionType === 'system-design' && (
+                      <div>
+                        <WhiteboardDesignScore session={session} />
+                      </div>
+                    )}
+
                     {notesData?.timings?.length > 0 && (
                       <div className="space-y-3">
                         <p className="text-[10px] text-zinc-500 uppercase font-black">Time Breakdown by Problem</p>
@@ -529,25 +650,28 @@ export const RecentSession = ({ sessions, isLoading, userClerkId, hideCompare = 
       const token = await window.Clerk?.session?.getToken();
       const apiUrl = import.meta.env.VITE_API_URL || "";
 
-      // Step 1 — Generate AI Code Review
-      const reviewRes = await fetch(`${apiUrl}/ai/review`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          sessionId: session._id,
-          problemTitle: session.problem || "Coding Problem",
-          problemDescription: "",
-          candidateCode: Object.values(session.problemCodes || {})[0] || "",
-          score: session.testCasesPassed || "0/0",
-          timeTaken: session.timeTaken ? `${session.timeTaken}:00` : "12:00",
-          language: "JavaScript",
-        }),
-      });
+      // Step 1 — For coding sessions, generate AI Code Review first.
+      // For system-design sessions, skip this step (no code to review).
+      if (session.sessionType !== 'system-design') {
+        const reviewRes = await fetch(`${apiUrl}/ai/review`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            sessionId: session._id,
+            problemTitle: session.problem || "Coding Problem",
+            problemDescription: "",
+            candidateCode: Object.values(session.problemCodes || {})[0] || "",
+            score: session.testCasesPassed || "0/0",
+            timeTaken: session.timeTaken ? `${session.timeTaken}:00` : "12:00",
+            language: "JavaScript",
+          }),
+        });
 
-      if (!reviewRes.ok) throw new Error("AI review failed");
+        if (!reviewRes.ok) throw new Error("AI review failed");
+      }
 
       // Step 2 — Generate PDF
       setReportStep(prev => ({ ...prev, [session._id]: "pdf" }));

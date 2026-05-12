@@ -41,8 +41,17 @@ export const generateReport = async (req, res) => {
       return res.status(403).json({ message: "Forbidden - Only the host can generate this report" });
     }
 
+    // For system-design sessions, fetch the most recent whiteboard snapshot
+    let latestSnapshot = null;
+    if (session.sessionType === 'system-design') {
+      latestSnapshot = await prisma.whiteboardSnapshot.findFirst({
+        where: { sessionId },
+        orderBy: { createdAt: 'desc' }
+      });
+    }
+
     // Build HTML template with all session data
-    const htmlContent = generateHTMLTemplate(session);
+    const htmlContent = generateHTMLTemplate(session, latestSnapshot);
 
     // Use Puppeteer to convert HTML to PDF
     const browser = await puppeteer.launch({
@@ -101,7 +110,7 @@ export const generateReport = async (req, res) => {
 /**
  * Builds the HTML template for the report
  */
-function generateHTMLTemplate(session) {
+function generateHTMLTemplate(session, latestSnapshot = null) {
   const {
     host,
     participant,
@@ -117,8 +126,11 @@ function generateHTMLTemplate(session) {
     hints,
     tags,
     timings,
-    timeTaken
+    timeTaken,
+    sessionType
   } = session;
+
+  const isSystemDesign = sessionType === 'system-design';
 
   const candidateName = participant?.name || 'Candidate';
   const interviewerName = host?.name || 'Interviewer';
@@ -149,8 +161,15 @@ function generateHTMLTemplate(session) {
   };
   const recColor = (ai_review && recMap[ai_review.recommendation]?.color) || '#888888';
 
-  // Get final code for current problem
+  // Get final code for current problem (only used for coding sessions)
   const finalCode = (problemCodes && problemCodes[problem]) || '// No code submitted for this problem';
+
+  // Whiteboard snapshot data (system-design sessions)
+  const snapshotImageSrc = latestSnapshot?.imageData || null;
+  const snapshotLabel = latestSnapshot?.label || 'Final Design';
+  const snapshotDate = latestSnapshot?.createdAt ? new Date(latestSnapshot.createdAt).toLocaleString() : '';
+  const aiDesignScore = latestSnapshot?.aiScore ?? null;
+  const aiDesignFeedback = latestSnapshot?.aiFeedback || null;
 
   return `
 <!DOCTYPE html>
@@ -440,12 +459,47 @@ function generateHTMLTemplate(session) {
         </div>
     </section>
 
+    ${isSystemDesign ? `
+    <section>
+        <div class="section-title">🖊️ Whiteboard Design</div>
+        ${snapshotImageSrc ? `
+        <div style="margin-bottom:20px;">
+            <p style="font-size:12px;color:#888;margin-bottom:8px;">${snapshotLabel} &mdash; ${snapshotDate}</p>
+            <img
+                src="${snapshotImageSrc}"
+                alt="Whiteboard Snapshot"
+                style="width:100%;border-radius:8px;border:1px solid #e5e7eb;"
+            />
+        </div>
+        ` : `<p style="color:#888;font-size:13px;">No snapshot was saved during this session.</p>`}
+
+        ${aiDesignScore !== null ? `
+        <div style="margin-top:20px;">
+            <div class="score-grid">
+                <div class="score-card">
+                    <span class="score-val">${aiDesignScore}/100</span>
+                    <span class="score-lbl">AI Design Score</span>
+                </div>
+                <div class="score-card" style="grid-column:span 2;text-align:left;">
+                    <span class="meta-label">AI Feedback Summary</span>
+                    <p style="font-size:13px;color:#374151;margin-top:8px;line-height:1.6;">${aiDesignFeedback || 'No feedback available.'}</p>
+                </div>
+            </div>
+        </div>
+        ` : `
+        <div style="margin-top:16px;padding:12px 16px;background:#fefce8;border:1px solid #eab308;border-radius:8px;">
+            <p style="font-size:12px;color:#854d0e;font-weight:600;">⚠️ No AI design review was run for this session. Use the "Run AI Review" button in the session card to add a score before generating the report.</p>
+        </div>
+        `}
+    </section>
+    ` : `
     <section>
         <div class="section-title">Final Code Submitted</div>
         <div class="code-container">
             <pre><code>${finalCode}</code></pre>
         </div>
     </section>
+    `}
 
     ${ai_review ? `
     <section>

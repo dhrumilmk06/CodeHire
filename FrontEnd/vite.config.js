@@ -6,21 +6,30 @@ import path from "path"
 // Silently ignore expected WebSocket connection-abort errors (normal when
 // browser tabs close or navigate while a WS proxy connection is still open)
 const silentWSErrors = (proxy) => {
+  const IGNORED_CODES = new Set([
+    'ECONNABORTED',
+    'ECONNRESET',
+    'EPIPE',
+    'ECONNREFUSED', // happens when browser navigates away mid-WS-handshake
+  ]);
+
   const ignore = (err) => {
-    if (err?.code === 'ECONNABORTED' || err?.code === 'ECONNRESET' || err?.code === 'EPIPE') return;
+    if (!err) return;
+    if (IGNORED_CODES.has(err?.code)) return;
     // Only log actual unexpected errors
     console.error('[proxy error]', err.message || err);
   };
 
   proxy.on('error', ignore);
   proxy.on('proxyReqWsError', ignore);
-  
-  // Also catch errors on the socket itself to prevent them from bubbling up to Vite's logger
-  proxy.on('proxyReqWs', (proxyReq, req, socket) => {
+  proxy.on('proxyResError', ignore);
+
+  // Also catch errors on the raw socket to prevent them bubbling to Vite's logger
+  proxy.on('proxyReqWs', (_proxyReq, _req, socket) => {
     socket.on('error', ignore);
   });
 
-  proxy.on('close', () => { }); // Handle unexpected closure quietly
+  proxy.on('close', () => {}); // Handle unexpected closure quietly
 };
 
 // https://vite.dev/config/

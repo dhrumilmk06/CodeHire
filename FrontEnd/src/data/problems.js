@@ -7957,6 +7957,652 @@ int main() {
   },
 },
 
+"top-k-frequent-elements": {
+  id: "top-k-frequent-elements",
+  title: "Top K Frequent Elements",
+  difficulty: "Medium",
+  category: "Array • Hash Table • Sorting • Heap",
+  description: {
+    text: "Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.",
+    notes: [
+      "It is guaranteed that the answer is unique.",
+      "Your algorithm's time complexity must be better than O(n log n), where n is the array's size.",
+    ],
+  },
+  examples: [
+    {
+      input: "nums = [1,1,1,2,2,3], k = 2",
+      output: "[1,2]",
+      explanation: "1 appears 3 times, 2 appears 2 times. The top 2 frequent elements are [1,2].",
+    },
+    {
+      input: "nums = [1], k = 1",
+      output: "[1]",
+    },
+  ],
+  constraints: [
+    "1 ≤ nums.length ≤ 10⁵",
+    "-10⁴ ≤ nums[i] ≤ 10⁴",
+    "k is in the range [1, the number of unique elements in the array]",
+    "It is guaranteed that the answer is unique",
+  ],
+  starterCode: {
+    javascript: `function topKFrequent(nums, k) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(JSON.stringify(topKFrequent([1,1,1,2,2,3], 2))); // Expected: [1,2]
+console.log(JSON.stringify(topKFrequent([1], 1)));            // Expected: [1]`,
+
+    python: `import json
+
+def topKFrequent(nums, k):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(topKFrequent([1,1,1,2,2,3], 2), separators=(',', ':')))  # Expected: [1,2]
+print(json.dumps(topKFrequent([1], 1), separators=(',', ':')))            # Expected: [1]`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static int[] topKFrequent(int[] nums, int k) {
+        // Write your solution here
+
+        return new int[0];
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(topKFrequent(new int[]{1,1,1,2,2,3}, 2))); // Expected: [1, 2]
+        System.out.println(Arrays.toString(topKFrequent(new int[]{1}, 1)));            // Expected: [1]
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        // Write your solution here
+
+        return {};
+    }
+};
+
+string vecToString(vector<int> v) {
+    string s = "[";
+    for (int i = 0; i < (int)v.size(); i++)
+        s += to_string(v[i]) + (i == (int)v.size()-1 ? "" : ",");
+    return s + "]";
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> a = {1,1,1,2,2,3};
+    cout << vecToString(sol.topKFrequent(a, 2)) << endl; // Expected: [1,2]
+    vector<int> b = {1};
+    cout << vecToString(sol.topKFrequent(b, 1)) << endl; // Expected: [1]
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "[1,2]\n[1]",
+    python: "[1,2]\n[1]",
+    java: "[1, 2]\n[1]",
+    cpp: "[1,2]\n[1]",
+  },
+},
+
+"linked-list-cycle": {
+  id: "linked-list-cycle",
+  title: "Linked List Cycle",
+  difficulty: "Easy",
+  category: "Linked List • Hash Table • Two Pointers",
+  description: {
+    text: "Given head, the head of a linked list, determine if the linked list has a cycle in it. There is a cycle if there is some node in the list that can be reached again by continuously following the next pointer. Return true if there is a cycle, otherwise return false.",
+    notes: [
+      "Use Floyd's Cycle Detection Algorithm (fast and slow pointers) for O(1) space.",
+      "pos is used internally to denote the index where the tail connects back — it is not passed as a parameter.",
+    ],
+  },
+  examples: [
+    {
+      input: "head = [3,2,0,-4], pos = 1",
+      output: "true",
+      explanation: "The tail connects back to node at index 1, forming a cycle.",
+    },
+    {
+      input: "head = [1,2], pos = 0",
+      output: "true",
+      explanation: "The tail connects back to node at index 0, forming a cycle.",
+    },
+    {
+      input: "head = [1], pos = -1",
+      output: "false",
+      explanation: "There is no cycle in this linked list.",
+    },
+  ],
+  constraints: [
+    "The number of nodes in the list is in the range [0, 10⁴]",
+    "-10⁵ ≤ Node.val ≤ 10⁵",
+    "pos is -1 or a valid index in the linked list",
+  ],
+  starterCode: {
+    javascript: `class ListNode {
+  constructor(val, next = null) {
+    this.val = val;
+    this.next = next;
+  }
+}
+
+function buildList(arr, pos) {
+  if (!arr.length) return null;
+  const nodes = arr.map(v => new ListNode(v));
+  for (let i = 0; i < nodes.length - 1; i++) nodes[i].next = nodes[i+1];
+  if (pos !== -1) nodes[nodes.length - 1].next = nodes[pos];
+  return nodes[0];
+}
+
+function hasCycle(head) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(hasCycle(buildList([3,2,0,-4], 1))); // Expected: true
+console.log(hasCycle(buildList([1,2], 0)));       // Expected: true
+console.log(hasCycle(buildList([1], -1)));        // Expected: false`,
+
+    python: `class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def buildList(arr, pos):
+    if not arr:
+        return None
+    nodes = [ListNode(v) for v in arr]
+    for i in range(len(nodes) - 1):
+        nodes[i].next = nodes[i+1]
+    if pos != -1:
+        nodes[-1].next = nodes[pos]
+    return nodes[0]
+
+def hasCycle(head):
+    # Write your solution here
+    pass
+
+# Test cases
+print(hasCycle(buildList([3,2,0,-4], 1)))  # Expected: True
+print(hasCycle(buildList([1,2], 0)))       # Expected: True
+print(hasCycle(buildList([1], -1)))        # Expected: False`,
+
+    java: `class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int val) { this.val = val; }
+}
+
+class Solution {
+    public static ListNode buildList(int[] arr, int pos) {
+        if (arr.length == 0) return null;
+        ListNode[] nodes = new ListNode[arr.length];
+        for (int i = 0; i < arr.length; i++) nodes[i] = new ListNode(arr[i]);
+        for (int i = 0; i < arr.length - 1; i++) nodes[i].next = nodes[i+1];
+        if (pos != -1) nodes[arr.length - 1].next = nodes[pos];
+        return nodes[0];
+    }
+
+    public static boolean hasCycle(ListNode head) {
+        // Write your solution here
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(hasCycle(buildList(new int[]{3,2,0,-4}, 1))); // Expected: true
+        System.out.println(hasCycle(buildList(new int[]{1,2}, 0)));      // Expected: true
+        System.out.println(hasCycle(buildList(new int[]{1}, -1)));       // Expected: false
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int v) : val(v), next(nullptr) {}
+};
+
+ListNode* buildList(vector<int> arr, int pos) {
+    if (arr.empty()) return nullptr;
+    vector<ListNode*> nodes;
+    for (int v : arr) nodes.push_back(new ListNode(v));
+    for (int i = 0; i < (int)nodes.size()-1; i++) nodes[i]->next = nodes[i+1];
+    if (pos != -1) nodes.back()->next = nodes[pos];
+    return nodes[0];
+}
+
+class Solution {
+public:
+    bool hasCycle(ListNode* head) {
+        // Write your solution here
+
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << boolalpha << sol.hasCycle(buildList({3,2,0,-4}, 1)) << endl; // Expected: true
+    cout << boolalpha << sol.hasCycle(buildList({1,2}, 0)) << endl;      // Expected: true
+    cout << boolalpha << sol.hasCycle(buildList({1}, -1)) << endl;       // Expected: false
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "true\ntrue\nfalse",
+    python: "True\nTrue\nFalse",
+    java: "true\ntrue\nfalse",
+    cpp: "true\ntrue\nfalse",
+  },
+},
+
+"min-stack": {
+  id: "min-stack",
+  title: "Min Stack",
+  difficulty: "Medium",
+  category: "Stack • Design",
+  description: {
+    text: "Design a stack that supports push, pop, top, and retrieving the minimum element in constant time. Implement the MinStack class with the following methods: push(val), pop(), top(), and getMin().",
+    notes: [
+      "push(val) pushes the element val onto the stack.",
+      "pop() removes the element on the top of the stack.",
+      "top() gets the top element of the stack.",
+      "getMin() retrieves the minimum element in the stack.",
+      "All operations must run in O(1) time.",
+    ],
+  },
+  examples: [
+    {
+      input: `["MinStack","push","push","push","getMin","pop","top","getMin"]\n[[],[-2],[0],[-3],[],[],[],[]]`,
+      output: `[null,null,null,null,-3,null,0,-2]`,
+      explanation: "After pushing -2, 0, -3: getMin=-3. After pop: top=0, getMin=-2.",
+    },
+  ],
+  constraints: [
+    "-2³¹ ≤ val ≤ 2³¹ - 1",
+    "pop, top and getMin operations will always be called on non-empty stacks",
+    "At most 3 × 10⁴ calls will be made to push, pop, top, and getMin",
+  ],
+  starterCode: {
+    javascript: `class MinStack {
+  constructor() {
+    // Write your solution here
+  }
+
+  push(val) {
+    // Write your solution here
+  }
+
+  pop() {
+    // Write your solution here
+  }
+
+  top() {
+    // Write your solution here
+  }
+
+  getMin() {
+    // Write your solution here
+  }
+}
+
+// Test cases
+const stack = new MinStack();
+stack.push(-2);
+stack.push(0);
+stack.push(-3);
+console.log(stack.getMin()); // Expected: -3
+stack.pop();
+console.log(stack.top());    // Expected: 0
+console.log(stack.getMin()); // Expected: -2`,
+
+    python: `class MinStack:
+    def __init__(self):
+        # Write your solution here
+        pass
+
+    def push(self, val: int) -> None:
+        # Write your solution here
+        pass
+
+    def pop(self) -> None:
+        # Write your solution here
+        pass
+
+    def top(self) -> int:
+        # Write your solution here
+        pass
+
+    def getMin(self) -> int:
+        # Write your solution here
+        pass
+
+# Test cases
+stack = MinStack()
+stack.push(-2)
+stack.push(0)
+stack.push(-3)
+print(stack.getMin())  # Expected: -3
+stack.pop()
+print(stack.top())     # Expected: 0
+print(stack.getMin())  # Expected: -2`,
+
+    java: `class MinStack {
+    // Write your solution here
+
+    public MinStack() {
+
+    }
+
+    public void push(int val) {
+
+    }
+
+    public void pop() {
+
+    }
+
+    public int top() {
+        return 0;
+    }
+
+    public int getMin() {
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        MinStack stack = new MinStack();
+        stack.push(-2);
+        stack.push(0);
+        stack.push(-3);
+        System.out.println(stack.getMin()); // Expected: -3
+        stack.pop();
+        System.out.println(stack.top());    // Expected: 0
+        System.out.println(stack.getMin()); // Expected: -2
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <stack>
+#include <climits>
+
+using namespace std;
+
+class MinStack {
+public:
+    // Write your solution here
+
+    MinStack() {
+
+    }
+
+    void push(int val) {
+
+    }
+
+    void pop() {
+
+    }
+
+    int top() {
+        return 0;
+    }
+
+    int getMin() {
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    MinStack stack;
+    stack.push(-2);
+    stack.push(0);
+    stack.push(-3);
+    cout << stack.getMin() << endl; // Expected: -3
+    stack.pop();
+    cout << stack.top() << endl;    // Expected: 0
+    cout << stack.getMin() << endl; // Expected: -2
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "-3\n0\n-2",
+    python: "-3\n0\n-2",
+    java: "-3\n0\n-2",
+    cpp: "-3\n0\n-2",
+  },
+},
+
+"binary-tree-right-side-view": {
+  id: "binary-tree-right-side-view",
+  title: "Binary Tree Right Side View",
+  difficulty: "Medium",
+  category: "Tree • Breadth-First Search • Depth-First Search • Binary Tree",
+  description: {
+    text: "Given the root of a binary tree, imagine yourself standing on the right side of it. Return the values of the nodes you can see ordered from top to bottom.",
+    notes: [
+      "You can only see the rightmost node at each level.",
+      "BFS level-order traversal is a natural fit for this problem.",
+    ],
+  },
+  examples: [
+    {
+      input: "root = [1,2,3,null,5,null,4]",
+      output: "[1,3,4]",
+      explanation: "From the right side: level 0 → 1, level 1 → 3, level 2 → 4.",
+    },
+    {
+      input: "root = [1,null,3]",
+      output: "[1,3]",
+    },
+    {
+      input: "root = []",
+      output: "[]",
+    },
+  ],
+  constraints: [
+    "The number of nodes in the tree is in the range [0, 100]",
+    "-100 ≤ Node.val ≤ 100",
+  ],
+  starterCode: {
+    javascript: `class TreeNode {
+  constructor(val, left = null, right = null) {
+    this.val = val;
+    this.left = left;
+    this.right = right;
+  }
+}
+
+function buildTree(arr) {
+  if (!arr || arr.length === 0) return null;
+  const root = new TreeNode(arr[0]);
+  const queue = [root];
+  let i = 1;
+  while (i < arr.length) {
+    const node = queue.shift();
+    if (arr[i] !== null) { node.left = new TreeNode(arr[i]); queue.push(node.left); }
+    i++;
+    if (i < arr.length && arr[i] !== null) { node.right = new TreeNode(arr[i]); queue.push(node.right); }
+    i++;
+  }
+  return root;
+}
+
+function rightSideView(root) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(JSON.stringify(rightSideView(buildTree([1,2,3,null,5,null,4])))); // Expected: [1,3,4]
+console.log(JSON.stringify(rightSideView(buildTree([1,null,3]))));            // Expected: [1,3]
+console.log(JSON.stringify(rightSideView(buildTree([]))));                    // Expected: []`,
+
+    python: `import json
+from collections import deque
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def buildTree(arr):
+    if not arr:
+        return None
+    root = TreeNode(arr[0])
+    queue = deque([root])
+    i = 1
+    while i < len(arr):
+        node = queue.popleft()
+        if i < len(arr) and arr[i] is not None:
+            node.left = TreeNode(arr[i])
+            queue.append(node.left)
+        i += 1
+        if i < len(arr) and arr[i] is not None:
+            node.right = TreeNode(arr[i])
+            queue.append(node.right)
+        i += 1
+    return root
+
+def rightSideView(root):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(rightSideView(buildTree([1,2,3,None,5,None,4])), separators=(',', ':')))  # Expected: [1,3,4]
+print(json.dumps(rightSideView(buildTree([1,None,3])), separators=(',', ':')))             # Expected: [1,3]
+print(json.dumps(rightSideView(buildTree([])), separators=(',', ':')))                     # Expected: []`,
+
+    java: `import java.util.*;
+
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int val) { this.val = val; }
+}
+
+class Solution {
+    public static TreeNode buildTree(Integer[] arr) {
+        if (arr == null || arr.length == 0) return null;
+        TreeNode root = new TreeNode(arr[0]);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int i = 1;
+        while (i < arr.length) {
+            TreeNode node = queue.poll();
+            if (i < arr.length && arr[i] != null) { node.left = new TreeNode(arr[i]); queue.add(node.left); }
+            i++;
+            if (i < arr.length && arr[i] != null) { node.right = new TreeNode(arr[i]); queue.add(node.right); }
+            i++;
+        }
+        return root;
+    }
+
+    public static List<Integer> rightSideView(TreeNode root) {
+        // Write your solution here
+
+        return new ArrayList<>();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(rightSideView(buildTree(new Integer[]{1,2,3,null,5,null,4}))); // Expected: [1, 3, 4]
+        System.out.println(rightSideView(buildTree(new Integer[]{1,null,3})));            // Expected: [1, 3]
+        System.out.println(rightSideView(buildTree(new Integer[]{})));                    // Expected: []
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <queue>
+#include <string>
+
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+TreeNode* buildTree(vector<int> arr) {
+    if (arr.empty()) return nullptr;
+    TreeNode* root = new TreeNode(arr[0]);
+    queue<TreeNode*> q;
+    q.push(root);
+    int i = 1;
+    while (i < (int)arr.size()) {
+        TreeNode* node = q.front(); q.pop();
+        if (i < (int)arr.size() && arr[i] != -1) { node->left = new TreeNode(arr[i]); q.push(node->left); }
+        i++;
+        if (i < (int)arr.size() && arr[i] != -1) { node->right = new TreeNode(arr[i]); q.push(node->right); }
+        i++;
+    }
+    return root;
+}
+
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        // Write your solution here
+
+        return {};
+    }
+};
+
+string vecToString(vector<int> v) {
+    string s = "[";
+    for (int i = 0; i < (int)v.size(); i++)
+        s += to_string(v[i]) + (i == (int)v.size()-1 ? "" : ",");
+    return s + "]";
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << vecToString(sol.rightSideView(buildTree({1,2,3,-1,5,-1,4}))) << endl; // Expected: [1,3,4]
+    cout << vecToString(sol.rightSideView(buildTree({1,-1,3}))) << endl;          // Expected: [1,3]
+    cout << vecToString(sol.rightSideView(nullptr)) << endl;                      // Expected: []
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "[1,3,4]\n[1,3]\n[]",
+    python: "[1,3,4]\n[1,3]\n[]",
+    java: "[1, 3, 4]\n[1, 3]\n[]",
+    cpp: "[1,3,4]\n[1,3]\n[]",
+  },
+},
 
 };
 

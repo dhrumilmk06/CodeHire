@@ -8604,6 +8604,954 @@ int main() {
   },
 },
 
+"two-sum-ii": {
+  id: "two-sum-ii",
+  title: "Two Sum II - Input Array Is Sorted",
+  difficulty: "Medium",
+  category: "Array • Two Pointers • Binary Search",
+  description: {
+    text: "Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers such that they add up to a specific target number. Return the indices of the two numbers as an integer array [index1, index2] where 1 ≤ index1 < index2 ≤ numbers.length.",
+    notes: [
+      "The array is 1-indexed, so return indices starting from 1.",
+      "There is exactly one solution, and you may not use the same element twice.",
+      "Your solution must use only constant extra space.",
+    ],
+  },
+  examples: [
+    {
+      input: "numbers = [2,7,11,15], target = 9",
+      output: "[1,2]",
+      explanation: "numbers[1] + numbers[2] = 2 + 7 = 9. So index1 = 1, index2 = 2.",
+    },
+    {
+      input: "numbers = [2,3,4], target = 6",
+      output: "[1,3]",
+      explanation: "numbers[1] + numbers[3] = 2 + 4 = 6.",
+    },
+    {
+      input: "numbers = [-1,0], target = -1",
+      output: "[1,2]",
+    },
+  ],
+  constraints: [
+    "2 ≤ numbers.length ≤ 3 × 10⁴",
+    "-1000 ≤ numbers[i] ≤ 1000",
+    "numbers is sorted in non-decreasing order",
+    "-1000 ≤ target ≤ 1000",
+    "The tests are generated such that there is exactly one solution",
+  ],
+  starterCode: {
+    javascript: `function twoSumII(numbers, target) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(JSON.stringify(twoSumII([2,7,11,15], 9)));  // Expected: [1,2]
+console.log(JSON.stringify(twoSumII([2,3,4], 6)));       // Expected: [1,3]
+console.log(JSON.stringify(twoSumII([-1,0], -1)));       // Expected: [1,2]`,
+
+    python: `import json
+
+def twoSumII(numbers, target):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(twoSumII([2,7,11,15], 9), separators=(',', ':')))  # Expected: [1,2]
+print(json.dumps(twoSumII([2,3,4], 6), separators=(',', ':')))       # Expected: [1,3]
+print(json.dumps(twoSumII([-1,0], -1), separators=(',', ':')))       # Expected: [1,2]`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static int[] twoSumII(int[] numbers, int target) {
+        // Write your solution here
+
+        return new int[0];
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(twoSumII(new int[]{2,7,11,15}, 9)));  // Expected: [1, 2]
+        System.out.println(Arrays.toString(twoSumII(new int[]{2,3,4}, 6)));       // Expected: [1, 3]
+        System.out.println(Arrays.toString(twoSumII(new int[]{-1,0}, -1)));       // Expected: [1, 2]
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> twoSumII(vector<int>& numbers, int target) {
+        // Write your solution here
+
+        return {};
+    }
+};
+
+string vecToString(vector<int> v) {
+    string s = "[";
+    for (int i = 0; i < (int)v.size(); i++)
+        s += to_string(v[i]) + (i == (int)v.size()-1 ? "" : ",");
+    return s + "]";
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> a = {2,7,11,15};
+    cout << vecToString(sol.twoSumII(a, 9)) << endl;   // Expected: [1,2]
+    vector<int> b = {2,3,4};
+    cout << vecToString(sol.twoSumII(b, 6)) << endl;   // Expected: [1,3]
+    vector<int> c = {-1,0};
+    cout << vecToString(sol.twoSumII(c, -1)) << endl;  // Expected: [1,2]
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "[1,2]\n[1,3]\n[1,2]",
+    python: "[1,2]\n[1,3]\n[1,2]",
+    java: "[1, 2]\n[1, 3]\n[1, 2]",
+    cpp: "[1,2]\n[1,3]\n[1,2]",
+  },
+},
+
+"palindrome-linked-list": {
+  id: "palindrome-linked-list",
+  title: "Palindrome Linked List",
+  difficulty: "Easy",
+  category: "Linked List • Two Pointers • Stack • Recursion",
+  description: {
+    text: "Given the head of a singly linked list, return true if it is a palindrome or false otherwise.",
+    notes: [
+      "Could you do it in O(n) time and O(1) space?",
+      "A palindrome reads the same forwards and backwards.",
+    ],
+  },
+  examples: [
+    {
+      input: "head = [1,2,2,1]",
+      output: "true",
+      explanation: "The list reads the same forwards and backwards.",
+    },
+    {
+      input: "head = [1,2]",
+      output: "false",
+      explanation: "1 → 2 is not the same as 2 → 1.",
+    },
+    {
+      input: "head = [1,2,3,2,1]",
+      output: "true",
+    },
+  ],
+  constraints: [
+    "The number of nodes in the list is in the range [1, 10⁵]",
+    "0 ≤ Node.val ≤ 9",
+  ],
+  starterCode: {
+    javascript: `class ListNode {
+  constructor(val, next = null) {
+    this.val = val;
+    this.next = next;
+  }
+}
+
+function buildList(arr) {
+  if (!arr.length) return null;
+  const head = new ListNode(arr[0]);
+  let cur = head;
+  for (let i = 1; i < arr.length; i++) { cur.next = new ListNode(arr[i]); cur = cur.next; }
+  return head;
+}
+
+function isPalindrome(head) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(isPalindrome(buildList([1,2,2,1])));   // Expected: true
+console.log(isPalindrome(buildList([1,2])));        // Expected: false
+console.log(isPalindrome(buildList([1,2,3,2,1]))); // Expected: true`,
+
+    python: `class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def buildList(arr):
+    if not arr:
+        return None
+    head = ListNode(arr[0])
+    cur = head
+    for v in arr[1:]:
+        cur.next = ListNode(v)
+        cur = cur.next
+    return head
+
+def isPalindrome(head):
+    # Write your solution here
+    pass
+
+# Test cases
+print(isPalindrome(buildList([1,2,2,1])))    # Expected: True
+print(isPalindrome(buildList([1,2])))         # Expected: False
+print(isPalindrome(buildList([1,2,3,2,1])))  # Expected: True`,
+
+    java: `class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int val) { this.val = val; }
+}
+
+class Solution {
+    public static ListNode buildList(int[] arr) {
+        if (arr.length == 0) return null;
+        ListNode head = new ListNode(arr[0]);
+        ListNode cur = head;
+        for (int i = 1; i < arr.length; i++) { cur.next = new ListNode(arr[i]); cur = cur.next; }
+        return head;
+    }
+
+    public static boolean isPalindrome(ListNode head) {
+        // Write your solution here
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isPalindrome(buildList(new int[]{1,2,2,1})));   // Expected: true
+        System.out.println(isPalindrome(buildList(new int[]{1,2})));        // Expected: false
+        System.out.println(isPalindrome(buildList(new int[]{1,2,3,2,1}))); // Expected: true
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int v) : val(v), next(nullptr) {}
+};
+
+ListNode* buildList(vector<int> arr) {
+    if (arr.empty()) return nullptr;
+    ListNode* head = new ListNode(arr[0]);
+    ListNode* cur = head;
+    for (int i = 1; i < (int)arr.size(); i++) { cur->next = new ListNode(arr[i]); cur = cur->next; }
+    return head;
+}
+
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        // Write your solution here
+
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << boolalpha << sol.isPalindrome(buildList({1,2,2,1})) << endl;   // Expected: true
+    cout << boolalpha << sol.isPalindrome(buildList({1,2})) << endl;        // Expected: false
+    cout << boolalpha << sol.isPalindrome(buildList({1,2,3,2,1})) << endl; // Expected: true
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "true\nfalse\ntrue",
+    python: "True\nFalse\nTrue",
+    java: "true\nfalse\ntrue",
+    cpp: "true\nfalse\ntrue",
+  },
+},
+
+"lowest-common-ancestor-bst": {
+  id: "lowest-common-ancestor-bst",
+  title: "Lowest Common Ancestor of a Binary Search Tree",
+  difficulty: "Medium",
+  category: "Tree • Depth-First Search • Binary Search Tree • Binary Tree",
+  description: {
+    text: "Given a binary search tree (BST), find the lowest common ancestor (LCA) node of two given nodes p and q. The LCA is defined as the lowest node in the tree that has both p and q as descendants (a node can be a descendant of itself).",
+    notes: [
+      "In a BST, if both p and q are less than root, LCA is in the left subtree.",
+      "If both are greater than root, LCA is in the right subtree.",
+      "Otherwise, root is the LCA.",
+    ],
+  },
+  examples: [
+    {
+      input: "root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8",
+      output: "6",
+      explanation: "The LCA of nodes 2 and 8 is 6 since 6 is the lowest node that has both as descendants.",
+    },
+    {
+      input: "root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4",
+      output: "2",
+      explanation: "The LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself.",
+    },
+    {
+      input: "root = [2,1], p = 2, q = 1",
+      output: "2",
+    },
+  ],
+  constraints: [
+    "The number of nodes in the tree is in the range [2, 10⁵]",
+    "-10⁹ ≤ Node.val ≤ 10⁹",
+    "All Node.val are unique",
+    "p != q",
+    "p and q will exist in the BST",
+  ],
+  starterCode: {
+    javascript: `class TreeNode {
+  constructor(val, left = null, right = null) {
+    this.val = val;
+    this.left = left;
+    this.right = right;
+  }
+}
+
+function buildTree(arr) {
+  if (!arr || arr.length === 0) return null;
+  const root = new TreeNode(arr[0]);
+  const queue = [root];
+  let i = 1;
+  while (i < arr.length) {
+    const node = queue.shift();
+    if (arr[i] !== null) { node.left = new TreeNode(arr[i]); queue.push(node.left); }
+    i++;
+    if (i < arr.length && arr[i] !== null) { node.right = new TreeNode(arr[i]); queue.push(node.right); }
+    i++;
+  }
+  return root;
+}
+
+function findNode(root, val) {
+  if (!root) return null;
+  if (root.val === val) return root;
+  return findNode(root.left, val) || findNode(root.right, val);
+}
+
+function lowestCommonAncestor(root, p, q) {
+  // Write your solution here
+
+}
+
+// Test cases
+const t1 = buildTree([6,2,8,0,4,7,9,null,null,3,5]);
+console.log(lowestCommonAncestor(t1, findNode(t1,2), findNode(t1,8)).val); // Expected: 6
+console.log(lowestCommonAncestor(t1, findNode(t1,2), findNode(t1,4)).val); // Expected: 2
+const t2 = buildTree([2,1]);
+console.log(lowestCommonAncestor(t2, findNode(t2,2), findNode(t2,1)).val); // Expected: 2`,
+
+    python: `from collections import deque
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def buildTree(arr):
+    if not arr:
+        return None
+    root = TreeNode(arr[0])
+    queue = deque([root])
+    i = 1
+    while i < len(arr):
+        node = queue.popleft()
+        if i < len(arr) and arr[i] is not None:
+            node.left = TreeNode(arr[i])
+            queue.append(node.left)
+        i += 1
+        if i < len(arr) and arr[i] is not None:
+            node.right = TreeNode(arr[i])
+            queue.append(node.right)
+        i += 1
+    return root
+
+def findNode(root, val):
+    if not root:
+        return None
+    if root.val == val:
+        return root
+    return findNode(root.left, val) or findNode(root.right, val)
+
+def lowestCommonAncestor(root, p, q):
+    # Write your solution here
+    pass
+
+# Test cases
+t1 = buildTree([6,2,8,0,4,7,9,None,None,3,5])
+print(lowestCommonAncestor(t1, findNode(t1,2), findNode(t1,8)).val)  # Expected: 6
+print(lowestCommonAncestor(t1, findNode(t1,2), findNode(t1,4)).val)  # Expected: 2
+t2 = buildTree([2,1])
+print(lowestCommonAncestor(t2, findNode(t2,2), findNode(t2,1)).val)  # Expected: 2`,
+
+    java: `import java.util.*;
+
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int val) { this.val = val; }
+}
+
+class Solution {
+    public static TreeNode buildTree(Integer[] arr) {
+        if (arr == null || arr.length == 0) return null;
+        TreeNode root = new TreeNode(arr[0]);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int i = 1;
+        while (i < arr.length) {
+            TreeNode node = queue.poll();
+            if (i < arr.length && arr[i] != null) { node.left = new TreeNode(arr[i]); queue.add(node.left); }
+            i++;
+            if (i < arr.length && arr[i] != null) { node.right = new TreeNode(arr[i]); queue.add(node.right); }
+            i++;
+        }
+        return root;
+    }
+
+    public static TreeNode findNode(TreeNode root, int val) {
+        if (root == null) return null;
+        if (root.val == val) return root;
+        TreeNode left = findNode(root.left, val);
+        return left != null ? left : findNode(root.right, val);
+    }
+
+    public static TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // Write your solution here
+
+        return null;
+    }
+
+    public static void main(String[] args) {
+        TreeNode t1 = buildTree(new Integer[]{6,2,8,0,4,7,9,null,null,3,5});
+        System.out.println(lowestCommonAncestor(t1, findNode(t1,2), findNode(t1,8)).val); // Expected: 6
+        System.out.println(lowestCommonAncestor(t1, findNode(t1,2), findNode(t1,4)).val); // Expected: 2
+        TreeNode t2 = buildTree(new Integer[]{2,1});
+        System.out.println(lowestCommonAncestor(t2, findNode(t2,2), findNode(t2,1)).val); // Expected: 2
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+TreeNode* buildTree(vector<int> arr) {
+    if (arr.empty()) return nullptr;
+    TreeNode* root = new TreeNode(arr[0]);
+    queue<TreeNode*> q;
+    q.push(root);
+    int i = 1;
+    while (i < (int)arr.size()) {
+        TreeNode* node = q.front(); q.pop();
+        if (i < (int)arr.size() && arr[i] != -1) { node->left = new TreeNode(arr[i]); q.push(node->left); }
+        i++;
+        if (i < (int)arr.size() && arr[i] != -1) { node->right = new TreeNode(arr[i]); q.push(node->right); }
+        i++;
+    }
+    return root;
+}
+
+TreeNode* findNode(TreeNode* root, int val) {
+    if (!root) return nullptr;
+    if (root->val == val) return root;
+    TreeNode* left = findNode(root->left, val);
+    return left ? left : findNode(root->right, val);
+}
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        // Write your solution here
+
+        return nullptr;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    TreeNode* t1 = buildTree({6,2,8,0,4,7,9,-1,-1,3,5});
+    cout << sol.lowestCommonAncestor(t1, findNode(t1,2), findNode(t1,8))->val << endl; // Expected: 6
+    cout << sol.lowestCommonAncestor(t1, findNode(t1,2), findNode(t1,4))->val << endl; // Expected: 2
+    TreeNode* t2 = buildTree({2,1});
+    cout << sol.lowestCommonAncestor(t2, findNode(t2,2), findNode(t2,1))->val << endl; // Expected: 2
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "6\n2\n2",
+    python: "6\n2\n2",
+    java: "6\n2\n2",
+    cpp: "6\n2\n2",
+  },
+},
+
+"clone-graph": {
+  id: "clone-graph",
+  title: "Clone Graph",
+  difficulty: "Medium",
+  category: "Graph • Depth-First Search • Breadth-First Search • Hash Table",
+  description: {
+    text: "Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph. Each node in the graph contains a value (int) and a list of its neighbors.",
+    notes: [
+      "The graph is represented as an adjacency list.",
+      "Use a hash map to track already-cloned nodes and avoid infinite loops.",
+      "The graph may contain cycles.",
+    ],
+  },
+  examples: [
+    {
+      input: "adjList = [[2,4],[1,3],[2,4],[1,3]]",
+      output: "[[2,4],[1,3],[2,4],[1,3]]",
+      explanation: "Node 1 connects to 2 and 4. Node 2 connects to 1 and 3. The deep copy has the same structure.",
+    },
+    {
+      input: "adjList = [[]]",
+      output: "[[]]",
+      explanation: "Single node with no neighbors.",
+    },
+    {
+      input: "adjList = []",
+      output: "[]",
+      explanation: "Empty graph.",
+    },
+  ],
+  constraints: [
+    "The number of nodes in the graph is in the range [0, 100]",
+    "1 ≤ Node.val ≤ 100",
+    "Node.val is unique for each node",
+    "There are no repeated edges and no self-loops",
+    "The graph is connected and all nodes can be visited starting from the given node",
+  ],
+  starterCode: {
+    javascript: `class Node {
+  constructor(val, neighbors = []) {
+    this.val = val;
+    this.neighbors = neighbors;
+  }
+}
+
+function buildGraph(adjList) {
+  if (!adjList || adjList.length === 0) return null;
+  const nodes = adjList.map((_, i) => new Node(i + 1));
+  adjList.forEach((neighbors, i) => {
+    nodes[i].neighbors = neighbors.map(n => nodes[n - 1]);
+  });
+  return nodes[0];
+}
+
+function graphToAdjList(node) {
+  if (!node) return [];
+  const visited = new Map();
+  const result = [];
+  const dfs = (n) => {
+    if (visited.has(n.val)) return;
+    visited.set(n.val, true);
+    result[n.val - 1] = n.neighbors.map(nb => nb.val);
+    n.neighbors.forEach(dfs);
+  };
+  dfs(node);
+  return result;
+}
+
+function cloneGraph(node) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(JSON.stringify(graphToAdjList(cloneGraph(buildGraph([[2,4],[1,3],[2,4],[1,3]])))));  // Expected: [[2,4],[1,3],[2,4],[1,3]]
+console.log(JSON.stringify(graphToAdjList(cloneGraph(buildGraph([[]]))));                        // Expected: [[]]
+console.log(JSON.stringify(graphToAdjList(cloneGraph(null))));                                   // Expected: []`,
+
+    python: `import json
+from collections import deque
+
+class Node:
+    def __init__(self, val=0, neighbors=None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+
+def buildGraph(adjList):
+    if not adjList:
+        return None
+    nodes = [Node(i+1) for i in range(len(adjList))]
+    for i, neighbors in enumerate(adjList):
+        nodes[i].neighbors = [nodes[n-1] for n in neighbors]
+    return nodes[0]
+
+def graphToAdjList(node):
+    if not node:
+        return []
+    visited = {}
+    result = []
+    def dfs(n):
+        if n.val in visited:
+            return
+        visited[n.val] = True
+        while len(result) < n.val:
+            result.append([])
+        result[n.val-1] = [nb.val for nb in n.neighbors]
+        for nb in n.neighbors:
+            dfs(nb)
+    dfs(node)
+    return result
+
+def cloneGraph(node):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(graphToAdjList(cloneGraph(buildGraph([[2,4],[1,3],[2,4],[1,3]]))), separators=(',', ':')))  # Expected: [[2,4],[1,3],[2,4],[1,3]]
+print(json.dumps(graphToAdjList(cloneGraph(buildGraph([[]]))), separators=(',', ':')))                       # Expected: [[]]
+print(json.dumps(graphToAdjList(cloneGraph(None)), separators=(',', ':')))                                   # Expected: []`,
+
+    java: `import java.util.*;
+
+class Node {
+    public int val;
+    public List<Node> neighbors;
+    public Node(int val) { this.val = val; this.neighbors = new ArrayList<>(); }
+}
+
+class Solution {
+    public static Node buildGraph(int[][] adjList) {
+        if (adjList == null || adjList.length == 0) return null;
+        Node[] nodes = new Node[adjList.length];
+        for (int i = 0; i < adjList.length; i++) nodes[i] = new Node(i+1);
+        for (int i = 0; i < adjList.length; i++)
+            for (int n : adjList[i]) nodes[i].neighbors.add(nodes[n-1]);
+        return nodes[0];
+    }
+
+    public static List<List<Integer>> graphToAdjList(Node node) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (node == null) return result;
+        Map<Integer, Boolean> visited = new HashMap<>();
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(node);
+        visited.put(node.val, true);
+        while (!queue.isEmpty()) {
+            Node cur = queue.poll();
+            while (result.size() < cur.val) result.add(new ArrayList<>());
+            List<Integer> nbVals = new ArrayList<>();
+            for (Node nb : cur.neighbors) {
+                nbVals.add(nb.val);
+                if (!visited.containsKey(nb.val)) { visited.put(nb.val, true); queue.add(nb); }
+            }
+            result.set(cur.val-1, nbVals);
+        }
+        return result;
+    }
+
+    public static Node cloneGraph(Node node) {
+        // Write your solution here
+
+        return null;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(graphToAdjList(cloneGraph(buildGraph(new int[][]{{2,4},{1,3},{2,4},{1,3}}))));  // Expected: [[2, 4], [1, 3], [2, 4], [1, 3]]
+        System.out.println(graphToAdjList(cloneGraph(buildGraph(new int[][]{{}}))));                        // Expected: [[]]
+        System.out.println(graphToAdjList(cloneGraph(null)));                                               // Expected: []
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <string>
+
+using namespace std;
+
+class Node {
+public:
+    int val;
+    vector<Node*> neighbors;
+    Node(int v) : val(v) {}
+};
+
+Node* buildGraph(vector<vector<int>> adjList) {
+    if (adjList.empty()) return nullptr;
+    vector<Node*> nodes;
+    for (int i = 0; i < (int)adjList.size(); i++) nodes.push_back(new Node(i+1));
+    for (int i = 0; i < (int)adjList.size(); i++)
+        for (int n : adjList[i]) nodes[i]->neighbors.push_back(nodes[n-1]);
+    return nodes[0];
+}
+
+string graphToString(Node* node) {
+    if (!node) return "[]";
+    unordered_map<int,vector<int>> adj;
+    queue<Node*> q;
+    unordered_map<int,bool> visited;
+    q.push(node); visited[node->val] = true;
+    while (!q.empty()) {
+        Node* cur = q.front(); q.pop();
+        for (Node* nb : cur->neighbors) {
+            adj[cur->val].push_back(nb->val);
+            if (!visited[nb->val]) { visited[nb->val] = true; q.push(nb); }
+        }
+    }
+    string s = "[";
+    for (int i = 1; i <= (int)adj.size() || i <= (int)visited.size(); i++) {
+        s += "[";
+        auto& v = adj[i];
+        for (int j = 0; j < (int)v.size(); j++) s += to_string(v[j]) + (j==(int)v.size()-1?"":",");
+        s += "]" + (i == (int)visited.size() ? "" : ",");
+    }
+    return s + "]";
+}
+
+class Solution {
+public:
+    Node* cloneGraph(Node* node) {
+        // Write your solution here
+
+        return nullptr;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << graphToString(sol.cloneGraph(buildGraph({{2,4},{1,3},{2,4},{1,3}}))) << endl; // Expected: [[2,4],[1,3],[2,4],[1,3]]
+    cout << graphToString(sol.cloneGraph(buildGraph({{}}))) << endl;                       // Expected: [[]]
+    cout << graphToString(sol.cloneGraph(nullptr)) << endl;                                // Expected: []
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "[[2,4],[1,3],[2,4],[1,3]]\n[[]]\n[]",
+    python: "[[2,4],[1,3],[2,4],[1,3]]\n[[]]\n[]",
+    java: "[[2, 4], [1, 3], [2, 4], [1, 3]]\n[[]]\n[]",
+    cpp: "[[2,4],[1,3],[2,4],[1,3]]\n[[]]\n[]",
+  },
+},
+
+"path-sum": {
+  id: "path-sum",
+  title: "Path Sum",
+  difficulty: "Easy",
+  category: "Tree • Depth-First Search • Breadth-First Search • Binary Tree",
+  description: {
+    text: "Given the root of a binary tree and an integer targetSum, return true if the tree has a root-to-leaf path such that adding up all the values along the path equals targetSum. A leaf is a node with no children.",
+    notes: [
+      "The path must go from root to a leaf node.",
+      "A leaf is a node with no left or right child.",
+    ],
+  },
+  examples: [
+    {
+      input: "root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22",
+      output: "true",
+      explanation: "The path 5 → 4 → 11 → 2 sums to 22.",
+    },
+    {
+      input: "root = [1,2,3], targetSum = 5",
+      output: "false",
+      explanation: "Paths are 1→2=3 and 1→3=4, neither equals 5.",
+    },
+    {
+      input: "root = [], targetSum = 0",
+      output: "false",
+    },
+  ],
+  constraints: [
+    "The number of nodes in the tree is in the range [0, 5000]",
+    "-1000 ≤ Node.val ≤ 1000",
+    "-1000 ≤ targetSum ≤ 1000",
+  ],
+  starterCode: {
+    javascript: `class TreeNode {
+  constructor(val, left = null, right = null) {
+    this.val = val;
+    this.left = left;
+    this.right = right;
+  }
+}
+
+function buildTree(arr) {
+  if (!arr || arr.length === 0) return null;
+  const root = new TreeNode(arr[0]);
+  const queue = [root];
+  let i = 1;
+  while (i < arr.length) {
+    const node = queue.shift();
+    if (arr[i] !== null) { node.left = new TreeNode(arr[i]); queue.push(node.left); }
+    i++;
+    if (i < arr.length && arr[i] !== null) { node.right = new TreeNode(arr[i]); queue.push(node.right); }
+    i++;
+  }
+  return root;
+}
+
+function hasPathSum(root, targetSum) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(hasPathSum(buildTree([5,4,8,11,null,13,4,7,2,null,null,null,1]), 22)); // Expected: true
+console.log(hasPathSum(buildTree([1,2,3]), 5));                                     // Expected: false
+console.log(hasPathSum(buildTree([]), 0));                                          // Expected: false`,
+
+    python: `from collections import deque
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def buildTree(arr):
+    if not arr:
+        return None
+    root = TreeNode(arr[0])
+    queue = deque([root])
+    i = 1
+    while i < len(arr):
+        node = queue.popleft()
+        if i < len(arr) and arr[i] is not None:
+            node.left = TreeNode(arr[i])
+            queue.append(node.left)
+        i += 1
+        if i < len(arr) and arr[i] is not None:
+            node.right = TreeNode(arr[i])
+            queue.append(node.right)
+        i += 1
+    return root
+
+def hasPathSum(root, targetSum):
+    # Write your solution here
+    pass
+
+# Test cases
+print(hasPathSum(buildTree([5,4,8,11,None,13,4,7,2,None,None,None,1]), 22))  # Expected: True
+print(hasPathSum(buildTree([1,2,3]), 5))                                       # Expected: False
+print(hasPathSum(buildTree([]), 0))                                            # Expected: False`,
+
+    java: `import java.util.*;
+
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int val) { this.val = val; }
+}
+
+class Solution {
+    public static TreeNode buildTree(Integer[] arr) {
+        if (arr == null || arr.length == 0) return null;
+        TreeNode root = new TreeNode(arr[0]);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int i = 1;
+        while (i < arr.length) {
+            TreeNode node = queue.poll();
+            if (i < arr.length && arr[i] != null) { node.left = new TreeNode(arr[i]); queue.add(node.left); }
+            i++;
+            if (i < arr.length && arr[i] != null) { node.right = new TreeNode(arr[i]); queue.add(node.right); }
+            i++;
+        }
+        return root;
+    }
+
+    public static boolean hasPathSum(TreeNode root, int targetSum) {
+        // Write your solution here
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(hasPathSum(buildTree(new Integer[]{5,4,8,11,null,13,4,7,2,null,null,null,1}), 22)); // Expected: true
+        System.out.println(hasPathSum(buildTree(new Integer[]{1,2,3}), 5));                                     // Expected: false
+        System.out.println(hasPathSum(buildTree(new Integer[]{}), 0));                                          // Expected: false
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+TreeNode* buildTree(vector<int> arr) {
+    if (arr.empty()) return nullptr;
+    TreeNode* root = new TreeNode(arr[0]);
+    queue<TreeNode*> q;
+    q.push(root);
+    int i = 1;
+    while (i < (int)arr.size()) {
+        TreeNode* node = q.front(); q.pop();
+        if (i < (int)arr.size() && arr[i] != -1) { node->left = new TreeNode(arr[i]); q.push(node->left); }
+        i++;
+        if (i < (int)arr.size() && arr[i] != -1) { node->right = new TreeNode(arr[i]); q.push(node->right); }
+        i++;
+    }
+    return root;
+}
+
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        // Write your solution here
+
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << boolalpha << sol.hasPathSum(buildTree({5,4,8,11,-1,13,4,7,2,-1,-1,-1,1}), 22) << endl; // Expected: true
+    cout << boolalpha << sol.hasPathSum(buildTree({1,2,3}), 5) << endl;                             // Expected: false
+    cout << boolalpha << sol.hasPathSum(nullptr, 0) << endl;                                        // Expected: false
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "true\nfalse\nfalse",
+    python: "True\nFalse\nFalse",
+    java: "true\nfalse\nfalse",
+    cpp: "true\nfalse\nfalse",
+  },
+},
+
 };
 
  

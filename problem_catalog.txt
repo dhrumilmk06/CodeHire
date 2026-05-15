@@ -31,6 +31,9 @@ merge-two-sorted-lists | Merge Two Sorted Lists | Easy | Linked List • Recursi
 pascals-triangle | Pascal's Triangle | Easy | Array • Dynamic Programming
 maximum-depth-of-binary-tree | Maximum Depth of Binary Tree | Easy | Tree • Depth-First Search • Breadth-First Search • Binary Tree
 symmetric-tree | Symmetric Tree | Easy | Tree • Depth-First Search • Breadth-First Search • Binary Tree
+linked-list-cycle | Linked List Cycle | Easy | Linked List • Hash Table • Two Pointers
+palindrome-linked-list | Palindrome Linked List | Easy | Linked List • Two Pointers • Stack • Recursion
+path-sum | Path Sum | Easy | Tree • Depth-First Search • Breadth-First Search • Binary Tree
 
 # ---- MEDIUM ----
 maximum-subarray | Maximum Subarray | Medium | Array • Dynamic Programming
@@ -75,6 +78,12 @@ longest-increasing-subsequence | Longest Increasing Subsequence | Medium | Array
 letter-combinations-phone-number | Letter Combinations of a Phone Number | Medium | String • Backtracking • Hash Table
 coin-change | Coin Change | Medium | Array • Dynamic Programming • Breadth-First Search
 rotate-array | Rotate Array | Medium | Array • Two Pointers • Math
+top-k-frequent-elements | Top K Frequent Elements | Medium | Array • Hash Table • Sorting • Heap
+min-stack | Min Stack | Medium | Stack • Design
+binary-tree-right-side-view | Binary Tree Right Side View | Medium | Tree • Breadth-First Search • Depth-First Search • Binary Tree
+two-sum-ii | Two Sum II - Input Array Is Sorted | Medium | Array • Two Pointers • Binary Search
+lowest-common-ancestor-bst | Lowest Common Ancestor of a Binary Search Tree | Medium | Tree • Depth-First Search • Binary Search Tree • Binary Tree
+clone-graph | Clone Graph | Medium | Graph • Depth-First Search • Breadth-First Search • Hash Table
 
 # ---- HARD ----
 trapping-rain-water | Trapping Rain Water | Hard | Array • Two Pointers • Dynamic Programming

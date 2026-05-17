@@ -84,6 +84,11 @@ binary-tree-right-side-view | Binary Tree Right Side View | Medium | Tree • Br
 two-sum-ii | Two Sum II - Input Array Is Sorted | Medium | Array • Two Pointers • Binary Search
 lowest-common-ancestor-bst | Lowest Common Ancestor of a Binary Search Tree | Medium | Tree • Depth-First Search • Binary Search Tree • Binary Tree
 clone-graph | Clone Graph | Medium | Graph • Depth-First Search • Breadth-First Search • Hash Table
+encode-and-decode-strings | Encode and Decode Strings | Medium | String • Design
+car-fleet | Car Fleet | Medium | Array • Stack • Sorting • Monotonic Stack
+combination-sum | Combination Sum | Medium | Array • Backtracking
+reorder-list | Reorder List | Medium | Linked List • Two Pointers • Stack • Recursion
+pacific-atlantic-water-flow | Pacific Atlantic Water Flow | Medium | Array • DFS • BFS • Matrix
 
 # ---- HARD ----
 trapping-rain-water | Trapping Rain Water | Hard | Array • Two Pointers • Dynamic Programming

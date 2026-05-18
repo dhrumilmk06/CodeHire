@@ -10233,6 +10233,587 @@ int main() {
     cpp: "[[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]]\n[[0,0]]",
   },
 },
+"kth-smallest-element-bst": {
+  id: "kth-smallest-element-bst",
+  title: "Kth Smallest Element in a BST",
+  difficulty: "Medium",
+  category: "Tree • Depth-First Search • Binary Search Tree • Binary Tree",
+  description: {
+    text: "Given the root of a binary search tree, and an integer k, return the kth smallest value (1-indexed) of all the values of the nodes in the tree.",
+    notes: [
+      "In a BST, an in-order traversal visits nodes in ascending order.",
+      "You can stop early once you have visited k nodes.",
+    ],
+  },
+  examples: [
+    {
+      input: "root = [3,1,4,null,2], k = 1",
+      output: "1",
+      explanation: "In-order traversal gives [1,2,3,4]. The 1st smallest is 1.",
+    },
+    {
+      input: "root = [5,3,6,2,4,null,null,1], k = 3",
+      output: "3",
+      explanation: "In-order traversal gives [1,2,3,4,5,6]. The 3rd smallest is 3.",
+    },
+  ],
+  constraints: [
+    "The number of nodes in the tree is n",
+    "1 ≤ k ≤ n ≤ 10⁴",
+    "0 ≤ Node.val ≤ 10⁴",
+  ],
+  starterCode: {
+    javascript: `class TreeNode {
+  constructor(val, left = null, right = null) {
+    this.val = val;
+    this.left = left;
+    this.right = right;
+  }
+}
+
+function buildTree(arr) {
+  if (!arr || arr.length === 0) return null;
+  const root = new TreeNode(arr[0]);
+  const queue = [root];
+  let i = 1;
+  while (i < arr.length) {
+    const node = queue.shift();
+    if (arr[i] !== null) { node.left = new TreeNode(arr[i]); queue.push(node.left); }
+    i++;
+    if (i < arr.length && arr[i] !== null) { node.right = new TreeNode(arr[i]); queue.push(node.right); }
+    i++;
+  }
+  return root;
+}
+
+function kthSmallest(root, k) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(kthSmallest(buildTree([3,1,4,null,2]), 1));          // Expected: 1
+console.log(kthSmallest(buildTree([5,3,6,2,4,null,null,1]), 3)); // Expected: 3`,
+
+    python: `from collections import deque
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def buildTree(arr):
+    if not arr:
+        return None
+    root = TreeNode(arr[0])
+    queue = deque([root])
+    i = 1
+    while i < len(arr):
+        node = queue.popleft()
+        if i < len(arr) and arr[i] is not None:
+            node.left = TreeNode(arr[i])
+            queue.append(node.left)
+        i += 1
+        if i < len(arr) and arr[i] is not None:
+            node.right = TreeNode(arr[i])
+            queue.append(node.right)
+        i += 1
+    return root
+
+def kthSmallest(root, k):
+    # Write your solution here
+    pass
+
+# Test cases
+print(kthSmallest(buildTree([3,1,4,None,2]), 1))           # Expected: 1
+print(kthSmallest(buildTree([5,3,6,2,4,None,None,1]), 3))  # Expected: 3`,
+
+    java: `import java.util.*;
+
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int val) { this.val = val; }
+}
+
+class Solution {
+    public static TreeNode buildTree(Integer[] arr) {
+        if (arr == null || arr.length == 0) return null;
+        TreeNode root = new TreeNode(arr[0]);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int i = 1;
+        while (i < arr.length) {
+            TreeNode node = queue.poll();
+            if (i < arr.length && arr[i] != null) { node.left = new TreeNode(arr[i]); queue.add(node.left); }
+            i++;
+            if (i < arr.length && arr[i] != null) { node.right = new TreeNode(arr[i]); queue.add(node.right); }
+            i++;
+        }
+        return root;
+    }
+
+    public static int kthSmallest(TreeNode root, int k) {
+        // Write your solution here
+
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(kthSmallest(buildTree(new Integer[]{3,1,4,null,2}), 1));           // Expected: 1
+        System.out.println(kthSmallest(buildTree(new Integer[]{5,3,6,2,4,null,null,1}), 3));  // Expected: 3
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+TreeNode* buildTree(vector<int> arr) {
+    if (arr.empty()) return nullptr;
+    TreeNode* root = new TreeNode(arr[0]);
+    queue<TreeNode*> q;
+    q.push(root);
+    int i = 1;
+    while (i < (int)arr.size()) {
+        TreeNode* node = q.front(); q.pop();
+        if (i < (int)arr.size() && arr[i] != -1) { node->left = new TreeNode(arr[i]); q.push(node->left); }
+        i++;
+        if (i < (int)arr.size() && arr[i] != -1) { node->right = new TreeNode(arr[i]); q.push(node->right); }
+        i++;
+    }
+    return root;
+}
+
+class Solution {
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        // Write your solution here
+
+        return -1;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << sol.kthSmallest(buildTree({3,1,4,-1,2}), 1) << endl;          // Expected: 1
+    cout << sol.kthSmallest(buildTree({5,3,6,2,4,-1,-1,1}), 3) << endl;   // Expected: 3
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "1\n3",
+    python: "1\n3",
+    java: "1\n3",
+    cpp: "1\n3",
+  },
+},
+
+"subsets": {
+  id: "subsets",
+  title: "Subsets",
+  difficulty: "Medium",
+  category: "Array • Backtracking • Bit Manipulation",
+  description: {
+    text: "Given an integer array nums of unique elements, return all possible subsets (the power set). The solution set must not contain duplicate subsets. Return the solution in any order.",
+    notes: [
+      "The power set of n elements contains 2ⁿ subsets.",
+      "Include the empty subset [] in your result.",
+      "Can be solved with backtracking or bit manipulation.",
+    ],
+  },
+  examples: [
+    {
+      input: "nums = [1,2,3]",
+      output: "[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]",
+      explanation: "All 2³ = 8 possible subsets of [1,2,3].",
+    },
+    {
+      input: "nums = [0]",
+      output: "[[],[0]]",
+      explanation: "The only subsets of [0] are the empty set and [0] itself.",
+    },
+  ],
+  constraints: [
+    "1 ≤ nums.length ≤ 10",
+    "-10 ≤ nums[i] ≤ 10",
+    "All the numbers of nums are unique",
+  ],
+  starterCode: {
+    javascript: `function subsets(nums) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(JSON.stringify(subsets([1,2,3]))); // Expected: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+console.log(JSON.stringify(subsets([0])));      // Expected: [[],[0]]`,
+
+    python: `import json
+
+def subsets(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(subsets([1,2,3]), separators=(',', ':')))  # Expected: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+print(json.dumps(subsets([0]), separators=(',', ':')))       # Expected: [[],[0]]`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static List<List<Integer>> subsets(int[] nums) {
+        // Write your solution here
+
+        return new ArrayList<>();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(subsets(new int[]{1,2,3})); // Expected: [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
+        System.out.println(subsets(new int[]{0}));      // Expected: [[], [0]]
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        // Write your solution here
+
+        return {};
+    }
+};
+
+string matrixToString(vector<vector<int>> res) {
+    string s = "[";
+    for (int i = 0; i < (int)res.size(); i++) {
+        s += "[";
+        for (int j = 0; j < (int)res[i].size(); j++)
+            s += to_string(res[i][j]) + (j==(int)res[i].size()-1?"":",");
+        s += "]" + (i==(int)res.size()-1?"":",");
+    }
+    return s + "]";
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> a = {1,2,3};
+    cout << matrixToString(sol.subsets(a)) << endl; // Expected: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+    vector<int> b = {0};
+    cout << matrixToString(sol.subsets(b)) << endl; // Expected: [[],[0]]
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]\n[[],[0]]",
+    python: "[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]\n[[],[0]]",
+    java: "[[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]\n[[], [0]]",
+    cpp: "[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]\n[[],[0]]",
+  },
+},
+
+"hand-of-straights": {
+  id: "hand-of-straights",
+  title: "Hand of Straights",
+  difficulty: "Medium",
+  category: "Array • Hash Table • Greedy • Sorting",
+  description: {
+    text: "Alice has some number of cards and she wants to rearrange the cards into groups so that each group is of size groupSize, and consists of groupSize consecutive cards. Given an integer array hand where hand[i] is the value written on the ith card and an integer groupSize, return true if she can rearrange the cards, or false otherwise.",
+    notes: [
+      "Sort the cards and greedily form groups starting from the smallest card.",
+      "Use a frequency map to track remaining cards.",
+    ],
+  },
+  examples: [
+    {
+      input: "hand = [1,2,3,6,2,3,4,7,8], groupSize = 3",
+      output: "true",
+      explanation: "Cards can be rearranged as [1,2,3], [2,3,4], [6,7,8].",
+    },
+    {
+      input: "hand = [1,2,3,4,5], groupSize = 4",
+      output: "false",
+      explanation: "Cannot form groups of size 4 with consecutive cards.",
+    },
+  ],
+  constraints: [
+    "1 ≤ hand.length ≤ 10⁴",
+    "0 ≤ hand[i] ≤ 10⁹",
+    "1 ≤ groupSize ≤ hand.length",
+  ],
+  starterCode: {
+    javascript: `function isNStraightHand(hand, groupSize) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(isNStraightHand([1,2,3,6,2,3,4,7,8], 3)); // Expected: true
+console.log(isNStraightHand([1,2,3,4,5], 4));           // Expected: false`,
+
+    python: `def isNStraightHand(hand, groupSize):
+    # Write your solution here
+    pass
+
+# Test cases
+print(isNStraightHand([1,2,3,6,2,3,4,7,8], 3))  # Expected: True
+print(isNStraightHand([1,2,3,4,5], 4))            # Expected: False`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static boolean isNStraightHand(int[] hand, int groupSize) {
+        // Write your solution here
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isNStraightHand(new int[]{1,2,3,6,2,3,4,7,8}, 3)); // Expected: true
+        System.out.println(isNStraightHand(new int[]{1,2,3,4,5}, 4));           // Expected: false
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    bool isNStraightHand(vector<int>& hand, int groupSize) {
+        // Write your solution here
+
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> a = {1,2,3,6,2,3,4,7,8};
+    cout << boolalpha << sol.isNStraightHand(a, 3) << endl; // Expected: true
+    vector<int> b = {1,2,3,4,5};
+    cout << boolalpha << sol.isNStraightHand(b, 4) << endl; // Expected: false
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "true\nfalse",
+    python: "True\nFalse",
+    java: "true\nfalse",
+    cpp: "true\nfalse",
+  },
+},
+
+"partition-equal-subset-sum": {
+  id: "partition-equal-subset-sum",
+  title: "Partition Equal Subset Sum",
+  difficulty: "Medium",
+  category: "Array • Dynamic Programming",
+  description: {
+    text: "Given an integer array nums, return true if you can partition the array into two subsets such that the sum of the elements in both subsets is equal, or false otherwise.",
+    notes: [
+      "If the total sum is odd, it's impossible to partition equally.",
+      "This is a 0/1 knapsack problem — find a subset that sums to totalSum / 2.",
+      "Use a boolean DP set tracking all reachable sums.",
+    ],
+  },
+  examples: [
+    {
+      input: "nums = [1,5,11,5]",
+      output: "true",
+      explanation: "The array can be partitioned as [1,5,5] and [11], both summing to 11.",
+    },
+    {
+      input: "nums = [1,2,3,5]",
+      output: "false",
+      explanation: "The array cannot be partitioned into equal sum subsets.",
+    },
+  ],
+  constraints: [
+    "1 ≤ nums.length ≤ 200",
+    "1 ≤ nums[i] ≤ 100",
+  ],
+  starterCode: {
+    javascript: `function canPartition(nums) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(canPartition([1,5,11,5]));  // Expected: true
+console.log(canPartition([1,2,3,5]));   // Expected: false`,
+
+    python: `def canPartition(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(canPartition([1,5,11,5]))  # Expected: True
+print(canPartition([1,2,3,5]))   # Expected: False`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static boolean canPartition(int[] nums) {
+        // Write your solution here
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(canPartition(new int[]{1,5,11,5}));  // Expected: true
+        System.out.println(canPartition(new int[]{1,2,3,5}));   // Expected: false
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        // Write your solution here
+
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> a = {1,5,11,5};
+    cout << boolalpha << sol.canPartition(a) << endl; // Expected: true
+    vector<int> b = {1,2,3,5};
+    cout << boolalpha << sol.canPartition(b) << endl; // Expected: false
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "true\nfalse",
+    python: "True\nFalse",
+    java: "true\nfalse",
+    cpp: "true\nfalse",
+  },
+},
+
+"burst-balloons": {
+  id: "burst-balloons",
+  title: "Burst Balloons",
+  difficulty: "Hard",
+  category: "Array • Dynamic Programming • Divide and Conquer",
+  description: {
+    text: "You are given n balloons, indexed from 0 to n - 1. Each balloon is painted with a number on it represented by an array nums. You are asked to burst all the balloons. If you burst the ith balloon, you will get nums[i - 1] * nums[i] * nums[i + 1] coins. If i - 1 or i + 1 goes out of bounds of the array, treat it as if there is a balloon with a 1 painted on it. Return the maximum coins you can collect by bursting the balloons wisely.",
+    notes: [
+      "Think about which balloon to burst LAST in a range, not first.",
+      "Use interval DP: dp[left][right] = max coins from bursting all balloons between left and right.",
+      "Pad the array with 1s on both ends to handle boundary conditions.",
+    ],
+  },
+  examples: [
+    {
+      input: "nums = [3,1,5,8]",
+      output: "167",
+      explanation: "Burst order: [3,1,5,8] → [3,5,8] → [3,8] → [8] → []. Coins: 3×1×5 + 3×5×8 + 1×3×8 + 1×8×1 = 167.",
+    },
+    {
+      input: "nums = [1,5]",
+      output: "10",
+      explanation: "Burst 1 first: 1×1×5=5. Then burst 5: 1×5×1=5. Total = 10.",
+    },
+  ],
+  constraints: [
+    "n == nums.length",
+    "1 ≤ n ≤ 300",
+    "0 ≤ nums[i] ≤ 100",
+  ],
+  starterCode: {
+    javascript: `function maxCoins(nums) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(maxCoins([3,1,5,8])); // Expected: 167
+console.log(maxCoins([1,5]));      // Expected: 10`,
+
+    python: `def maxCoins(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(maxCoins([3,1,5,8]))  # Expected: 167
+print(maxCoins([1,5]))       # Expected: 10`,
+
+    java: `class Solution {
+    public static int maxCoins(int[] nums) {
+        // Write your solution here
+
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(maxCoins(new int[]{3,1,5,8})); // Expected: 167
+        System.out.println(maxCoins(new int[]{1,5}));      // Expected: 10
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int maxCoins(vector<int>& nums) {
+        // Write your solution here
+
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> a = {3,1,5,8};
+    cout << sol.maxCoins(a) << endl; // Expected: 167
+    vector<int> b = {1,5};
+    cout << sol.maxCoins(b) << endl; // Expected: 10
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "167\n10",
+    python: "167\n10",
+    java: "167\n10",
+    cpp: "167\n10",
+  },
+},
 };
 
  

@@ -89,6 +89,11 @@ car-fleet | Car Fleet | Medium | Array • Stack • Sorting • Monotonic Stack
 combination-sum | Combination Sum | Medium | Array • Backtracking
 reorder-list | Reorder List | Medium | Linked List • Two Pointers • Stack • Recursion
 pacific-atlantic-water-flow | Pacific Atlantic Water Flow | Medium | Array • DFS • BFS • Matrix
+kth-smallest-element-bst | Kth Smallest Element in a BST | Medium | Tree • Depth-First Search • Binary Search Tree • Binary Tree
+subsets | Subsets | Medium | Array • Backtracking • Bit Manipulation
+hand-of-straights | Hand of Straights | Medium | Array • Hash Table • Greedy • Sorting
+partition-equal-subset-sum | Partition Equal Subset Sum | Medium | Array • Dynamic Programming
+burst-balloons | Burst Balloons | Hard | Array • Dynamic Programming • Divide and Conquer
 
 # ---- HARD ----
 trapping-rain-water | Trapping Rain Water | Hard | Array • Two Pointers • Dynamic Programming

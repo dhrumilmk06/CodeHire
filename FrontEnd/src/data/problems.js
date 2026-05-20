@@ -10814,6 +10814,708 @@ int main() {
     cpp: "167\n10",
   },
 },
+
+"meeting-rooms-ii": {
+  id: "meeting-rooms-ii",
+  title: "Meeting Rooms II",
+  difficulty: "Medium",
+  category: "Array • Greedy • Sorting • Heap",
+  description: {
+    text: "Given an array of meeting time intervals where intervals[i] = [start, end], return the minimum number of conference rooms required.",
+    notes: [
+      "Sort intervals by start time.",
+      "Use a min-heap to track the earliest ending meeting.",
+      "If the next meeting starts after the earliest ending, reuse that room.",
+    ],
+  },
+  examples: [
+    {
+      input: "intervals = [[0,30],[5,10],[15,20]]",
+      output: "2",
+      explanation: "Meeting [0,30] overlaps with [5,10] requiring 2 rooms. [15,20] reuses the room freed by [5,10].",
+    },
+    {
+      input: "intervals = [[7,10],[2,4]]",
+      output: "1",
+      explanation: "The two meetings do not overlap so only 1 room is needed.",
+    },
+    {
+      input: "intervals = [[1,5],[2,6],[3,7]]",
+      output: "3",
+      explanation: "All three meetings overlap at some point requiring 3 rooms.",
+    },
+  ],
+  constraints: [
+    "0 ≤ intervals.length ≤ 10⁴",
+    "0 ≤ start < end ≤ 10⁶",
+  ],
+  starterCode: {
+    javascript: `function minMeetingRooms(intervals) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(minMeetingRooms([[0,30],[5,10],[15,20]])); // Expected: 2
+console.log(minMeetingRooms([[7,10],[2,4]]));           // Expected: 1
+console.log(minMeetingRooms([[1,5],[2,6],[3,7]]));      // Expected: 3`,
+
+    python: `def minMeetingRooms(intervals):
+    # Write your solution here
+    pass
+
+# Test cases
+print(minMeetingRooms([[0,30],[5,10],[15,20]]))  # Expected: 2
+print(minMeetingRooms([[7,10],[2,4]]))            # Expected: 1
+print(minMeetingRooms([[1,5],[2,6],[3,7]]))       # Expected: 3`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static int minMeetingRooms(int[][] intervals) {
+        // Write your solution here
+
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(minMeetingRooms(new int[][]{{0,30},{5,10},{15,20}})); // Expected: 2
+        System.out.println(minMeetingRooms(new int[][]{{7,10},{2,4}}));           // Expected: 1
+        System.out.println(minMeetingRooms(new int[][]{{1,5},{2,6},{3,7}}));      // Expected: 3
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int minMeetingRooms(vector<vector<int>>& intervals) {
+        // Write your solution here
+
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<vector<int>> a = {{0,30},{5,10},{15,20}};
+    cout << sol.minMeetingRooms(a) << endl; // Expected: 2
+    vector<vector<int>> b = {{7,10},{2,4}};
+    cout << sol.minMeetingRooms(b) << endl; // Expected: 1
+    vector<vector<int>> c = {{1,5},{2,6},{3,7}};
+    cout << sol.minMeetingRooms(c) << endl; // Expected: 3
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "2\n1\n3",
+    python: "2\n1\n3",
+    java: "2\n1\n3",
+    cpp: "2\n1\n3",
+  },
+},
+
+"rotate-list": {
+  id: "rotate-list",
+  title: "Rotate List",
+  difficulty: "Medium",
+  category: "Linked List • Two Pointers",
+  description: {
+    text: "Given the head of a linked list, rotate the list to the right by k places.",
+    notes: [
+      "k may be greater than the length of the list — use modulo.",
+      "Rotating by the list length results in the same list.",
+      "Connect the tail to the head to form a circle, then break at the right point.",
+    ],
+  },
+  examples: [
+    {
+      input: "head = [1,2,3,4,5], k = 2",
+      output: "[4,5,1,2,3]",
+      explanation: "Rotate right by 1: [5,1,2,3,4]. Rotate right by 2: [4,5,1,2,3].",
+    },
+    {
+      input: "head = [0,1,2], k = 4",
+      output: "[2,0,1]",
+      explanation: "k=4 mod 3=1. Rotate right by 1: [2,0,1].",
+    },
+    {
+      input: "head = [1,2], k = 0",
+      output: "[1,2]",
+      explanation: "k=0 means no rotation.",
+    },
+  ],
+  constraints: [
+    "The number of nodes in the list is in the range [0, 500]",
+    "-100 ≤ Node.val ≤ 100",
+    "0 ≤ k ≤ 2 × 10⁹",
+  ],
+  starterCode: {
+    javascript: `class ListNode {
+  constructor(val, next = null) {
+    this.val = val;
+    this.next = next;
+  }
+}
+
+function buildList(arr) {
+  if (!arr.length) return null;
+  const head = new ListNode(arr[0]);
+  let cur = head;
+  for (let i = 1; i < arr.length; i++) { cur.next = new ListNode(arr[i]); cur = cur.next; }
+  return head;
+}
+
+function listToArray(head) {
+  const res = [];
+  while (head) { res.push(head.val); head = head.next; }
+  return res;
+}
+
+function rotateRight(head, k) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(JSON.stringify(listToArray(rotateRight(buildList([1,2,3,4,5]), 2)))); // Expected: [4,5,1,2,3]
+console.log(JSON.stringify(listToArray(rotateRight(buildList([0,1,2]), 4))));      // Expected: [2,0,1]
+console.log(JSON.stringify(listToArray(rotateRight(buildList([1,2]), 0))));        // Expected: [1,2]`,
+
+    python: `import json
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def buildList(arr):
+    if not arr:
+        return None
+    head = ListNode(arr[0])
+    cur = head
+    for v in arr[1:]:
+        cur.next = ListNode(v)
+        cur = cur.next
+    return head
+
+def listToArray(head):
+    res = []
+    while head:
+        res.append(head.val)
+        head = head.next
+    return res
+
+def rotateRight(head, k):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(listToArray(rotateRight(buildList([1,2,3,4,5]), 2)), separators=(',', ':')))  # Expected: [4,5,1,2,3]
+print(json.dumps(listToArray(rotateRight(buildList([0,1,2]), 4)), separators=(',', ':')))       # Expected: [2,0,1]
+print(json.dumps(listToArray(rotateRight(buildList([1,2]), 0)), separators=(',', ':')))         # Expected: [1,2]`,
+
+    java: `import java.util.*;
+
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int val) { this.val = val; }
+}
+
+class Solution {
+    public static ListNode buildList(int[] arr) {
+        if (arr.length == 0) return null;
+        ListNode head = new ListNode(arr[0]);
+        ListNode cur = head;
+        for (int i = 1; i < arr.length; i++) { cur.next = new ListNode(arr[i]); cur = cur.next; }
+        return head;
+    }
+
+    public static List<Integer> listToArray(ListNode head) {
+        List<Integer> res = new ArrayList<>();
+        while (head != null) { res.add(head.val); head = head.next; }
+        return res;
+    }
+
+    public static ListNode rotateRight(ListNode head, int k) {
+        // Write your solution here
+
+        return head;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(listToArray(rotateRight(buildList(new int[]{1,2,3,4,5}), 2))); // Expected: [4, 5, 1, 2, 3]
+        System.out.println(listToArray(rotateRight(buildList(new int[]{0,1,2}), 4)));      // Expected: [2, 0, 1]
+        System.out.println(listToArray(rotateRight(buildList(new int[]{1,2}), 0)));        // Expected: [1, 2]
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int v) : val(v), next(nullptr) {}
+};
+
+ListNode* buildList(vector<int> arr) {
+    if (arr.empty()) return nullptr;
+    ListNode* head = new ListNode(arr[0]);
+    ListNode* cur = head;
+    for (int i = 1; i < (int)arr.size(); i++) { cur->next = new ListNode(arr[i]); cur = cur->next; }
+    return head;
+}
+
+string listToString(ListNode* head) {
+    string s = "[";
+    while (head) { s += to_string(head->val) + (head->next ? "," : ""); head = head->next; }
+    return s + "]";
+}
+
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        // Write your solution here
+
+        return head;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << listToString(sol.rotateRight(buildList({1,2,3,4,5}), 2)) << endl; // Expected: [4,5,1,2,3]
+    cout << listToString(sol.rotateRight(buildList({0,1,2}), 4)) << endl;      // Expected: [2,0,1]
+    cout << listToString(sol.rotateRight(buildList({1,2}), 0)) << endl;        // Expected: [1,2]
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "[4,5,1,2,3]\n[2,0,1]\n[1,2]",
+    python: "[4,5,1,2,3]\n[2,0,1]\n[1,2]",
+    java: "[4, 5, 1, 2, 3]\n[2, 0, 1]\n[1, 2]",
+    cpp: "[4,5,1,2,3]\n[2,0,1]\n[1,2]",
+  },
+},
+
+"construct-binary-tree-preorder-inorder": {
+  id: "construct-binary-tree-preorder-inorder",
+  title: "Construct Binary Tree from Preorder and Inorder Traversal",
+  difficulty: "Medium",
+  category: "Array • Hash Table • Divide and Conquer • Tree • Binary Tree",
+  description: {
+    text: "Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree.",
+    notes: [
+      "The first element of preorder is always the root.",
+      "Find the root in inorder — everything to its left is the left subtree, everything to the right is the right subtree.",
+      "Use a hash map for O(1) index lookup in the inorder array.",
+    ],
+  },
+  examples: [
+    {
+      input: "preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]",
+      output: "[3,9,20,null,null,15,7]",
+      explanation: "Root is 3. Left subtree inorder=[9], right subtree inorder=[15,20,7].",
+    },
+    {
+      input: "preorder = [-1], inorder = [-1]",
+      output: "[-1]",
+      explanation: "Single node tree with value -1.",
+    },
+  ],
+  constraints: [
+    "1 ≤ preorder.length ≤ 3000",
+    "inorder.length == preorder.length",
+    "-3000 ≤ preorder[i], inorder[i] ≤ 3000",
+    "preorder and inorder consist of unique values",
+    "Each value of inorder also appears in preorder",
+    "preorder is guaranteed to be the preorder traversal of the tree",
+    "inorder is guaranteed to be the inorder traversal of the tree",
+  ],
+  starterCode: {
+    javascript: `class TreeNode {
+  constructor(val, left = null, right = null) {
+    this.val = val;
+    this.left = left;
+    this.right = right;
+  }
+}
+
+function treeToArray(root) {
+  if (!root) return [];
+  const res = [];
+  const queue = [root];
+  while (queue.length) {
+    const node = queue.shift();
+    if (node) { res.push(node.val); queue.push(node.left); queue.push(node.right); }
+    else res.push(null);
+  }
+  while (res[res.length - 1] === null) res.pop();
+  return res;
+}
+
+function buildTree(preorder, inorder) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(JSON.stringify(treeToArray(buildTree([3,9,20,15,7], [9,3,15,20,7])))); // Expected: [3,9,20,null,null,15,7]
+console.log(JSON.stringify(treeToArray(buildTree([-1], [-1]))));                    // Expected: [-1]`,
+
+    python: `import json
+from collections import deque
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def treeToArray(root):
+    if not root:
+        return []
+    res = []
+    queue = deque([root])
+    while queue:
+        node = queue.popleft()
+        if node:
+            res.append(node.val)
+            queue.append(node.left)
+            queue.append(node.right)
+        else:
+            res.append(None)
+    while res and res[-1] is None:
+        res.pop()
+    return res
+
+def buildTree(preorder, inorder):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(treeToArray(buildTree([3,9,20,15,7], [9,3,15,20,7])), separators=(',', ':')))  # Expected: [3,9,20,null,null,15,7]
+print(json.dumps(treeToArray(buildTree([-1], [-1])), separators=(',', ':')))                      # Expected: [-1]`,
+
+    java: `import java.util.*;
+
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int val) { this.val = val; }
+}
+
+class Solution {
+    public static List<Integer> treeToArray(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) return res;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            if (node != null) { res.add(node.val); queue.add(node.left); queue.add(node.right); }
+            else res.add(null);
+        }
+        while (!res.isEmpty() && res.get(res.size()-1) == null) res.remove(res.size()-1);
+        return res;
+    }
+
+    public static TreeNode buildTree(int[] preorder, int[] inorder) {
+        // Write your solution here
+
+        return null;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(treeToArray(buildTree(new int[]{3,9,20,15,7}, new int[]{9,3,15,20,7}))); // Expected: [3, 9, 20, null, null, 15, 7]
+        System.out.println(treeToArray(buildTree(new int[]{-1}, new int[]{-1})));                    // Expected: [-1]
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <queue>
+#include <string>
+
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+string treeToString(TreeNode* root) {
+    if (!root) return "[]";
+    string s = "[";
+    queue<TreeNode*> q;
+    q.push(root);
+    while (!q.empty()) {
+        TreeNode* node = q.front(); q.pop();
+        if (node) {
+            s += to_string(node->val) + ",";
+            q.push(node->left);
+            q.push(node->right);
+        } else {
+            s += "null,";
+        }
+    }
+    while (s.back() == ',' || s.back() == 'l') {
+        if (s.size() >= 4 && s.substr(s.size()-5) == "null,") s = s.substr(0, s.size()-5);
+        else if (s.back() == ',') { s.pop_back(); break; }
+        else break;
+    }
+    return s + "]";
+}
+
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        // Write your solution here
+
+        return nullptr;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> pre1 = {3,9,20,15,7}, in1 = {9,3,15,20,7};
+    cout << treeToString(sol.buildTree(pre1, in1)) << endl; // Expected: [3,9,20,null,null,15,7]
+    vector<int> pre2 = {-1}, in2 = {-1};
+    cout << treeToString(sol.buildTree(pre2, in2)) << endl; // Expected: [-1]
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "[3,9,20,null,null,15,7]\n[-1]",
+    python: "[3,9,20,null,null,15,7]\n[-1]",
+    java: "[3, 9, 20, null, null, 15, 7]\n[-1]",
+    cpp: "[3,9,20,null,null,15,7]\n[-1]",
+  },
+},
+
+"word-ladder": {
+  id: "word-ladder",
+  title: "Word Ladder",
+  difficulty: "Hard",
+  category: "Hash Table • String • Breadth-First Search",
+  description: {
+    text: "A transformation sequence from word beginWord to word endWord using a dictionary wordList is a sequence beginWord → s1 → s2 → ... → sk such that every adjacent pair of words differs by a single letter, and every si for 1 ≤ i ≤ k is in wordList. Given beginWord, endWord, and wordList, return the number of words in the shortest transformation sequence from beginWord to endWord, or 0 if no such sequence exists.",
+    notes: [
+      "Use BFS to find the shortest path — each level represents one transformation.",
+      "At each step try replacing every character with a-z and check if it exists in the word set.",
+      "Remove words from the set once visited to avoid cycles.",
+    ],
+  },
+  examples: [
+    {
+      input: `beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]`,
+      output: "5",
+      explanation: `Shortest sequence: "hit" → "hot" → "dot" → "dog" → "cog" (5 words).`,
+    },
+    {
+      input: `beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log"]`,
+      output: "0",
+      explanation: `"cog" is not in wordList so no valid transformation sequence exists.`,
+    },
+  ],
+  constraints: [
+    "1 ≤ beginWord.length ≤ 10",
+    "endWord.length == beginWord.length",
+    "1 ≤ wordList.length ≤ 5000",
+    "wordList[i].length == beginWord.length",
+    "beginWord, endWord, and wordList[i] consist of lowercase English letters",
+    "beginWord != endWord",
+    "All the words in wordList are unique",
+  ],
+  starterCode: {
+    javascript: `function ladderLength(beginWord, endWord, wordList) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(ladderLength("hit", "cog", ["hot","dot","dog","lot","log","cog"])); // Expected: 5
+console.log(ladderLength("hit", "cog", ["hot","dot","dog","lot","log"]));        // Expected: 0`,
+
+    python: `def ladderLength(beginWord, endWord, wordList):
+    # Write your solution here
+    pass
+
+# Test cases
+print(ladderLength("hit", "cog", ["hot","dot","dog","lot","log","cog"]))  # Expected: 5
+print(ladderLength("hit", "cog", ["hot","dot","dog","lot","log"]))         # Expected: 0`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        // Write your solution here
+
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(ladderLength("hit", "cog", Arrays.asList("hot","dot","dog","lot","log","cog"))); // Expected: 5
+        System.out.println(ladderLength("hit", "cog", Arrays.asList("hot","dot","dog","lot","log")));        // Expected: 0
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <string>
+#include <unordered_set>
+#include <queue>
+
+using namespace std;
+
+class Solution {
+public:
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        // Write your solution here
+
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<string> w1 = {"hot","dot","dog","lot","log","cog"};
+    cout << sol.ladderLength("hit", "cog", w1) << endl; // Expected: 5
+    vector<string> w2 = {"hot","dot","dog","lot","log"};
+    cout << sol.ladderLength("hit", "cog", w2) << endl; // Expected: 0
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "5\n0",
+    python: "5\n0",
+    java: "5\n0",
+    cpp: "5\n0",
+  },
+},
+
+"maximum-profit-job-scheduling": {
+  id: "maximum-profit-job-scheduling",
+  title: "Maximum Profit in Job Scheduling",
+  difficulty: "Hard",
+  category: "Array • Binary Search • Dynamic Programming • Sorting",
+  description: {
+    text: "We have n jobs, where every job is scheduled to be done from startTime[i] to endTime[i], obtaining a profit of profit[i]. You're given the startTime, endTime and profit arrays. Return the maximum profit you can take such that there are no two jobs in the subset with overlapping time ranges. If you choose a job that ends at time X you will be able to start another job that starts at time X.",
+    notes: [
+      "Sort jobs by end time.",
+      "Use DP where dp[i] = max profit considering first i jobs.",
+      "For each job, binary search for the latest non-overlapping job.",
+    ],
+  },
+  examples: [
+    {
+      input: "startTime = [1,2,3,3], endTime = [3,4,5,6], profit = [50,10,40,70]",
+      output: "120",
+      explanation: "Take jobs [1,3,50] and [3,6,70] for total profit 120.",
+    },
+    {
+      input: "startTime = [1,2,3,4,6], endTime = [3,5,10,6,9], profit = [20,20,100,70,60]",
+      output: "150",
+      explanation: "Take jobs [1,3,20], [4,6,70], [6,9,60] for total profit 150.",
+    },
+    {
+      input: "startTime = [1,1,1], endTime = [2,3,4], profit = [5,6,4]",
+      output: "6",
+      explanation: "Take the single job with profit 6.",
+    },
+  ],
+  constraints: [
+    "1 ≤ startTime.length == endTime.length == profit.length ≤ 5 × 10⁴",
+    "1 ≤ startTime[i] < endTime[i] ≤ 10⁹",
+    "1 ≤ profit[i] ≤ 10⁴",
+  ],
+  starterCode: {
+    javascript: `function jobScheduling(startTime, endTime, profit) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(jobScheduling([1,2,3,3], [3,4,5,6], [50,10,40,70]));          // Expected: 120
+console.log(jobScheduling([1,2,3,4,6], [3,5,10,6,9], [20,20,100,70,60])); // Expected: 150
+console.log(jobScheduling([1,1,1], [2,3,4], [5,6,4]));                    // Expected: 6`,
+
+    python: `def jobScheduling(startTime, endTime, profit):
+    # Write your solution here
+    pass
+
+# Test cases
+print(jobScheduling([1,2,3,3], [3,4,5,6], [50,10,40,70]))           # Expected: 120
+print(jobScheduling([1,2,3,4,6], [3,5,10,6,9], [20,20,100,70,60]))  # Expected: 150
+print(jobScheduling([1,1,1], [2,3,4], [5,6,4]))                     # Expected: 6`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
+        // Write your solution here
+
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(jobScheduling(new int[]{1,2,3,3}, new int[]{3,4,5,6}, new int[]{50,10,40,70}));           // Expected: 120
+        System.out.println(jobScheduling(new int[]{1,2,3,4,6}, new int[]{3,5,10,6,9}, new int[]{20,20,100,70,60}));  // Expected: 150
+        System.out.println(jobScheduling(new int[]{1,1,1}, new int[]{2,3,4}, new int[]{5,6,4}));                     // Expected: 6
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        // Write your solution here
+
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> s1={1,2,3,3}, e1={3,4,5,6}, p1={50,10,40,70};
+    cout << sol.jobScheduling(s1, e1, p1) << endl; // Expected: 120
+    vector<int> s2={1,2,3,4,6}, e2={3,5,10,6,9}, p2={20,20,100,70,60};
+    cout << sol.jobScheduling(s2, e2, p2) << endl; // Expected: 150
+    vector<int> s3={1,1,1}, e3={2,3,4}, p3={5,6,4};
+    cout << sol.jobScheduling(s3, e3, p3) << endl; // Expected: 6
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "120\n150\n6",
+    python: "120\n150\n6",
+    java: "120\n150\n6",
+    cpp: "120\n150\n6",
+  },
+},
 };
 
  

@@ -79,6 +79,8 @@ model Session {
   host               User      @relation("HostSessions", fields: [hostId], references: [clerkId])
   participant        User?     @relation("ParticipantSessions", fields: [participantClerkId], references: [clerkId])
   snapshots          WhiteboardSnapshot[]
+  decisionStatus    String?
+  decisionSentAt    DateTime?
 
   @@index([session_code], map: "idx_session_code")
   @@index([createdAt(sort: Desc)], map: "idx_session_createdat")

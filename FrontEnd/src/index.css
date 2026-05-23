@@ -6,6 +6,10 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+  }
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;

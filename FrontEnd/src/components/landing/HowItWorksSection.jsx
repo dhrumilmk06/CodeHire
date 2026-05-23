@@ -5,7 +5,7 @@ export default function HowItWorksSection() {
   const steps = [
     { number: '01', title: 'Sign Up',        description: 'Create your account as a host or candidate in under a minute' },
     { number: '02', title: 'Create Session', description: 'Host creates an interview session and shares the invite code' },
-    { number: '03', title: 'Code Together',  description: 'Collaborate in real-time with live video, code editor and AI hints' },
+    { number: '03', title: 'Join Session',   description: 'Candidate joins using the shared code to start the live interview' },
     { number: '04', title: 'Get Report',     description: 'Receive an AI-powered report card with scores and feedback' },
   ]
 

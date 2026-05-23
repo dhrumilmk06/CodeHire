@@ -288,21 +288,49 @@ export default function HeroSection() {
             </p>
 
             <div ref={pillsRef} className="flex flex-wrap gap-3 mb-8">
-              {['✓ Live Video Chat', '✓ Code Editor', '✓ Multi-Language'].map(f => (
-                <span key={f} className="text-[#888888] text-sm border border-[#2a2a2a] rounded-full px-4 py-1.5 hover:border-[#22c55e]/50 hover:text-[#22c55e] transition-colors duration-200">
-                  {f}
+              {[
+                { text: 'Live Video Chat', icon: (
+                  <svg className="w-3.5 h-3.5 text-[#22c55e]" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
+                  </svg>
+                )},
+                { text: 'Code Editor', icon: (
+                  <svg className="w-3.5 h-3.5 text-[#22c55e]" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                  </svg>
+                )},
+                { text: 'Multi-Language', icon: (
+                  <svg className="w-3.5 h-3.5 text-[#22c55e]" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138A14.37 14.37 0 009 15m0 0a15.62 15.62 0 01-3.255-2.75" />
+                  </svg>
+                )}
+              ].map(f => (
+                <span key={f.text} className="inline-flex items-center gap-2.5 text-[#888888] text-sm bg-white/[0.02] border border-[#2a2a2a] rounded-full px-4 py-2 hover:border-[#22c55e]/40 hover:text-white hover:bg-[#22c55e]/5 transition-all duration-300 shadow-[0_4px_12px_rgba(0,0,0,0.15)] hover:shadow-[0_4px_20px_rgba(34,197,94,0.06)] group cursor-default">
+                  <span className="bg-[#22c55e]/10 p-1 rounded-full group-hover:bg-[#22c55e]/20 transition-colors duration-300 flex items-center justify-center">
+                    {f.icon}
+                  </span>
+                  <span className="font-semibold tracking-wide">{f.text}</span>
                 </span>
               ))}
             </div>
 
             <div className="hero-item flex flex-wrap gap-4 mb-12">
               <SignUpButton mode="modal">
-                <button className="bg-[#22c55e] text-black font-bold px-8 py-3.5 rounded-xl text-base hover:bg-[#16a34a] hover:scale-105 active:scale-95 transition-all duration-200 shadow-[0_0_30px_rgba(34,197,94,0.25)] cursor-pointer">
-                  Start Coding Now →
+                <button className="group bg-gradient-to-r from-[#22c55e] to-[#4ade80] text-black font-extrabold px-8 py-4 rounded-xl text-base shadow-[0_0_30px_rgba(34,197,94,0.25)] hover:shadow-[0_0_40px_rgba(34,197,94,0.4)] hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 cursor-pointer flex items-center gap-2">
+                  <span>Start Coding Now</span>
+                  <span className="inline-block transition-transform duration-300 group-hover:translate-x-1.5 font-mono">→</span>
                 </button>
               </SignUpButton>
-              <a href="#how-it-works" className="flex items-center gap-2 border border-[#2a2a2a] text-white font-medium px-8 py-3.5 rounded-xl hover:border-[#22c55e] hover:text-[#22c55e] hover:scale-105 transition-all duration-200">
-                <span>▶</span><span>Watch Demo</span>
+              <a 
+                href="#how-it-works" 
+                className="group flex items-center gap-3 border border-[#2a2a2a] text-white font-bold px-8 py-4 rounded-xl hover:border-[#22c55e]/50 hover:bg-[#22c55e]/5 hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 shadow-lg hover:shadow-[#22c55e]/5"
+              >
+                <span className="w-7 h-7 rounded-full bg-white/5 group-hover:bg-[#22c55e]/20 flex items-center justify-center transition-all duration-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
+                  <svg className="w-3.5 h-3.5 text-[#22c55e] fill-current translate-x-[1px]" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </span>
+                <span>Watch Demo</span>
               </a>
             </div>
 

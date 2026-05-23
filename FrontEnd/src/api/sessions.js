@@ -40,6 +40,12 @@ export const sessionApi = {
         const response = await axiosInstance.patch(`/sessions/${id}/decision`, { decision });
         return response.data;
     },
+    sendDecisionEmail: async ({ id, decision, candidateEmail, candidateName, jobRole, companyName }) => {
+        const response = await axiosInstance.post(`/sessions/${id}/decision`, {
+            decision, candidateEmail, candidateName, jobRole, companyName
+        });
+        return response.data;
+    },
     updateTimings: async (id, timings) => {
         const response = await axiosInstance.patch(`/sessions/${id}/timings`, { timings });
         return response.data;

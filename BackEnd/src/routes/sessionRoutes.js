@@ -20,7 +20,8 @@ import {
     saveProblemCode,
     getProblemCode,
     runCode,
-    updateSessionScore
+    updateSessionScore,
+    sendDecisionEmailHandler
 } from "../controllers/sessionController.js";
 
 
@@ -40,6 +41,7 @@ router.post("/:id/end", protectRoute, endSession);
 router.get("/:id/notes", protectRoute, getNotes);
 router.post("/:id/notes", protectRoute, saveNotes);
 router.patch("/:id/decision", protectRoute, setDecision);
+router.post("/:id/decision", protectRoute, sendDecisionEmailHandler);
 router.patch("/:id/timings", protectRoute, updateTimings);
 router.patch("/:id/activeProblem", protectRoute, updateActiveProblem);
 router.patch("/:id/code/:problemId", protectRoute, saveProblemCode);

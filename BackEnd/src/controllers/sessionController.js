@@ -6,6 +6,7 @@ import { emitToRoom } from "../lib/socket.js";
 import { runAutoScore } from "../lib/scoring.js";
 import { generateSessionCode, extractSessionIdFromUrl, detectInputType } from "../utils/sessionHelpers.js";
 import rateLimit from 'express-rate-limit';
+import { sendDecisionEmail } from "../utils/sendDecisionEmail.js";
 
 export async function createSession(req, res, next) {
 
@@ -645,3 +646,55 @@ export async function updateSessionScore(req, res, next) {
     }
 }
 
+
+// POST /api/sessions/:id/decision — save decisionStatus + send email via Resend
+export async function sendDecisionEmailHandler(req, res, next) {
+    try {
+        const { id: sessionId } = req.params;
+        const clerkId = req.user.clerkId;
+        const { decision, candidateEmail, candidateName, jobRole, companyName } = req.body;
+
+        const validDecisions = ["move_forward", "on_hold", "rejected"];
+        if (!validDecisions.includes(decision)) {
+            return res.status(400).json({ message: "Invalid decision. Must be one of: move_forward, on_hold, rejected" });
+        }
+
+        if (!candidateEmail || !candidateName || !jobRole || !companyName) {
+            return res.status(400).json({ message: "Missing required fields: candidateEmail, candidateName, jobRole, companyName" });
+        }
+
+        const session = await prisma.session.findUnique({ where: { id: sessionId } });
+        if (!session) return res.status(404).json({ message: "Session not found" });
+        if (session.hostId !== clerkId) return res.status(403).json({ message: "Only the host can send a decision email" });
+
+        // Save decision to DB first (always, even if email fails)
+        await prisma.session.update({
+            where: { id: sessionId },
+            data: {
+                decisionStatus: decision,
+                decisionSentAt: new Date(),
+            },
+        });
+
+        // Attempt to send email
+        try {
+            await sendDecisionEmail({ candidateName, candidateEmail, jobRole, companyName, decision });
+        } catch (emailErr) {
+            console.error("[Decision Email] Resend failed:", emailErr.message);
+            return res.status(200).json({
+                success: true,
+                decision,
+                message: "Decision saved, but email delivery failed. Please check your Resend configuration.",
+                emailError: emailErr.message,
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            decision,
+            message: "Email sent successfully",
+        });
+    } catch (error) {
+        next(error);
+    }
+}

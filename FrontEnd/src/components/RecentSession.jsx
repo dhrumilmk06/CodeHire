@@ -337,6 +337,16 @@ const SessionCard = ({ session, userClerkId, onSelect, isSelected, compareMode, 
   const [editTime, setEditTime] = useState(session.timeTaken || 0);
   const [editTests, setEditTests] = useState(session.testCasesPassed || "0/0");
 
+  // Decision email state
+  const [activeDecision, setActiveDecision] = useState(session.decisionStatus || null);
+  const [emailSending, setEmailSending] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState(null); // { decision } | null
+
+  // Sync activeDecision if session prop updates (e.g. after refetch)
+  useEffect(() => {
+    setActiveDecision(session.decisionStatus || null);
+  }, [session.decisionStatus]);
+
   const { data: notesData, isLoading: notesLoading } = useQuery({
     queryKey: ["session-notes", session._id],
     queryFn: () => sessionApi.getSessionNotes(session._id),
@@ -365,6 +375,38 @@ const SessionCard = ({ session, userClerkId, onSelect, isSelected, compareMode, 
       toast.success("Interview data saved");
     } catch {
       toast.error("Failed to save changes");
+    }
+  };
+
+  const handleDecisionClick = (decisionKey) => {
+    // Don't re-send if already active
+    if (activeDecision === decisionKey) return;
+    const candidateName = session.participant?.name || "Candidate";
+    const candidateEmail = session.participant?.email || "";
+    setConfirmDialog({ decision: decisionKey, candidateName, candidateEmail });
+  };
+
+  const handleConfirmDecision = async () => {
+    if (!confirmDialog) return;
+    const { decision, candidateName, candidateEmail } = confirmDialog;
+    setConfirmDialog(null);
+    setEmailSending(decision);
+    try {
+      await sessionApi.sendDecisionEmail({
+        id: session._id,
+        decision,
+        candidateEmail,
+        candidateName,
+        jobRole: session.problem || "Software Engineer",
+        companyName: "CodeHire",
+      });
+      setActiveDecision(decision);
+      queryClient.invalidateQueries({ queryKey: ["myRecentSessions"] });
+      toast.success(`✅ Email sent to ${candidateName}`);
+    } catch {
+      toast.error("❌ Failed to send email. Please try again.");
+    } finally {
+      setEmailSending(false);
     }
   };
 
@@ -597,20 +639,57 @@ const SessionCard = ({ session, userClerkId, onSelect, isSelected, compareMode, 
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                         {Object.entries(DECISION_CONFIG).map(([key, cfg]) => {
                           const Icon = cfg.icon;
-                          const isCurrent = session.decision === key;
+                          const isActive = activeDecision === key;
+                          const isSending = emailSending === key;
+
+                          const activeStyles = {
+                            move_forward: "bg-emerald-500/20 border-emerald-500 text-emerald-400",
+                            on_hold: "bg-yellow-500/20 border-yellow-500 text-yellow-400",
+                            rejected: "bg-red-500/20 border-red-500 text-red-400",
+                          };
+
                           return (
                             <button
                               key={key}
-                              onClick={() => decisionMutation.mutate({ id: session._id, decision: key })}
-                              disabled={decisionMutation.isPending}
-                              className={`flex items-center justify-center gap-3 px-4 py-3 rounded-2xl text-xs font-black border transition-all ${isCurrent ? cfg.color : "bg-white/3 border-white/5 text-zinc-500 " + cfg.hover}`}
+                              onClick={() => handleDecisionClick(key)}
+                              disabled={!!emailSending}
+                              className={`relative flex items-center justify-center gap-3 px-4 py-3 rounded-2xl text-xs font-black border transition-all ${
+                                isActive
+                                  ? activeStyles[key]
+                                  : "bg-white/3 border-white/5 text-zinc-500 " + cfg.hover
+                              } disabled:opacity-60 disabled:cursor-not-allowed`}
                             >
-                              <Icon className="size-4" />
-                              <span className="uppercase tracking-widest">{cfg.label}</span>
+                              {isSending ? (
+                                <Loader className="size-4 animate-spin" />
+                              ) : (
+                                <Icon className="size-4" />
+                              )}
+                              <span className="uppercase tracking-widest">
+                                {isSending ? "Sending..." : cfg.label}
+                              </span>
+                              {isActive && (
+                                <span className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 rounded-full bg-current opacity-80 flex items-center justify-center text-[8px]">✓</span>
+                              )}
                             </button>
                           );
                         })}
                       </div>
+
+                      {/* Status line — shown after email sent */}
+                      {activeDecision && session.decisionSentAt && (
+                        <div className="flex items-center gap-2 text-[11px] text-zinc-500 mt-1 px-1">
+                          <span>📧</span>
+                          <span>
+                            <span className="font-bold" style={{ color: activeDecision === 'move_forward' ? '#00ff9d' : activeDecision === 'on_hold' ? '#fbbf24' : '#ef4444' }}>
+                              {DECISION_CONFIG[activeDecision]?.label}
+                            </span>
+                            {" "}email sent to{" "}
+                            <span className="text-zinc-400">{session.participant?.email}</span>
+                            {" "}on{" "}
+                            {new Date(session.decisionSentAt).toLocaleDateString()}
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </>
                 )}
@@ -619,6 +698,48 @@ const SessionCard = ({ session, userClerkId, onSelect, isSelected, compareMode, 
           )}
         </AnimatePresence>
       </div>
+
+      {/* Confirmation Dialog */}
+      {confirmDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in duration-150">
+          <div className="bg-[#0f1117] border border-white/10 rounded-3xl p-8 max-w-sm w-full mx-4 shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="mb-5">
+              <p className="text-[10px] text-zinc-500 font-black uppercase tracking-widest mb-2">Confirm Decision</p>
+              <h3 className="text-white font-black text-lg leading-tight">
+                Send <span style={{ color: confirmDialog.decision === 'move_forward' ? '#00ff9d' : confirmDialog.decision === 'on_hold' ? '#fbbf24' : '#ef4444' }}>
+                  {DECISION_CONFIG[confirmDialog.decision]?.label}
+                </span> email?
+              </h3>
+            </div>
+            <p className="text-sm text-zinc-400 leading-relaxed mb-6">
+              This will send a <strong className="text-white">{DECISION_CONFIG[confirmDialog.decision]?.label}</strong> email
+              to <strong className="text-white">{confirmDialog.candidateName}</strong> at{" "}
+              <span className="text-zinc-300 font-mono text-xs">{confirmDialog.candidateEmail}</span>.
+              <br /><br />
+              <span className="text-zinc-600 text-xs">This action cannot be undone.</span>
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmDialog(null)}
+                className="flex-1 btn btn-sm bg-white/5 border-white/10 text-zinc-400 hover:bg-white/10 hover:text-white rounded-xl font-black uppercase tracking-widest"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmDecision}
+                className="flex-1 btn btn-sm rounded-xl font-black uppercase tracking-widest border-none"
+                style={{
+                  backgroundColor: confirmDialog.decision === 'move_forward' ? '#00ff9d20' : confirmDialog.decision === 'on_hold' ? '#fbbf2420' : '#ef444420',
+                  color: confirmDialog.decision === 'move_forward' ? '#00ff9d' : confirmDialog.decision === 'on_hold' ? '#fbbf24' : '#ef4444',
+                  border: `1px solid ${confirmDialog.decision === 'move_forward' ? '#00ff9d40' : confirmDialog.decision === 'on_hold' ? '#fbbf2440' : '#ef444440'}`,
+                }}
+              >
+                ✓ Confirm & Send
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

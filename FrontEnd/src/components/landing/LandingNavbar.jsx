@@ -4,7 +4,35 @@ import { gsap } from '../../lib/animations'
 
 export default function LandingNavbar() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('')
   const navRef = useRef(null)
+
+  useEffect(() => {
+    const sections = ['features', 'how-it-works', 'testimonials']
+    
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id)
+        }
+      })
+    }
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-30% 0px -65% 0px',
+      threshold: 0,
+    }
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions)
+    
+    sections.forEach((id) => {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    })
+
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -48,9 +76,45 @@ export default function LandingNavbar() {
 
         {/* Nav Links — desktop */}
         <div className="hidden md:flex items-center gap-8">
-          <a href="#features"      className="text-[#888888] hover:text-white text-sm transition-colors duration-200">Features</a>
-          <a href="#how-it-works"  className="text-[#888888] hover:text-white text-sm transition-colors duration-200">How it Works</a>
-          <a href="#testimonials"  className="text-[#888888] hover:text-white text-sm transition-colors duration-200">Testimonials</a>
+          <a
+            href="#features"
+            className={`text-sm transition-all duration-300 relative py-1 flex flex-col items-center group ${
+              activeSection === 'features' 
+                ? 'text-[#22c55e] font-semibold' 
+                : 'text-[#888888] hover:text-white'
+            }`}
+          >
+            Features
+            <span className={`absolute bottom-[-4px] h-[2px] bg-[#22c55e] rounded-full transition-all duration-300 ${
+              activeSection === 'features' ? 'w-full opacity-100' : 'w-0 opacity-0 group-hover:w-1/2 group-hover:opacity-50'
+            }`} />
+          </a>
+          <a
+            href="#how-it-works"
+            className={`text-sm transition-all duration-300 relative py-1 flex flex-col items-center group ${
+              activeSection === 'how-it-works' 
+                ? 'text-[#22c55e] font-semibold' 
+                : 'text-[#888888] hover:text-white'
+            }`}
+          >
+            How it Works
+            <span className={`absolute bottom-[-4px] h-[2px] bg-[#22c55e] rounded-full transition-all duration-300 ${
+              activeSection === 'how-it-works' ? 'w-full opacity-100' : 'w-0 opacity-0 group-hover:w-1/2 group-hover:opacity-50'
+            }`} />
+          </a>
+          <a
+            href="#testimonials"
+            className={`text-sm transition-all duration-300 relative py-1 flex flex-col items-center group ${
+              activeSection === 'testimonials' 
+                ? 'text-[#22c55e] font-semibold' 
+                : 'text-[#888888] hover:text-white'
+            }`}
+          >
+            Testimonials
+            <span className={`absolute bottom-[-4px] h-[2px] bg-[#22c55e] rounded-full transition-all duration-300 ${
+              activeSection === 'testimonials' ? 'w-full opacity-100' : 'w-0 opacity-0 group-hover:w-1/2 group-hover:opacity-50'
+            }`} />
+          </a>
         </div>
 
         {/* CTA Buttons */}
@@ -88,11 +152,35 @@ export default function LandingNavbar() {
       {/* Mobile menu */}
       {menuOpen && (
         <div className="md:hidden mt-2 bg-[#111111] border border-[#2a2a2a] rounded-xl px-6 py-4 flex flex-col gap-4">
-          <a href="#features"     onClick={() => setMenuOpen(false)} className="text-[#888888] hover:text-white text-sm transition-colors duration-200">Features</a>
-          <a href="#how-it-works" onClick={() => setMenuOpen(false)} className="text-[#888888] hover:text-white text-sm transition-colors duration-200">How it Works</a>
-          <a href="#testimonials" onClick={() => setMenuOpen(false)} className="text-[#888888] hover:text-white text-sm transition-colors duration-200">Testimonials</a>
+          <a
+            href="#features"
+            onClick={() => setMenuOpen(false)}
+            className={`text-sm transition-colors duration-200 ${
+              activeSection === 'features' ? 'text-[#22c55e] font-semibold' : 'text-[#888888] hover:text-white'
+            }`}
+          >
+            Features
+          </a>
+          <a
+            href="#how-it-works"
+            onClick={() => setMenuOpen(false)}
+            className={`text-sm transition-colors duration-200 ${
+              activeSection === 'how-it-works' ? 'text-[#22c55e] font-semibold' : 'text-[#888888] hover:text-white'
+            }`}
+          >
+            How it Works
+          </a>
+          <a
+            href="#testimonials"
+            onClick={() => setMenuOpen(false)}
+            className={`text-sm transition-colors duration-200 ${
+              activeSection === 'testimonials' ? 'text-[#22c55e] font-semibold' : 'text-[#888888] hover:text-white'
+            }`}
+          >
+            Testimonials
+          </a>
           <SignInButton mode="modal">
-            <button className="text-left text-[#888888] hover:text-white text-sm transition-colors duration-200">Sign In</button>
+            <button className="text-left text-[#888888] hover:text-white text-sm transition-colors duration-200 w-full">Sign In</button>
           </SignInButton>
         </div>
       )}

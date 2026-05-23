@@ -504,7 +504,7 @@ export const ProblemBankPage = () => {
     return (
         <div className="min-h-screen bg-base-300">
             {/* Hero header */}
-            <div className="bg-linear-to-br from-primary/20 via-base-200 to-secondary/10 border-b border-base-300">
+            <div className="bg-linear-to-b from-primary/12 via-base-200 to-base-300">
                 <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
                     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                         <div className="text-center lg:text-left">
@@ -575,7 +575,7 @@ export const ProblemBankPage = () => {
                         />
                     </div>
 
-                    <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 no-scrollbar">
+                    <div className="flex items-center gap-2 overflow-x-auto sm:overflow-x-visible pb-2 sm:pb-0 no-scrollbar shrink-0">
                         <select
                             className="select select-bordered select-sm sm:select-md"
                             value={diffFilter}

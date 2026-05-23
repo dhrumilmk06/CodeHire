@@ -44,16 +44,20 @@ export const ProblemsPage = () => {
   const mediumProblemsCount = problems.filter((p) => p.difficulty === "Medium").length
   const hardProblemsCount = problems.filter((p) => p.difficulty === "Hard").length
   return (
-    <div className='min-h-screen bg-base-200'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-12'>
-        {/* HEADER */}
-        <div className='mb-8 text-center sm:text-left'>
-          <h1 className='text-3xl sm:text-4xl font-bold mb-2'>Practice Problems</h1>
-          <p className='text-sm sm:text-base text-base-content/70'>
-            Sharpen your coding skills with these curated problems
-          </p>
+    <div className='min-h-screen bg-base-300'>
+      {/* Hero Header Section */}
+      <div className="bg-linear-to-b from-primary/10 via-base-200 to-base-300">
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-12'>
+          <div className='text-center sm:text-left'>
+            <h1 className='text-3xl sm:text-4xl font-bold mb-2'>Practice Problems</h1>
+            <p className='text-sm sm:text-base text-base-content/70'>
+              Sharpen your coding skills with these curated problems
+            </p>
+          </div>
         </div>
+      </div>
 
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-6 sm:py-8'>
         <div className='grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 sm:gap-8 items-start'>
           {/* STATS SIDEBAR (Left Side, Vertical, Sticky) */}
           <aside className='lg:sticky lg:top-8 space-y-4 order-2 lg:order-1'>
@@ -153,11 +157,13 @@ export const ProblemsPage = () => {
                           <div className='size-10 sm:size-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors shrink-0'>
                             <Code2Icon className='size-5 sm:size-6 text-primary' />
                           </div>
-                          <div className='flex flex-col items-end shrink-0'>
+                          <div className='flex flex-col items-end min-w-0'>
                              <span className={`badge badge-xs sm:badge-sm font-bold ${getDifficultyBadgeClass(problem.difficulty)} mb-1`}>
                                 {problem.difficulty}
                               </span>
-                             <p className='text-[10px] sm:text-xs text-base-content/50 font-medium'>{problem.category}</p>
+                             <p className='text-[10px] sm:text-xs text-base-content/50 font-medium truncate w-full text-right' title={problem.category}>
+                                {problem.category}
+                             </p>
                           </div>
                         </div>
                         

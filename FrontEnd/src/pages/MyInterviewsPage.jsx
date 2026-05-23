@@ -35,7 +35,7 @@ export const MyInterviewsPage = () => {
   return (
     <div className='min-h-screen bg-base-300'>
       {/* Welcome Hero Section */}
-      <div className="bg-linear-to-br from-primary/10 via-base-200 to-secondary/5 border-b border-base-300">
+      <div className="bg-linear-to-b from-primary/8 via-base-200 to-base-300">
         <ParticipantWelcomeSection />
       </div>
 

@@ -11516,6 +11516,577 @@ int main() {
     cpp: "120\n150\n6",
   },
 },
+
+"find-median-from-data-stream": {
+  id: "find-median-from-data-stream",
+  title: "Find Median from Data Stream",
+  difficulty: "Hard",
+  category: "Two Pointers • Design • Sorting • Heap • Data Stream",
+  description: {
+    text: "The median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value, and the median is the mean of the two middle values. Implement the MedianFinder class with addNum(num) which adds an integer num from the data stream to the data structure, and findMedian() which returns the median of all elements so far.",
+    notes: [
+      "Use two heaps: a max-heap for the lower half and a min-heap for the upper half.",
+      "Keep the heaps balanced — sizes differ by at most 1.",
+      "Median is the top of the larger heap, or average of both tops if equal size.",
+    ],
+  },
+  examples: [
+    {
+      input: `["MedianFinder","addNum","addNum","findMedian","addNum","findMedian"]\n[[],[1],[2],[],[3],[]]`,
+      output: `[null,null,null,1.5,null,2.0]`,
+      explanation: "After adding 1 and 2, median = (1+2)/2 = 1.5. After adding 3, median = 2.0.",
+    },
+  ],
+  constraints: [
+    "-10⁵ ≤ num ≤ 10⁵",
+    "There will be at least one element in the data structure before calling findMedian",
+    "At most 5 × 10⁴ calls will be made to addNum and findMedian",
+  ],
+  starterCode: {
+    javascript: `class MedianFinder {
+  constructor() {
+    // Write your solution here
+  }
+
+  addNum(num) {
+    // Write your solution here
+  }
+
+  findMedian() {
+    // Write your solution here
+  }
+}
+
+// Test cases
+const mf = new MedianFinder();
+mf.addNum(1);
+mf.addNum(2);
+console.log(mf.findMedian()); // Expected: 1.5
+mf.addNum(3);
+console.log(mf.findMedian()); // Expected: 2`,
+
+    python: `import heapq
+
+class MedianFinder:
+    def __init__(self):
+        # Write your solution here
+        pass
+
+    def addNum(self, num: int) -> None:
+        # Write your solution here
+        pass
+
+    def findMedian(self) -> float:
+        # Write your solution here
+        pass
+
+# Test cases
+mf = MedianFinder()
+mf.addNum(1)
+mf.addNum(2)
+print(mf.findMedian())  # Expected: 1.5
+mf.addNum(3)
+print(mf.findMedian())  # Expected: 2.0`,
+
+    java: `import java.util.*;
+
+class MedianFinder {
+    // Write your solution here
+
+    public MedianFinder() {
+
+    }
+
+    public void addNum(int num) {
+
+    }
+
+    public double findMedian() {
+        return 0.0;
+    }
+
+    public static void main(String[] args) {
+        MedianFinder mf = new MedianFinder();
+        mf.addNum(1);
+        mf.addNum(2);
+        System.out.println(mf.findMedian()); // Expected: 1.5
+        mf.addNum(3);
+        System.out.println(mf.findMedian()); // Expected: 2.0
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <queue>
+#include <vector>
+
+using namespace std;
+
+class MedianFinder {
+public:
+    // Write your solution here
+
+    MedianFinder() {
+
+    }
+
+    void addNum(int num) {
+
+    }
+
+    double findMedian() {
+        return 0.0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    MedianFinder mf;
+    mf.addNum(1);
+    mf.addNum(2);
+    cout << mf.findMedian() << endl; // Expected: 1.5
+    mf.addNum(3);
+    cout << mf.findMedian() << endl; // Expected: 2
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "1.5\n2",
+    python: "1.5\n2.0",
+    java: "1.5\n2.0",
+    cpp: "1.5\n2",
+  },
+},
+
+"alien-dictionary": {
+  id: "alien-dictionary",
+  title: "Alien Dictionary",
+  difficulty: "Hard",
+  category: "Array • String • Graph • Topological Sort • Depth-First Search",
+  description: {
+    text: "There is a new alien language that uses the English alphabet. However, the order of the letters is unknown to you. You are given a list of strings words from the alien language's dictionary, where the strings in words are sorted lexicographically by the rules of this new language. Derive the order of letters in this alien language and return any valid order. If the order is invalid, return an empty string. If there are multiple valid orders, return any of them.",
+    notes: [
+      "Compare adjacent words to find character ordering constraints.",
+      "Build a directed graph and run topological sort (DFS or BFS/Kahn's).",
+      "If a shorter word appears after a longer word with the same prefix, return empty string.",
+      "Detect cycles using DFS — a cycle means the order is invalid.",
+    ],
+  },
+  examples: [
+    {
+      input: `words = ["wrt","wrf","er","ett","rftt"]`,
+      output: `"wertf"`,
+      explanation: `From comparisons: t→f, w→e, r→t, e→r. Topological sort gives "wertf".`,
+    },
+    {
+      input: `words = ["z","x"]`,
+      output: `"zx"`,
+      explanation: `Only one constraint: z→x.`,
+    },
+    {
+      input: `words = ["z","x","z"]`,
+      output: `""`,
+      explanation: `z→x and x→z creates a cycle, so return empty string.`,
+    },
+  ],
+  constraints: [
+    "1 ≤ words.length ≤ 100",
+    "1 ≤ words[i].length ≤ 100",
+    "words[i] consists of only lowercase English letters",
+  ],
+  starterCode: {
+    javascript: `function alienOrder(words) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(alienOrder(["wrt","wrf","er","ett","rftt"])); // Expected: "wertf"
+console.log(alienOrder(["z","x"]));                        // Expected: "zx"
+console.log(alienOrder(["z","x","z"]));                    // Expected: ""`,
+
+    python: `def alienOrder(words):
+    # Write your solution here
+    pass
+
+# Test cases
+print(alienOrder(["wrt","wrf","er","ett","rftt"]))  # Expected: "wertf"
+print(alienOrder(["z","x"]))                         # Expected: "zx"
+print(alienOrder(["z","x","z"]))                     # Expected: ""`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static String alienOrder(String[] words) {
+        // Write your solution here
+
+        return "";
+    }
+
+    public static void main(String[] args) {
+        System.out.println(alienOrder(new String[]{"wrt","wrf","er","ett","rftt"})); // Expected: wertf
+        System.out.println(alienOrder(new String[]{"z","x"}));                        // Expected: zx
+        System.out.println(alienOrder(new String[]{"z","x","z"}));                    // Expected: (empty)
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <queue>
+
+using namespace std;
+
+class Solution {
+public:
+    string alienOrder(vector<string>& words) {
+        // Write your solution here
+
+        return "";
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<string> w1 = {"wrt","wrf","er","ett","rftt"};
+    cout << sol.alienOrder(w1) << endl; // Expected: wertf
+    vector<string> w2 = {"z","x"};
+    cout << sol.alienOrder(w2) << endl; // Expected: zx
+    vector<string> w3 = {"z","x","z"};
+    cout << sol.alienOrder(w3) << endl; // Expected: (empty)
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "wertf\nzx\n",
+    python: "wertf\nzx\n",
+    java: "wertf\nzx\n",
+    cpp: "wertf\nzx\n",
+  },
+},
+
+"sliding-window-maximum": {
+  id: "sliding-window-maximum",
+  title: "Sliding Window Maximum",
+  difficulty: "Hard",
+  category: "Array • Queue • Sliding Window • Heap • Monotonic Queue",
+  description: {
+    text: "You are given an array of integers nums and an integer k. There is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position, return the maximum value in each window position.",
+    notes: [
+      "Use a monotonic deque to track potential maximums.",
+      "The deque stores indices and maintains a decreasing order of values.",
+      "Remove elements from the front if they fall outside the window.",
+      "Remove elements from the back if they are smaller than the current element.",
+    ],
+  },
+  examples: [
+    {
+      input: "nums = [1,3,-1,-3,5,3,6,7], k = 3",
+      output: "[3,3,5,5,6,7]",
+      explanation: "Window [1,3,-1]=3, [3,-1,-3]=3, [-1,-3,5]=5, [-3,5,3]=5, [5,3,6]=6, [3,6,7]=7.",
+    },
+    {
+      input: "nums = [1], k = 1",
+      output: "[1]",
+      explanation: "Single element window.",
+    },
+    {
+      input: "nums = [9,11], k = 2",
+      output: "[11]",
+      explanation: "Only one window of size 2.",
+    },
+  ],
+  constraints: [
+    "1 ≤ nums.length ≤ 10⁵",
+    "-10⁴ ≤ nums[i] ≤ 10⁴",
+    "1 ≤ k ≤ nums.length",
+  ],
+  starterCode: {
+    javascript: `function maxSlidingWindow(nums, k) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(JSON.stringify(maxSlidingWindow([1,3,-1,-3,5,3,6,7], 3))); // Expected: [3,3,5,5,6,7]
+console.log(JSON.stringify(maxSlidingWindow([1], 1)));                   // Expected: [1]
+console.log(JSON.stringify(maxSlidingWindow([9,11], 2)));                // Expected: [11]`,
+
+    python: `import json
+
+def maxSlidingWindow(nums, k):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(maxSlidingWindow([1,3,-1,-3,5,3,6,7], 3), separators=(',', ':')))  # Expected: [3,3,5,5,6,7]
+print(json.dumps(maxSlidingWindow([1], 1), separators=(',', ':')))                    # Expected: [1]
+print(json.dumps(maxSlidingWindow([9,11], 2), separators=(',', ':')))                 # Expected: [11]`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static int[] maxSlidingWindow(int[] nums, int k) {
+        // Write your solution here
+
+        return new int[0];
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(maxSlidingWindow(new int[]{1,3,-1,-3,5,3,6,7}, 3))); // Expected: [3, 3, 5, 5, 6, 7]
+        System.out.println(Arrays.toString(maxSlidingWindow(new int[]{1}, 1)));                   // Expected: [1]
+        System.out.println(Arrays.toString(maxSlidingWindow(new int[]{9,11}, 2)));                // Expected: [11]
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <deque>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        // Write your solution here
+
+        return {};
+    }
+};
+
+string vecToString(vector<int> v) {
+    string s = "[";
+    for (int i = 0; i < (int)v.size(); i++)
+        s += to_string(v[i]) + (i == (int)v.size()-1 ? "" : ",");
+    return s + "]";
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> a = {1,3,-1,-3,5,3,6,7};
+    cout << vecToString(sol.maxSlidingWindow(a, 3)) << endl; // Expected: [3,3,5,5,6,7]
+    vector<int> b = {1};
+    cout << vecToString(sol.maxSlidingWindow(b, 1)) << endl; // Expected: [1]
+    vector<int> c = {9,11};
+    cout << vecToString(sol.maxSlidingWindow(c, 2)) << endl; // Expected: [11]
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "[3,3,5,5,6,7]\n[1]\n[11]",
+    python: "[3,3,5,5,6,7]\n[1]\n[11]",
+    java: "[3, 3, 5, 5, 6, 7]\n[1]\n[11]",
+    cpp: "[3,3,5,5,6,7]\n[1]\n[11]",
+  },
+},
+
+"sum-of-two-integers": {
+  id: "sum-of-two-integers",
+  title: "Sum of Two Integers",
+  difficulty: "Medium",
+  category: "Math • Bit Manipulation",
+  description: {
+    text: "Given two integers a and b, return the sum of the two integers without using the operators + and -.",
+    notes: [
+      "Use XOR (^) to add bits without carry.",
+      "Use AND (&) shifted left by 1 to compute the carry.",
+      "Repeat until there is no carry.",
+      "In languages with fixed 32-bit integers (like Java/C++), handle negative numbers carefully using a mask.",
+    ],
+  },
+  examples: [
+    {
+      input: "a = 1, b = 2",
+      output: "3",
+      explanation: "1 + 2 = 3 using only bit manipulation.",
+    },
+    {
+      input: "a = 2, b = 3",
+      output: "5",
+      explanation: "2 + 3 = 5 using only bit manipulation.",
+    },
+    {
+      input: "a = -1, b = 1",
+      output: "0",
+      explanation: "-1 + 1 = 0.",
+    },
+  ],
+  constraints: [
+    "-1000 ≤ a, b ≤ 1000",
+  ],
+  starterCode: {
+    javascript: `function getSum(a, b) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(getSum(1, 2));   // Expected: 3
+console.log(getSum(2, 3));   // Expected: 5
+console.log(getSum(-1, 1));  // Expected: 0`,
+
+    python: `def getSum(a, b):
+    # Write your solution here
+    pass
+
+# Test cases
+print(getSum(1, 2))   # Expected: 3
+print(getSum(2, 3))   # Expected: 5
+print(getSum(-1, 1))  # Expected: 0`,
+
+    java: `class Solution {
+    public static int getSum(int a, int b) {
+        // Write your solution here
+
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getSum(1, 2));   // Expected: 3
+        System.out.println(getSum(2, 3));   // Expected: 5
+        System.out.println(getSum(-1, 1));  // Expected: 0
+    }
+}`,
+
+    cpp: `#include <iostream>
+
+using namespace std;
+
+class Solution {
+public:
+    int getSum(int a, int b) {
+        // Write your solution here
+
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << sol.getSum(1, 2) << endl;   // Expected: 3
+    cout << sol.getSum(2, 3) << endl;   // Expected: 5
+    cout << sol.getSum(-1, 1) << endl;  // Expected: 0
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "3\n5\n0",
+    python: "3\n5\n0",
+    java: "3\n5\n0",
+    cpp: "3\n5\n0",
+  },
+},
+
+"counting-bits": {
+  id: "counting-bits",
+  title: "Counting Bits",
+  difficulty: "Easy",
+  category: "Dynamic Programming • Bit Manipulation",
+  description: {
+    text: "Given an integer n, return an array ans of length n + 1 such that for each i (0 ≤ i ≤ n), ans[i] is the number of 1's in the binary representation of i.",
+    notes: [
+      "For even number i: countBits(i) = countBits(i >> 1).",
+      "For odd number i: countBits(i) = countBits(i >> 1) + 1.",
+      "This gives an O(n) DP solution without any bit counting per number.",
+    ],
+  },
+  examples: [
+    {
+      input: "n = 2",
+      output: "[0,1,1]",
+      explanation: "0 → 0 ones, 1 → 1 one, 2 (10) → 1 one.",
+    },
+    {
+      input: "n = 5",
+      output: "[0,1,1,2,1,2]",
+      explanation: "0→0, 1→1, 2→1, 3→2, 4→1, 5→2 ones in binary.",
+    },
+  ],
+  constraints: [
+    "0 ≤ n ≤ 10⁵",
+  ],
+  starterCode: {
+    javascript: `function countBits(n) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(JSON.stringify(countBits(2))); // Expected: [0,1,1]
+console.log(JSON.stringify(countBits(5))); // Expected: [0,1,1,2,1,2]`,
+
+    python: `import json
+
+def countBits(n):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(countBits(2), separators=(',', ':')))  # Expected: [0,1,1]
+print(json.dumps(countBits(5), separators=(',', ':')))  # Expected: [0,1,1,2,1,2]`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static int[] countBits(int n) {
+        // Write your solution here
+
+        return new int[0];
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(countBits(2))); // Expected: [0, 1, 1]
+        System.out.println(Arrays.toString(countBits(5))); // Expected: [0, 1, 1, 2, 1, 2]
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> countBits(int n) {
+        // Write your solution here
+
+        return {};
+    }
+};
+
+string vecToString(vector<int> v) {
+    string s = "[";
+    for (int i = 0; i < (int)v.size(); i++)
+        s += to_string(v[i]) + (i == (int)v.size()-1 ? "" : ",");
+    return s + "]";
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << vecToString(sol.countBits(2)) << endl; // Expected: [0,1,1]
+    cout << vecToString(sol.countBits(5)) << endl; // Expected: [0,1,1,2,1,2]
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "[0,1,1]\n[0,1,1,2,1,2]",
+    python: "[0,1,1]\n[0,1,1,2,1,2]",
+    java: "[0, 1, 1]\n[0, 1, 1, 2, 1, 2]",
+    cpp: "[0,1,1]\n[0,1,1,2,1,2]",
+  },
+},
 };
 
  

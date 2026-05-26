@@ -12087,6 +12087,707 @@ int main() {
     cpp: "[0,1,1]\n[0,1,1,2,1,2]",
   },
 },
+"longest-repeating-character-replacement": {
+  id: "longest-repeating-character-replacement",
+  title: "Longest Repeating Character Replacement",
+  difficulty: "Medium",
+  category: "String • Sliding Window • Hash Table",
+  description: {
+    text: "You are given a string s and an integer k. You can choose any character of the string and change it to any other uppercase English character. You can perform this operation at most k times. Return the length of the longest substring containing the same letter you can get after performing the above operations.",
+    notes: [
+      "Use a sliding window and track the frequency of each character in the window.",
+      "The window is valid if (window size - max frequency) ≤ k.",
+      "The max frequency only needs to increase — never shrink it.",
+    ],
+  },
+  examples: [
+    {
+      input: `s = "ABAB", k = 2`,
+      output: "4",
+      explanation: "Replace 2 A's with B's or 2 B's with A's to get 'AAAA' or 'BBBB'.",
+    },
+    {
+      input: `s = "AABABBA", k = 1`,
+      output: "4",
+      explanation: "Replace 1 B with A in 'AABA' to get 'AAAA' of length 4.",
+    },
+    {
+      input: `s = "AAAA", k = 0`,
+      output: "4",
+      explanation: "No replacements needed, the entire string is already uniform.",
+    },
+  ],
+  constraints: [
+    "1 ≤ s.length ≤ 10⁵",
+    "s consists of only uppercase English letters",
+    "0 ≤ k ≤ s.length",
+  ],
+  starterCode: {
+    javascript: `function characterReplacement(s, k) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(characterReplacement("ABAB", 2));    // Expected: 4
+console.log(characterReplacement("AABABBA", 1)); // Expected: 4
+console.log(characterReplacement("AAAA", 0));    // Expected: 4`,
+
+    python: `def characterReplacement(s, k):
+    # Write your solution here
+    pass
+
+# Test cases
+print(characterReplacement("ABAB", 2))    # Expected: 4
+print(characterReplacement("AABABBA", 1)) # Expected: 4
+print(characterReplacement("AAAA", 0))    # Expected: 4`,
+
+    java: `class Solution {
+    public static int characterReplacement(String s, int k) {
+        // Write your solution here
+
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(characterReplacement("ABAB", 2));    // Expected: 4
+        System.out.println(characterReplacement("AABABBA", 1)); // Expected: 4
+        System.out.println(characterReplacement("AAAA", 0));    // Expected: 4
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        // Write your solution here
+
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << sol.characterReplacement("ABAB", 2) << endl;    // Expected: 4
+    cout << sol.characterReplacement("AABABBA", 1) << endl; // Expected: 4
+    cout << sol.characterReplacement("AAAA", 0) << endl;    // Expected: 4
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "4\n4\n4",
+    python: "4\n4\n4",
+    java: "4\n4\n4",
+    cpp: "4\n4\n4",
+  },
+},
+
+"serialize-and-deserialize-binary-tree": {
+  id: "serialize-and-deserialize-binary-tree",
+  title: "Serialize and Deserialize Binary Tree",
+  difficulty: "Hard",
+  category: "String • Tree • Depth-First Search • Breadth-First Search • Design • Binary Tree",
+  description: {
+    text: "Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored or transmitted and reconstructed later. Design an algorithm to serialize and deserialize a binary tree. The serialize function converts the tree to a string, and the deserialize function reconstructs the tree from that string. There is no restriction on how your serialization/deserialization algorithm should work.",
+    notes: [
+      "Use BFS or DFS with null markers to encode the tree structure.",
+      "A common approach: level-order with 'null' for missing nodes.",
+      "Split the serialized string by delimiter to reconstruct the tree.",
+    ],
+  },
+  examples: [
+    {
+      input: "root = [1,2,3,null,null,4,5]",
+      output: "[1,2,3,null,null,4,5]",
+      explanation: "Serialize the tree to a string and deserialize back to the original tree structure.",
+    },
+    {
+      input: "root = []",
+      output: "[]",
+      explanation: "Empty tree serializes to empty and deserializes back to null.",
+    },
+  ],
+  constraints: [
+    "The number of nodes in the tree is in the range [0, 10⁴]",
+    "-1000 ≤ Node.val ≤ 1000",
+  ],
+  starterCode: {
+    javascript: `class TreeNode {
+  constructor(val, left = null, right = null) {
+    this.val = val;
+    this.left = left;
+    this.right = right;
+  }
+}
+
+function buildTree(arr) {
+  if (!arr || arr.length === 0) return null;
+  const root = new TreeNode(arr[0]);
+  const queue = [root];
+  let i = 1;
+  while (i < arr.length) {
+    const node = queue.shift();
+    if (arr[i] !== null) { node.left = new TreeNode(arr[i]); queue.push(node.left); }
+    i++;
+    if (i < arr.length && arr[i] !== null) { node.right = new TreeNode(arr[i]); queue.push(node.right); }
+    i++;
+  }
+  return root;
+}
+
+function treeToArray(root) {
+  if (!root) return [];
+  const res = [], queue = [root];
+  while (queue.length) {
+    const node = queue.shift();
+    if (node) { res.push(node.val); queue.push(node.left); queue.push(node.right); }
+    else res.push(null);
+  }
+  while (res[res.length - 1] === null) res.pop();
+  return res;
+}
+
+function serialize(root) {
+  // Write your solution here
+
+}
+
+function deserialize(data) {
+  // Write your solution here
+
+}
+
+// Test cases
+const t1 = buildTree([1,2,3,null,null,4,5]);
+console.log(JSON.stringify(treeToArray(deserialize(serialize(t1))))); // Expected: [1,2,3,null,null,4,5]
+const t2 = buildTree([]);
+console.log(JSON.stringify(treeToArray(deserialize(serialize(t2))))); // Expected: []`,
+
+    python: `import json
+from collections import deque
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def buildTree(arr):
+    if not arr:
+        return None
+    root = TreeNode(arr[0])
+    queue = deque([root])
+    i = 1
+    while i < len(arr):
+        node = queue.popleft()
+        if i < len(arr) and arr[i] is not None:
+            node.left = TreeNode(arr[i]); queue.append(node.left)
+        i += 1
+        if i < len(arr) and arr[i] is not None:
+            node.right = TreeNode(arr[i]); queue.append(node.right)
+        i += 1
+    return root
+
+def treeToArray(root):
+    if not root: return []
+    res, queue = [], deque([root])
+    while queue:
+        node = queue.popleft()
+        if node:
+            res.append(node.val)
+            queue.append(node.left)
+            queue.append(node.right)
+        else:
+            res.append(None)
+    while res and res[-1] is None: res.pop()
+    return res
+
+def serialize(root):
+    # Write your solution here
+    pass
+
+def deserialize(data):
+    # Write your solution here
+    pass
+
+# Test cases
+t1 = buildTree([1,2,3,None,None,4,5])
+print(json.dumps(treeToArray(deserialize(serialize(t1))), separators=(',', ':')))  # Expected: [1,2,3,null,null,4,5]
+t2 = buildTree([])
+print(json.dumps(treeToArray(deserialize(serialize(t2))), separators=(',', ':')))  # Expected: []`,
+
+    java: `import java.util.*;
+
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int val) { this.val = val; }
+}
+
+class Codec {
+    public String serialize(TreeNode root) {
+        // Write your solution here
+
+        return "";
+    }
+
+    public TreeNode deserialize(String data) {
+        // Write your solution here
+
+        return null;
+    }
+
+    public static TreeNode buildTree(Integer[] arr) {
+        if (arr == null || arr.length == 0) return null;
+        TreeNode root = new TreeNode(arr[0]);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int i = 1;
+        while (i < arr.length) {
+            TreeNode node = queue.poll();
+            if (i < arr.length && arr[i] != null) { node.left = new TreeNode(arr[i]); queue.add(node.left); }
+            i++;
+            if (i < arr.length && arr[i] != null) { node.right = new TreeNode(arr[i]); queue.add(node.right); }
+            i++;
+        }
+        return root;
+    }
+
+    public static List<Integer> treeToArray(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) return res;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            if (node != null) { res.add(node.val); queue.add(node.left); queue.add(node.right); }
+            else res.add(null);
+        }
+        while (!res.isEmpty() && res.get(res.size()-1) == null) res.remove(res.size()-1);
+        return res;
+    }
+
+    public static void main(String[] args) {
+        Codec codec = new Codec();
+        TreeNode t1 = buildTree(new Integer[]{1,2,3,null,null,4,5});
+        System.out.println(treeToArray(codec.deserialize(codec.serialize(t1)))); // Expected: [1, 2, 3, null, null, 4, 5]
+        TreeNode t2 = buildTree(new Integer[]{});
+        System.out.println(treeToArray(codec.deserialize(codec.serialize(t2)))); // Expected: []
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <string>
+#include <queue>
+#include <sstream>
+
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+TreeNode* buildTree(vector<int> arr) {
+    if (arr.empty()) return nullptr;
+    TreeNode* root = new TreeNode(arr[0]);
+    queue<TreeNode*> q;
+    q.push(root);
+    int i = 1;
+    while (i < (int)arr.size()) {
+        TreeNode* node = q.front(); q.pop();
+        if (i < (int)arr.size() && arr[i] != -101) { node->left = new TreeNode(arr[i]); q.push(node->left); }
+        i++;
+        if (i < (int)arr.size() && arr[i] != -101) { node->right = new TreeNode(arr[i]); q.push(node->right); }
+        i++;
+    }
+    return root;
+}
+
+string treeToString(TreeNode* root) {
+    if (!root) return "[]";
+    string s = "[";
+    queue<TreeNode*> q;
+    q.push(root);
+    vector<string> parts;
+    while (!q.empty()) {
+        TreeNode* node = q.front(); q.pop();
+        if (node) { parts.push_back(to_string(node->val)); q.push(node->left); q.push(node->right); }
+        else parts.push_back("null");
+    }
+    while (parts.back() == "null") parts.pop_back();
+    for (int i = 0; i < (int)parts.size(); i++) s += parts[i] + (i==(int)parts.size()-1?"":",");
+    return s + "]";
+}
+
+class Codec {
+public:
+    string serialize(TreeNode* root) {
+        // Write your solution here
+
+        return "";
+    }
+
+    TreeNode* deserialize(string data) {
+        // Write your solution here
+
+        return nullptr;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Codec codec;
+    TreeNode* t1 = buildTree({1,2,3,-101,-101,4,5});
+    cout << treeToString(codec.deserialize(codec.serialize(t1))) << endl; // Expected: [1,2,3,null,null,4,5]
+    cout << treeToString(codec.deserialize(codec.serialize(nullptr))) << endl; // Expected: []
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "[1,2,3,null,null,4,5]\n[]",
+    python: "[1,2,3,null,null,4,5]\n[]",
+    java: "[1, 2, 3, null, null, 4, 5]\n[]",
+    cpp: "[1,2,3,null,null,4,5]\n[]",
+  },
+},
+
+"task-scheduler": {
+  id: "task-scheduler",
+  title: "Task Scheduler",
+  difficulty: "Medium",
+  category: "Array • Hash Table • Greedy • Sorting • Heap • Counting",
+  description: {
+    text: "You are given an array of CPU tasks, each labeled with a letter from A to Z, and a number n. Each CPU interval can be idle or allow completion of one task. Tasks can be completed in any order, but there is a cooldown interval of n between two tasks with the same label. Return the minimum number of CPU intervals required to complete all the tasks.",
+    notes: [
+      "The most frequent task determines the minimum intervals needed.",
+      "Formula: max(tasks.length, (maxFreq - 1) * (n + 1) + countOfMaxFreq).",
+      "Use a max-heap to always process the most frequent remaining task.",
+    ],
+  },
+  examples: [
+    {
+      input: `tasks = ["A","A","A","B","B","B"], n = 2`,
+      output: "8",
+      explanation: "A→B→idle→A→B→idle→A→B. Total 8 intervals.",
+    },
+    {
+      input: `tasks = ["A","C","A","B","D","B"], n = 1`,
+      output: "6",
+      explanation: "No idle time needed: A→B→C→D→A→B. Total 6 intervals.",
+    },
+    {
+      input: `tasks = ["A","A","A","B","B","B"], n = 0`,
+      output: "6",
+      explanation: "No cooldown needed, just run all 6 tasks.",
+    },
+  ],
+  constraints: [
+    "1 ≤ tasks.length ≤ 10⁴",
+    "tasks[i] is an uppercase English letter",
+    "0 ≤ n ≤ 100",
+  ],
+  starterCode: {
+    javascript: `function leastInterval(tasks, n) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(leastInterval(["A","A","A","B","B","B"], 2)); // Expected: 8
+console.log(leastInterval(["A","C","A","B","D","B"], 1)); // Expected: 6
+console.log(leastInterval(["A","A","A","B","B","B"], 0)); // Expected: 6`,
+
+    python: `def leastInterval(tasks, n):
+    # Write your solution here
+    pass
+
+# Test cases
+print(leastInterval(["A","A","A","B","B","B"], 2))  # Expected: 8
+print(leastInterval(["A","C","A","B","D","B"], 1))  # Expected: 6
+print(leastInterval(["A","A","A","B","B","B"], 0))  # Expected: 6`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static int leastInterval(char[] tasks, int n) {
+        // Write your solution here
+
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(leastInterval(new char[]{'A','A','A','B','B','B'}, 2)); // Expected: 8
+        System.out.println(leastInterval(new char[]{'A','C','A','B','D','B'}, 1)); // Expected: 6
+        System.out.println(leastInterval(new char[]{'A','A','A','B','B','B'}, 0)); // Expected: 6
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        // Write your solution here
+
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<char> a = {'A','A','A','B','B','B'};
+    cout << sol.leastInterval(a, 2) << endl; // Expected: 8
+    vector<char> b = {'A','C','A','B','D','B'};
+    cout << sol.leastInterval(b, 1) << endl; // Expected: 6
+    vector<char> c = {'A','A','A','B','B','B'};
+    cout << sol.leastInterval(c, 0) << endl; // Expected: 6
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "8\n6\n6",
+    python: "8\n6\n6",
+    java: "8\n6\n6",
+    cpp: "8\n6\n6",
+  },
+},
+
+"number-of-connected-components": {
+  id: "number-of-connected-components",
+  title: "Number of Connected Components in an Undirected Graph",
+  difficulty: "Medium",
+  category: "Graph • Depth-First Search • Breadth-First Search • Union Find",
+  description: {
+    text: "You have a graph of n nodes. You are given an integer n and an array edges where edges[i] = [ai, bi] indicates that there is an edge between ai and bi in the graph. Return the number of connected components in the graph.",
+    notes: [
+      "Use Union-Find (Disjoint Set Union) for an efficient O(n α(n)) solution.",
+      "Alternatively use DFS/BFS visiting all unvisited neighbors.",
+      "Each unvisited node that starts a new DFS/BFS adds 1 to the component count.",
+    ],
+  },
+  examples: [
+    {
+      input: "n = 5, edges = [[0,1],[1,2],[3,4]]",
+      output: "2",
+      explanation: "Components are {0,1,2} and {3,4}.",
+    },
+    {
+      input: "n = 5, edges = [[0,1],[1,2],[2,3],[3,4]]",
+      output: "1",
+      explanation: "All nodes are connected in one component.",
+    },
+    {
+      input: "n = 4, edges = []",
+      output: "4",
+      explanation: "No edges means each node is its own component.",
+    },
+  ],
+  constraints: [
+    "1 ≤ n ≤ 2000",
+    "1 ≤ edges.length ≤ 5000",
+    "edges[i].length == 2",
+    "0 ≤ ai ≤ bi < n",
+    "ai != bi",
+    "There are no repeated edges",
+  ],
+  starterCode: {
+    javascript: `function countComponents(n, edges) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(countComponents(5, [[0,1],[1,2],[3,4]]));        // Expected: 2
+console.log(countComponents(5, [[0,1],[1,2],[2,3],[3,4]]));  // Expected: 1
+console.log(countComponents(4, []));                          // Expected: 4`,
+
+    python: `def countComponents(n, edges):
+    # Write your solution here
+    pass
+
+# Test cases
+print(countComponents(5, [[0,1],[1,2],[3,4]]))        # Expected: 2
+print(countComponents(5, [[0,1],[1,2],[2,3],[3,4]]))  # Expected: 1
+print(countComponents(4, []))                          # Expected: 4`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static int countComponents(int n, int[][] edges) {
+        // Write your solution here
+
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(countComponents(5, new int[][]{{0,1},{1,2},{3,4}}));        // Expected: 2
+        System.out.println(countComponents(5, new int[][]{{0,1},{1,2},{2,3},{3,4}}));  // Expected: 1
+        System.out.println(countComponents(4, new int[][]{}));                          // Expected: 4
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int countComponents(int n, vector<vector<int>>& edges) {
+        // Write your solution here
+
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<vector<int>> e1 = {{0,1},{1,2},{3,4}};
+    cout << sol.countComponents(5, e1) << endl; // Expected: 2
+    vector<vector<int>> e2 = {{0,1},{1,2},{2,3},{3,4}};
+    cout << sol.countComponents(5, e2) << endl; // Expected: 1
+    vector<vector<int>> e3 = {};
+    cout << sol.countComponents(4, e3) << endl; // Expected: 4
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "2\n1\n4",
+    python: "2\n1\n4",
+    java: "2\n1\n4",
+    cpp: "2\n1\n4",
+  },
+},
+
+"redundant-connection": {
+  id: "redundant-connection",
+  title: "Redundant Connection",
+  difficulty: "Medium",
+  category: "Graph • Depth-First Search • Breadth-First Search • Union Find • Tree",
+  description: {
+    text: "In this problem, a tree is an undirected graph that is connected and has no cycles. You are given a graph that started as a tree with n nodes labeled from 1 to n, with one additional edge added. The added edge has two different vertices chosen from 1 to n, and was not an edge that already existed. The graph is represented as an array edges where edges[i] = [ai, bi] indicates that there is an edge between ai and bi in the graph. Return an edge that can be removed so that the resulting graph is a tree of n nodes. If there are multiple answers, return the edge that occurs last in the input.",
+    notes: [
+      "Use Union-Find: for each edge, if both nodes are already in the same component, this edge is redundant.",
+      "The first edge that tries to union two already-connected nodes is the answer.",
+      "Process edges in order — the last such edge encountered is the answer.",
+    ],
+  },
+  examples: [
+    {
+      input: "edges = [[1,2],[1,3],[2,3]]",
+      output: "[2,3]",
+      explanation: "Removing [2,3] leaves the tree: 1-2 and 1-3.",
+    },
+    {
+      input: "edges = [[1,2],[2,3],[3,4],[1,4],[1,5]]",
+      output: "[1,4]",
+      explanation: "Removing [1,4] leaves a valid tree with 5 nodes.",
+    },
+  ],
+  constraints: [
+    "n == edges.length",
+    "3 ≤ n ≤ 1000",
+    "edges[i].length == 2",
+    "1 ≤ ai < bi ≤ edges.length",
+    "ai != bi",
+    "There are no repeated edges",
+    "The given graph is connected",
+  ],
+  starterCode: {
+    javascript: `function findRedundantConnection(edges) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(JSON.stringify(findRedundantConnection([[1,2],[1,3],[2,3]])));              // Expected: [2,3]
+console.log(JSON.stringify(findRedundantConnection([[1,2],[2,3],[3,4],[1,4],[1,5]]))); // Expected: [1,4]`,
+
+    python: `import json
+
+def findRedundantConnection(edges):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(findRedundantConnection([[1,2],[1,3],[2,3]]), separators=(',', ':')))              # Expected: [2,3]
+print(json.dumps(findRedundantConnection([[1,2],[2,3],[3,4],[1,4],[1,5]]), separators=(',', ':'))) # Expected: [1,4]`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static int[] findRedundantConnection(int[][] edges) {
+        // Write your solution here
+
+        return new int[0];
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(findRedundantConnection(new int[][]{{1,2},{1,3},{2,3}}))));              // Expected: [2, 3]
+        System.out.println(Arrays.toString(findRedundantConnection(new int[][]{{1,2},{2,3},{3,4},{1,4},{1,5}}))); // Expected: [1, 4]
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        // Write your solution here
+
+        return {};
+    }
+};
+
+string vecToString(vector<int> v) {
+    string s = "[";
+    for (int i = 0; i < (int)v.size(); i++)
+        s += to_string(v[i]) + (i == (int)v.size()-1 ? "" : ",");
+    return s + "]";
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<vector<int>> e1 = {{1,2},{1,3},{2,3}};
+    cout << vecToString(sol.findRedundantConnection(e1)) << endl; // Expected: [2,3]
+    vector<vector<int>> e2 = {{1,2},{2,3},{3,4},{1,4},{1,5}};
+    cout << vecToString(sol.findRedundantConnection(e2)) << endl; // Expected: [1,4]
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "[2,3]\n[1,4]",
+    python: "[2,3]\n[1,4]",
+    java: "[2, 3]\n[1, 4]",
+    cpp: "[2,3]\n[1,4]",
+  },
+},
 };
 
  

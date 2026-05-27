@@ -12788,6 +12788,515 @@ int main() {
     cpp: "[2,3]\n[1,4]",
   },
 },
+
+"reverse-bits": {
+  id: "reverse-bits",
+  title: "Reverse Bits",
+  difficulty: "Easy",
+  category: "Divide and Conquer • Bit Manipulation",
+  description: {
+    text: "Reverse bits of a given 32-bit unsigned integer and return the result as an unsigned integer.",
+    notes: [
+      "Process all 32 bits even if leading bits are 0.",
+      "Shift result left by 1 and OR with the least significant bit of n each iteration.",
+      "Shift n right by 1 after extracting each bit.",
+    ],
+  },
+  examples: [
+    {
+      input: "n = 00000010100101000001111010011100",
+      output: "964176192 (00111001011110000010100101000000)",
+      explanation: "The input binary string represents the unsigned integer 43261596, whose reverse is 964176192.",
+    },
+    {
+      input: "n = 11111111111111111111111111111101",
+      output: "3221225471 (10111111111111111111111111111111)",
+      explanation: "The input represents 4294967293, whose reverse is 3221225471.",
+    },
+  ],
+  constraints: [
+    "The input must be a binary string of length 32",
+  ],
+  starterCode: {
+    javascript: `function reverseBits(n) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(reverseBits(43261596));   // Expected: 964176192
+console.log(reverseBits(4294967293)); // Expected: 3221225471`,
+
+    python: `def reverseBits(n):
+    # Write your solution here
+    pass
+
+# Test cases
+print(reverseBits(43261596))    # Expected: 964176192
+print(reverseBits(4294967293))  # Expected: 3221225471`,
+
+    java: `class Solution {
+    public static long reverseBits(long n) {
+        // Write your solution here
+
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(reverseBits(43261596L));   // Expected: 964176192
+        System.out.println(reverseBits(4294967293L)); // Expected: 3221225471
+    }
+}`,
+
+    cpp: `#include <iostream>
+
+using namespace std;
+
+class Solution {
+public:
+    uint32_t reverseBits(uint32_t n) {
+        // Write your solution here
+
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << sol.reverseBits(43261596) << endl;   // Expected: 964176192
+    cout << sol.reverseBits(4294967293) << endl; // Expected: 3221225471
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "964176192\n3221225471",
+    python: "964176192\n3221225471",
+    java: "964176192\n3221225471",
+    cpp: "964176192\n3221225471",
+  },
+},
+
+"missing-number": {
+  id: "missing-number",
+  title: "Missing Number",
+  difficulty: "Easy",
+  category: "Array • Hash Table • Math • Bit Manipulation • Sorting",
+  description: {
+    text: "Given an array nums containing n distinct numbers in the range [0, n], return the only number in the range that is missing from the array.",
+    notes: [
+      "The sum of [0, n] is n*(n+1)/2. Subtract the actual sum to find the missing number.",
+      "Alternatively use XOR: XOR all indices and all values — duplicates cancel out.",
+      "Both approaches run in O(n) time and O(1) space.",
+    ],
+  },
+  examples: [
+    {
+      input: "nums = [3,0,1]",
+      output: "2",
+      explanation: "n = 3. Range [0,3] has numbers 0,1,2,3. Missing is 2.",
+    },
+    {
+      input: "nums = [0,1]",
+      output: "2",
+      explanation: "n = 2. Range [0,2] has numbers 0,1,2. Missing is 2.",
+    },
+    {
+      input: "nums = [9,6,4,2,3,5,7,0,1]",
+      output: "8",
+      explanation: "n = 9. The missing number from [0,9] is 8.",
+    },
+  ],
+  constraints: [
+    "n == nums.length",
+    "1 ≤ n ≤ 10⁴",
+    "0 ≤ nums[i] ≤ n",
+    "All the numbers of nums are unique",
+  ],
+  starterCode: {
+    javascript: `function missingNumber(nums) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(missingNumber([3,0,1]));              // Expected: 2
+console.log(missingNumber([0,1]));                // Expected: 2
+console.log(missingNumber([9,6,4,2,3,5,7,0,1])); // Expected: 8`,
+
+    python: `def missingNumber(nums):
+    # Write your solution here
+    pass
+
+# Test cases
+print(missingNumber([3,0,1]))               # Expected: 2
+print(missingNumber([0,1]))                 # Expected: 2
+print(missingNumber([9,6,4,2,3,5,7,0,1]))  # Expected: 8`,
+
+    java: `class Solution {
+    public static int missingNumber(int[] nums) {
+        // Write your solution here
+
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(missingNumber(new int[]{3,0,1}));              // Expected: 2
+        System.out.println(missingNumber(new int[]{0,1}));                // Expected: 2
+        System.out.println(missingNumber(new int[]{9,6,4,2,3,5,7,0,1})); // Expected: 8
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        // Write your solution here
+
+        return -1;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<int> a = {3,0,1};
+    cout << sol.missingNumber(a) << endl; // Expected: 2
+    vector<int> b = {0,1};
+    cout << sol.missingNumber(b) << endl; // Expected: 2
+    vector<int> c = {9,6,4,2,3,5,7,0,1};
+    cout << sol.missingNumber(c) << endl; // Expected: 8
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "2\n2\n8",
+    python: "2\n2\n8",
+    java: "2\n2\n8",
+    cpp: "2\n2\n8",
+  },
+},
+
+"graph-valid-tree": {
+  id: "graph-valid-tree",
+  title: "Graph Valid Tree",
+  difficulty: "Medium",
+  category: "Graph • Depth-First Search • Breadth-First Search • Union Find",
+  description: {
+    text: "Given n nodes labeled from 0 to n-1 and a list of undirected edges, write a function to check whether these edges form a valid tree. A valid tree must be connected and contain no cycles.",
+    notes: [
+      "A valid tree with n nodes has exactly n-1 edges.",
+      "If edges.length != n-1, return false immediately.",
+      "Use Union-Find or DFS to check for cycles and connectivity.",
+    ],
+  },
+  examples: [
+    {
+      input: "n = 5, edges = [[0,1],[0,2],[0,3],[1,4]]",
+      output: "true",
+      explanation: "4 edges for 5 nodes, no cycles, fully connected — valid tree.",
+    },
+    {
+      input: "n = 5, edges = [[0,1],[1,2],[2,3],[1,3],[1,4]]",
+      output: "false",
+      explanation: "Contains a cycle: 1→2→3→1.",
+    },
+    {
+      input: "n = 3, edges = [[0,1]]",
+      output: "false",
+      explanation: "Only 1 edge for 3 nodes — graph is not connected.",
+    },
+  ],
+  constraints: [
+    "1 ≤ n ≤ 2000",
+    "0 ≤ edges.length ≤ 5000",
+    "edges[i].length == 2",
+    "0 ≤ ai, bi < n",
+    "ai != bi",
+    "There are no self-loops or repeated edges",
+  ],
+  starterCode: {
+    javascript: `function validTree(n, edges) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(validTree(5, [[0,1],[0,2],[0,3],[1,4]]));        // Expected: true
+console.log(validTree(5, [[0,1],[1,2],[2,3],[1,3],[1,4]]));  // Expected: false
+console.log(validTree(3, [[0,1]]));                           // Expected: false`,
+
+    python: `def validTree(n, edges):
+    # Write your solution here
+    pass
+
+# Test cases
+print(validTree(5, [[0,1],[0,2],[0,3],[1,4]]))        # Expected: True
+print(validTree(5, [[0,1],[1,2],[2,3],[1,3],[1,4]]))  # Expected: False
+print(validTree(3, [[0,1]]))                           # Expected: False`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static boolean validTree(int n, int[][] edges) {
+        // Write your solution here
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(validTree(5, new int[][]{{0,1},{0,2},{0,3},{1,4}}));        // Expected: true
+        System.out.println(validTree(5, new int[][]{{0,1},{1,2},{2,3},{1,3},{1,4}}));  // Expected: false
+        System.out.println(validTree(3, new int[][]{{0,1}}));                           // Expected: false
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    bool validTree(int n, vector<vector<int>>& edges) {
+        // Write your solution here
+
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<vector<int>> e1 = {{0,1},{0,2},{0,3},{1,4}};
+    cout << boolalpha << sol.validTree(5, e1) << endl; // Expected: true
+    vector<vector<int>> e2 = {{0,1},{1,2},{2,3},{1,3},{1,4}};
+    cout << boolalpha << sol.validTree(5, e2) << endl; // Expected: false
+    vector<vector<int>> e3 = {{0,1}};
+    cout << boolalpha << sol.validTree(3, e3) << endl; // Expected: false
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "true\nfalse\nfalse",
+    python: "True\nFalse\nFalse",
+    java: "true\nfalse\nfalse",
+    cpp: "true\nfalse\nfalse",
+  },
+},
+
+"swim-in-rising-water": {
+  id: "swim-in-rising-water",
+  title: "Swim in Rising Water",
+  difficulty: "Hard",
+  category: "Array • Binary Search • Depth-First Search • Breadth-First Search • Matrix • Heap",
+  description: {
+    text: "You are given an n x n integer matrix grid where each value grid[i][j] represents the elevation at that point (i, j). The rain starts to fall at time t. At time t, the depth of the water everywhere is t. You can swim from a square to an adjacent (4-directional) square if the elevation of both squares is at most t. You can swim infinite distances in zero time. You must stay within the n x n grid. Return the least time until you can reach the bottom right square (n-1, n-1) from the top left square (0, 0).",
+    notes: [
+      "Use a min-heap (priority queue) — Dijkstra-like approach.",
+      "The cost to reach a cell is max(cost to previous cell, current cell elevation).",
+      "Alternatively use binary search + BFS/DFS to check if target time is reachable.",
+    ],
+  },
+  examples: [
+    {
+      input: "grid = [[0,2],[1,3]]",
+      output: "3",
+      explanation: "At time 3 we can swim from (0,0)→(0,1)→(1,1) since all elevations ≤ 3.",
+    },
+    {
+      input: "grid = [[0,1,2,3,4],[24,23,22,21,5],[12,13,14,15,16],[11,17,18,19,20],[10,9,8,7,6]]",
+      output: "16",
+      explanation: "The optimal path visits cells with max elevation 16.",
+    },
+  ],
+  constraints: [
+    "n == grid.length",
+    "n == grid[i].length",
+    "1 ≤ n ≤ 50",
+    "0 ≤ grid[i][j] < n²",
+    "Each value grid[i][j] is unique",
+  ],
+  starterCode: {
+    javascript: `function swimInWater(grid) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(swimInWater([[0,2],[1,3]]));  // Expected: 3
+console.log(swimInWater([[0,1,2,3,4],[24,23,22,21,5],[12,13,14,15,16],[11,17,18,19,20],[10,9,8,7,6]])); // Expected: 16`,
+
+    python: `def swimInWater(grid):
+    # Write your solution here
+    pass
+
+# Test cases
+print(swimInWater([[0,2],[1,3]]))  # Expected: 3
+print(swimInWater([[0,1,2,3,4],[24,23,22,21,5],[12,13,14,15,16],[11,17,18,19,20],[10,9,8,7,6]]))  # Expected: 16`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static int swimInWater(int[][] grid) {
+        // Write your solution here
+
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(swimInWater(new int[][]{{0,2},{1,3}}));  // Expected: 3
+        System.out.println(swimInWater(new int[][]{
+            {0,1,2,3,4},{24,23,22,21,5},{12,13,14,15,16},{11,17,18,19,20},{10,9,8,7,6}
+        }));  // Expected: 16
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+class Solution {
+public:
+    int swimInWater(vector<vector<int>>& grid) {
+        // Write your solution here
+
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<vector<int>> g1 = {{0,2},{1,3}};
+    cout << sol.swimInWater(g1) << endl;  // Expected: 3
+    vector<vector<int>> g2 = {
+        {0,1,2,3,4},{24,23,22,21,5},{12,13,14,15,16},{11,17,18,19,20},{10,9,8,7,6}
+    };
+    cout << sol.swimInWater(g2) << endl;  // Expected: 16
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "3\n16",
+    python: "3\n16",
+    java: "3\n16",
+    cpp: "3\n16",
+  },
+},
+
+"interleaving-string": {
+  id: "interleaving-string",
+  title: "Interleaving String",
+  difficulty: "Medium",
+  category: "String • Dynamic Programming",
+  description: {
+    text: "Given strings s1, s2, and s3, find whether s3 is formed by an interleaving of s1 and s2. An interleaving of two strings s and t is a configuration where s and t are divided into n and m substrings respectively such that s = s1 + s2 + ... + sn, t = t1 + t2 + ... + tm, and the interleaving is s1 + t1 + s2 + t2 + ... or t1 + s1 + t2 + s2 + ...",
+    notes: [
+      "Use 2D DP where dp[i][j] means s3[0..i+j-1] can be formed by interleaving s1[0..i-1] and s2[0..j-1].",
+      "Transition: dp[i][j] = (dp[i-1][j] && s1[i-1]==s3[i+j-1]) || (dp[i][j-1] && s2[j-1]==s3[i+j-1]).",
+      "Base case: dp[0][0] = true.",
+    ],
+  },
+  examples: [
+    {
+      input: `s1 = "aabcc", s2 = "dbbca", s3 = "aadbbcbcac"`,
+      output: "true",
+      explanation: "s3 can be formed by interleaving s1 and s2.",
+    },
+    {
+      input: `s1 = "aabcc", s2 = "dbbca", s3 = "aadbbbaccc"`,
+      output: "false",
+      explanation: "s3 cannot be formed by any interleaving of s1 and s2.",
+    },
+    {
+      input: `s1 = "", s2 = "", s3 = ""`,
+      output: "true",
+      explanation: "Empty strings trivially interleave to form empty string.",
+    },
+  ],
+  constraints: [
+    "0 ≤ s1.length, s2.length ≤ 100",
+    "0 ≤ s3.length ≤ 200",
+    "s1, s2, and s3 consist of lowercase English letters",
+  ],
+  starterCode: {
+    javascript: `function isInterleave(s1, s2, s3) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(isInterleave("aabcc", "dbbca", "aadbbcbcac"));  // Expected: true
+console.log(isInterleave("aabcc", "dbbca", "aadbbbaccc"));  // Expected: false
+console.log(isInterleave("", "", ""));                        // Expected: true`,
+
+    python: `def isInterleave(s1, s2, s3):
+    # Write your solution here
+    pass
+
+# Test cases
+print(isInterleave("aabcc", "dbbca", "aadbbcbcac"))  # Expected: True
+print(isInterleave("aabcc", "dbbca", "aadbbbaccc"))  # Expected: False
+print(isInterleave("", "", ""))                        # Expected: True`,
+
+    java: `class Solution {
+    public static boolean isInterleave(String s1, String s2, String s3) {
+        // Write your solution here
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isInterleave("aabcc", "dbbca", "aadbbcbcac"));  // Expected: true
+        System.out.println(isInterleave("aabcc", "dbbca", "aadbbbaccc"));  // Expected: false
+        System.out.println(isInterleave("", "", ""));                        // Expected: true
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    bool isInterleave(string s1, string s2, string s3) {
+        // Write your solution here
+
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << boolalpha << sol.isInterleave("aabcc", "dbbca", "aadbbcbcac") << endl;  // Expected: true
+    cout << boolalpha << sol.isInterleave("aabcc", "dbbca", "aadbbbaccc") << endl;  // Expected: false
+    cout << boolalpha << sol.isInterleave("", "", "") << endl;                        // Expected: true
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "true\nfalse\ntrue",
+    python: "True\nFalse\nTrue",
+    java: "true\nfalse\ntrue",
+    cpp: "true\nfalse\ntrue",
+  },
+},
+
 };
 
  

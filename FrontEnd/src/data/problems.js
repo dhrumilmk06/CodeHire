@@ -13296,6 +13296,521 @@ int main() {
     cpp: "true\nfalse\ntrue",
   },
 },
+"minimum-height-trees": {
+  id: "minimum-height-trees",
+  title: "Minimum Height Trees",
+  difficulty: "Medium",
+  category: "Graph • Depth-First Search • Breadth-First Search • Topological Sort • Tree",
+  description: {
+    text: "A tree is an undirected graph in which any two vertices are connected by exactly one path. Given a tree of n nodes labeled from 0 to n-1, and an array of n-1 edges, find all the roots of Minimum Height Trees (MHTs) and return their labels in any order. A minimum height tree is one where the height of the tree is minimized.",
+    notes: [
+      "The answer is always 1 or 2 nodes — the centroid(s) of the tree.",
+      "Iteratively remove leaf nodes (degree 1) layer by layer until 1 or 2 nodes remain.",
+      "Similar to topological sort — leaves have degree 1.",
+    ],
+  },
+  examples: [
+    {
+      input: "n = 4, edges = [[1,0],[1,2],[1,3]]",
+      output: "[1]",
+      explanation: "Node 1 is the center. Rooting at 1 gives height 1, the minimum possible.",
+    },
+    {
+      input: "n = 6, edges = [[3,0],[3,1],[3,2],[3,4],[5,4]]",
+      output: "[3,4]",
+      explanation: "Both nodes 3 and 4 produce trees of minimum height 2.",
+    },
+    {
+      input: "n = 1, edges = []",
+      output: "[0]",
+      explanation: "Single node is trivially the root of a minimum height tree.",
+    },
+  ],
+  constraints: [
+    "1 ≤ n ≤ 2 × 10⁴",
+    "edges.length == n - 1",
+    "0 ≤ ai, bi < n",
+    "ai != bi",
+    "All the pairs (ai, bi) are distinct",
+    "The given input is guaranteed to be a tree and there will be no repeated edges",
+  ],
+  starterCode: {
+    javascript: `function findMinHeightTrees(n, edges) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(JSON.stringify(findMinHeightTrees(4, [[1,0],[1,2],[1,3]]))); // Expected: [1]
+console.log(JSON.stringify(findMinHeightTrees(6, [[3,0],[3,1],[3,2],[3,4],[5,4]]))); // Expected: [3,4]
+console.log(JSON.stringify(findMinHeightTrees(1, []))); // Expected: [0]`,
+
+    python: `import json
+
+def findMinHeightTrees(n, edges):
+    # Write your solution here
+    pass
+
+# Test cases
+print(json.dumps(findMinHeightTrees(4, [[1,0],[1,2],[1,3]]), separators=(',', ':')))           # Expected: [1]
+print(json.dumps(findMinHeightTrees(6, [[3,0],[3,1],[3,2],[3,4],[5,4]]), separators=(',', ':'))) # Expected: [3,4]
+print(json.dumps(findMinHeightTrees(1, []), separators=(',', ':')))                              # Expected: [0]`,
+
+    java: `import java.util.*;
+
+class Solution {
+    public static List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        // Write your solution here
+
+        return new ArrayList<>();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(findMinHeightTrees(4, new int[][]{{1,0},{1,2},{1,3}}));           // Expected: [1]
+        System.out.println(findMinHeightTrees(6, new int[][]{{3,0},{3,1},{3,2},{3,4},{5,4}})); // Expected: [3, 4]
+        System.out.println(findMinHeightTrees(1, new int[][]{}));                              // Expected: [0]
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <vector>
+#include <queue>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+        // Write your solution here
+
+        return {};
+    }
+};
+
+string vecToString(vector<int> v) {
+    string s = "[";
+    for (int i = 0; i < (int)v.size(); i++)
+        s += to_string(v[i]) + (i == (int)v.size()-1 ? "" : ",");
+    return s + "]";
+}
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    vector<vector<int>> e1 = {{1,0},{1,2},{1,3}};
+    cout << vecToString(sol.findMinHeightTrees(4, e1)) << endl; // Expected: [1]
+    vector<vector<int>> e2 = {{3,0},{3,1},{3,2},{3,4},{5,4}};
+    cout << vecToString(sol.findMinHeightTrees(6, e2)) << endl; // Expected: [3,4]
+    vector<vector<int>> e3 = {};
+    cout << vecToString(sol.findMinHeightTrees(1, e3)) << endl; // Expected: [0]
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "[1]\n[3,4]\n[0]",
+    python: "[1]\n[3,4]\n[0]",
+    java: "[1]\n[3, 4]\n[0]",
+    cpp: "[1]\n[3,4]\n[0]",
+  },
+},
+
+"longest-common-subsequence": {
+  id: "longest-common-subsequence",
+  title: "Longest Common Subsequence",
+  difficulty: "Medium",
+  category: "String • Dynamic Programming",
+  description: {
+    text: "Given two strings text1 and text2, return the length of their longest common subsequence. If there is no common subsequence, return 0. A subsequence of a string is a new string generated from the original string with some characters (can be none) deleted without changing the relative order of the remaining characters.",
+    notes: [
+      "Use 2D DP where dp[i][j] = LCS of text1[0..i-1] and text2[0..j-1].",
+      "If text1[i-1] == text2[j-1]: dp[i][j] = dp[i-1][j-1] + 1.",
+      "Otherwise: dp[i][j] = max(dp[i-1][j], dp[i][j-1]).",
+    ],
+  },
+  examples: [
+    {
+      input: `text1 = "abcde", text2 = "ace"`,
+      output: "3",
+      explanation: `The LCS is "ace" which has length 3.`,
+    },
+    {
+      input: `text1 = "abc", text2 = "abc"`,
+      output: "3",
+      explanation: `The LCS is "abc" which has length 3.`,
+    },
+    {
+      input: `text1 = "abc", text2 = "def"`,
+      output: "0",
+      explanation: "There is no common subsequence.",
+    },
+  ],
+  constraints: [
+    "1 ≤ text1.length, text2.length ≤ 1000",
+    "text1 and text2 consist of only lowercase English characters",
+  ],
+  starterCode: {
+    javascript: `function longestCommonSubsequence(text1, text2) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(longestCommonSubsequence("abcde", "ace")); // Expected: 3
+console.log(longestCommonSubsequence("abc", "abc"));   // Expected: 3
+console.log(longestCommonSubsequence("abc", "def"));   // Expected: 0`,
+
+    python: `def longestCommonSubsequence(text1, text2):
+    # Write your solution here
+    pass
+
+# Test cases
+print(longestCommonSubsequence("abcde", "ace"))  # Expected: 3
+print(longestCommonSubsequence("abc", "abc"))    # Expected: 3
+print(longestCommonSubsequence("abc", "def"))    # Expected: 0`,
+
+    java: `class Solution {
+    public static int longestCommonSubsequence(String text1, String text2) {
+        // Write your solution here
+
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(longestCommonSubsequence("abcde", "ace")); // Expected: 3
+        System.out.println(longestCommonSubsequence("abc", "abc"));   // Expected: 3
+        System.out.println(longestCommonSubsequence("abc", "def"));   // Expected: 0
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        // Write your solution here
+
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << sol.longestCommonSubsequence("abcde", "ace") << endl; // Expected: 3
+    cout << sol.longestCommonSubsequence("abc", "abc") << endl;   // Expected: 3
+    cout << sol.longestCommonSubsequence("abc", "def") << endl;   // Expected: 0
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "3\n3\n0",
+    python: "3\n3\n0",
+    java: "3\n3\n0",
+    cpp: "3\n3\n0",
+  },
+},
+
+"regular-expression-matching": {
+  id: "regular-expression-matching",
+  title: "Regular Expression Matching",
+  difficulty: "Hard",
+  category: "String • Dynamic Programming • Recursion",
+  description: {
+    text: "Given an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where '.' matches any single character and '*' matches zero or more of the preceding element. The matching should cover the entire input string (not partial).",
+    notes: [
+      "Use 2D DP where dp[i][j] = whether s[0..i-1] matches p[0..j-1].",
+      "If p[j-1] == '*': dp[i][j] = dp[i][j-2] (zero occurrences) OR (dp[i-1][j] if s[i-1] matches p[j-2]).",
+      "If p[j-1] == '.' or p[j-1] == s[i-1]: dp[i][j] = dp[i-1][j-1].",
+    ],
+  },
+  examples: [
+    {
+      input: `s = "aa", p = "a"`,
+      output: "false",
+      explanation: `"a" does not match the entire string "aa".`,
+    },
+    {
+      input: `s = "aa", p = "a*"`,
+      output: "true",
+      explanation: `'*' means zero or more 'a's. "a*" matches "aa".`,
+    },
+    {
+      input: `s = "ab", p = ".*"`,
+      output: "true",
+      explanation: `".*" means zero or more of any character, matching "ab".`,
+    },
+  ],
+  constraints: [
+    "1 ≤ s.length ≤ 20",
+    "1 ≤ p.length ≤ 30",
+    "s contains only lowercase English letters",
+    "p contains only lowercase English letters, '.', and '*'",
+    "It is guaranteed for each occurrence of '*', there will be a previous valid character to match",
+  ],
+  starterCode: {
+    javascript: `function isMatch(s, p) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(isMatch("aa", "a"));   // Expected: false
+console.log(isMatch("aa", "a*"));  // Expected: true
+console.log(isMatch("ab", ".*"));  // Expected: true`,
+
+    python: `def isMatch(s, p):
+    # Write your solution here
+    pass
+
+# Test cases
+print(isMatch("aa", "a"))   # Expected: False
+print(isMatch("aa", "a*"))  # Expected: True
+print(isMatch("ab", ".*"))  # Expected: True`,
+
+    java: `class Solution {
+    public static boolean isMatch(String s, String p) {
+        // Write your solution here
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isMatch("aa", "a"));   // Expected: false
+        System.out.println(isMatch("aa", "a*"));  // Expected: true
+        System.out.println(isMatch("ab", ".*"));  // Expected: true
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        // Write your solution here
+
+        return false;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << boolalpha << sol.isMatch("aa", "a") << endl;   // Expected: false
+    cout << boolalpha << sol.isMatch("aa", "a*") << endl;  // Expected: true
+    cout << boolalpha << sol.isMatch("ab", ".*") << endl;  // Expected: true
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "false\ntrue\ntrue",
+    python: "False\nTrue\nTrue",
+    java: "false\ntrue\ntrue",
+    cpp: "false\ntrue\ntrue",
+  },
+},
+
+"distinct-subsequences": {
+  id: "distinct-subsequences",
+  title: "Distinct Subsequences",
+  difficulty: "Hard",
+  category: "String • Dynamic Programming",
+  description: {
+    text: "Given two strings s and t, return the number of distinct subsequences of s which equals t. A subsequence of a string is a new string formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters.",
+    notes: [
+      "Use 2D DP where dp[i][j] = number of ways to form t[0..j-1] from s[0..i-1].",
+      "If s[i-1] == t[j-1]: dp[i][j] = dp[i-1][j-1] + dp[i-1][j].",
+      "Otherwise: dp[i][j] = dp[i-1][j].",
+      "Base case: dp[i][0] = 1 for all i (empty t can be formed one way).",
+    ],
+  },
+  examples: [
+    {
+      input: `s = "rabbbit", t = "rabbit"`,
+      output: "3",
+      explanation: `There are 3 ways to form "rabbit" from "rabbbit" by removing one of the three 'b's.`,
+    },
+    {
+      input: `s = "babgbag", t = "bag"`,
+      output: "5",
+      explanation: `There are 5 distinct subsequences of "babgbag" that equal "bag".`,
+    },
+  ],
+  constraints: [
+    "1 ≤ s.length, t.length ≤ 1000",
+    "s and t consist of English letters",
+  ],
+  starterCode: {
+    javascript: `function numDistinct(s, t) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(numDistinct("rabbbit", "rabbit")); // Expected: 3
+console.log(numDistinct("babgbag", "bag"));    // Expected: 5`,
+
+    python: `def numDistinct(s, t):
+    # Write your solution here
+    pass
+
+# Test cases
+print(numDistinct("rabbbit", "rabbit"))  # Expected: 3
+print(numDistinct("babgbag", "bag"))     # Expected: 5`,
+
+    java: `class Solution {
+    public static int numDistinct(String s, String t) {
+        // Write your solution here
+
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(numDistinct("rabbbit", "rabbit")); // Expected: 3
+        System.out.println(numDistinct("babgbag", "bag"));    // Expected: 5
+    }
+}`,
+
+    cpp: `#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int numDistinct(string s, string t) {
+        // Write your solution here
+
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << sol.numDistinct("rabbbit", "rabbit") << endl; // Expected: 3
+    cout << sol.numDistinct("babgbag", "bag") << endl;    // Expected: 5
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "3\n5",
+    python: "3\n5",
+    java: "3\n5",
+    cpp: "3\n5",
+  },
+},
+
+"number-of-1-bits": {
+  id: "number-of-1-bits",
+  title: "Number of 1 Bits",
+  difficulty: "Easy",
+  category: "Divide and Conquer • Bit Manipulation",
+  description: {
+    text: "Write a function that takes the binary representation of a positive integer and returns the number of set bits it has (also known as the Hamming weight).",
+    notes: [
+      "Use n & (n-1) to clear the lowest set bit — repeat until n is 0.",
+      "Count how many times you perform this operation.",
+      "Alternatively use n & 1 to check the LSB and right shift n each iteration.",
+    ],
+  },
+  examples: [
+    {
+      input: "n = 11",
+      output: "3",
+      explanation: "11 in binary is 1011, which has three set bits.",
+    },
+    {
+      input: "n = 128",
+      output: "1",
+      explanation: "128 in binary is 10000000, which has one set bit.",
+    },
+    {
+      input: "n = 2147483645",
+      output: "30",
+      explanation: "2147483645 in binary has thirty set bits.",
+    },
+  ],
+  constraints: [
+    "1 ≤ n ≤ 2³¹ - 1",
+  ],
+  starterCode: {
+    javascript: `function hammingWeight(n) {
+  // Write your solution here
+
+}
+
+// Test cases
+console.log(hammingWeight(11));          // Expected: 3
+console.log(hammingWeight(128));         // Expected: 1
+console.log(hammingWeight(2147483645));  // Expected: 30`,
+
+    python: `def hammingWeight(n):
+    # Write your solution here
+    pass
+
+# Test cases
+print(hammingWeight(11))           # Expected: 3
+print(hammingWeight(128))          # Expected: 1
+print(hammingWeight(2147483645))   # Expected: 30`,
+
+    java: `class Solution {
+    public static int hammingWeight(int n) {
+        // Write your solution here
+
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(hammingWeight(11));          // Expected: 3
+        System.out.println(hammingWeight(128));         // Expected: 1
+        System.out.println(hammingWeight(2147483645));  // Expected: 30
+    }
+}`,
+
+    cpp: `#include <iostream>
+
+using namespace std;
+
+class Solution {
+public:
+    int hammingWeight(uint32_t n) {
+        // Write your solution here
+
+        return 0;
+    }
+};
+
+#ifndef HIDDEN_TEST
+int main() {
+    Solution sol;
+    cout << sol.hammingWeight(11) << endl;          // Expected: 3
+    cout << sol.hammingWeight(128) << endl;         // Expected: 1
+    cout << sol.hammingWeight(2147483645) << endl;  // Expected: 30
+    return 0;
+}
+#endif`,
+  },
+  expectedOutput: {
+    javascript: "3\n1\n30",
+    python: "3\n1\n30",
+    java: "3\n1\n30",
+    cpp: "3\n1\n30",
+  },
+},
 
 };
 

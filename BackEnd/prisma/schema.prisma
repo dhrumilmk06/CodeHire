@@ -81,6 +81,7 @@ model Session {
   snapshots          WhiteboardSnapshot[]
   decisionStatus    String?
   decisionSentAt    DateTime?
+  bugBountySubmissions BugBountySubmission[]
 
   @@index([session_code], map: "idx_session_code")
   @@index([createdAt(sort: Desc)], map: "idx_session_createdat")
@@ -98,4 +99,62 @@ model WhiteboardSnapshot {
   aiFeedback     String?
   createdAt      DateTime @default(now())
   session        Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}
+
+model BugBountyProblem {
+  id                    Int      @id @default(autoincrement())
+  title                 String
+  buggyCode             String   @db.Text
+  bugDescription        String   @db.Text
+  bugHints              String?  @db.Text
+  language              String
+  initialTestCases      Json
+  hiddenTestCases       Json
+  difficultyLevel       String?
+  estimatedTimeMinutes  Int?
+  bountyPoints          Int      @default(100)
+  createdBy             String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  submissions           BugBountySubmission[]
+
+  @@index([language])
+  @@index([difficultyLevel])
+  @@map("bug_bounty_problems")
+}
+
+model BugBountySubmission {
+  id                    Int      @id @default(autoincrement())
+  problemId             Int
+  problem               BugBountyProblem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  userId                String
+  sessionId             String?
+  session               Session? @relation(fields: [sessionId], references: [id])
+  fixedCode             String   @db.Text
+  status                String   @default("submitted")
+  autoTestResult        Json?
+  aiReviewFeedback      String?  @db.Text
+  aiReviewScore         Int?
+  manualReviewFeedback  String?  @db.Text
+  manualReviewScore     Int?
+  finalScore            Int?
+  timeTakenSeconds      Int?
+  hintsUsed             BugBountyHintUsed[]
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([problemId])
+  @@index([userId])
+  @@index([sessionId])
+  @@index([status])
+  @@map("bug_bounty_submissions")
+}
+
+model BugBountyHintUsed {
+  id            Int      @id @default(autoincrement())
+  submissionId  Int
+  submission    BugBountySubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  requestedAt   DateTime @default(now())
+
+  @@map("bug_bounty_hints_used")
 }

@@ -23,6 +23,7 @@ import codeExecutionRoutes from './routes/codeExecutionRoutes.js'
 import agentRoutes from './routes/agentRoutes.js'
 import whiteboardRoutes from './routes/whiteboardRoutes.js'
 import aiWhiteboardRoutes from './routes/aiWhiteboardRoutes.js'
+import bugBountyRoutes from './routes/bugBounty.js'
 import { notFoundHandler, globalErrorHandler } from './middleware/errorHandler.js';
 
 
@@ -228,6 +229,7 @@ app.use('/api/code', codeExecutionRoutes)
 app.use('/api/agent', agentRoutes)
 app.use('/api/whiteboard', whiteboardRoutes)
 app.use('/api/ai', aiWhiteboardRoutes)
+app.use('/api/bug-bounty', bugBountyRoutes)
 
 // Serve reports folder statically
 app.use('/reports', express.static('reports'))

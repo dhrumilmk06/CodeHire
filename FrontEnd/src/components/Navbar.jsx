@@ -9,7 +9,8 @@ import {
     HistoryIcon, 
     ShieldCheckIcon,
     UsersIcon,
-    VideoIcon
+    VideoIcon,
+    BugIcon
 } from "lucide-react";
 
 export const Navbar = () => {
@@ -30,12 +31,15 @@ export const Navbar = () => {
         navItems.push(
             { path: "/problems", label: "Problems", icon: BookOpenIcon },
             { path: "/problem-bank", label: "Problem Bank", icon: LibraryIcon },
-            { path: "/dashboard", label: "DashBoard", icon: LayoutDashboardIcon }
+            { path: "/dashboard", label: "DashBoard", icon: LayoutDashboardIcon },
+            { path: "/bug-bounty", label: "Bug Bounty", icon: BugIcon },
+            { path: "/host/bug-bounty", label: "BB Reviews", icon: BugIcon }
         );
     } else if (role === 'participant') {
         navItems.push(
             { path: "/problems", label: "Problems", icon: BookOpenIcon },
-            { path: "/my-interviews", label: "My Interviews", icon: HistoryIcon }
+            { path: "/my-interviews", label: "My Interviews", icon: HistoryIcon },
+            { path: "/bug-bounty", label: "Bug Bounty", icon: BugIcon }
         );
     }
 

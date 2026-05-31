@@ -20,6 +20,10 @@ import { AdminPanelPage } from './pages/AdminPanelPage.jsx';
 import { MyInterviewsPage } from './pages/MyInterviewsPage.jsx';
 import { SelectRolePage } from './pages/SelectRolePage.jsx';
 import SessionLayout from './layouts/SessionLayout.jsx';
+import BugBountyProblems from './pages/BugBountyProblems.jsx';
+import BugBountyDetail from './pages/BugBountyDetail.jsx';
+import BugBountyDashboard from './pages/BugBountyDashboard.jsx';
+import BugBountyReview from './pages/BugBountyReview.jsx';
 
 function LandingRedirect() {
   const { user, isLoaded } = useUser();
@@ -154,6 +158,38 @@ function App() {
                 <ProblemPage />
               </PageTransition>
             </AuthenticatedRoute>
+          } />
+
+          {/* Bug Bounty — Candidate */}
+          <Route path='/bug-bounty' element={
+            <AuthenticatedRoute>
+              <PageTransition>
+                <BugBountyProblems />
+              </PageTransition>
+            </AuthenticatedRoute>
+          } />
+          <Route path='/bug-bounty/:id' element={
+            <AuthenticatedRoute>
+              <PageTransition>
+                <BugBountyDetail />
+              </PageTransition>
+            </AuthenticatedRoute>
+          } />
+
+          {/* Bug Bounty — Host */}
+          <Route path='/host/bug-bounty' element={
+            <HostRoute>
+              <PageTransition>
+                <BugBountyDashboard />
+              </PageTransition>
+            </HostRoute>
+          } />
+          <Route path='/host/bug-bounty/review/:submissionId' element={
+            <HostRoute>
+              <PageTransition>
+                <BugBountyReview />
+              </PageTransition>
+            </HostRoute>
           } />
 
           {/* Participant Routes */}

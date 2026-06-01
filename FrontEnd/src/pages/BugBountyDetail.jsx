@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router';
 import Editor from '@monaco-editor/react';
 import toast from 'react-hot-toast';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { bugBountyApi } from '../api/bugBounty';
 import { getDifficultyBadgeClass } from '../lib/utils';
 import BugBountyResult from '../components/BugBountyResult';
@@ -97,6 +98,23 @@ function HintModal({ hint, onClose }) {
   );
 }
 
+// ── Custom Resize Handle ───────────────────────────────────────────────────────
+function ResizeHandle({ direction = 'vertical' }) {
+  return (
+    <PanelResizeHandle
+      className={`relative flex items-center justify-center transition-colors group ${
+        direction === 'horizontal' ? 'w-2 mx-1 cursor-col-resize' : 'h-2 my-1 cursor-row-resize'
+      }`}
+    >
+      <div
+        className={`bg-base-content/10 group-hover:bg-primary/50 group-active:bg-primary rounded-full transition-colors ${
+          direction === 'horizontal' ? 'w-1 h-8' : 'h-1 w-8'
+        }`}
+      />
+    </PanelResizeHandle>
+  );
+}
+
 // ── Main Page ─────────────────────────────────────────────────────────────────
 
 export default function BugBountyDetail() {
@@ -112,6 +130,7 @@ export default function BugBountyDetail() {
   const [hintLoading, setHintLoading]   = useState(false);
   const [showHintModal, setShowHintModal] = useState(false);
   const [runResults, setRunResults]     = useState(null);
+  const [runError, setRunError]         = useState(null);
   const [showDesc, setShowDesc]         = useState(true);
 
   // Track time on page (seconds)
@@ -138,45 +157,13 @@ export default function BugBountyDetail() {
   };
 
   // Build a skeleton boilerplate: function signatures with placeholder comment, no body
-  const getBoilerplate = (buggyCode = '', language = 'javascript') => {
-    const funcOnly = stripHarness(buggyCode);
-    const lines = funcOnly.split('\n');
-
-    if (language === 'python') {
-      // Collect every `def` signature and emit an empty body
-      const skeletons = [];
-      lines.forEach((line) => {
-        if (/^\s*def /.test(line)) {
-          skeletons.push(`${line}\n    # ✏️ Write your fix here\n    pass`);
-        }
-      });
-      return skeletons.length > 0
-        ? skeletons.join('\n\n')
-        : '# ✏️ Write your fix here\n';
-    } else {
-      // JavaScript / TypeScript — collect every `function` declaration
-      const skeletons = [];
-      lines.forEach((line) => {
-        if (/^\s*function /.test(line)) {
-          // Grab just the signature line, strip any trailing `{` body chars
-          const sig = line.trimEnd().endsWith('{') ? line : `${line.trimEnd()} {`;
-          skeletons.push(`${sig}\n  // ✏️ Write your fix here\n}`);
-        }
-      });
-      return skeletons.length > 0
-        ? skeletons.join('\n\n')
-        : '// ✏️ Write your fix here\n';
-    }
-  };
-
   useEffect(() => {
     const load = async () => {
       setLoading(true);
       try {
         const data = await bugBountyApi.getProblem(id);
         setProblem(data.problem);
-        // Pre-fill with a skeleton (signatures only, no body) so candidate isn't given the answer
-        setFixedCode(getBoilerplate(data.problem?.buggyCode ?? '', data.problem?.language ?? 'javascript'));
+        setFixedCode(data.problem?.buggyCode ?? '');
       } catch (err) {
         toast.error('Failed to load problem');
       } finally {
@@ -206,11 +193,18 @@ export default function BugBountyDetail() {
     if (!fixedCode.trim()) return toast.error('Please write your fix first.');
     setRunningTests(true);
     setRunResults(null);
+    setRunError(null);
     try {
       const data = await bugBountyApi.runTests(id, getFullCode());
       setRunResults(data.results?.details ?? []);
-      const { passed, total } = data.results ?? {};
-      toast.success(`${passed ?? 0}/${total ?? 0} test cases passed`);
+      
+      if (data.results?.error) {
+        setRunError(data.results.error);
+        toast.error(data.results.error);
+      } else {
+        const { passed, total } = data.results ?? {};
+        toast.success(`${passed ?? 0}/${total ?? 0} test cases passed`);
+      }
     } catch (err) {
       toast.error('Failed to run tests');
     } finally {
@@ -304,7 +298,7 @@ export default function BugBountyDetail() {
         <div className="flex items-center gap-2 shrink-0 ml-4">
           <button 
             className="btn btn-ghost btn-sm text-base-content/60 hover:text-base-content" 
-            onClick={() => setFixedCode(getBoilerplate(problem.buggyCode, problem.language))}
+            onClick={() => setFixedCode(problem.buggyCode)}
           >
             Reset Code
           </button>
@@ -320,127 +314,145 @@ export default function BugBountyDetail() {
       </div>
 
       {/* ── Main Workspace ── */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 min-h-0">
-        
-        {/* ── Left Column ── */}
-        <div className="flex flex-col gap-4 overflow-y-auto pr-1 pb-4 custom-scrollbar">
+      <div className="flex-1 p-4 min-h-0">
+        <PanelGroup direction="horizontal" autoSaveId="bug-bounty-layout">
           
-          {/* Bug Report */}
-          <div className="bg-[#121212] rounded-xl border border-error/10 p-5 shadow-sm shrink-0">
-            <div className="bg-error/5 border border-error/20 rounded-lg p-4 mb-3">
-               <h3 className="text-error font-black tracking-wider text-xs mb-2 flex items-center gap-1.5">
-                 <Bug className="size-3.5"/> BUG REPORT
-               </h3>
-               <p className="text-sm text-base-content/80 leading-relaxed whitespace-pre-wrap font-medium">
-                 {problem.bugDescription}
-               </p>
-            </div>
-            {/* The Task logic could go here if we had it, for now we just show description */}
-            <div className="mt-4 px-1">
-              <h4 className="text-xs font-bold text-base-content/60 uppercase tracking-wider mb-2">Your Task</h4>
-              <ul className="list-disc list-inside text-sm text-base-content/70 space-y-1">
-                <li>Find and fix the logic error so all tests pass.</li>
-                <li>Do not change the function signature.</li>
-              </ul>
-            </div>
-          </div>
+          {/* ── Left Column ── */}
+          <Panel defaultSize={50} minSize={30} className="flex flex-col">
+            <PanelGroup direction="vertical" autoSaveId="bug-bounty-left-col">
+              
+              {/* Bug Report */}
+              <Panel defaultSize={30} minSize={20} className="flex flex-col pr-1 pb-1 overflow-y-auto custom-scrollbar">
+                <div className="bg-[#121212] rounded-xl border border-error/10 p-5 shadow-sm min-h-full">
+                  <div className="bg-error/5 border border-error/20 rounded-lg p-4 mb-3">
+                     <h3 className="text-error font-black tracking-wider text-xs mb-2 flex items-center gap-1.5">
+                       <Bug className="size-3.5"/> BUG REPORT
+                     </h3>
+                     <p className="text-sm text-base-content/80 leading-relaxed whitespace-pre-wrap font-medium">
+                       {problem.bugDescription}
+                     </p>
+                  </div>
+                  <div className="mt-4 px-1">
+                    <h4 className="text-xs font-bold text-base-content/60 uppercase tracking-wider mb-2">Your Task</h4>
+                    <ul className="list-disc list-inside text-sm text-base-content/70 space-y-1">
+                      <li>Find and fix the logic error so all tests pass.</li>
+                      <li>Do not change the function signature.</li>
+                    </ul>
+                  </div>
+                </div>
+              </Panel>
 
-          {/* Buggy Code */}
-          <div className="flex-1 flex flex-col rounded-xl overflow-hidden border border-base-content/10 bg-[#1e1e1e] min-h-[300px]">
-            <div className="bg-[#2a2a2a] px-4 py-2 flex items-center justify-between border-b border-black/20">
-              <span className="text-xs font-bold text-base-content/50 flex items-center gap-2">
-                <Bug className="size-3.5 text-error/70" /> BUGGY CODE
-              </span>
-              <span className="text-xs font-mono text-base-content/40">{lang}</span>
-            </div>
-            <div className="flex-1">
-              <Editor
-                height="100%"
-                language={monacoLang}
-                value={problem.buggyCode}
-                theme="vs-dark"
-                options={{
-                  readOnly: true,
-                  fontSize: 13,
-                  minimap: { enabled: false },
-                  scrollBeyondLastLine: false,
-                  wordWrap: 'on',
-                  padding: { top: 16 }
-                }}
-              />
-            </div>
-          </div>
+              <ResizeHandle direction="vertical" />
 
-        </div>
+              {/* Buggy Code */}
+              <Panel defaultSize={70} minSize={30} className="flex flex-col pr-1 pt-1 pb-1">
+                <div className="flex-1 flex flex-col rounded-xl overflow-hidden border border-base-content/10 bg-[#1e1e1e]">
+                  <div className="bg-[#2a2a2a] px-4 py-2 flex items-center justify-between border-b border-black/20">
+                    <span className="text-xs font-bold text-base-content/50 flex items-center gap-2">
+                      <Bug className="size-3.5 text-error/70" /> BUGGY CODE
+                    </span>
+                    <span className="text-xs font-mono text-base-content/40">{lang}</span>
+                  </div>
+                  <div className="flex-1">
+                    <Editor
+                      height="100%"
+                      language={monacoLang}
+                      value={fixedCode}
+                      onChange={(val) => setFixedCode(val ?? '')}
+                      theme="vs-dark"
+                      options={{
+                        fontSize: 13,
+                        minimap: { enabled: false },
+                        scrollBeyondLastLine: false,
+                        wordWrap: 'on',
+                        suggest: { showSnippets: true },
+                        padding: { top: 16 }
+                      }}
+                    />
+                  </div>
+                </div>
+              </Panel>
 
-        {/* ── Right Column ── */}
-        <div className="flex flex-col gap-4 overflow-hidden pb-4">
-          
-          {/* Your Fix */}
-          <div className="flex-[1.2] flex flex-col rounded-xl overflow-hidden border border-primary/20 bg-[#1e1e1e] shadow-[0_0_15px_rgba(0,255,170,0.05)] min-h-[250px]">
-            <div className="bg-[#2a2a2a] px-4 py-2 flex items-center justify-between border-b border-primary/10">
-              <span className="text-xs font-bold text-primary flex items-center gap-2 tracking-wide">
-                YOUR FIX
-              </span>
-            </div>
-            <div className="flex-1">
-              <Editor
-                height="100%"
-                language={monacoLang}
-                value={fixedCode}
-                onChange={(val) => setFixedCode(val ?? '')}
-                theme="vs-dark"
-                options={{
-                  fontSize: 13,
-                  minimap: { enabled: false },
-                  scrollBeyondLastLine: false,
-                  wordWrap: 'on',
-                  suggest: { showSnippets: true },
-                  padding: { top: 16 }
-                }}
-              />
-            </div>
-          </div>
+            </PanelGroup>
+          </Panel>
 
-          {/* Tests Panel */}
-          <div className="flex-1 flex flex-col rounded-xl overflow-hidden border border-base-content/10 bg-[#121212] min-h-[250px]">
-            <div className="bg-[#2a2a2a] px-4 py-2 flex items-center justify-between border-b border-black/20">
-              <span className="text-xs font-bold text-base-content/50 uppercase tracking-wider">TESTS</span>
-              <div className="flex items-center gap-2">
-                <button
-                  className="btn btn-outline btn-xs gap-1 hover:bg-base-content/10"
-                  disabled={runningTests || submitting}
-                  onClick={handleRunTests}
-                >
-                  {runningTests ? <Loader2 className="size-3 animate-spin" /> : <Play className="size-3" />} 
-                  Run
-                </button>
-                <button
-                  className="btn btn-primary btn-xs gap-1 min-w-[70px]"
-                  disabled={submitting || runningTests}
-                  onClick={handleSubmit}
-                >
-                  {submitting ? <Loader2 className="size-3 animate-spin" /> : <Send className="size-3" />} 
-                  Submit
-                </button>
+          <ResizeHandle direction="horizontal" />
+
+          {/* ── Right Column ── */}
+          <Panel defaultSize={50} minSize={30} className="flex flex-col pl-1 pb-1">
+            <PanelGroup direction="vertical" autoSaveId="bug-bounty-right-col">
+              
+              {/* Console Output */}
+              <Panel defaultSize={40} minSize={20} className="flex flex-col pb-1">
+                <div className="flex-1 flex flex-col rounded-xl overflow-hidden border border-base-content/10 bg-[#1e1e1e]">
+                  <div className="bg-[#2a2a2a] px-4 py-2 flex items-center justify-between border-b border-black/20">
+                    <span className="text-xs font-bold text-base-content/50 uppercase tracking-wider">CONSOLE OUTPUT</span>
+                  </div>
+                  <div className="p-4 overflow-y-auto flex-1 custom-scrollbar font-mono text-sm">
+                    {(() => {
+                      if (runError) return <span className="text-error font-semibold">{runError}</span>;
+                      if (!runResults) return <span className="text-base-content/30 italic">No output yet. Run tests to see console output.</span>;
+                      if (runResults.length === 0) return <span className="text-base-content/30 italic">No console output.</span>;
+                      
+                      return runResults.map((result, i) => (
+                        <div key={i} className="mb-4 last:mb-0">
+                          <div className="text-base-content/50 text-xs mb-1 select-none">=== Case {i+1} ===</div>
+                          {result.actualOutput && <pre className="text-base-content/80 whitespace-pre-wrap">{result.actualOutput}</pre>}
+                          {result.stderr && <pre className="text-error whitespace-pre-wrap mt-1">{result.stderr}</pre>}
+                          {!result.actualOutput && !result.stderr && <span className="text-base-content/30 italic">No output</span>}
+                        </div>
+                      ));
+                    })()}
+                  </div>
+                </div>
+              </Panel>
+
+              <ResizeHandle direction="vertical" />
+
+              {/* Tests Panel */}
+              <Panel defaultSize={60} minSize={30} className="flex flex-col pt-1">
+                <div className="flex-1 flex flex-col rounded-xl overflow-hidden border border-base-content/10 bg-[#121212]">
+                  <div className="bg-[#2a2a2a] px-4 py-2 flex items-center justify-between border-b border-black/20">
+                <span className="text-xs font-bold text-base-content/50 uppercase tracking-wider">TESTS</span>
+                <div className="flex items-center gap-2">
+                  <button
+                    className="btn btn-outline btn-xs gap-1 hover:bg-base-content/10"
+                    disabled={runningTests || submitting}
+                    onClick={handleRunTests}
+                  >
+                    {runningTests ? <Loader2 className="size-3 animate-spin" /> : <Play className="size-3" />} 
+                    Run
+                  </button>
+                  <button
+                    className="btn btn-primary btn-xs gap-1 min-w-[70px]"
+                    disabled={submitting || runningTests}
+                    onClick={handleSubmit}
+                  >
+                    {submitting ? <Loader2 className="size-3 animate-spin" /> : <Send className="size-3" />} 
+                    Submit
+                  </button>
+                </div>
+              </div>
+              <div className="p-4 overflow-y-auto flex-1 custom-scrollbar">
+                {Array.isArray(problem.initialTestCases) && problem.initialTestCases.length > 0 ? (
+                  <TestCasesList testCases={problem.initialTestCases} runResults={runResults} />
+                ) : (
+                  <p className="text-sm text-base-content/40 italic">No public test cases.</p>
+                )}
+                
+                {result && (
+                  <div id="bb-results" className="mt-6 pt-4 border-t border-base-content/10 animate-in fade-in slide-in-from-bottom-4">
+                    <BugBountyResult submission={result} />
+                  </div>
+                )}
               </div>
             </div>
-            <div className="p-4 overflow-y-auto flex-1 custom-scrollbar">
-              {Array.isArray(problem.initialTestCases) && problem.initialTestCases.length > 0 ? (
-                <TestCasesList testCases={problem.initialTestCases} runResults={runResults} />
-              ) : (
-                <p className="text-sm text-base-content/40 italic">No public test cases.</p>
-              )}
-              
-              {result && (
-                <div id="bb-results" className="mt-6 pt-4 border-t border-base-content/10 animate-in fade-in slide-in-from-bottom-4">
-                  <BugBountyResult submission={result} />
-                </div>
-              )}
-            </div>
-          </div>
+          </Panel>
 
-        </div>
+        </PanelGroup>
+      </Panel>
+
+        </PanelGroup>
       </div>
 
       {/* ── Hint Modal ── */}

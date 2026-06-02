@@ -282,9 +282,7 @@ router.post('/problems/:id/hints', async (req, res) => {
     const problemId    = Number(req.params.id);
     const { submissionId } = req.body;
 
-    if (!submissionId) {
-      return res.status(400).json({ success: false, error: 'submissionId is required.' });
-    }
+    // submissionId is now optional
 
     // 1. Fetch the problem and its bugHints
     const problem = await prisma.bugBountyProblem.findUnique({
@@ -300,10 +298,12 @@ router.post('/problems/:id/hints', async (req, res) => {
       return res.json({ success: true, hint: 'No hints available for this problem.' });
     }
 
-    // 2. Log hint usage in BugBountyHintUsed
-    await prisma.bugBountyHintUsed.create({
-      data: { submissionId: Number(submissionId) },
-    });
+    // 2. Log hint usage in BugBountyHintUsed if we have a submissionId
+    if (submissionId) {
+      await prisma.bugBountyHintUsed.create({
+        data: { submissionId: Number(submissionId) },
+      });
+    }
 
     // 3. Return the hint text
     return res.json({ success: true, hint: problem.bugHints });

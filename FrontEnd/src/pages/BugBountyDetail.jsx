@@ -4,6 +4,7 @@ import Editor from '@monaco-editor/react';
 import toast from 'react-hot-toast';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { bugBountyApi } from '../api/bugBounty';
+import axiosInstance from '../lib/axios';
 import { getDifficultyBadgeClass } from '../lib/utils';
 import BugBountyResult from '../components/BugBountyResult';
 import {
@@ -133,6 +134,13 @@ export default function BugBountyDetail() {
   const [runError, setRunError]         = useState(null);
   const [showDesc, setShowDesc]         = useState(true);
 
+  // Solution and Explanation states
+  const [solution, setSolution] = useState(null);
+  const [showSolution, setShowSolution] = useState(false);
+  const [explanation, setExplanation] = useState(null);
+  const [loadingExplanation, setLoadingExplanation] = useState(false);
+  const [loadingSolution, setLoadingSolution] = useState(false);
+
   // Track time on page (seconds)
   const startTimeRef = useRef(Date.now());
   const [timeTaken, setTimeTaken]       = useState(0);
@@ -234,10 +242,6 @@ export default function BugBountyDetail() {
   };
 
   const handleRequestHint = async () => {
-    if (!submissionIdRef.current) {
-      toast('Submit your fix first to request a hint.', { icon: 'ℹ️' });
-      return;
-    }
     setHintLoading(true);
     try {
       const data = await bugBountyApi.requestHint(id, submissionIdRef.current);
@@ -247,6 +251,35 @@ export default function BugBountyDetail() {
       toast.error('Could not fetch hint');
     } finally {
       setHintLoading(false);
+    }
+  };
+
+  const handleShowSolution = async () => {
+    if (solution) { setShowSolution(true); return; }
+    setLoadingSolution(true);
+    try {
+      const res = await axiosInstance.get(`/bug-bounty/problems/${id}/solution`);
+      setSolution(res.data.solution);
+      setShowSolution(true);
+    } catch (err) {
+      toast.error('Failed to load solution');
+    } finally {
+      setLoadingSolution(false);
+    }
+  };
+
+  const handleExplainFix = async () => {
+    if (explanation) return;
+    setLoadingExplanation(true);
+    try {
+      const res = await axiosInstance.post(`/bug-bounty/problems/${id}/explain`);
+      setExplanation(res.data.explanation);
+    } catch (err) {
+      const fallback = 'Could not load explanation. Try again.';
+      setExplanation(fallback);
+      toast.error(fallback);
+    } finally {
+      setLoadingExplanation(false);
     }
   };
 
@@ -297,13 +330,6 @@ export default function BugBountyDetail() {
         
         <div className="flex items-center gap-2 shrink-0 ml-4">
           <button 
-            className="btn btn-ghost btn-sm text-base-content/60 hover:text-base-content gap-2"
-            onClick={() => toast('Solutions are hidden to encourage learning!', { icon: '🔒' })}
-          >
-            <CheckCircle2 className="size-4" />
-            <span className="hidden sm:inline">Show Solution</span>
-          </button>
-          <button 
             className="btn btn-ghost btn-sm text-base-content/60 hover:text-base-content gap-2" 
             onClick={() => setFixedCode(problem.buggyCode)}
           >
@@ -329,8 +355,8 @@ export default function BugBountyDetail() {
             <PanelGroup direction="vertical" autoSaveId="bug-bounty-left-col">
               
               {/* Bug Report */}
-              <Panel defaultSize={30} minSize={20} className="flex flex-col pr-1 pb-1 overflow-y-auto custom-scrollbar">
-                <div className="bg-[#121212] rounded-xl border border-error/10 p-5 shadow-sm min-h-full">
+              <Panel defaultSize={30} minSize={20} className="flex flex-col pr-1 pb-1">
+                <div className="bg-[#121212] rounded-xl border border-error/10 p-5 shadow-sm flex-1 overflow-y-auto custom-scrollbar">
                   <div className="bg-error/5 border border-error/20 rounded-lg p-4 mb-3">
                      <h3 className="text-error font-black tracking-wider text-xs mb-2 flex items-center gap-1.5">
                        <Bug className="size-3.5"/> BUG REPORT
@@ -346,6 +372,36 @@ export default function BugBountyDetail() {
                       <li>Do not change the function signature.</li>
                     </ul>
                   </div>
+
+                  {showSolution && solution && (
+                    <div className="mt-6 animate-in fade-in slide-in-from-top-4">
+                      <div className="bg-success/10 border border-success/20 rounded-lg p-4">
+                        <div className="flex justify-between items-center mb-3">
+                          <h4 className="text-xs font-bold text-success uppercase tracking-wider flex items-center gap-1.5">
+                            <CheckCircle2 className="size-4" /> CORRECT SOLUTION
+                          </h4>
+                          <button onClick={() => setShowSolution(false)} className="text-xs text-base-content/50 hover:text-base-content underline">Hide</button>
+                        </div>
+                        <pre className="bg-[#121212] p-3 rounded border border-base-content/10 text-sm overflow-x-auto font-mono whitespace-pre-wrap text-base-content/90">
+                          {solution}
+                        </pre>
+                      </div>
+                    </div>
+                  )}
+
+                  {explanation && (
+                    <div className="mt-4 animate-in fade-in slide-in-from-top-4">
+                      <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+                        <div className="flex justify-between items-center mb-3">
+                          <h4 className="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <Bug className="size-4" /> AI EXPLANATION
+                          </h4>
+                          <button onClick={() => setExplanation(null)} className="text-xs text-base-content/50 hover:text-base-content underline">Hide</button>
+                        </div>
+                        <p className="text-sm text-base-content/80 whitespace-pre-wrap leading-relaxed">{explanation}</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </Panel>
 
@@ -447,8 +503,26 @@ export default function BugBountyDetail() {
                   <p className="text-sm text-base-content/40 italic">No public test cases.</p>
                 )}
                 
+                <div className="flex flex-wrap gap-3 mt-6 pt-4 border-t border-base-content/10">
+                  <button
+                    onClick={handleShowSolution}
+                    disabled={loadingSolution}
+                    className="btn bg-purple-600 hover:bg-purple-700 text-white border-none gap-2 flex-1 sm:flex-none"
+                  >
+                    {loadingSolution ? <Loader2 className="size-4 animate-spin" /> : '💡 Show Solution'}
+                  </button>
+
+                  <button
+                    onClick={handleExplainFix}
+                    disabled={loadingExplanation}
+                    className="btn bg-blue-600 hover:bg-blue-700 text-white border-none gap-2 flex-1 sm:flex-none"
+                  >
+                    {loadingExplanation ? <Loader2 className="size-4 animate-spin" /> : '🤖 Explain Fix'}
+                  </button>
+                </div>
+                
                 {result && (
-                  <div id="bb-results" className="mt-6 pt-4 border-t border-base-content/10 animate-in fade-in slide-in-from-bottom-4">
+                  <div id="bb-results" className="mt-6 pt-4 border-t border-base-content/10 animate-in fade-in slide-in-from-bottom-4 flex flex-col gap-4">
                     <BugBountyResult submission={result} />
                   </div>
                 )}

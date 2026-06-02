@@ -41,59 +41,63 @@ function SkeletonProblemCard() {
   );
 }
 
-// ── Problem Card ─────────────────────────────────────────────────────────────
 function ProblemCard({ problem }) {
   const navigate = useNavigate();
   const submissionCount = problem._count?.submissions ?? 0;
 
   return (
     <div
-      className="card bg-base-100 border border-base-content/5 hover:border-primary/30 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-pointer group"
+      className="card bg-base-100/60 backdrop-blur-md border border-white/5 hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1.5 transition-all duration-500 cursor-pointer group relative overflow-hidden"
       onClick={() => navigate(`/bug-bounty/${problem.id}`)}
     >
-      <div className="card-body p-5 flex flex-col gap-3">
+      {/* Decorative gradient blob */}
+      <div className="absolute -top-12 -right-12 size-36 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-colors duration-500" />
+      <div className="absolute -bottom-8 -left-8 size-24 bg-secondary/10 rounded-full blur-2xl group-hover:bg-secondary/20 transition-colors duration-500" />
+
+      <div className="card-body p-6 flex flex-col gap-4 relative z-10">
         {/* Top row */}
-        <div className="flex items-start justify-between gap-2">
-          <div className="size-11 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors shrink-0">
-            <Bug className="size-5 text-primary" />
+        <div className="flex items-start justify-between gap-3">
+          <div className="size-12 rounded-2xl bg-gradient-to-br from-base-200 to-base-300 border border-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shrink-0 shadow-inner relative overflow-hidden">
+             <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <Bug className="size-6 text-primary relative z-10 group-hover:animate-pulse" />
           </div>
-          <div className="flex flex-col items-end gap-1 min-w-0">
-            <span className={`badge badge-sm font-bold ${getDifficultyBadgeClass(problem.difficultyLevel)}`}>
+          <div className="flex flex-col items-end gap-1.5 min-w-0">
+            <span className={`badge badge-sm font-bold border-none shadow-xs ${getDifficultyBadgeClass(problem.difficultyLevel)}`}>
               {problem.difficultyLevel ?? 'Unknown'}
             </span>
-            <span className={`badge badge-xs font-medium ${LANG_COLORS[problem.language] ?? 'badge-ghost'}`}>
+            <span className={`badge badge-xs font-semibold border-none ${LANG_COLORS[problem.language] ?? 'badge-ghost'}`}>
               {problem.language}
             </span>
           </div>
         </div>
 
         {/* Title */}
-        <h3 className="font-bold text-base group-hover:text-primary transition-colors line-clamp-2">
+        <h3 className="font-bold text-lg text-base-content/90 group-hover:text-primary transition-colors duration-300 line-clamp-2 leading-snug">
           {problem.title}
         </h3>
 
         {/* Stats */}
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-base-content/60 mt-auto">
-          <span className="flex items-center gap-1">
-            <Trophy className="size-3 text-yellow-500" />
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-medium text-base-content/60 mt-auto pt-3 border-t border-white/5">
+          <span className="flex items-center gap-1.5 text-yellow-500/90 bg-yellow-500/10 px-2 py-1 rounded-lg">
+            <Trophy className="size-3.5" />
             {problem.bountyPoints ?? 100} pts
           </span>
           {problem.estimatedTimeMinutes && (
-            <span className="flex items-center gap-1">
-              <Clock className="size-3" />
-              {problem.estimatedTimeMinutes} min
+            <span className="flex items-center gap-1.5 bg-base-200/50 px-2 py-1 rounded-lg">
+              <Clock className="size-3.5" />
+              {problem.estimatedTimeMinutes}m
             </span>
           )}
-          <span className="flex items-center gap-1">
-            <Layers className="size-3" />
-            {submissionCount} attempt{submissionCount !== 1 ? 's' : ''}
+          <span className="flex items-center gap-1.5 bg-base-200/50 px-2 py-1 rounded-lg ml-auto">
+            <Layers className="size-3.5" />
+            {submissionCount} {submissionCount === 1 ? 'try' : 'tries'}
           </span>
         </div>
 
-        {/* CTA */}
-        <button className="btn btn-primary btn-sm w-full mt-1 gap-2 group-hover:gap-3 transition-all">
+        {/* CTA Button */}
+        <button className="btn btn-primary btn-sm w-full mt-2 gap-2 bg-primary/10 text-primary border-transparent hover:bg-primary hover:text-primary-content hover:border-primary transition-all duration-300 group-hover:shadow-lg group-hover:shadow-primary/25">
           Start Solving
-          <ChevronRight className="size-4" />
+          <ChevronRight className="size-4 group-hover:translate-x-1 transition-transform" />
         </button>
       </div>
     </div>

@@ -71,11 +71,13 @@ export const Navbar = () => {
                             to={item.path}
                             className='relative px-4 py-2.5 rounded-lg'
                         >
-                            {/* Animated green pill background */}
+                            {/* Animated active pill background */}
                             {isActive(item.path) && (
                                 <motion.div
                                     layoutId="nav-active-pill"
-                                    className="absolute inset-0 bg-primary rounded-lg"
+                                    className={`absolute inset-0 rounded-lg ${
+                                        item.label === 'Bug Bounty' ? 'bg-error' : 'bg-primary'
+                                    }`}
                                     transition={{
                                         type: "spring",
                                         stiffness: 380,
@@ -86,7 +88,7 @@ export const Navbar = () => {
 
                             {/* Tab content (always on top of the pill) */}
                             <div className={`relative z-10 flex items-center gap-x-2.5 ${isActive(item.path)
-                                ? "text-primary-content"
+                                ? (item.label === 'Bug Bounty' ? 'text-error-content' : 'text-primary-content')
                                 : "text-base-content/70 hover:text-base-content"
                                 }`}>
                                 <item.icon className='size-4' />

@@ -93,3 +93,36 @@ Respond ONLY with valid JSON, no markdown, no explanation:
     };
   }
 }
+
+// ---------------------------------------------------------------------------
+// explainBugFix
+// ---------------------------------------------------------------------------
+
+export async function explainBugFix(buggyCode, correctSolution, language, bugDescription) {
+  const prompt = `
+You are a coding instructor. A student fixed a buggy piece of code. Explain the fix clearly.
+
+Bug Description: ${bugDescription}
+
+Buggy Code (${language}):
+${buggyCode}
+
+Fixed Code (${language}):
+${correctSolution}
+
+Write a clear explanation (3-5 sentences) that covers:
+1. What exactly was wrong in the buggy code
+2. Why it caused incorrect behavior
+3. What the fix does and why it works
+
+Keep it beginner-friendly. No JSON, just plain text explanation.
+  `.trim();
+
+  try {
+    const response = await generateAIResponse(prompt);
+    return response;
+  } catch (err) {
+    console.error('[GeminiReview] AI explanation failed:', err.message);
+    return 'Explanation unavailable at this time.';
+  }
+}

@@ -19,7 +19,7 @@ import express from 'express';
 import { prisma } from '../lib/db.js';
 import { protectRoute } from '../middleware/protectRoute.js';
 import { runAutoTests } from '../services/pistonService.js';
-import { reviewBugFix } from '../services/geminiReviewService.js';
+import { reviewBugFix, explainBugFix } from '../services/geminiReviewService.js';
 
 const router = express.Router();
 
@@ -542,6 +542,76 @@ router.put('/submissions/:id/review', async (req, res) => {
   } catch (err) {
     console.error('[BugBounty] PUT /submissions/:id/review error:', err.message);
     return res.status(500).json({ success: false, error: 'Internal server error.' });
+  }
+});
+
+// ===========================================================================
+// GET /api/bug-bounty/problems/:id/solution
+// Get correct solution for a problem
+// ===========================================================================
+router.get('/problems/:id/solution', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const problem = await prisma.bugBountyProblem.findUnique({
+      where: { id: parseInt(id) },
+      select: {
+        correctSolution: true,
+        title: true,
+        language: true
+      }
+    });
+
+    if (!problem) {
+      return res.status(404).json({ success: false, error: 'Problem not found' });
+    }
+
+    res.json({
+      success: true,
+      solution: problem.correctSolution,
+      title: problem.title,
+      language: problem.language
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ===========================================================================
+// POST /api/bug-bounty/problems/:id/explain
+// AI explains the fix (Gemini - called only on demand)
+// ===========================================================================
+router.post('/problems/:id/explain', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const problem = await prisma.bugBountyProblem.findUnique({
+      where: { id: parseInt(id) },
+      select: {
+        buggyCode: true,
+        correctSolution: true,
+        bugDescription: true,
+        language: true,
+        title: true
+      }
+    });
+
+    if (!problem) {
+      return res.status(404).json({ success: false, error: 'Problem not found' });
+    }
+
+    // Call Gemini for explanation
+    const explanation = await explainBugFix(
+      problem.buggyCode,
+      problem.correctSolution,
+      problem.language,
+      problem.bugDescription
+    );
+
+    res.json({
+      success: true,
+      explanation
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 

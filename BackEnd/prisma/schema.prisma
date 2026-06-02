@@ -114,6 +114,7 @@ model BugBountyProblem {
   estimatedTimeMinutes  Int?
   bountyPoints          Int      @default(100)
   createdBy             String?
+  correctSolution       String?  @db.Text    // ← ADD THIS LINE
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
   submissions           BugBountySubmission[]

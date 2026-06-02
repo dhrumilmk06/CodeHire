@@ -297,7 +297,14 @@ export default function BugBountyDetail() {
         
         <div className="flex items-center gap-2 shrink-0 ml-4">
           <button 
-            className="btn btn-ghost btn-sm text-base-content/60 hover:text-base-content" 
+            className="btn btn-ghost btn-sm text-base-content/60 hover:text-base-content gap-2"
+            onClick={() => toast('Solutions are hidden to encourage learning!', { icon: '🔒' })}
+          >
+            <CheckCircle2 className="size-4" />
+            <span className="hidden sm:inline">Show Solution</span>
+          </button>
+          <button 
+            className="btn btn-ghost btn-sm text-base-content/60 hover:text-base-content gap-2" 
             onClick={() => setFixedCode(problem.buggyCode)}
           >
             Reset Code

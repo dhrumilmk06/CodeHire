@@ -20,6 +20,10 @@
   },
   "homepage": "https://github.com/dhrumilmk06/CodeHire#readme",
   "dependencies": {
-    "prisma": "^6.19.2"
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.40.0",
+    "lucide-react": "^1.17.0",
+    "prisma": "^6.19.2",
+    "tailwind-merge": "^3.6.0"
   }
 }

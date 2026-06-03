@@ -21,12 +21,14 @@ export const DashBoardPage = () => {
 
   // this will handel createRoom btn
   const handelCreateRoom = () => {
-    if (!roomConfig.problems || roomConfig.problems.length === 0) return;
+    if (roomConfig.sessionType !== 'bug_bounty' && (!roomConfig.problems || roomConfig.problems.length === 0)) return;
+    if (roomConfig.sessionType === 'bug_bounty' && !roomConfig.bugBountyProblemId) return;
 
     createSessionMutation.mutate(
       {
-        problems: roomConfig.problems,
+        problems: roomConfig.sessionType === 'bug_bounty' ? undefined : roomConfig.problems,
         sessionType: roomConfig.sessionType || 'coding',
+        bugBountyProblemId: roomConfig.sessionType === 'bug_bounty' ? roomConfig.bugBountyProblemId : undefined,
       },
       {
         onSuccess: (data) => {

@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { PROBLEMS } from "../data/problems";
 import { useMyProblems } from "../hooks/useCustomProblems";
 import {
@@ -10,10 +10,12 @@ import {
   X,
   GripVertical,
   CheckCircle2,
-  MonitorIcon
+  MonitorIcon,
+  Bug, Trophy, Clock, CheckCircle
 } from "lucide-react";
 import { Reorder, AnimatePresence, motion } from "framer-motion";
 import { getDifficultyBadgeClass, cn } from "../lib/utils";
+import axiosInstance from "../lib/axios";
 
 export const CreateSessionModel = ({
   isOpen,
@@ -26,6 +28,18 @@ export const CreateSessionModel = ({
   const [searchQuery, setSearchQuery] = useState("");
   const builtInProblems = Object.values(PROBLEMS);
   const { data: customProblems = [] } = useMyProblems();
+
+  const [bugBountyProblems, setBugBountyProblems] = useState([]);
+  const [loadingBugBountyProblems, setLoadingBugBountyProblems] = useState(false);
+
+  useEffect(() => {
+    if (roomConfig.sessionType !== 'bug_bounty') return;
+    setLoadingBugBountyProblems(true);
+    axiosInstance.get('/bug-bounty/problems/for-session')
+      .then(res => setBugBountyProblems(res.data.problems || []))
+      .catch(err => console.error('Failed to load bug bounty problems', err))
+      .finally(() => setLoadingBugBountyProblems(false));
+  }, [roomConfig.sessionType]);
 
   // Merge both lists
   const allProblems = useMemo(() => [
@@ -84,7 +98,7 @@ export const CreateSessionModel = ({
             <label className="label py-0">
               <span className="label-text font-bold text-base">Interview Type</span>
             </label>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-3 gap-3">
               <button
                 id="session-type-coding"
                 type="button"
@@ -117,10 +131,95 @@ export const CreateSessionModel = ({
                   <p className="text-[10px] opacity-60">Whiteboard mode</p>
                 </div>
               </button>
+              <button
+                id="session-type-bug-bounty"
+                type="button"
+                onClick={() => setRoomConfig(prev => ({ ...prev, sessionType: 'bug_bounty' }))}
+                className={`flex items-center gap-3 p-3 rounded-xl border-2 transition-all ${
+                  roomConfig.sessionType === 'bug_bounty'
+                    ? 'border-red-500 bg-red-500/10 text-red-400'
+                    : 'border-base-300 bg-base-200/50 text-base-content/60 hover:border-base-400'
+                }`}
+              >
+                <Bug className="w-5 h-5 shrink-0" />
+                <div className="text-left">
+                  <p className="font-bold text-sm">Bug Bounty</p>
+                  <p className="text-[10px] opacity-60">Fix the bugs</p>
+                </div>
+              </button>
             </div>
           </div>
 
-          {/* MULTI-SELECT PICKER */}
+          {/* PROBLEM PICKER */}
+          {roomConfig.sessionType === 'bug_bounty' ? (
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-base-content mb-3">
+                Select Bug Bounty Problem
+                <span className="text-red-400 ml-1">*</span>
+              </label>
+
+              {loadingBugBountyProblems ? (
+                <div className="flex items-center gap-2 text-base-content/60 text-sm p-4">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-red-500 border-t-transparent" />
+                  Loading problems...
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                  {bugBountyProblems.map((problem) => (
+                    <button
+                      key={problem.id}
+                      type="button"
+                      onClick={() => setRoomConfig(prev => ({ ...prev, bugBountyProblemId: problem.id }))}
+                      className={`w-full flex items-center justify-between p-4 rounded-xl border-2 text-left transition-all duration-200 ${
+                        roomConfig.bugBountyProblemId === problem.id
+                          ? 'border-red-500 bg-red-500/10'
+                          : 'border-base-300 bg-base-200/30 hover:border-base-400'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <Bug className={`h-4 w-4 flex-shrink-0 ${
+                          roomConfig.bugBountyProblemId === problem.id ? 'text-red-400' : 'text-base-content/50'
+                        }`} />
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-base-content truncate">{problem.title}</p>
+                          <p className="text-xs text-base-content/50 mt-0.5 truncate">{problem.bugDescription}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 flex-shrink-0 ml-3">
+                        {/* Difficulty badge */}
+                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${
+                          problem.difficultyLevel === 'easy'   ? 'bg-green-500/20 text-green-400' :
+                          problem.difficultyLevel === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
+                                                                 'bg-red-500/20 text-red-400'
+                        }`}>
+                          {problem.difficultyLevel}
+                        </span>
+                        {/* Points */}
+                        <span className="flex items-center gap-1 text-xs text-yellow-500">
+                          <Trophy className="h-3 w-3" />
+                          {problem.bountyPoints}
+                        </span>
+                        {/* Time */}
+                        <span className="flex items-center gap-1 text-xs text-base-content/50">
+                          <Clock className="h-3 w-3" />
+                          {problem.estimatedTimeMinutes}m
+                        </span>
+                        {/* Selected check */}
+                        {roomConfig.bugBountyProblemId === problem.id && (
+                          <CheckCircle className="h-4 w-4 text-red-500" />
+                        )}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Validation hint */}
+              {!roomConfig.bugBountyProblemId && (
+                <p className="text-xs text-red-400 mt-2">Please select a bug bounty problem to continue.</p>
+              )}
+            </div>
+          ) : (
           <div className="space-y-4">
             <label className="label py-0">
               <span className="label-text font-bold text-base">Select Problems</span>
@@ -221,8 +320,9 @@ export const CreateSessionModel = ({
             </div>
           </div>
 
-          {/* ROOM SUMMARY */}
-          {roomConfig.problems.length > 0 && (
+          )}
+
+          {roomConfig.sessionType !== 'bug_bounty' && roomConfig.problems.length > 0 && (
             <div className="alert bg-success text-success-content border-none shadow-lg rounded-2xl p-5">
               <Code2Icon className="size-6 shrink-0" />
               <div className="flex flex-col gap-1">
@@ -253,7 +353,7 @@ export const CreateSessionModel = ({
           <button
             className="btn btn-primary gap-2 min-w-[140px] rounded-xl shadow-lg font-black uppercase tracking-widest text-xs"
             onClick={onCreateRoom}
-            disabled={isCreating || roomConfig.problems.length === 0}
+            disabled={isCreating || (roomConfig.sessionType === 'bug_bounty' ? !roomConfig.bugBountyProblemId : roomConfig.problems.length === 0)}
           >
             {isCreating ? (
               <LoaderIcon className="size-4 animate-spin text-white" />

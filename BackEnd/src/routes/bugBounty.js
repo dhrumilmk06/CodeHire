@@ -144,6 +144,34 @@ router.get('/problems', async (req, res) => {
 });
 
 // ===========================================================================
+// GET /api/bug-bounty/problems/for-session
+// Returns lightweight list of problems for session picker
+// ===========================================================================
+router.get('/problems/for-session', async (req, res) => {
+  try {
+    const problems = await prisma.bugBountyProblem.findMany({
+      select: {
+        id: true,
+        title: true,
+        language: true,
+        difficultyLevel: true,
+        bountyPoints: true,
+        estimatedTimeMinutes: true,
+        bugDescription: true,
+      },
+      orderBy: [
+        { difficultyLevel: 'asc' },
+        { title: 'asc' },
+      ],
+    });
+
+    res.json({ success: true, problems });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ===========================================================================
 // GET /api/bug-bounty/problems/:id
 // Get full detail of a single problem.
 // Does NOT return hiddenTestCases or bugHints.
@@ -610,6 +638,64 @@ router.post('/problems/:id/explain', async (req, res) => {
       success: true,
       explanation
     });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ===========================================================================
+// GET /api/bug-bounty/session/:sessionId/problem
+// Returns full problem for an active bug bounty session
+// ===========================================================================
+router.get('/session/:sessionId/problem', async (req, res) => {
+  try {
+    const { sessionId } = req.params;
+
+    const session = await prisma.session.findUnique({
+      where: { id: sessionId },
+      select: {
+        id: true,
+        sessionType: true,
+        problems: true,
+        status: true,
+      },
+    });
+
+    if (!session) {
+      return res.status(404).json({ success: false, error: 'Session not found' });
+    }
+
+    if (session.sessionType !== 'bug_bounty') {
+      return res.status(400).json({ success: false, error: 'This session is not a bug bounty session' });
+    }
+
+    const problemId = session.problems?.bugBountyProblemId;
+
+    if (!problemId) {
+      return res.status(404).json({ success: false, error: 'No bug bounty problem assigned to this session' });
+    }
+
+    const problem = await prisma.bugBountyProblem.findUnique({
+      where: { id: problemId },
+      select: {
+        id: true,
+        title: true,
+        buggyCode: true,
+        bugDescription: true,
+        language: true,
+        initialTestCases: true,
+        difficultyLevel: true,
+        bountyPoints: true,
+        estimatedTimeMinutes: true,
+        bugHints: true,
+      },
+    });
+
+    if (!problem) {
+      return res.status(404).json({ success: false, error: 'Bug bounty problem not found' });
+    }
+
+    res.json({ success: true, problem });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

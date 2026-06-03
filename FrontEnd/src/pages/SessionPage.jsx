@@ -16,6 +16,7 @@ import { LiveNotesPanel } from '../components/LiveNotesPanel';
 import { TimeTracker } from '../components/TimeTracker';
 import { AutoScorePanel } from '../components/AutoScorePanel';
 import { AgentStatusPanel } from '../components/interview/AgentStatusPanel';
+import BugBountyInterviewPanel from '../components/BugBountyInterviewPanel';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '../lib/axios';
 import { sessionApi } from '../api/sessions';
@@ -75,11 +76,33 @@ export const SessionPage = () => {
       return data.problem;
     },
     // Only fetch if session has a problem title AND it's not a built-in problem
-    enabled: !!session?.problem && !builtInProblem,
+    enabled: !!session?.problem && !builtInProblem && session?.sessionType !== 'bug_bounty',
     retry: false, // Don't retry on 404 (means it's not a custom problem)
   });
 
-  const problemData = builtInProblem ?? customProblemData ?? null;
+  // Fetch Bug Bounty problem if session is bug_bounty type
+  const { data: bugBountyProblemData } = useQuery({
+    queryKey: ["bug-bounty-problem", sessionId],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get(`/bug-bounty/session/${sessionId}/problem`);
+      return {
+        title: data.problem.title,
+        description: {
+          text: data.problem.bugDescription,
+          notes: data.problem.bugHints || []
+        },
+        starterCode: {
+          [data.problem.language]: data.problem.buggyCode
+        },
+        expectedOutput: data.problem.initialTestCases ? JSON.stringify(data.problem.initialTestCases) : null,
+        category: "Bug Bounty"
+      };
+    },
+    enabled: session?.sessionType === 'bug_bounty',
+    retry: false,
+  });
+
+  const problemData = session?.sessionType === 'bug_bounty' ? bugBountyProblemData : (builtInProblem ?? customProblemData ?? null);
 
   const [selectedLanguage, setSelectedLanguage] = useState("javascript");
   const [code, setCode] = useState(problemData?.starterCode?.[selectedLanguage] || "");
@@ -471,6 +494,13 @@ export const SessionPage = () => {
         <PanelGroup direction='horizontal' id='main-horizontal-group' autoSaveId='main-horizontal-layout'>
           {/* LEFT PANEL - CODE EDITOR & PROBLEM DETAILS */}
           <Panel defaultSize={50} minSize={30}>
+            {session?.sessionType === 'bug_bounty' ? (
+              <BugBountyInterviewPanel
+                problem={problemData}
+                sessionId={sessionId}
+                userId={user?.id}
+              />
+            ) : (
             <PanelGroup direction="vertical" id="left-vertical-group" autoSaveId="left-vertical-layout">
               {/* PROBLEM DESCRIPTION PANEL */}
               <Panel defaultSize={50} minSize={20}>
@@ -483,7 +513,15 @@ export const SessionPage = () => {
                           {session?.problem || "Loading..."}
                         </h1>
                         {problemData?.category && (
-                          <p className="text-base-content/60 mt-1">{problemData.category}</p>
+                          <p className="text-base-content/60 mt-1">
+                            {problemData.category === "Bug Bounty" ? (
+                              <span className="text-red-500 font-bold flex items-center gap-1">
+                                🐛 Bug Bounty Mission
+                              </span>
+                            ) : (
+                              problemData.category
+                            )}
+                          </p>
                         )}
                         <p className="text-base-content/60 mt-2">
                           Host: {session?.host?.name || "Loading..."} •{" "}
@@ -719,6 +757,7 @@ export const SessionPage = () => {
                 </PanelGroup>
               </Panel>
             </PanelGroup>
+            )}
           </Panel>
 
           <PanelResizeHandle className="w-2 bg-base-300 hover:bg-primary transition-colors cursor-col-resize" />

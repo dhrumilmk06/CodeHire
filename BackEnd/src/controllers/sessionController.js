@@ -11,42 +11,68 @@ import { sendDecisionEmail } from "../utils/sendDecisionEmail.js";
 export async function createSession(req, res, next) {
 
     try {
-        let { problems, problemIds, hostId, sessionType } = req.body
+        let { problems, problemIds, hostId, sessionType, bugBountyProblemId } = req.body
         const clerkId = req.user?.clerkId || hostId; // Use clerkId from auth or hostId from body (Postman)
-        const resolvedSessionType = ['coding', 'system-design'].includes(sessionType) ? sessionType : 'coding';
+        const resolvedSessionType = ['coding', 'system-design', 'bug_bounty'].includes(sessionType) ? sessionType : 'coding';
 
-        // If 'problemIds' are provided instead of full 'problems' objects (as suggested in some READMEs)
-        if (!problems && problemIds) {
-            const ids = Array.isArray(problemIds) ? problemIds : [problemIds];
-            // Try to fetch them from our CustomProblem table first
-            const foundProblems = await prisma.customProblem.findMany({
-                where: { id: { in: ids } }
+        let activeProblem = "Bug Bounty";
+        let activeDifficulty = "medium";
+        let sanitizedProblems = problems;
+
+        if (resolvedSessionType === 'bug_bounty') {
+            if (!bugBountyProblemId) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'A bug bounty problem must be selected for bug bounty sessions'
+                });
+            }
+
+            const problem = await prisma.bugBountyProblem.findUnique({
+                where: { id: parseInt(bugBountyProblemId) },
+                select: { id: true, title: true, difficultyLevel: true },
             });
-            
-            // Map found problems or create placeholder objects if not found
-            problems = ids.map(id => {
-                const found = foundProblems.find(p => p.id === id);
-                return found ? { 
-                    title: found.title, 
-                    difficulty: found.difficulty.toLowerCase() 
-                } : { 
-                    title: id, 
-                    difficulty: "medium" // fallback
-                };
-            });
+
+            if (!problem) {
+                return res.status(404).json({ success: false, message: 'Selected bug bounty problem not found' });
+            }
+
+            sanitizedProblems = { bugBountyProblemId: problem.id, title: problem.title };
+            activeProblem = problem.title;
+            activeDifficulty = problem.difficultyLevel || "medium";
+        } else {
+            // If 'problemIds' are provided instead of full 'problems' objects (as suggested in some READMEs)
+            if (!problems && problemIds) {
+                const ids = Array.isArray(problemIds) ? problemIds : [problemIds];
+                // Try to fetch them from our CustomProblem table first
+                const foundProblems = await prisma.customProblem.findMany({
+                    where: { id: { in: ids } }
+                });
+                
+                // Map found problems or create placeholder objects if not found
+                problems = ids.map(id => {
+                    const found = foundProblems.find(p => p.id === id);
+                    return found ? { 
+                        title: found.title, 
+                        difficulty: found.difficulty.toLowerCase() 
+                    } : { 
+                        title: id, 
+                        difficulty: "medium" // fallback
+                    };
+                });
+            }
+
+            if (!problems || !Array.isArray(problems) || problems.length === 0) {
+                return res.status(400).json({ message: "At least one problem is required" })
+            }
+
+            activeProblem = problems[0].title;
+            activeDifficulty = problems[0].difficulty.toLowerCase();
+
+            sanitizedProblems = problems.map(p => ({
+                ...p,
+                difficulty: p.difficulty.toLowerCase()
+            }));
         }
-
-        if (!problems || !Array.isArray(problems) || problems.length === 0) {
-            return res.status(400).json({ message: "At least one problem is required" })
-        }
-
-        const activeProblem = problems[0].title;
-        const activeDifficulty = problems[0].difficulty.toLowerCase();
-
-        const sanitizedProblems = problems.map(p => ({
-            ...p,
-            difficulty: p.difficulty.toLowerCase()
-        }));
 
         const callId = `session_${Date.now()}_${Math.random().toString(36).substring(7)}`;
 

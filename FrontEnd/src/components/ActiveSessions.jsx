@@ -7,6 +7,7 @@ import {
   ZapIcon,
   LoaderIcon,
   LinkIcon,
+  Bug,
 } from "lucide-react";
 import { Link } from "react-router";
 import { getDifficultyBadgeClass } from "../lib/utils";
@@ -67,6 +68,12 @@ export const ActiveSessions = ({ sessions, isLoading, isUserInSession }) => {
                             {session.difficulty.slice(0, 1).toUpperCase() +
                               session.difficulty.slice(1)}
                           </span>
+                          {session.sessionType === 'bug_bounty' && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-500/15 text-red-400 border border-red-500/25">
+                              <Bug className="h-3 w-3" />
+                              Bug Bounty
+                            </span>
+                          )}
                         </div>
 
                         <div className="flex items-center gap-4 text-sm opacity-80">

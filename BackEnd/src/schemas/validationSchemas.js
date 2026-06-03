@@ -8,8 +8,10 @@ const sessionSchema = z.object({
     })).optional(),
     problemIds: z.array(z.string()).optional(),
     hostId: z.string().optional(),
-}).refine(data => data.problems || data.problemIds, {
-    message: "Either problems or problemIds must be provided",
+    sessionType: z.string().optional(),
+    bugBountyProblemId: z.number().optional(),
+}).refine(data => data.problems || data.problemIds || data.sessionType === 'bug_bounty', {
+    message: "Either problems, problemIds, or a bug bounty problem must be provided",
     path: ["problems"]
 });
 

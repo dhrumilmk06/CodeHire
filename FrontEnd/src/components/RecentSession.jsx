@@ -4,7 +4,7 @@ import {
   ChevronDownIcon, ChevronUpIcon, TagIcon, FileTextIcon,
   CheckCircleIcon, PauseCircleIcon, XCircleIcon, SearchIcon,
   TimerIcon, ClipboardCheckIcon, SaveIcon, ColumnsIcon, XIcon,
-  CrownIcon, PlusCircleIcon, MinusCircleIcon, LayersIcon
+  CrownIcon, PlusCircleIcon, MinusCircleIcon, LayersIcon, Bug
 } from "lucide-react";
 import { getDifficultyBadgeClass } from "../lib/utils";
 import { SkeletonCard } from "./ui/SkeletonCard";
@@ -475,6 +475,12 @@ const SessionCard = ({ session, userClerkId, onSelect, isSelected, compareMode, 
               <span className={`badge badge-sm font-bold ${getDifficultyBadgeClass(session.difficulty)}`}>
                 {session.difficulty}
               </span>
+              {session.sessionType === 'bug_bounty' && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-red-500/15 text-red-400 border border-red-500/25">
+                  <Bug className="size-3" />
+                  Bug Bounty
+                </span>
+              )}
               {displayRating > 0 && <StarRating value={displayRating} readonly />}
             </div>
           </div>

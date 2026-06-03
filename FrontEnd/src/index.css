@@ -126,4 +126,96 @@
   animation: editorFloat 4s ease-in-out infinite;
   will-change: transform;
 }
+
+/* ===== BUG BOUNTY PAGE THEME ===== */
+
+@layer base {
+  :root {
+    --background: 220 20% 7%;
+    --foreground: 0 0% 95%;
+    --card: 220 18% 10%;
+    --card-foreground: 0 0% 95%;
+    --popover: 220 18% 10%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 152 69% 45%;
+    --primary-foreground: 220 20% 7%;
+    --secondary: 220 15% 15%;
+    --secondary-foreground: 0 0% 85%;
+    --muted: 220 15% 15%;
+    --muted-foreground: 220 10% 55%;
+    --accent: 152 69% 45%;
+    --accent-foreground: 220 20% 7%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 15% 18%;
+    --input: 220 15% 18%;
+    --ring: 152 69% 45%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer components {
+  /* Glass cards */
+  .glass-card {
+    background: hsl(var(--card) / 0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--border) / 0.5);
+    border-radius: 1rem;
+  }
+
+  .glass-card-hover {
+    background: hsl(var(--card) / 0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--border) / 0.5);
+    border-radius: 1rem;
+    transition: all 0.5s;
+  }
+
+  .glass-card-hover:hover {
+    border-color: hsl(0 84% 60% / 0.3);
+    box-shadow: 0 0 30px hsl(0 84% 60% / 0.08), 0 20px 40px hsl(220 20% 7% / 0.5);
+  }
+
+  /* Red glows */
+  .glow-red {
+    box-shadow: 0 0 30px hsl(0 84% 60% / 0.3), 0 0 60px hsl(0 84% 60% / 0.1);
+  }
+
+  .glow-red-intense {
+    box-shadow: 0 0 40px hsl(0 84% 60% / 0.4), 0 0 80px hsl(0 84% 60% / 0.15), 0 0 120px hsl(0 84% 60% / 0.05);
+  }
+
+  /* Green glow (for primary buttons) */
+  .glow-green {
+    box-shadow: 0 0 30px hsl(152 69% 45% / 0.3), 0 0 60px hsl(152 69% 45% / 0.1);
+  }
+
+  /* Text gradients */
+  .text-gradient-white {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(180deg, hsl(0, 0%, 100%), hsl(0, 0%, 65%));
+  }
+
+  .text-gradient-red {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(135deg, hsl(0, 90%, 65%), hsl(0, 84%, 50%));
+  }
+
+  .text-gradient-green {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(135deg, hsl(152, 80%, 55%), hsl(152, 69%, 40%));
+  }
+
+  /* Background patterns */
+  .dot-pattern-red {
+    background-image: radial-gradient(circle at 1px 1px, hsl(0 84% 60% / 0.08) 1px, transparent 0);
+    background-size: 32px 32px;
+  }
+}
 

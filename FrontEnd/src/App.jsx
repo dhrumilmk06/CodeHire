@@ -20,7 +20,7 @@ import { AdminPanelPage } from './pages/AdminPanelPage.jsx';
 import { MyInterviewsPage } from './pages/MyInterviewsPage.jsx';
 import { SelectRolePage } from './pages/SelectRolePage.jsx';
 import SessionLayout from './layouts/SessionLayout.jsx';
-import BugBountyProblems from './pages/BugBountyProblems.jsx';
+import BugBountyList from './pages/BugBountyList.jsx';
 import BugBountyDetail from './pages/BugBountyDetail.jsx';
 import BugBountyDashboard from './pages/BugBountyDashboard.jsx';
 import BugBountyReview from './pages/BugBountyReview.jsx';
@@ -160,11 +160,10 @@ function App() {
             </AuthenticatedRoute>
           } />
 
-          {/* Bug Bounty — Candidate */}
           <Route path='/bug-bounty' element={
             <AuthenticatedRoute>
               <PageTransition>
-                <BugBountyProblems />
+                <BugBountyList />
               </PageTransition>
             </AuthenticatedRoute>
           } />

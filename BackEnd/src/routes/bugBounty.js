@@ -701,4 +701,35 @@ router.get('/session/:sessionId/problem', async (req, res) => {
   }
 });
 
+// ===========================================================================
+// POST /api/bug-bounty/problems/:id/run-public-tests
+// Run against public test cases only using Piston
+// ===========================================================================
+router.post('/problems/:id/run-public-tests', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { code } = req.body;
+
+    if (!code) {
+      return res.status(400).json({ success: false, error: 'No code provided' });
+    }
+
+    const problem = await prisma.bugBountyProblem.findUnique({
+      where: { id: parseInt(id) },
+      select: { initialTestCases: true, language: true },
+    });
+
+    if (!problem) {
+      return res.status(404).json({ success: false, error: 'Problem not found' });
+    }
+
+    // Run against public test cases only using Piston
+    const result = await runAutoTests(code, problem.initialTestCases, problem.language);
+
+    res.json({ success: true, result });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 export default router;

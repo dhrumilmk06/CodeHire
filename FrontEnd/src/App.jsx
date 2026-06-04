@@ -22,6 +22,7 @@ import { SelectRolePage } from './pages/SelectRolePage.jsx';
 import SessionLayout from './layouts/SessionLayout.jsx';
 import BugBountyList from './pages/BugBountyList.jsx';
 import BugBountyDetail from './pages/BugBountyDetail.jsx';
+import BugBountyProblem from './pages/BugBountyProblem.jsx';
 import BugBountyDashboard from './pages/BugBountyDashboard.jsx';
 import BugBountyReview from './pages/BugBountyReview.jsx';
 
@@ -170,7 +171,7 @@ function App() {
           <Route path='/bug-bounty/:id' element={
             <AuthenticatedRoute>
               <PageTransition>
-                <BugBountyDetail />
+                <BugBountyProblem />
               </PageTransition>
             </AuthenticatedRoute>
           } />

@@ -159,8 +159,14 @@ const BugBountyProblem = () => {
         (d) =>
           `input=${d.input} → ${d.passed ? '✓ ' + d.expectedOutput : '✗ got: ' + (d.actualOutput || 'error')}`
       ) || [];
+      
+      let errorMsg = '';
+      if (result.error) {
+        errorMsg = `[System Error]: ${result.error}\n\n`;
+      }
+      
       setConsoleOut(
-        `> Running ${updatedTests.length} public tests...\n${lines.join('\n')}\n\n${passCount}/${updatedTests.length} tests passed.`
+        `> Running ${updatedTests.length} public tests...\n\n${errorMsg}${lines.join('\n')}${lines.length > 0 ? '\n\n' : ''}${passCount}/${updatedTests.length} tests passed.`
       );
     } catch (err) {
       setConsoleOut('Error running tests. Check your code for syntax errors.');

@@ -96,50 +96,25 @@ const BugBountyInterviewPanel = ({ problem, sessionId, userId }) => {
         <p className="text-sm text-base-content/90 leading-relaxed">{descriptionText}</p>
       </div>
 
-      {/* Two panels: Buggy code (left) + Fix editor (right) */}
-      <div className="flex-1 grid grid-cols-2 gap-4 min-h-0">
-        {/* Left: Buggy code read-only */}
-        <div className="flex flex-col min-h-0">
-          <p className="text-xs font-semibold text-red-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-            <Bug className="h-3.5 w-3.5" /> Buggy Code
-          </p>
-          <div className="flex-1 rounded-xl overflow-hidden border border-red-500/20 min-h-0 bg-[#1e1e1e]">
-            <Editor
-              height="100%"
-              language={language === 'python' ? 'python' : 'javascript'}
-              value={buggyCode}
-              options={{
-                readOnly: true,
-                minimap: { enabled: false },
-                fontSize: 13,
-                lineNumbers: 'on',
-                scrollBeyondLastLine: false,
-                theme: 'vs-dark',
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Right: Fix editor (editable) */}
-        <div className="flex flex-col min-h-0">
-          <p className="text-xs font-semibold text-success uppercase tracking-wider mb-2">
-            🔧 Your Fix
-          </p>
-          <div className="flex-1 rounded-xl overflow-hidden border border-base-300 min-h-0 bg-[#1e1e1e]">
-            <Editor
-              height="100%"
-              language={language === 'python' ? 'python' : 'javascript'}
-              value={fixedCode}
-              onChange={(val) => setFixedCode(val || '')}
-              options={{
-                minimap: { enabled: false },
-                fontSize: 13,
-                lineNumbers: 'on',
-                scrollBeyondLastLine: false,
-                theme: 'vs-dark',
-              }}
-            />
-          </div>
+      {/* Buggy Code Editor (Editable) */}
+      <div className="flex-1 flex flex-col min-h-0">
+        <p className="text-xs font-semibold text-red-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+          <Bug className="h-3.5 w-3.5" /> Buggy Code (Edit to Fix)
+        </p>
+        <div className="flex-1 rounded-xl overflow-hidden border border-red-500/20 min-h-0 bg-[#1e1e1e]">
+          <Editor
+            height="100%"
+            language={language === 'python' ? 'python' : 'javascript'}
+            value={fixedCode}
+            onChange={(val) => setFixedCode(val || '')}
+            options={{
+              minimap: { enabled: false },
+              fontSize: 13,
+              lineNumbers: 'on',
+              scrollBeyondLastLine: false,
+              theme: 'vs-dark',
+            }}
+          />
         </div>
       </div>
 

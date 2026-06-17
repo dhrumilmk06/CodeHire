@@ -34,6 +34,7 @@ const renderReport = (text) => {
   });
 };
 
+
 const BugBountyInterviewPanel = ({ problem, sessionId, userId }) => {
   const [fixedCode, setFixedCode] = useState('');
   const [showHint, setShowHint] = useState(false);

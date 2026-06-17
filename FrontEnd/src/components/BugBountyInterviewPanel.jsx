@@ -4,6 +4,37 @@ import { Bug, Trophy, Clock, Eye, EyeOff, Send, CheckCircle } from 'lucide-react
 import axiosInstance from '../lib/axios';
 import Editor from '@monaco-editor/react';
 
+const renderReport = (text) => {
+  if (!text) return null;
+  return text.split('\n').map((line, i) => {
+    if (!line.trim()) return <div key={i} className="h-3" />;
+    const parts = line.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+    return (
+      <p key={i} className="text-sm leading-relaxed text-base-content/90">
+        {parts.map((p, j) => {
+          if (p.startsWith('**') && p.endsWith('**'))
+            return (
+              <span key={j} className="font-semibold text-base-content">
+                {p.slice(2, -2)}
+              </span>
+            );
+          if (p.startsWith('`') && p.endsWith('`'))
+            return (
+              <code
+                key={j}
+                className="px-1.5 py-0.5 rounded bg-red-500/10 text-red-400 text-[12.5px] font-mono border border-red-500/20"
+              >
+                {p.slice(1, -1)}
+              </code>
+            );
+          return <span key={j}>{p}</span>;
+        })}
+      </p>
+    );
+  });
+};
+
+
 const BugBountyInterviewPanel = ({ problem, sessionId, userId }) => {
   const [fixedCode, setFixedCode] = useState('');
   const [showHint, setShowHint] = useState(false);
@@ -93,7 +124,9 @@ const BugBountyInterviewPanel = ({ problem, sessionId, userId }) => {
       {/* Bug Description */}
       <div className="rounded-xl bg-red-500/10 border border-red-500/20 p-4">
         <p className="text-xs font-semibold text-red-500 uppercase tracking-wider mb-2">Bug Description</p>
-        <p className="text-sm text-base-content/90 leading-relaxed">{descriptionText}</p>
+        <div className="space-y-1.5">
+          {renderReport(descriptionText)}
+        </div>
       </div>
 
       {/* Buggy Code Editor (Editable) */}

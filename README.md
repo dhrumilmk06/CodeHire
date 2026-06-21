@@ -97,6 +97,168 @@ CodeHire is a high-performance web application designed for real-time collaborat
    cd FrontEnd && npm install && npm run dev
    ```
 
+## 📁 Project Structure
+
+```
+CodeHire/
+├── FrontEnd/                    # React 19 + Vite application
+│   └── src/
+│       ├── api/                 # Axios API call definitions (per feature)
+│       ├── components/          # Reusable UI components & widgets
+│       ├── context/             # React context providers
+│       ├── data/                # Static problem data & seed datasets
+│       ├── hooks/               # Custom React hooks
+│       ├── layouts/             # Shared layout wrappers (e.g. SessionLayout)
+│       ├── lib/                 # Axios instance, utility helpers
+│       ├── pages/               # Route-level page components
+│       └── App.jsx              # Root router + role-based redirects
+│
+└── BackEnd/                     # Node.js + Express API server
+    ├── prisma/
+    │   └── schema.prisma        # PostgreSQL data models (Prisma ORM)
+    └── src/
+        ├── controllers/         # Business logic handlers
+        ├── lib/                 # DB, Socket, Inngest, ENV config
+        ├── middleware/          # Auth, error handling, rate limiting
+        ├── routes/              # Express route definitions
+        ├── schemas/             # Zod/Joi validation schemas
+        ├── services/            # AI, PDF, Piston, Agent service abstractions
+        ├── utils/               # Shared utilities
+        └── server.js            # Entry point — Express + Socket.io setup
+```
+
+---
+
+## 🏗️ Architecture & Core Modules
+
+### 1. 🐛 Bug Bounty — Interactive Debugging Challenges
+The Bug Bounty feature presents users with **intentionally broken code** and challenges them to find and fix the logic error.
+
+| Step | Action |
+|------|--------|
+| 1 | User reads the **Bug Report** (description + hints) |
+| 2 | User edits the buggy code in the **Monaco Editor** |
+| 3 | User runs code against **public test cases** via Piston |
+| 4 | User submits — code is evaluated against **hidden test cases** |
+| 5 | **Gemini AI** performs a code review (correctness, quality, efficiency) |
+| 6 | A **final score** is calculated and a `BugBountySubmission` record is saved |
+
+- Hosts can manage and review submissions from `/host/bug-bounty`.
+- A **Leaderboard** aggregates scores across all approved submissions.
+
+### 2. ⚡ Real-Time Collaborative Workspace
+The live coding IDE is the core of CodeHire's interview experience.
+
+- **Socket.io** powers all real-time events: code changes, language switches, run output, problem switches, and whiteboard drawing — all synchronized with sub-millisecond latency.
+- Rooms are keyed by `callId` (the session ID), ensuring isolation between concurrent interviews.
+- An in-memory `roomState` map caches the latest code/output so new joiners immediately sync up.
+
+### 3. 🤖 AI Agent — Automated Interview Monitor
+An optional AI agent can be activated by the host during a session. Once active:
+- It **monitors candidate code** for stagnation or errors.
+- It **auto-generates contextual hints** if the candidate appears stuck.
+- It **runs automated test cases** periodically.
+- It produces an **agent summary** upon session close, logged to the `Session` record.
+
+### 4. 🎨 System Design Whiteboard
+- Powered by **Excalidraw**, embedded directly into the session.
+- Whiteboard data is synchronized in real-time using Socket.io's `whiteboard-update` event.
+- Hosts can **capture and save snapshots** which are stored as `WhiteboardSnapshot` records in the DB, optionally scored by AI.
+- Navigation between the code editor and whiteboard is also synchronized (both participants see the same view).
+
+### 5. 📄 PDF Report Card Generation
+At the close of an interview, the host can generate a professional PDF report:
+- Powered by **Puppeteer** (headless Chrome).
+- Includes: candidate info, AI review, code snapshot, test case pass rate, score, timing, and session notes.
+- The generated PDF is saved to the `/reports` directory and served statically.
+
+---
+
+## 🔌 API Reference
+
+The backend exposes the following REST API route groups (all prefixed with `/api`):
+
+| Route Prefix | Description |
+|---|---|
+| `/api/sessions` | Create, join, and manage interview sessions |
+| `/api/problems` | CRUD for the custom problem bank |
+| `/api/code` | Code execution via Piston (run & auto-test) |
+| `/api/ai` | AI hints, reviews, problem generation, and whiteboard analysis |
+| `/api/bug-bounty` | Bug Bounty problems, submissions, hints, leaderboard |
+| `/api/reports` | Trigger PDF report card generation |
+| `/api/chat` | Stream Chat token provisioning |
+| `/api/users` | User profile sync and role management |
+| `/api/admin` | Admin-only endpoints (user management, ban/unban) |
+| `/api/agent` | Start/stop the AI agent for a session |
+| `/api/whiteboard` | Save and retrieve whiteboard snapshots |
+| `/api/inngest` | Inngest workflow event handler |
+
+### Key Bug Bounty Endpoints (`/api/bug-bounty`)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/problems` | List all problems (paginated, filter by language/difficulty) |
+| `GET` | `/problems/:id` | Get a single problem (hidden test cases omitted) |
+| `POST` | `/problems/:id/run-tests` | Run code against public test cases |
+| `POST` | `/problems/:id/submit` | Final submission — runs hidden tests + AI review |
+| `POST` | `/problems/:id/hints` | Retrieve the hint for a problem |
+| `GET` | `/problems/:id/solution` | Get the correct solution |
+| `POST` | `/problems/:id/explain` | AI explanation of the fix |
+| `GET` | `/leaderboard` | Top users by aggregate final score |
+
+---
+
+## 🗄️ Data Models
+
+The database is managed with **Prisma ORM** on **PostgreSQL**. Key models:
+
+| Model | Description |
+|---|---|
+| `User` | Platform users. Roles: `participant`, `host`, `admin`. Synced with Clerk. |
+| `Session` | An interview session record. Links host, participant, problems, code, scores, and AI data. |
+| `CustomProblem` | Host-created coding problems with starter code and hidden test cases. |
+| `WhiteboardSnapshot` | Saved Excalidraw snapshots with optional AI scoring. |
+| `BugBountyProblem` | A debugging challenge with buggy code, bug description, and test cases. |
+| `BugBountySubmission` | A user's submission for a Bug Bounty problem with auto-test and AI review results. |
+| `BugBountyHintUsed` | Tracks hint usage per submission for scoring penalties. |
+
+---
+
+## 🔗 Socket.io Events
+
+The server handles the following real-time socket events:
+
+| Event | Direction | Description |
+|---|---|---|
+| `join-room` | Client → Server | Join a session's collaborative room |
+| `sync-state` | Server → Client | Send current room state to a new joiner |
+| `code-change` | Bidirectional | Broadcast code edits to all room members |
+| `language-change` | Bidirectional | Broadcast language selection changes |
+| `output-update` | Bidirectional | Broadcast code execution output |
+| `problem-change` | Bidirectional | Notify participants of a problem switch |
+| `navigate-whiteboard` | Bidirectional | Switch all participants to the whiteboard view |
+| `navigate-code` | Bidirectional | Switch all participants back to the code editor |
+| `whiteboard-update` | Bidirectional | Broadcast real-time drawing element changes |
+| `send-hint` | Host → Participant | Host sends a hint to the candidate |
+| `receive-hint` | Server → Participant | Candidate receives the hint |
+| `rejoin-session` | Client → Server | Reconnect and re-sync code from the DB |
+| `agent:start` | Client → Server | Activate the AI monitoring agent |
+| `agent:stop` | Client → Server | Deactivate the AI agent |
+
+---
+
+## 👑 User Roles & Access Control
+
+CodeHire uses **Clerk** for identity management with **role-based access control** enforced at both the frontend route level and backend middleware level.
+
+| Role | Dashboard | Capabilities |
+|---|---|---|
+| **Admin** | `/admin` | View all users, ban/unban accounts, platform-wide monitoring |
+| **Host** | `/dashboard` | Create sessions, manage problem bank, bulk import, compare candidates, generate reports, manage Bug Bounty |
+| **Participant** | `/my-interviews` | Join sessions, view past interviews, solve Bug Bounty challenges |
+
+---
+
 ## 📜 License
 This project is licensed under the [ISC License](LICENSE).
 

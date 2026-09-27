@@ -1,9 +1,9 @@
-import express from "express";
-import { getAllStandardProblems, getStandardProblemById } from "../controllers/standardProblemController.js";
+import express from 'express';
+import { getStandardProblems, getStandardProblemById } from '../controllers/standardProblemController.js';
 
 const router = express.Router();
 
-router.get("/", getAllStandardProblems);
-router.get("/:id", getStandardProblemById);
+router.get('/', getStandardProblems);
+router.get('/:id', getStandardProblemById);
 
 export default router;

@@ -1,16 +1,69 @@
-# React + Vite
+# 🚀 CodeHire - FrontEnd
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend application for **CodeHire**, a real-time collaborative coding and interview platform.
 
-Currently, two official plugins are available:
+## 🛠️ Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Framework**: [React 19](https://react.dev/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS 4.0](https://tailwindcss.com/), [DaisyUI](https://daisyui.com/), [Shadcn UI](https://ui.shadcn.com/), & [Framer Motion](https://www.framer.com/motion/)
+- **State Management & Data Fetching**: [TanStack Query v5](https://tanstack.com/query/latest), Axios
+- **Authentication**: [Clerk](https://clerk.com/)
+- **Real-time Collaboration**: [Socket.io-client](https://socket.io/)
+- **Communication (Video & Chat)**: [Stream Video/Chat SDK](https://getstream.io/)
+- **Code Editor**: [Monaco Editor](https://microsoft.github.io/monaco-editor/)
+- **Whiteboard**: [Excalidraw](https://excalidraw.com/)
+- **Animations**: [GSAP](https://gsap.com/)
 
-## React Compiler
+## 🚀 Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prerequisites
 
-## Expanding the ESLint configuration
+- Node.js (v18+)
+- Valid API keys for Clerk and Stream SDK
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Environment Variables
+
+Create a `.env` file in the `FrontEnd` root directory and configure the following variables:
+
+```env
+VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+VITE_API_URL=http://localhost:3000/api
+VITE_STREAM_API_KEY=your_stream_api_key
+```
+
+### Installation
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+3. Build for production:
+   ```bash
+   npm run build
+   ```
+
+## 📁 Project Structure
+
+- `src/components/`: Reusable UI elements, modals, and complex platform widgets (like the interview panel).
+- `src/api/`: Axios instances and API call definitions for seamless backend integration.
+- `src/pages/` / `src/routes/`: Main application views mapped to React Router.
+- `public/`: Static assets, SVGs, and global styles.
+
+## ✨ Key Capabilities
+
+- **Real-time Collaborative Code Editor** using Monaco Editor.
+- **Integrated Video Conferencing & Chat** utilizing Stream SDK for uninterrupted interviews.
+- **Secure Authentication Flow** handled safely via Clerk.
+- **Interactive System Design Whiteboard** powered by Excalidraw.
+- **Stunning UI** with optimized Tailwind CSS, fluid GSAP animations, and accessible components via Radix UI/Shadcn.
+
+## 📜 License
+
+This project is part of CodeHire and is licensed under the [ISC License](../LICENSE).

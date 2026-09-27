@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+import axiosInstance from '../lib/axios.js';
 
 /**
  * Fetch a paginated list of standard problems.
@@ -12,7 +10,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
  */
 export const fetchStandardProblems = async ({ limit = 50, offset = 0, lightweight = false } = {}) => {
     try {
-        const response = await axios.get(`${API_URL}/api/standard-problems`, {
+        const response = await axiosInstance.get(`/standard-problems`, {
             params: { limit, offset, lightweight }
         });
         return response.data;
@@ -28,7 +26,7 @@ export const fetchStandardProblems = async ({ limit = 50, offset = 0, lightweigh
  */
 export const fetchStandardProblemById = async (id) => {
     try {
-        const response = await axios.get(`${API_URL}/api/standard-problems/${id}`);
+        const response = await axiosInstance.get(`/standard-problems/${id}`);
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch problem details');

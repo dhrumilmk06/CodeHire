@@ -1,32 +1,52 @@
-import React, { useState } from 'react'
-
-import { PROBLEMS } from '../data/problems.js'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router'
-import { ChevronRightIcon, Code2Icon, SearchIcon } from 'lucide-react'
+import { ChevronRightIcon, Code2Icon, SearchIcon, ChevronLeftIcon } from 'lucide-react'
 import { getDifficultyBadgeClass } from '../lib/utils.js'
 import { SkeletonCard } from '../components/ui/SkeletonCard'
-
+import { fetchStandardProblems } from '../api/standardProblems.js'
 
 export const ProblemsPage = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [difficultyFilter, setDifficultyFilter] = useState('All')
   const [categoryFilter, setCategoryFilter] = useState('All')
 
-  const allProblems = Object.values(PROBLEMS)
+  const [allProblems, setAllProblems] = useState([])
+  const [totalCount, setTotalCount] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
+  
+  const [currentPage, setCurrentPage] = useState(0)
+  const limit = 50
+
+  useEffect(() => {
+    const loadProblems = async () => {
+      setIsLoading(true)
+      try {
+        const data = await fetchStandardProblems({ limit, offset: currentPage * limit, lightweight: false })
+        setAllProblems(data.problems)
+        setTotalCount(data.total)
+        setError(null)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    
+    // Adding debounce to loading to prevent flicker
+    const timer = setTimeout(() => {
+        loadProblems();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [currentPage])
+
   const categories = ['All', ...new Set(allProblems.map(p => p.category))]
-
-  const [isLoading, setIsLoading] = React.useState(true)
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 500)
-    return () => clearTimeout(timer)
-  }, [])
 
   const filteredProblems = allProblems.filter(problem => {
     const searchLower = searchQuery.toLowerCase()
     const matchesSearch = problem.title.toLowerCase().includes(searchLower) ||
       problem.category.toLowerCase().includes(searchLower) ||
-      problem.description.text.toLowerCase().includes(searchLower)
+      (problem.description?.text || '').toLowerCase().includes(searchLower)
     
     const matchesDifficulty = difficultyFilter === 'All' || problem.difficulty === difficultyFilter
     const matchesCategory = categoryFilter === 'All' || problem.category === categoryFilter
@@ -34,17 +54,14 @@ export const ProblemsPage = () => {
     return matchesSearch && matchesDifficulty && matchesCategory
   })
 
-  // Use allProblems for the total stats, or filteredProblems? 
-  // Let's use allProblems for the counts so they stay constant, or filtered?
-  // Usually, stats reflect the total available unless specifically asked for "filtered stats".
-  // Let's stick to the current behavior where stats reflect the displayed list.
   const problems = filteredProblems 
 
   const easyProblemsCount = problems.filter((p) => p.difficulty === "Easy").length
   const mediumProblemsCount = problems.filter((p) => p.difficulty === "Medium").length
   const hardProblemsCount = problems.filter((p) => p.difficulty === "Hard").length
+
   return (
-    <div className='min-h-screen bg-base-300'>
+    <div className='min-h-screen bg-base-300 flex flex-col'>
       {/* Hero Header Section */}
       <div className="bg-linear-to-b from-primary/10 via-base-200 to-base-300">
         <div className='max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-12'>
@@ -57,7 +74,7 @@ export const ProblemsPage = () => {
         </div>
       </div>
 
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-6 sm:py-8'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-6 sm:py-8 flex-1'>
         <div className='grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 sm:gap-8 items-start'>
           {/* STATS SIDEBAR (Left Side, Vertical, Sticky) */}
           <aside className='lg:sticky lg:top-8 space-y-4 order-2 lg:order-1'>
@@ -69,7 +86,7 @@ export const ProblemsPage = () => {
                 </h3>
                 <div className='grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-1 gap-4 lg:gap-6'>
                   <div className='flex items-center justify-between group'>
-                    <div className='text-xs sm:text-sm font-medium text-base-content/60'>Total</div>
+                    <div className='text-xs sm:text-sm font-medium text-base-content/60'>Total (Page)</div>
                     <div className='text-xl sm:text-2xl font-bold text-primary group-hover:scale-110 transition-transform'>{problems.length}</div>
                   </div>
                   <div className='hidden lg:block divider my-0 opacity-50' />
@@ -88,17 +105,10 @@ export const ProblemsPage = () => {
                 </div>
               </div>
             </div>
-
-            {/* Quick Tips or Info (Optional extra card for sidebar) */}
-            <div className='card bg-primary/5 border border-primary/10 hidden sm:block'>
-              <div className='card-body p-4 text-xs text-base-content/70 italic'>
-                "Consistency is the key to mastering data structures and algorithms."
-              </div>
-            </div>
           </aside>
 
           {/* MAIN CONTENT (Right Side) */}
-          <main className='order-1 lg:order-2'>
+          <main className='order-1 lg:order-2 flex flex-col h-full'>
             {/* SEARCH & FILTERS */}
             <div className='flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8'>
               <div className='relative flex-1'>
@@ -137,9 +147,15 @@ export const ProblemsPage = () => {
                 </select>
               </div>
             </div>
+            
+            {error && (
+              <div className="alert alert-error mb-6 shadow-lg">
+                <span>{error}</span>
+              </div>
+            )}
 
             {/* PROBLEMS GRID */}
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 mb-8'>
               {isLoading ? (
                 [...Array(6)].map((_, i) => (
                   <SkeletonCard key={i} variant="problem" />
@@ -169,7 +185,7 @@ export const ProblemsPage = () => {
                         
                         <div className='flex-1 mb-4'>
                           <h2 className='text-lg sm:text-xl font-bold mb-2 group-hover:text-primary transition-colors line-clamp-1'>{problem.title}</h2>
-                          <p className='text-xs sm:text-sm text-base-content/70 line-clamp-2 sm:line-clamp-3'>{problem.description.text}</p>
+                          <p className='text-xs sm:text-sm text-base-content/70 line-clamp-2 sm:line-clamp-3'>{problem.description?.text || "Practice coding problem."}</p>
                         </div>
 
                         <div className='flex items-center justify-between pt-4 border-t border-base-content/5 mt-auto'>
@@ -192,9 +208,34 @@ export const ProblemsPage = () => {
                 </div>
               )}
             </div>
+            
+            {/* PAGINATION CONTROLS */}
+            {!isLoading && totalCount > limit && (
+                <div className="mt-auto flex justify-center items-center gap-4 py-4">
+                  <button 
+                    className="btn btn-outline btn-sm"
+                    disabled={currentPage === 0}
+                    onClick={() => setCurrentPage(p => p - 1)}
+                  >
+                    <ChevronLeftIcon className="size-4" /> Previous
+                  </button>
+                  <span className="text-sm font-medium">
+                    Page {currentPage + 1} of {Math.ceil(totalCount / limit)}
+                  </span>
+                  <button 
+                    className="btn btn-outline btn-sm"
+                    disabled={(currentPage + 1) * limit >= totalCount}
+                    onClick={() => setCurrentPage(p => p + 1)}
+                  >
+                    Next <ChevronRightIcon className="size-4" />
+                  </button>
+                </div>
+            )}
+            
           </main>
         </div>
       </div>
     </div>
   )
 }
+

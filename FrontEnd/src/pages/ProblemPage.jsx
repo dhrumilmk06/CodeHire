@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
-import { PROBLEMS } from '../data/problems.js'
+import { fetchStandardProblemById, fetchStandardProblems } from '../api/standardProblems.js'
 
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { ProblemDescription } from "../components/ProblemDescription.jsx"
@@ -10,35 +10,66 @@ import { OutputPanel } from '../components/OutputPanel.jsx'
 import { executeCode } from '../lib/piston.js'
 import toast from "react-hot-toast";
 import confetti from "canvas-confetti";
+import { Loader2Icon } from 'lucide-react';
 
 export const ProblemPage = () => {
-
     const { id } = useParams()
     const navigate = useNavigate()
 
-    const [currentProblemId, setCurrentProblemId] = useState("two-sum");
+    const [currentProblem, setCurrentProblem] = useState(null)
+    const [allProblems, setAllProblems] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState(null)
+
     const [selectedLanguage, setSelectedLanguage] = useState("javascript");
-    const [code, setCode] = useState(PROBLEMS[currentProblemId].starterCode.javascript)
+    const [code, setCode] = useState("")
     const [output, setOutput] = useState(null)
     const [isRunning, setIsRunning] = useState(false)
     const [activeTab, setActiveTab] = useState('description')
 
-    const currentProblem = PROBLEMS[currentProblemId]
-
     useEffect(() => {
+        const loadData = async () => {
+            setIsLoading(true)
+            setError(null)
+            try {
+                // Fetch both the current problem and the lightweight list for the dropdown
+                const [problemData, listData] = await Promise.all([
+                    fetchStandardProblemById(id),
+                    // Check if we already have the list to save a network call
+                    allProblems.length > 0 ? Promise.resolve({ problems: allProblems }) : fetchStandardProblems({ limit: 500, offset: 0, lightweight: true })
+                ]);
+                
+                setCurrentProblem(problemData)
+                if (listData.problems.length > 0 && allProblems.length === 0) {
+                    setAllProblems(listData.problems)
+                }
 
-        if (id && PROBLEMS[id]) {
-            setCurrentProblemId(id);
-            setCode(PROBLEMS[id].starterCode[selectedLanguage]);
-            setOutput(null);
+                // Default language fallback
+                const initialLang = selectedLanguage || 'javascript'
+                if (problemData.starterCode && problemData.starterCode[initialLang]) {
+                    setCode(problemData.starterCode[initialLang])
+                }
+                setOutput(null)
+
+            } catch (err) {
+                console.error(err)
+                setError("Problem not found or failed to load.")
+            } finally {
+                setIsLoading(false)
+            }
         }
-
-    }, [id, selectedLanguage])
+        
+        if (id) {
+            loadData()
+        }
+    }, [id])
 
     const handelLanguageChange = (e) => {
         const newLang = e.target.value;
         setSelectedLanguage(newLang);
-        setCode(currentProblem.starterCode[newLang]);
+        if (currentProblem && currentProblem.starterCode) {
+            setCode(currentProblem.starterCode[newLang] || "");
+        }
         setOutput(null);
     }
 
@@ -59,17 +90,15 @@ export const ProblemPage = () => {
     }
 
     const normalizeOutput = (output) => {
-        // normalize output for comparison (trim whitespace, handle different spacing)
+        if (!output) return "";
         return output
             .trim()
             .split("\n")
             .map((line) =>
                 line
                     .trim()
-                    // remove spaces after [ and before ]
                     .replace(/\[\s+/g, "[")
                     .replace(/\s+\]/g, "]")
-                    // normalize spaces around commas to single space after comma
                     .replace(/\s*,\s*/g, ",")
             )
             .filter((line) => line.length > 0)
@@ -84,6 +113,7 @@ export const ProblemPage = () => {
     }
 
     const handleRunCode = async () => {
+        if (!currentProblem) return;
         setIsRunning(true);
         setOutput(null);
 
@@ -91,10 +121,8 @@ export const ProblemPage = () => {
         setOutput(result)
         setIsRunning(false);
 
-        // check if code executed successfully and matches expected output
-
         if (result.success) {
-            const expectedOutput = currentProblem.expectedOutput[selectedLanguage];
+            const expectedOutput = currentProblem.expectedOutput ? currentProblem.expectedOutput[selectedLanguage] : "";
             const testPassed = checkIfTestsPassed(result.output, expectedOutput);
 
             if (testPassed) {
@@ -108,14 +136,29 @@ export const ProblemPage = () => {
         }
     }
 
+    if (isLoading) {
+        return (
+            <div className='h-screen bg-base-100 flex items-center justify-center'>
+                <Loader2Icon className="size-10 animate-spin text-primary" />
+            </div>
+        )
+    }
+
+    if (error || !currentProblem) {
+        return (
+            <div className='h-screen bg-base-100 flex items-center justify-center'>
+                <div className="text-center">
+                    <h2 className="text-2xl font-bold text-error mb-4">{error || "Problem not found"}</h2>
+                    <button onClick={() => navigate('/problems')} className="btn btn-primary">Back to Problems</button>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className='h-screen bg-base-100 flex flex-col'>
-
-
             <div className='flex-1'>
                 <PanelGroup direction='horizontal'>
-
                     {/* left panel- problem desc */}
                     <Panel defaultSize={40} minSize={30}>
                         <div className="flex border-b border-[#2a2a2a] mb-4 flex-shrink-0">
@@ -153,9 +196,9 @@ export const ProblemPage = () => {
                         {activeTab === 'description' && (
                             <ProblemDescription
                                 problem={currentProblem}
-                                currentProblemId={currentProblemId}
+                                currentProblemId={id}
                                 onProblemChange={handelProblemChange}
-                                allProblems={Object.values(PROBLEMS)}
+                                allProblems={allProblems}
                             />
                         )}
 
@@ -169,7 +212,6 @@ export const ProblemPage = () => {
                     {/* right panel- problem desc */}
                     <Panel defaultSize={60} minSize={30}>
                         <PanelGroup direction='vertical'>
-
                             {/* Top panel - Code editor */}
                             <Panel defaultSize={70} minSize={30}>
                                 <CodeEditorPanel
@@ -188,10 +230,8 @@ export const ProblemPage = () => {
                             <Panel defaultSize={30} minSize={30}>
                                 <OutputPanel output={output} />
                             </Panel>
-
                         </PanelGroup>
                     </Panel>
-
                 </PanelGroup>
             </div>
         </div>

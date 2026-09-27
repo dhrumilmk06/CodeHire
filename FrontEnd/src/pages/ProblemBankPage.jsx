@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Plus, Pencil, Trash2, Search, Lock, X, Check, Upload } from "lucide-react";
 import { BookOpenIcon, CodeIcon, Loader2Icon } from "lucide-react";
 import { SkeletonCard } from "../components/ui/SkeletonCard";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { useMyProblems, useCreateProblem, useUpdateProblem, useDeleteProblem } from "../hooks/useCustomProblems";
-import { PROBLEMS } from "../data/problems";
+import { fetchStandardProblems } from "../api/standardProblems.js";
 import toast from "react-hot-toast";
 import { BulkImportModal } from "../components/BulkImportModal";
 import GenerateProblemModal from '../components/problemBank/GenerateProblemModal'
@@ -28,7 +28,6 @@ const EMPTY_FORM = {
     hiddenTestCases: [{ id: 1, description: "", inputCode: { javascript: "", python: "", java: "", cpp: "" }, expectedOutput: "" }],
 };
 
-const BUILT_IN_LIST = Object.values(PROBLEMS);
 
 // ── Reusable Tag-style text input ────────────────────────────────────────────
 function TagInput({ label, values, onChange, placeholder }) {
@@ -444,7 +443,19 @@ function ProblemCard({ problem, isCustom, onEdit, onDelete, isDeleting }) {
 
 // ── Main Page ────────────────────────────────────────────────────────────────
 export const ProblemBankPage = () => {
-    const { data: customProblems = [], isLoading } = useMyProblems();
+    const [page, setPage] = useState(0);
+    const limit = 50;
+
+    const { data: standardData, isLoading: standardLoading } = useQuery({
+        queryKey: ["standard-problems", page],
+        queryFn: () => fetchStandardProblems({ limit, offset: page * limit, lightweight: false }),
+        keepPreviousData: true
+    });
+
+    const { data: customProblems = [], isLoading: customLoading } = useMyProblems();
+    const isLoading = standardLoading || customLoading;
+    const BUILT_IN_LIST = standardData?.problems || [];
+    const totalStandard = standardData?.total || 0;
     const queryClient = useQueryClient();
     const createMutation = useCreateProblem();
     const updateMutation = useUpdateProblem();
@@ -630,6 +641,29 @@ export const ProblemBankPage = () => {
                                 isDeleting={deleteMutation.isPending}
                             />
                         ))}
+                    </div>
+                )}
+
+                {/* Pagination Controls */}
+                {!isLoading && typeFilter !== "Custom" && totalStandard > limit && (
+                    <div className="mt-8 flex justify-center items-center gap-4">
+                        <button
+                            className="btn btn-outline btn-sm"
+                            disabled={page === 0}
+                            onClick={() => setPage((p) => p - 1)}
+                        >
+                            Previous
+                        </button>
+                        <span className="text-sm font-medium">
+                            Page {page + 1} of {Math.ceil(totalStandard / limit)}
+                        </span>
+                        <button
+                            className="btn btn-outline btn-sm"
+                            disabled={(page + 1) * limit >= totalStandard}
+                            onClick={() => setPage((p) => p + 1)}
+                        >
+                            Next
+                        </button>
                     </div>
                 )}
             </div>

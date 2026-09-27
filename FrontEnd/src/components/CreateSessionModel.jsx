@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
-import { PROBLEMS } from "../data/problems";
+import { fetchStandardProblems } from "../api/standardProblems.js";
+import { useQuery } from "@tanstack/react-query";
 import { useMyProblems } from "../hooks/useCustomProblems";
 import {
   Code2Icon,
@@ -26,7 +27,13 @@ export const CreateSessionModel = ({
   isCreating,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const builtInProblems = Object.values(PROBLEMS);
+  const { data: standardData } = useQuery({
+    queryKey: ["standard-problems-lightweight"],
+    queryFn: () => fetchStandardProblems({ limit: 500, offset: 0, lightweight: true }),
+    enabled: isOpen,
+    staleTime: Infinity,
+  });
+  const builtInProblems = standardData?.problems || [];
   const { data: customProblems = [] } = useMyProblems();
 
   const [bugBountyProblems, setBugBountyProblems] = useState([]);

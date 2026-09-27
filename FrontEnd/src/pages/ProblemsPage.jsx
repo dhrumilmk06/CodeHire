@@ -1,32 +1,52 @@
-import React, { useState } from 'react'
-
-import { PROBLEMS } from '../data/problems.js'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router'
-import { ChevronRightIcon, Code2Icon, SearchIcon } from 'lucide-react'
+import { ChevronRightIcon, Code2Icon, SearchIcon, ChevronLeftIcon } from 'lucide-react'
 import { getDifficultyBadgeClass } from '../lib/utils.js'
 import { SkeletonCard } from '../components/ui/SkeletonCard'
-
+import { fetchStandardProblems } from '../api/standardProblems.js'
 
 export const ProblemsPage = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [difficultyFilter, setDifficultyFilter] = useState('All')
   const [categoryFilter, setCategoryFilter] = useState('All')
 
-  const allProblems = Object.values(PROBLEMS)
+  const [allProblems, setAllProblems] = useState([])
+  const [totalCount, setTotalCount] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
+  
+  const [currentPage, setCurrentPage] = useState(0)
+  const limit = 50
+
+  useEffect(() => {
+    const loadProblems = async () => {
+      setIsLoading(true)
+      try {
+        const data = await fetchStandardProblems({ limit, offset: currentPage * limit, lightweight: false })
+        setAllProblems(data.problems)
+        setTotalCount(data.total)
+        setError(null)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    
+    // Adding debounce to loading to prevent flicker
+    const timer = setTimeout(() => {
+        loadProblems();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [currentPage])
+
   const categories = ['All', ...new Set(allProblems.map(p => p.category))]
-
-  const [isLoading, setIsLoading] = React.useState(true)
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 500)
-    return () => clearTimeout(timer)
-  }, [])
 
   const filteredProblems = allProblems.filter(problem => {
     const searchLower = searchQuery.toLowerCase()
     const matchesSearch = problem.title.toLowerCase().includes(searchLower) ||
       problem.category.toLowerCase().includes(searchLower) ||
-      problem.description.text.toLowerCase().includes(searchLower)
+      (problem.description?.text || '').toLowerCase().includes(searchLower)
     
     const matchesDifficulty = difficultyFilter === 'All' || problem.difficulty === difficultyFilter
     const matchesCategory = categoryFilter === 'All' || problem.category === categoryFilter
@@ -98,7 +118,7 @@ export const ProblemsPage = () => {
           </aside>
 
           {/* MAIN CONTENT (Right Side) */}
-          <main className='order-1 lg:order-2'>
+          <main className='order-1 lg:order-2 flex flex-col'>
             {/* SEARCH & FILTERS */}
             <div className='flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8'>
               <div className='relative flex-1'>
@@ -169,7 +189,7 @@ export const ProblemsPage = () => {
                         
                         <div className='flex-1 mb-4'>
                           <h2 className='text-lg sm:text-xl font-bold mb-2 group-hover:text-primary transition-colors line-clamp-1'>{problem.title}</h2>
-                          <p className='text-xs sm:text-sm text-base-content/70 line-clamp-2 sm:line-clamp-3'>{problem.description.text}</p>
+                          <p className='text-xs sm:text-sm text-base-content/70 line-clamp-2 sm:line-clamp-3'>{problem.description?.text || "Practice coding problem."}</p>
                         </div>
 
                         <div className='flex items-center justify-between pt-4 border-t border-base-content/5 mt-auto'>
@@ -192,6 +212,30 @@ export const ProblemsPage = () => {
                 </div>
               )}
             </div>
+            
+            {/* PAGINATION CONTROLS */}
+            {!isLoading && totalCount > limit && (
+                <div className="mt-auto flex justify-center items-center gap-4 py-4">
+                  <button 
+                    className="btn btn-outline btn-sm"
+                    disabled={currentPage === 0}
+                    onClick={() => setCurrentPage(p => p - 1)}
+                  >
+                    <ChevronLeftIcon className="size-4" /> Previous
+                  </button>
+                  <span className="text-sm font-medium">
+                    Page {currentPage + 1} of {Math.ceil(totalCount / limit)}
+                  </span>
+                  <button 
+                    className="btn btn-outline btn-sm"
+                    disabled={(currentPage + 1) * limit >= totalCount}
+                    onClick={() => setCurrentPage(p => p + 1)}
+                  >
+                    Next <ChevronRightIcon className="size-4" />
+                  </button>
+                </div>
+            )}
+            
           </main>
         </div>
       </div>

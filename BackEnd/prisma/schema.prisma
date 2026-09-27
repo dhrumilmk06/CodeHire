@@ -159,20 +159,22 @@ model BugBountyHintUsed {
 
   @@map("bug_bounty_hints_used")
 }
+
 model StandardProblem {
-     id              String   @id
-     title           String
-     difficulty      String
-     category        String
-     description     Json
-     examples        Json
-     constraints     String[]
-     starterCode     Json     @map("startercode")
-     expectedOutput  Json     @map("expectedoutput")
-     createdAt       DateTime @default(now()) @map("createdat")
-     updatedAt       DateTime @updatedAt @map("updatedat")
-     
-     @@index([category])
-     @@index([difficulty])
-     @@map("standardproblem")
-  }
+  id              String   @id
+  title           String
+  difficulty      String
+  category        String
+  description     Json
+  examples        Json
+  constraints     String[]
+  starterCode     Json     @map("startercode")
+  expectedOutput  Json     @map("expectedoutput")
+  createdAt       DateTime @default(now()) @map("createdat")
+  updatedAt       DateTime @updatedAt @map("updatedat")
+  
+  @@index([category])
+  @@index([difficulty])
+  @@map("standardproblem")
+}
+

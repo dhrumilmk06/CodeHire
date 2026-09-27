@@ -2,7 +2,7 @@ import { useUser } from '@clerk/clerk-react';
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { useEndSession, useJoinSession, useSessionById } from '../hooks/useSessions';
-import { PROBLEMS } from '../data/problems';
+import { fetchStandardProblemById } from '../api/standardProblems.js';
 
 import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels';
 import { getDifficultyBadgeClass } from "../lib/utils";
@@ -63,10 +63,16 @@ export const SessionPage = () => {
   // ── Shared socket from SessionContext (survives navigation to whiteboard) ──
   const { socket, connected: socketConnected, isReconnecting, reconnected, clearReconnected } = useSessionSocket();
 
-  // Find the problem data — first check built-in problems, then fetch custom by title
-  const builtInProblem = session?.problem
-    ? Object.values(PROBLEMS).find((p) => p.title === session.problem)
-    : null;
+  // Fetch standard problem by ID (derive ID from title)
+  const standardProblemId = session?.problem ? session.problem.toLowerCase().replace(/\s+/g, '-') : null;
+  const { data: builtInProblem } = useQuery({
+    queryKey: ["standard-problem", standardProblemId],
+    queryFn: async () => {
+      return await fetchStandardProblemById(standardProblemId);
+    },
+    enabled: !!standardProblemId && session?.sessionType !== 'bug_bounty',
+    retry: false,
+  });
 
   // Fetch custom problem by title from the server (works for ALL users, not just the owner)
   const { data: customProblemData } = useQuery({
@@ -420,14 +426,18 @@ export const SessionPage = () => {
         setCode(restoredCode);
         emitCodeChange(restoredCode, selectedLanguage);
       } else {
-        // Fallback: Manually set starter code if no saved code exists
-        // (This helps the editor update immediately without waiting for useEffect)
-        const nextBuiltIn = Object.values(PROBLEMS).find((p) => p.title === newProblem.title);
-        const nextStarter = nextBuiltIn?.starterCode?.[selectedLanguage] || "";
-        if (nextStarter) {
-          console.log(`[Switch] Applied starter code for ${newProblem.title}`);
-          setCode(nextStarter);
-          emitCodeChange(nextStarter, selectedLanguage);
+        // Fallback: Fetch new problem's starter code
+        try {
+          const nextId = newProblem.title.toLowerCase().replace(/\s+/g, '-');
+          const nextBuiltIn = await fetchStandardProblemById(nextId);
+          const nextStarter = nextBuiltIn?.starterCode?.[selectedLanguage] || "";
+          if (nextStarter) {
+            console.log(`[Switch] Applied starter code for ${newProblem.title}`);
+            setCode(nextStarter);
+            emitCodeChange(nextStarter, selectedLanguage);
+          }
+        } catch (e) {
+          console.warn("Could not fetch starter code for fallback:", e);
         }
       }
 

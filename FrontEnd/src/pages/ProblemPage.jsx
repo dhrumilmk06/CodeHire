@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
-import { PROBLEMS } from '../data/problems.js'
+import { fetchStandardProblemById, fetchStandardProblems } from '../api/standardProblems.js'
 
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { ProblemDescription } from "../components/ProblemDescription.jsx"
@@ -10,36 +10,68 @@ import { OutputPanel } from '../components/OutputPanel.jsx'
 import { executeCode } from '../lib/piston.js'
 import toast from "react-hot-toast";
 import confetti from "canvas-confetti";
+import { Loader2Icon } from 'lucide-react';
 
 export const ProblemPage = () => {
-
     const { id } = useParams()
     const navigate = useNavigate()
 
-    const [currentProblemId, setCurrentProblemId] = useState("two-sum");
+    const [currentProblem, setCurrentProblem] = useState(null)
+    const [allProblems, setAllProblems] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState(null)
+
     const [selectedLanguage, setSelectedLanguage] = useState("javascript");
-    const [code, setCode] = useState(PROBLEMS[currentProblemId].starterCode.javascript)
+    const [code, setCode] = useState("")
     const [output, setOutput] = useState(null)
     const [isRunning, setIsRunning] = useState(false)
     const [activeTab, setActiveTab] = useState('description')
 
-    const currentProblem = PROBLEMS[currentProblemId]
-
     useEffect(() => {
-
-        if (id && PROBLEMS[id]) {
-            setCurrentProblemId(id);
-            setCode(PROBLEMS[id].starterCode[selectedLanguage]);
-            setOutput(null);
+        const loadData = async () => {
+            setIsLoading(true)
+            setError(null)
+            try {
+                // Fetch both the current problem and the lightweight list for the dropdown
+                const [problemData, listData] = await Promise.all([
+                    fetchStandardProblemById(id),
+                    // Check if we already have the list to save a network call
+                    allProblems.length > 0 ? Promise.resolve({ problems: allProblems }) : fetchStandardProblems({ limit: 500, offset: 0, lightweight: true })
+                ]);
+                
+                setCurrentProblem(problemData)
+                if (listData?.problems) {
+                    setAllProblems(listData.problems)
+                }
+                
+                // Only set code if it's empty or we're switching problems
+                setCode(problemData.starterCode[selectedLanguage] || "")
+                setOutput(null)
+            } catch (err) {
+                console.error(err)
+                setError("Failed to load problem")
+                toast.error("Failed to load problem")
+            } finally {
+                setIsLoading(false)
+            }
         }
-
-    }, [id, selectedLanguage])
+        
+        if (id) {
+            loadData()
+        }
+    }, [id])
+    
+    // Update code when language changes
+    useEffect(() => {
+        if (currentProblem) {
+            setCode(currentProblem.starterCode[selectedLanguage] || "")
+            setOutput(null)
+        }
+    }, [selectedLanguage])
 
     const handelLanguageChange = (e) => {
         const newLang = e.target.value;
         setSelectedLanguage(newLang);
-        setCode(currentProblem.starterCode[newLang]);
-        setOutput(null);
     }
 
     const handelProblemChange = (newProblemId) => navigate(`/problem/${newProblemId}`)
@@ -108,6 +140,26 @@ export const ProblemPage = () => {
         }
     }
 
+    if (isLoading) {
+        return (
+            <div className="h-screen bg-base-100 flex items-center justify-center">
+                <Loader2Icon className="size-8 animate-spin text-primary" />
+            </div>
+        )
+    }
+
+    if (error || !currentProblem) {
+        return (
+            <div className="h-screen bg-base-100 flex items-center justify-center">
+                <div className="text-center">
+                    <h2 className="text-2xl font-bold text-error mb-2">Problem Not Found</h2>
+                    <p className="text-base-content/60 mb-4">{error || "The problem you're looking for doesn't exist."}</p>
+                    <button onClick={() => navigate('/problems')} className="btn btn-primary">Back to Problems</button>
+                </div>
+            </div>
+        )
+    }
+
 
     return (
         <div className='h-screen bg-base-100 flex flex-col'>
@@ -153,9 +205,9 @@ export const ProblemPage = () => {
                         {activeTab === 'description' && (
                             <ProblemDescription
                                 problem={currentProblem}
-                                currentProblemId={currentProblemId}
+                                currentProblemId={id}
                                 onProblemChange={handelProblemChange}
-                                allProblems={Object.values(PROBLEMS)}
+                                allProblems={allProblems}
                             />
                         )}
 

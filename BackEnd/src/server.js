@@ -24,6 +24,7 @@ import agentRoutes from './routes/agentRoutes.js'
 import whiteboardRoutes from './routes/whiteboardRoutes.js'
 import aiWhiteboardRoutes from './routes/aiWhiteboardRoutes.js'
 import bugBountyRoutes from './routes/bugBounty.js'
+import standardProblemRoutes from './routes/standardProblemRoutes.js'
 import { notFoundHandler, globalErrorHandler } from './middleware/errorHandler.js';
 
 
@@ -230,6 +231,53 @@ app.use('/api/agent', agentRoutes)
 app.use('/api/whiteboard', whiteboardRoutes)
 app.use('/api/ai', aiWhiteboardRoutes)
 app.use('/api/bug-bounty', bugBountyRoutes)
+app.use('/api/standard-problems', standardProblemRoutes)
+
+// EXPERIMENT TEST ROUTE: POST /api/execute
+app.post('/api/execute', async (req, res) => {
+    try {
+        const { language, code, testCases } = req.body;
+        if (!language || !code || !Array.isArray(testCases)) {
+            return res.status(400).json({ success: false, error: 'Invalid payload' });
+        }
+
+        const results = [];
+        let allPassed = true;
+
+        if (process.env.CODE_EXECUTOR === 'judge0') {
+            const { runCode } = await import('./services/judge0Service.js');
+            for (const tc of testCases) {
+                const jResult = await runCode({ language, code, stdin: tc.input || '' });
+                const actual = (jResult.stdout || '').trim();
+                const expected = String(tc.expectedOutput || '').trim();
+                const passed = jResult.success && actual === expected;
+                if (!passed) allPassed = false;
+                
+                results.push({
+                    passed,
+                    output: actual,
+                    expected
+                });
+            }
+        } else {
+            // Piston fallback
+            const { runAutoTests } = await import('./services/pistonService.js');
+            const pResult = await runAutoTests(code, testCases, language);
+            allPassed = pResult.passed === pResult.total;
+            for (const d of pResult.details || []) {
+                results.push({
+                    passed: d.passed,
+                    output: d.actualOutput,
+                    expected: d.expectedOutput
+                });
+            }
+        }
+
+        return res.json({ success: allPassed, results });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: err.message });
+    }
+});
 
 // Serve reports folder statically
 app.use('/reports', express.static('reports'))

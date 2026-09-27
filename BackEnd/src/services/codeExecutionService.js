@@ -11,6 +11,7 @@
  */
 
 import { prisma } from '../lib/db.js';
+import * as judge0Service from './judge0Service.js';
 
 const PISTON_ENDPOINT = 'http://localhost:2000/api/v2/execute';
 const EXECUTION_TIMEOUT_MS = 3000;
@@ -109,6 +110,18 @@ async function runOnPiston(code, language, stdin = '') {
 // Public API
 // ---------------------------------------------------------------------------
 
+const pistonService = {
+  runCode: async ({ language, code, stdin }) => {
+    const res = await runOnPiston(code, language, stdin);
+    return {
+      stdout: res.stdout,
+      stderr: res.stderr,
+      success: res.exitCode === 0 && !res.error,
+      errorMessage: res.error,
+    };
+  }
+};
+
 /**
  * Execute code against an array of test cases and return pass/fail results.
  *
@@ -150,12 +163,20 @@ async function executeCode(code, language, testCases) {
   const failedTests = [];
   const startTime  = Date.now();
 
+  const executor = process.env.CODE_EXECUTOR === 'judge0' ? judge0Service : pistonService;
+
   for (let i = 0; i < testCases.length; i++) {
     const tc    = testCases[i];
     const stdin = tc.input ?? '';
     const expected = String(tc.expectedOutput ?? '').trim();
 
-    const result = await runOnPiston(code, language, stdin);
+    const jResult = await executor.runCode({ language, code, stdin });
+    const result = {
+      stdout: jResult.stdout,
+      stderr: jResult.stderr || '',
+      exitCode: jResult.success ? 0 : 1,
+      error: jResult.errorMessage || null,
+    };
 
     if (result.error === 'TIMEOUT') {
       return {

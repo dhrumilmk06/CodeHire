@@ -16,6 +16,15 @@ const LANGUAGE_VERSIONS = {
     cpp: { language: "cpp", version: "10.2.0" },
 }
 
+const JUDGE0_LANGUAGE_IDS = {
+    javascript: 63,
+    python:     71,
+    java:       62,
+    cpp:        54,
+    c:          50,
+    typescript: 74,
+};
+
 /**
  * @param {string} language - programming language
  * @param {string} code  - source code to executed
@@ -25,6 +34,11 @@ const LANGUAGE_VERSIONS = {
 
 // this function run the execution code btn
 export async function executeCode(language, code) {
+    // Feature flag switch for Judge0 Experiment
+    if (import.meta.env.VITE_CODE_EXECUTOR === 'judge0') {
+        return await executeOnJudge0(language, code);
+    }
+
     try {
         const languageConfig = LANGUAGE_VERSIONS[language];
 
@@ -111,4 +125,54 @@ function getFileExecution(language) {
     };
 
     return fileNames[language] || "main.txt"
+}
+
+// ---------------------------------------------------------------------------
+// Judge0 Experiment Helper
+// ---------------------------------------------------------------------------
+async function executeOnJudge0(language, code) {
+    const languageId = JUDGE0_LANGUAGE_IDS[language.toLowerCase()];
+    if (!languageId) {
+        return { success: false, error: `Unsupported Judge0 language: ${language}` };
+    }
+
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // Judge0 is fast but rate-limited
+
+        const response = await fetch("https://ce.judge0.com/submissions?base64_encoded=false&wait=true", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            signal: controller.signal,
+            body: JSON.stringify({
+                language_id: languageId,
+                source_code: code,
+                stdin: ""
+            }),
+        });
+
+        clearTimeout(timeoutId);
+
+        const data = await response.json();
+        const status = data.status || {};
+
+        const output = (data.stdout || "").replace(/\n$/, ""); // Trim Judge0's trailing newline
+        const stderr = data.stderr || data.compile_output || "";
+
+        if (status.id === 3) {
+            return { success: true, output: output || "No output" };
+        } else if (status.id === 6) {
+            return { success: false, error: `Compilation Error: ${stderr || status.description}` };
+        } else if (status.id >= 7) {
+            return { success: false, output: output, error: `${status.description}: ${stderr || ''}`.trim() };
+        }
+
+        return { success: false, error: `Unexpected Judge0 status: ${status.description}` };
+
+    } catch (error) {
+        if (error.name === "AbortError") {
+            return { success: false, error: "Code execution timed out. Please try again." };
+        }
+        return { success: false, error: `Judge0 failed to execute code: ${error.message}` };
+    }
 }

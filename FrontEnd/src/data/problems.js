@@ -1,9 +1,9 @@
-export const PROBLEMS = {
+﻿export const PROBLEMS = {
   "two-sum": {
     id: "two-sum",
     title: "Two Sum",
     difficulty: "Easy",
-    category: "Array • Hash Table",
+    category: "Array â€¢ Hash Table",
     description: {
       text: "Given an array of integers nums and an integer target, return indices of the two numbers in the array such that they add up to target.",
       notes: [
@@ -27,9 +27,9 @@ export const PROBLEMS = {
       },
     ],
     constraints: [
-      "2 ≤ nums.length ≤ 10⁴",
-      "-10⁹ ≤ nums[i] ≤ 10⁹",
-      "-10⁹ ≤ target ≤ 10⁹",
+      "2 â‰¤ nums.length â‰¤ 10â´",
+      "-10â¹ â‰¤ nums[i] â‰¤ 10â¹",
+      "-10â¹ â‰¤ target â‰¤ 10â¹",
       "Only one valid answer exists",
     ],
     starterCode: {
@@ -53,7 +53,7 @@ print(json.dumps(twoSum([3, 2, 4], 6), separators=(',', ':')))  # Expected: [1,2
 print(json.dumps(twoSum([3, 3], 6), separators=(',', ':')))  # Expected: [0,1]`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int[] twoSum(int[] nums, int target) {
         // Write your solution here
         
@@ -116,7 +116,7 @@ int main() {
     id: "reverse-string",
     title: "Reverse String",
     difficulty: "Easy",
-    category: "String • Two Pointers",
+    category: "String â€¢ Two Pointers",
     description: {
       text: "Write a function that reverses a string. The input string is given as an array of characters s.",
       notes: ["You must do this by modifying the input array in-place with O(1) extra memory."],
@@ -131,7 +131,7 @@ int main() {
         output: '["h","a","n","n","a","H"]',
       },
     ],
-    constraints: ["1 ≤ s.length ≤ 10⁵", "s[i] is a printable ascii character"],
+    constraints: ["1 â‰¤ s.length â‰¤ 10âµ", "s[i] is a printable ascii character"],
     starterCode: {
       javascript: `function reverseString(s) {
   // Write your solution here
@@ -161,7 +161,7 @@ reverseString(test2)
 print(json.dumps(test2, separators=(',', ':')))  # Expected: ["h","a","n","n","a","H"]`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static void reverseString(char[] s) {
         // Write your solution here
         
@@ -228,7 +228,7 @@ int main() {
     id: "valid-palindrome",
     title: "Valid Palindrome",
     difficulty: "Easy",
-    category: "String • Two Pointers",
+    category: "String â€¢ Two Pointers",
     description: {
       text: "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.",
       notes: ["Given a string s, return true if it is a palindrome, or false otherwise."],
@@ -251,7 +251,7 @@ int main() {
           's is an empty string "" after removing non-alphanumeric characters. Since an empty string reads the same forward and backward, it is a palindrome.',
       },
     ],
-    constraints: ["1 ≤ s.length ≤ 2 * 10⁵", "s consists only of printable ASCII characters"],
+    constraints: ["1 â‰¤ s.length â‰¤ 2 * 10âµ", "s consists only of printable ASCII characters"],
     starterCode: {
       javascript: `function isPalindrome(s) {
   // Write your solution here
@@ -270,7 +270,7 @@ console.log(isPalindrome(" ")); // Expected: true`,
 print(isPalindrome("A man, a plan, a canal: Panama"))  # Expected: True
 print(isPalindrome("race a car"))  # Expected: False
 print(isPalindrome(" "))  # Expected: True`,
-      java: `class Solution {
+      java: `class Main {
     public static boolean isPalindrome(String s) {
         // Write your solution here
         
@@ -318,7 +318,7 @@ int main() {
     id: "maximum-subarray",
     title: "Maximum Subarray",
     difficulty: "Medium",
-    category: "Array • Dynamic Programming",
+    category: "Array â€¢ Dynamic Programming",
     description: {
       text: "Given an integer array nums, find the subarray with the largest sum, and return its sum.",
       notes: [],
@@ -340,7 +340,7 @@ int main() {
         explanation: "The subarray [5,4,-1,7,8] has the largest sum 23.",
       },
     ],
-    constraints: ["1 ≤ nums.length ≤ 10⁵", "-10⁴ ≤ nums[i] ≤ 10⁴"],
+    constraints: ["1 â‰¤ nums.length â‰¤ 10âµ", "-10â´ â‰¤ nums[i] â‰¤ 10â´"],
     starterCode: {
       javascript: `function maxSubArray(nums) {
   // Write your solution here
@@ -359,7 +359,7 @@ console.log(maxSubArray([5,4,-1,7,8])); // Expected: 23`,
 print(maxSubArray([-2,1,-3,4,-1,2,1,-5,4]))  # Expected: 6
 print(maxSubArray([1]))  # Expected: 1
 print(maxSubArray([5,4,-1,7,8]))  # Expected: 23`,
-      java: `class Solution {
+      java: `class Main {
     public static int maxSubArray(int[] nums) {
         // Write your solution here
         
@@ -410,7 +410,7 @@ int main() {
     id: "container-with-most-water",
     title: "Container With Most Water",
     difficulty: "Medium",
-    category: "Array • Two Pointers",
+    category: "Array â€¢ Two Pointers",
     description: {
       text: "You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).",
       notes: [
@@ -431,7 +431,7 @@ int main() {
         output: "1",
       },
     ],
-    constraints: ["n == height.length", "2 ≤ n ≤ 10⁵", "0 ≤ height[i] ≤ 10⁴"],
+    constraints: ["n == height.length", "2 â‰¤ n â‰¤ 10âµ", "0 â‰¤ height[i] â‰¤ 10â´"],
     starterCode: {
       javascript: `function maxArea(height) {
   // Write your solution here
@@ -448,7 +448,7 @@ console.log(maxArea([1,1])); // Expected: 1`,
 # Test cases
 print(maxArea([1,8,6,2,5,4,8,3,7]))  # Expected: 49
 print(maxArea([1,1]))  # Expected: 1`,
-      java: `class Solution {
+      java: `class Main {
     public static int maxArea(int[] height) {
         // Write your solution here
         
@@ -496,7 +496,7 @@ int main() {
     id: "3sum",
     title: "3Sum",
     difficulty: "Medium",
-    category: "Array • Two Pointers",
+    category: "Array â€¢ Two Pointers",
     description: {
       text: "Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.",
       notes: [
@@ -523,8 +523,8 @@ int main() {
       },
     ],
     constraints: [
-      "3 ≤ nums.length ≤ 3000",
-      "-10⁵ ≤ nums[i] ≤ 10⁵",
+      "3 â‰¤ nums.length â‰¤ 3000",
+      "-10âµ â‰¤ nums[i] â‰¤ 10âµ",
     ],
     starterCode: {
       javascript: `function threeSum(nums) {
@@ -546,7 +546,7 @@ print(threeSum([0,1,1]))  # Expected: []
 print(threeSum([0,0,0]))  # Expected: [[0,0,0]]`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static List<List<Integer>> threeSum(int[] nums) {
         // Write your solution here
         
@@ -611,7 +611,7 @@ int main() {
     id: "trapping-rain-water",
     title: "Trapping Rain Water",
     difficulty: "Hard",
-    category: "Array • Two Pointers • Dynamic Programming",
+    category: "Array â€¢ Two Pointers â€¢ Dynamic Programming",
     description: {
       text: "Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.",
       notes: [],
@@ -629,8 +629,8 @@ int main() {
     ],
     constraints: [
       "n == height.length",
-      "1 ≤ n ≤ 2 * 10⁴",
-      "0 ≤ height[i] ≤ 10⁵",
+      "1 â‰¤ n â‰¤ 2 * 10â´",
+      "0 â‰¤ height[i] â‰¤ 10âµ",
     ],
     starterCode: {
       javascript: `function trap(height) {
@@ -648,7 +648,7 @@ console.log(trap([4,2,0,3,2,5])); // Expected: 9`,
 # Test cases
 print(trap([0,1,0,2,1,0,1,3,2,1,2,1]))  # Expected: 6
 print(trap([4,2,0,3,2,5]))  # Expected: 9`,
-      java: `class Solution {
+      java: `class Main {
     public static int trap(int[] height) {
         // Write your solution here
         
@@ -696,7 +696,7 @@ int main() {
     id: "merge-intervals",
     title: "Merge Intervals",
     difficulty: "Medium",
-    category: "Array • Sorting",
+    category: "Array â€¢ Sorting",
     description: {
       text: "Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.",
       notes: [],
@@ -714,9 +714,9 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ intervals.length ≤ 10⁴",
+      "1 â‰¤ intervals.length â‰¤ 10â´",
       "intervals[i].length == 2",
-      "0 ≤ starti ≤ endi ≤ 10⁴",
+      "0 â‰¤ starti â‰¤ endi â‰¤ 10â´",
     ],
     starterCode: {
       javascript: `function merge(intervals) {
@@ -736,7 +736,7 @@ print(merge([[1,3],[2,6],[8,10],[15,18]]))  # Expected: [[1, 6], [8, 10], [15, 1
 print(merge([[1,4],[4,5]]))  # Expected: [[1, 5]]`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int[][] merge(int[][] intervals) {
         // Write your solution here
         
@@ -798,7 +798,7 @@ int main() {
     id: "median-of-two-sorted-arrays",
     title: "Median of Two Sorted Arrays",
     difficulty: "Hard",
-    category: "Array • Binary Search",
+    category: "Array â€¢ Binary Search",
     description: {
       text: "Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.",
       notes: ["The overall run time complexity should be O(log (m+n))."],
@@ -818,10 +818,10 @@ int main() {
     constraints: [
       "nums1.length == m",
       "nums2.length == n",
-      "0 ≤ m ≤ 1000",
-      "0 ≤ n ≤ 1000",
-      "1 ≤ m + n ≤ 2000",
-      "-10⁶ ≤ nums1[i], nums2[i] ≤ 10⁶",
+      "0 â‰¤ m â‰¤ 1000",
+      "0 â‰¤ n â‰¤ 1000",
+      "1 â‰¤ m + n â‰¤ 2000",
+      "-10â¶ â‰¤ nums1[i], nums2[i] â‰¤ 10â¶",
     ],
     starterCode: {
       javascript: `function findMedianSortedArrays(nums1, nums2) {
@@ -839,7 +839,7 @@ console.log(findMedianSortedArrays([1,2], [3,4])); // Expected: 2.5`,
 # Test cases
 print(findMedianSortedArrays([1,3], [2]))  # Expected: 2.0
 print(findMedianSortedArrays([1,2], [3,4]))  # Expected: 2.5`,
-      java: `class Solution {
+      java: `class Main {
     public static double findMedianSortedArrays(int[] nums1, int[] nums2) {
         // Write your solution here
         
@@ -887,7 +887,7 @@ int main() {
     id: "longest-substring-without-repeating-characters",
     title: "Longest Substring Without Repeating Characters",
     difficulty: "Medium",
-    category: "String • Sliding Window",
+    category: "String â€¢ Sliding Window",
     description: {
       text: "Given a string s, find the length of the longest substring without repeating characters.",
       notes: [],
@@ -910,7 +910,7 @@ int main() {
       },
     ],
     constraints: [
-      "0 ≤ s.length ≤ 5 * 10⁴",
+      "0 â‰¤ s.length â‰¤ 5 * 10â´",
       "s consists of English letters, digits, symbols and spaces.",
     ],
     starterCode: {
@@ -931,7 +931,7 @@ console.log(lengthOfLongestSubstring("pwwkew")); // Expected: 3`,
 print(lengthOfLongestSubstring("abcabcbb"))  # Expected: 3
 print(lengthOfLongestSubstring("bbbbb"))  # Expected: 1
 print(lengthOfLongestSubstring("pwwkew"))  # Expected: 3`,
-      java: `class Solution {
+      java: `class Main {
     public static int lengthOfLongestSubstring(String s) {
         // Write your solution here
         
@@ -980,7 +980,7 @@ int main() {
     id: "first-missing-positive",
     title: "First Missing Positive",
     difficulty: "Hard",
-    category: "Array • Hash Table",
+    category: "Array â€¢ Hash Table",
     description: {
       text: "Given an unsorted integer array nums, return the smallest missing positive integer. You must implement an algorithm that runs in O(n) time and uses constant extra space.",
       notes: [],
@@ -1003,8 +1003,8 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ nums.length ≤ 10⁵",
-      "-2³¹ ≤ nums[i] ≤ 2³¹ - 1",
+      "1 â‰¤ nums.length â‰¤ 10âµ",
+      "-2Â³Â¹ â‰¤ nums[i] â‰¤ 2Â³Â¹ - 1",
     ],
     starterCode: {
       javascript: `function firstMissingPositive(nums) {
@@ -1024,7 +1024,7 @@ console.log(firstMissingPositive([7,8,9,11,12])); // Expected: 1`,
 print(firstMissingPositive([1,2,0]))  # Expected: 3
 print(firstMissingPositive([3,4,-1,1]))  # Expected: 2
 print(firstMissingPositive([7,8,9,11,12]))  # Expected: 1`,
-      java: `class Solution {
+      java: `class Main {
     public static int firstMissingPositive(int[] nums) {
         // Write your solution here
         
@@ -1075,7 +1075,7 @@ int main() {
     id: "search-in-rotated-sorted-array",
     title: "Search in Rotated Sorted Array",
     difficulty: "Medium",
-    category: "Array • Binary Search",
+    category: "Array â€¢ Binary Search",
     description: {
       text: "There is an integer array nums sorted in ascending order (with distinct values). Prior to being passed to your function, nums is possibly rotated at an unknown pivot index k (1 <= k < nums.length). Given the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.",
       notes: [
@@ -1097,11 +1097,11 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ nums.length ≤ 5000",
-      "-10⁴ ≤ nums[i] ≤ 10⁴",
+      "1 â‰¤ nums.length â‰¤ 5000",
+      "-10â´ â‰¤ nums[i] â‰¤ 10â´",
       "All values of nums are unique.",
       "nums is an ascending array that is possibly rotated.",
-      "-10⁴ ≤ target ≤ 10⁴",
+      "-10â´ â‰¤ target â‰¤ 10â´",
     ],
     starterCode: {
       javascript: `function search(nums, target) {
@@ -1121,7 +1121,7 @@ console.log(search([1], 0)); // Expected: -1`,
 print(search([4,5,6,7,0,1,2], 0))  # Expected: 4
 print(search([4,5,6,7,0,1,2], 3))  # Expected: -1
 print(search([1], 0))  # Expected: -1`,
-      java: `class Solution {
+      java: `class Main {
     public static int search(int[] nums, int target) {
         // Write your solution here
         
@@ -1171,7 +1171,7 @@ int main() {
     id: "word-search",
     title: "Word Search",
     difficulty: "Medium",
-    category: "Array • Backtracking • Matrix",
+    category: "Array â€¢ Backtracking â€¢ Matrix",
     description: {
       text: "Given an m x n grid of characters board and a string word, return true if word exists in the grid.",
       notes: [
@@ -1196,8 +1196,8 @@ int main() {
     constraints: [
       "m == board.length",
       "n = board[i].length",
-      "1 ≤ m, n ≤ 6",
-      "1 ≤ word.length ≤ 15",
+      "1 â‰¤ m, n â‰¤ 6",
+      "1 â‰¤ word.length â‰¤ 15",
       "board and word consists of only lowercase and uppercase English letters.",
     ],
     starterCode: {
@@ -1218,7 +1218,7 @@ console.log(exist([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCB
 print(exist([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCCED"))  # Expected: True
 print(exist([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "SEE"))  # Expected: True
 print(exist([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCB"))  # Expected: False`,
-      java: `class Solution {
+      java: `class Main {
     public static boolean exist(char[][] board, String word) {
         // Write your solution here
         
@@ -1267,7 +1267,7 @@ int main() {
     id: "valid-anagram",
     title: "Valid Anagram",
     difficulty: "Easy",
-    category: "String • Hash Table",
+    category: "String â€¢ Hash Table",
     description: {
       text: "Given two strings s and t, return true if t is an anagram of s, and false otherwise.",
       notes: [
@@ -1285,7 +1285,7 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ s.length, t.length ≤ 5 * 10⁴",
+      "1 â‰¤ s.length, t.length â‰¤ 5 * 10â´",
       "s and t consist of lowercase English letters.",
     ],
     starterCode: {
@@ -1304,7 +1304,7 @@ console.log(isAnagram("rat", "car")); // Expected: false`,
 # Test cases
 print(isAnagram("anagram", "nagaram"))  # Expected: True
 print(isAnagram("rat", "car"))  # Expected: False`,
-      java: `class Solution {
+      java: `class Main {
     public static boolean isAnagram(String s, String t) {
         // Write your solution here
         
@@ -1350,7 +1350,7 @@ int main() {
     id: "best-time-to-buy-and-sell-stock",
     title: "Best Time to Buy and Sell Stock",
     difficulty: "Easy",
-    category: "Array • Dynamic Programming",
+    category: "Array â€¢ Dynamic Programming",
     description: {
       text: "You are given an array prices where prices[i] is the price of a given stock on the ith day. You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock. Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.",
       notes: [],
@@ -1368,8 +1368,8 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ prices.length ≤ 10⁵",
-      "0 ≤ prices[i] ≤ 10⁴",
+      "1 â‰¤ prices.length â‰¤ 10âµ",
+      "0 â‰¤ prices[i] â‰¤ 10â´",
     ],
     starterCode: {
       javascript: `function maxProfit(prices) {
@@ -1387,7 +1387,7 @@ console.log(maxProfit([7,6,4,3,1])); // Expected: 0`,
 # Test cases
 print(maxProfit([7,1,5,3,6,4]))  # Expected: 5
 print(maxProfit([7,6,4,3,1]))  # Expected: 0`,
-      java: `class Solution {
+      java: `class Main {
     public static int maxProfit(int[] prices) {
         // Write your solution here
         
@@ -1435,7 +1435,7 @@ int main() {
     id: "product-of-array-except-self",
     title: "Product of Array Except Self",
     difficulty: "Medium",
-    category: "Array • Prefix Sum",
+    category: "Array â€¢ Prefix Sum",
     description: {
       text: "Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].",
       notes: [
@@ -1454,8 +1454,8 @@ int main() {
       },
     ],
     constraints: [
-      "2 ≤ nums.length ≤ 10⁵",
-      "-30 ≤ nums[i] ≤ 30",
+      "2 â‰¤ nums.length â‰¤ 10âµ",
+      "-30 â‰¤ nums[i] â‰¤ 30",
       "The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.",
     ],
     starterCode: {
@@ -1477,7 +1477,7 @@ print(json.dumps(productExceptSelf([1,2,3,4]), separators=(',', ':')))  # Expect
 print(json.dumps(productExceptSelf([-1,1,0,-3,3]), separators=(',', ':')))  # Expected: [0,0,9,0,0]`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int[] productExceptSelf(int[] nums) {
         // Write your solution here
         
@@ -1536,7 +1536,7 @@ int main() {
     id: "valid-parentheses",
     title: "Valid Parentheses",
     difficulty: "Easy",
-    category: "String • Stack",
+    category: "String â€¢ Stack",
     description: {
       text: "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.",
       notes: [
@@ -1561,7 +1561,7 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ s.length ≤ 10⁴",
+      "1 â‰¤ s.length â‰¤ 10â´",
       "s consists of parentheses only '()[]{}'.",
     ],
     starterCode: {
@@ -1582,7 +1582,7 @@ console.log(isValid("(]")); // Expected: false`,
 print(isValid("()"))  # Expected: True
 print(isValid("()[]{}"))  # Expected: True
 print(isValid("(]"))  # Expected: False`,
-      java: `class Solution {
+      java: `class Main {
     public static boolean isValid(String s) {
         // Write your solution here
         
@@ -1633,7 +1633,7 @@ int main() {
     id: "number-of-islands",
     title: "Number of Islands",
     difficulty: "Medium",
-    category: "Array • DFS • BFS",
+    category: "Array â€¢ DFS â€¢ BFS",
     description: {
       text: "Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.",
       notes: [],
@@ -1651,7 +1651,7 @@ int main() {
     constraints: [
       "m == grid.length",
       "n == grid[i].length",
-      "1 ≤ m, n ≤ 300",
+      "1 â‰¤ m, n â‰¤ 300",
       "grid[i][j] is '0' or '1'.",
     ],
     starterCode: {
@@ -1670,7 +1670,7 @@ console.log(numIslands([["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1"
 # Test cases
 print(numIslands([["1","1","1","1","0"],["1","1","0","1","0"],["1","1","0","0","0"],["0","0","0","0","0"]]))  # Expected: 1
 print(numIslands([["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]]))  # Expected: 3`,
-      java: `class Solution {
+      java: `class Main {
     public static int numIslands(char[][] grid) {
         // Write your solution here
         
@@ -1743,7 +1743,7 @@ int main() {
     id: "rotate-image",
     title: "Rotate Image",
     difficulty: "Medium",
-    category: "Array • Matrix",
+    category: "Array â€¢ Matrix",
     description: {
       text: "You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise). You have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.",
       notes: [],
@@ -1760,8 +1760,8 @@ int main() {
     ],
     constraints: [
       "n == matrix.length == matrix[i].length",
-      "1 ≤ n ≤ 20",
-      "-1000 ≤ matrix[i][j] ≤ 1000",
+      "1 â‰¤ n â‰¤ 20",
+      "-1000 â‰¤ matrix[i][j] â‰¤ 1000",
     ],
     starterCode: {
       javascript: `function rotate(matrix) {
@@ -1790,7 +1790,7 @@ rotate(m2)
 print(json.dumps(m2, separators=(',', ':')))`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static void rotate(int[][] matrix) {
         // Write your solution here
         
@@ -1878,7 +1878,7 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ n ≤ 45",
+      "1 â‰¤ n â‰¤ 45",
     ],
     starterCode: {
       javascript: `function climbStairs(n) {
@@ -1898,7 +1898,7 @@ console.log(climbStairs(5)); // Expected: 8`,
 print(climbStairs(2))  # Expected: 2
 print(climbStairs(3))  # Expected: 3
 print(climbStairs(5))  # Expected: 8`,
-      java: `class Solution {
+      java: `class Main {
     public static int climbStairs(int n) {
         // Write your solution here
         
@@ -1946,7 +1946,7 @@ int main() {
     id: "set-matrix-zeroes",
     title: "Set Matrix Zeroes",
     difficulty: "Medium",
-    category: "Array • Matrix",
+    category: "Array â€¢ Matrix",
     description: {
       text: "Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's. You must do it in place.",
       notes: [],
@@ -1964,8 +1964,8 @@ int main() {
     constraints: [
       "m == matrix.length",
       "n == matrix[0].length",
-      "1 ≤ m, n ≤ 200",
-      "-2³¹ ≤ matrix[i][j] ≤ 2³¹ - 1",
+      "1 â‰¤ m, n â‰¤ 200",
+      "-2Â³Â¹ â‰¤ matrix[i][j] â‰¤ 2Â³Â¹ - 1",
     ],
     starterCode: {
       javascript: `function setZeroes(matrix) {
@@ -1994,7 +1994,7 @@ setZeroes(m2)
 print(json.dumps(m2, separators=(',', ':')))`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static void setZeroes(int[][] matrix) {
         // Write your solution here
         
@@ -2080,8 +2080,8 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ strs.length ≤ 200",
-      "0 ≤ strs[i].length ≤ 200",
+      "1 â‰¤ strs.length â‰¤ 200",
+      "0 â‰¤ strs[i].length â‰¤ 200",
       "strs[i] consists of only lowercase English letters.",
     ],
     starterCode: {
@@ -2100,7 +2100,7 @@ console.log(longestCommonPrefix(["dog","racecar","car"])); // Expected: ""`,
 # Test cases
 print(longestCommonPrefix(["flower","flow","flight"]))  # Expected: "fl"
 print(longestCommonPrefix(["dog","racecar","car"]))  # Expected: ""`,
-      java: `class Solution {
+      java: `class Main {
     public static String longestCommonPrefix(String[] strs) {
         // Write your solution here
         
@@ -2150,7 +2150,7 @@ int main() {
     id: "kth-largest-element-in-an-array",
     title: "Kth Largest Element in an Array",
     difficulty: "Medium",
-    category: "Array • Heap • Sorting",
+    category: "Array â€¢ Heap â€¢ Sorting",
     description: {
       text: "Given an integer array nums and an integer k, return the kth largest element in the array. Note that it is the kth largest element in the sorted order, not the kth distinct element.",
       notes: [
@@ -2168,8 +2168,8 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ k ≤ nums.length ≤ 10⁵",
-      "-10⁴ ≤ nums[i] ≤ 10⁴",
+      "1 â‰¤ k â‰¤ nums.length â‰¤ 10âµ",
+      "-10â´ â‰¤ nums[i] â‰¤ 10â´",
     ],
     starterCode: {
       javascript: `function findKthLargest(nums, k) {
@@ -2187,7 +2187,7 @@ console.log(findKthLargest([3,2,3,1,2,4,5,5,6], 4)); // Expected: 4`,
 # Test cases
 print(findKthLargest([3,2,1,5,6,4], 2))  # Expected: 5
 print(findKthLargest([3,2,3,1,2,4,5,5,6], 4))  # Expected: 4`,
-      java: `class Solution {
+      java: `class Main {
     public static int findKthLargest(int[] nums, int k) {
         // Write your solution here
         
@@ -2237,7 +2237,7 @@ int main() {
     id: "search-a-2d-matrix",
     title: "Search a 2D Matrix",
     difficulty: "Medium",
-    category: "Array • Binary Search • Matrix",
+    category: "Array â€¢ Binary Search â€¢ Matrix",
     description: {
       text: "You are given an m x n integer matrix matrix with the following two properties: 1. Each row is sorted in non-decreasing order. 2. The first integer of each row is greater than the last integer of the previous row. Given an integer target, return true if target is in matrix or false otherwise. You must write a solution in O(log(m * n)) time complexity.",
       notes: [],
@@ -2255,8 +2255,8 @@ int main() {
     constraints: [
       "m == matrix.length",
       "n == matrix[i].length",
-      "1 ≤ m, n ≤ 100",
-      "-10⁴ ≤ matrix[i][j], target ≤ 10⁴",
+      "1 â‰¤ m, n â‰¤ 100",
+      "-10â´ â‰¤ matrix[i][j], target â‰¤ 10â´",
     ],
     starterCode: {
       javascript: `function searchMatrix(matrix, target) {
@@ -2274,7 +2274,7 @@ console.log(searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 13)); // Expec
 # Test cases
 print(searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 3))  # Expected: True
 print(searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 13))  # Expected: False`,
-      java: `class Solution {
+      java: `class Main {
     public static boolean searchMatrix(int[][] matrix, int target) {
         // Write your solution here
         
@@ -2323,7 +2323,7 @@ int main() {
     id: "maximum-product-subarray",
     title: "Maximum Product Subarray",
     difficulty: "Medium",
-    category: "Array • Dynamic Programming",
+    category: "Array â€¢ Dynamic Programming",
     description: {
       text: "Given an integer array nums, find a subarray that has the largest product, and return the product. The test cases are generated so that the answer will fit in a 32-bit integer.",
       notes: [],
@@ -2341,8 +2341,8 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ nums.length ≤ 2 * 10⁴",
-      "-10 ≤ nums[i] ≤ 10",
+      "1 â‰¤ nums.length â‰¤ 2 * 10â´",
+      "-10 â‰¤ nums[i] â‰¤ 10",
       "The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.",
     ],
     starterCode: {
@@ -2361,7 +2361,7 @@ console.log(maxProduct([-2,0,-1])); // Expected: 0`,
 # Test cases
 print(maxProduct([2,3,-2,4]))  # Expected: 6
 print(maxProduct([-2,0,-1]))  # Expected: 0`,
-      java: `class Solution {
+      java: `class Main {
     public static int maxProduct(int[] nums) {
         // Write your solution here
         
@@ -2411,7 +2411,7 @@ int main() {
     id: "jump-game",
     title: "Jump Game",
     difficulty: "Medium",
-    category: "Array • Dynamic Programming • Greedy",
+    category: "Array â€¢ Dynamic Programming â€¢ Greedy",
     description: {
       text: "You are given an integer array nums. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position. Return true if you can reach the last index, or false otherwise.",
       notes: [],
@@ -2429,8 +2429,8 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ nums.length ≤ 10⁴",
-      "0 ≤ nums[i] ≤ 10⁵",
+      "1 â‰¤ nums.length â‰¤ 10â´",
+      "0 â‰¤ nums[i] â‰¤ 10âµ",
     ],
     starterCode: {
       javascript: `function canJump(nums) {
@@ -2448,7 +2448,7 @@ console.log(canJump([3,2,1,0,4])); // Expected: false`,
 # Test cases
 print(canJump([2,3,1,1,4]))  # Expected: True
 print(canJump([3,2,1,0,4]))  # Expected: False`,
-      java: `class Solution {
+      java: `class Main {
     public static boolean canJump(int[] nums) {
         // Write your solution here
         
@@ -2498,7 +2498,7 @@ int main() {
     id: "contains-duplicate",
     title: "Contains Duplicate",
     difficulty: "Easy",
-    category: "Array • Hash Table • Sorting",
+    category: "Array â€¢ Hash Table â€¢ Sorting",
     description: {
       text: "Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.",
       notes: [],
@@ -2518,8 +2518,8 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ nums.length ≤ 10⁵",
-      "-10⁹ ≤ nums[i] ≤ 10⁹",
+      "1 â‰¤ nums.length â‰¤ 10âµ",
+      "-10â¹ â‰¤ nums[i] â‰¤ 10â¹",
     ],
     starterCode: {
       javascript: `function containsDuplicate(nums) {
@@ -2541,7 +2541,7 @@ print(containsDuplicate([1,2,3,4]))  # Expected: False
 print(containsDuplicate([1,1,1,3,3,4,3,2,4,2]))  # Expected: True`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static boolean containsDuplicate(int[] nums) {
         // Write your solution here
         
@@ -2594,7 +2594,7 @@ int main() {
     id: "spiral-matrix",
     title: "Spiral Matrix",
     difficulty: "Medium",
-    category: "Array • Matrix • Simulation",
+    category: "Array â€¢ Matrix â€¢ Simulation",
     description: {
       text: "Given an m x n matrix, return all elements of the matrix in spiral order.",
       notes: [],
@@ -2612,8 +2612,8 @@ int main() {
     constraints: [
       "m == matrix.length",
       "n == matrix[i].length",
-      "1 ≤ m, n ≤ 10",
-      "-100 ≤ matrix[i][j] ≤ 100",
+      "1 â‰¤ m, n â‰¤ 10",
+      "-100 â‰¤ matrix[i][j] â‰¤ 100",
     ],
     starterCode: {
       javascript: `function spiralOrder(matrix) {
@@ -2634,7 +2634,7 @@ print(json.dumps(spiralOrder([[1,2,3],[4,5,6],[7,8,9]]), separators=(',', ':')))
 print(json.dumps(spiralOrder([[1,2,3,4],[5,6,7,8],[9,10,11,12]]), separators=(',', ':')))`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static List<Integer> spiralOrder(int[][] matrix) {
         // Write your solution here
         
@@ -2696,7 +2696,7 @@ int main() {
     id: "group-anagrams",
     title: "Group Anagrams",
     difficulty: "Medium",
-    category: "Array • Hash Table • String",
+    category: "Array â€¢ Hash Table â€¢ String",
     description: {
       text: "Given an array of strings strs, group the anagrams together. You can return the answer in any order.",
       notes: [
@@ -2710,8 +2710,8 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ strs.length ≤ 10⁴",
-      "0 ≤ strs[i].length ≤ 100",
+      "1 â‰¤ strs.length â‰¤ 10â´",
+      "0 â‰¤ strs[i].length â‰¤ 100",
       "strs[i] consists of lowercase English letters.",
     ],
     starterCode: {
@@ -2737,7 +2737,7 @@ res.sort(key=lambda x: (len(x), x[0]))
 print(json.dumps(res, separators=(',', ':')))`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static List<List<String>> groupAnagrams(String[] strs) {
         // Write your solution here
         
@@ -2801,7 +2801,7 @@ int main() {
     id: "longest-palindromic-substring",
     title: "Longest Palindromic Substring",
     difficulty: "Medium",
-    category: "String • Dynamic Programming",
+    category: "String â€¢ Dynamic Programming",
     description: {
       text: "Given a string s, return the longest palindromic substring in s.",
       notes: [],
@@ -2818,7 +2818,7 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ s.length ≤ 1000",
+      "1 â‰¤ s.length â‰¤ 1000",
       "s consists of only digits and English letters.",
     ],
     starterCode: {
@@ -2837,7 +2837,7 @@ console.log(longestPalindrome("cbbd"));`,
 # Test cases
 print(longestPalindrome("babad"))
 print(longestPalindrome("cbbd"))`,
-      java: `class Solution {
+      java: `class Main {
     public static String longestPalindrome(String s) {
         // Write your solution here
         
@@ -2886,7 +2886,7 @@ int main() {
     id: "merge-sorted-array",
     title: "Merge Sorted Array",
     difficulty: "Easy",
-    category: "Array • Two Pointers • Sorting",
+    category: "Array â€¢ Two Pointers â€¢ Sorting",
     description: {
       text: "You are given two integer arrays nums1 and nums2, sorted in non-decreasing order, and two integers m and n, representing the number of elements in nums1 and nums2 respectively. Merge nums1 and nums2 into a single array sorted in non-decreasing order. The final sorted array should not be returned by the function, but instead be stored inside the array nums1. To accommodate this, nums1 has a length of m + n, where the first m elements denote the elements that should be merged, and the last n elements are set to 0 and should be ignored. nums2 has a length of n.",
       notes: [],
@@ -2918,7 +2918,7 @@ merge(n1, 3, [2,5,6], 3)
 print(json.dumps(n1, separators=(',', ':')))`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static void merge(int[] nums1, int m, int[] nums2, int n) {
         // Write your solution here
         
@@ -2969,7 +2969,7 @@ int main() {
     id: "valid-sudoku",
     title: "Valid Sudoku",
     difficulty: "Medium",
-    category: "Array • Hash Table • Matrix",
+    category: "Array â€¢ Hash Table â€¢ Matrix",
     description: {
       text: "Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules: 1. Each row must contain the digits 1-9 without repetition. 2. Each column must contain the digits 1-9 without repetition. 3. Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.",
       notes: [
@@ -2999,7 +2999,7 @@ console.log(isValidSudoku(b1));`,
 # Test cases
 b1 = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]
 print(isValidSudoku(b1))`,
-      java: `class Solution {
+      java: `class Main {
     public static boolean isValidSudoku(char[][] board) {
         // Write your solution here
         
@@ -3046,7 +3046,7 @@ int main() {
     id: "house-robber",
     title: "House Robber",
     difficulty: "Medium",
-    category: "Array • Dynamic Programming",
+    category: "Array â€¢ Dynamic Programming",
     description: {
       text: "You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security systems connected and it will automatically contact the police if two adjacent houses were broken into on the same night. Given an integer array nums representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.",
       notes: [],
@@ -3079,7 +3079,7 @@ console.log(rob([2,7,9,3,1])); // Expected: 12`,
 # Test cases
 print(rob([1,2,3,1]))  # Expected: 4
 print(rob([2,7,9,3,1]))  # Expected: 12`,
-      java: `class Solution {
+      java: `class Main {
     public static int rob(int[] nums) {
         // Write your solution here
         
@@ -3129,7 +3129,7 @@ int main() {
     id: "find-all-anagrams-in-a-string",
     title: "Find All Anagrams in a String",
     difficulty: "Medium",
-    category: "String • Sliding Window • Hash Table",
+    category: "String â€¢ Sliding Window â€¢ Hash Table",
     description: {
       text: "Given two strings s and p, return an array of all the start indices of p's anagrams in s. You may return the answer in any order.",
       notes: [],
@@ -3147,7 +3147,7 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ s.length, p.length ≤ 3 * 10⁴",
+      "1 â‰¤ s.length, p.length â‰¤ 3 * 10â´",
       "s and p consist of lowercase English letters.",
     ],
     starterCode: {
@@ -3169,7 +3169,7 @@ print(json.dumps(findAnagrams("cbaebabacd", "abc"), separators=(',', ':')))  # E
 print(json.dumps(findAnagrams("abab", "ab"), separators=(',', ':')))  # Expected: [0,1,2]`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static List<Integer> findAnagrams(String s, String p) {
         // Write your solution here
         
@@ -3226,7 +3226,7 @@ int main() {
     id: "non-overlapping-intervals",
     title: "Non-overlapping Intervals",
     difficulty: "Medium",
-    category: "Array • Greedy • Sorting",
+    category: "Array â€¢ Greedy â€¢ Sorting",
     description: {
       text: "Given an array of intervals intervals where intervals[i] = [starti, endi], return the minimum number of intervals you need to remove to make the rest of the intervals non-overlapping.",
       notes: [],
@@ -3243,9 +3243,9 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ intervals.length ≤ 10⁵",
+      "1 â‰¤ intervals.length â‰¤ 10âµ",
       "intervals[i].length == 2",
-      "-5 * 10⁴ ≤ starti < endi ≤ 5 * 10⁴",
+      "-5 * 10â´ â‰¤ starti < endi â‰¤ 5 * 10â´",
     ],
     starterCode: {
       javascript: `function eraseOverlapIntervals(intervals) {
@@ -3265,7 +3265,7 @@ print(eraseOverlapIntervals([[1,2],[2,3],[3,4],[1,3]]))  # Expected: 1
 print(eraseOverlapIntervals([[1,2],[1,2],[1,2]]))  # Expected: 2`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int eraseOverlapIntervals(int[][] intervals) {
         // Write your solution here
         
@@ -3319,7 +3319,7 @@ int main() {
     id: "valid-palindrome-ii",
     title: "Valid Palindrome II",
     difficulty: "Easy",
-    category: "String • Two Pointers",
+    category: "String â€¢ Two Pointers",
     description: {
       text: "Given a string s, return true if the s can be palindrome after deleting at most one character from it.",
       notes: [],
@@ -3340,7 +3340,7 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ s.length ≤ 10⁵",
+      "1 â‰¤ s.length â‰¤ 10âµ",
       "s consists of lowercase English letters.",
     ],
     starterCode: {
@@ -3361,7 +3361,7 @@ console.log(validPalindrome("abc")); // Expected: false`,
 print(validPalindrome("aba"))  # Expected: True
 print(validPalindrome("abca"))  # Expected: True
 print(validPalindrome("abc"))  # Expected: False`,
-      java: `class Solution {
+      java: `class Main {
     public static boolean validPalindrome(String s) {
         // Write your solution here
         
@@ -3410,7 +3410,7 @@ int main() {
     id: "single-number",
     title: "Single Number",
     difficulty: "Easy",
-    category: "Array • Bit Manipulation",
+    category: "Array â€¢ Bit Manipulation",
     description: {
       text: "Given a non-empty array of integers nums, every element appears twice except for one. Find that single one. You must implement a solution with a linear runtime complexity and use only constant extra space.",
       notes: [],
@@ -3426,8 +3426,8 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ nums.length ≤ 3 * 10⁴",
-      "-3 * 10⁴ ≤ nums[i] ≤ 3 * 10⁴",
+      "1 â‰¤ nums.length â‰¤ 3 * 10â´",
+      "-3 * 10â´ â‰¤ nums[i] â‰¤ 3 * 10â´",
       "Each element in the array appears twice except for one element which appears only once.",
     ],
     starterCode: {
@@ -3446,7 +3446,7 @@ console.log(singleNumber([4,1,2,1,2])); // Expected: 4`,
 # Test cases
 print(singleNumber([2,2,1]))  # Expected: 1
 print(singleNumber([4,1,2,1,2]))  # Expected: 4`,
-      java: `class Solution {
+      java: `class Main {
     public static int singleNumber(int[] nums) {
         // Write your solution here
         
@@ -3495,7 +3495,7 @@ int main() {
     id: "minimum-window-substring",
     title: "Minimum Window Substring",
     difficulty: "Hard",
-    category: "String • Sliding Window • Hash Table",
+    category: "String â€¢ Sliding Window â€¢ Hash Table",
     description: {
       text: "Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string \"\". The testcases will be generated such that the answer is unique.",
       notes: [],
@@ -3532,7 +3532,7 @@ console.log(minWindow("a", "aa")); // Expected: ""`,
 print(minWindow("ADOBECODEBANC", "ABC"))  # Expected: "BANC"
 print(minWindow("a", "a"))  # Expected: "a"
 print(minWindow("a", "aa"))  # Expected: ""`,
-      java: `class Solution {
+      java: `class Main {
     public static String minWindow(String s, String t) {
         // Write your solution here
         
@@ -3583,7 +3583,7 @@ int main() {
     id: "subarray-sum-equals-k",
     title: "Subarray Sum Equals K",
     difficulty: "Medium",
-    category: "Array • Hash Table",
+    category: "Array â€¢ Hash Table",
     description: {
       text: "Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.",
       notes: [
@@ -3601,9 +3601,9 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ nums.length ≤ 2 * 10⁴",
-      "-1000 ≤ nums[i] ≤ 1000",
-      "-10⁷ ≤ k ≤ 10⁷",
+      "1 â‰¤ nums.length â‰¤ 2 * 10â´",
+      "-1000 â‰¤ nums[i] â‰¤ 1000",
+      "-10â· â‰¤ k â‰¤ 10â·",
     ],
     starterCode: {
       javascript: `function subarraySum(nums, k) {
@@ -3623,7 +3623,7 @@ print(subarraySum([1,1,1], 2))  # Expected: 2
 print(subarraySum([1,2,3], 3))  # Expected: 2`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int subarraySum(int[] nums, int k) {
         // Write your solution here
         
@@ -3673,7 +3673,7 @@ int main() {
     id: "word-break",
     title: "Word Break",
     difficulty: "Medium",
-    category: "Dynamic Programming • Hash Table",
+    category: "Dynamic Programming â€¢ Hash Table",
     description: {
       text: "Given a string s and a dictionary of strings wordDict, return true if s can be segmented into a space-separated sequence of one or more dictionary words.",
       notes: [
@@ -3693,9 +3693,9 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ s.length ≤ 300",
-      "1 ≤ wordDict.length ≤ 1000",
-      "1 ≤ wordDict[i].length ≤ 20",
+      "1 â‰¤ s.length â‰¤ 300",
+      "1 â‰¤ wordDict.length â‰¤ 1000",
+      "1 â‰¤ wordDict[i].length â‰¤ 20",
     ],
     starterCode: {
       javascript: `function wordBreak(s, wordDict) {
@@ -3715,7 +3715,7 @@ print(wordBreak("leetcode", ["leet","code"]))  # Expected: True
 print(wordBreak("applepenapple", ["apple","pen"]))  # Expected: True`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static boolean wordBreak(String s, List<String> wordDict) {
         // Write your solution here
         
@@ -3766,7 +3766,7 @@ int main() {
     id: "daily-temperatures",
     title: "Daily Temperatures",
     difficulty: "Medium",
-    category: "Array • Stack • Monotonic Stack",
+    category: "Array â€¢ Stack â€¢ Monotonic Stack",
     description: {
       text: "Given an array of integers temperatures represents the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the ith day to get a warmer temperature. If there is no future day for which this is possible, keep answer[i] == 0 instead.",
       notes: [],
@@ -3800,7 +3800,7 @@ print(json.dumps(dailyTemperatures([73,74,75,71,69,72,76,73]), separators=(',', 
 print(json.dumps(dailyTemperatures([30,40,50,60]), separators=(',', ':')))`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int[] dailyTemperatures(int[] temperatures) {
         // Write your solution here
         
@@ -3860,7 +3860,7 @@ int main() {
     id: "sort-colors",
     title: "Sort Colors",
     difficulty: "Medium",
-    category: "Array • Two Pointers • Sorting",
+    category: "Array â€¢ Two Pointers â€¢ Sorting",
     description: {
       text: "Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue. We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively. You must solve this problem without using the library's sort function.",
       notes: [],
@@ -3902,7 +3902,7 @@ sortColors(n2)
 print(json.dumps(n2, separators=(',', ':')))`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static void sortColors(int[] nums) {
         // Write your solution here
         
@@ -3966,7 +3966,7 @@ int main() {
     id: "unique-paths",
     title: "Unique Paths",
     difficulty: "Medium",
-    category: "Dynamic Programming • Combinatorics",
+    category: "Dynamic Programming â€¢ Combinatorics",
     description: {
       text: "There is a robot on an m x n grid. The robot is initially located at the top-left corner. The robot tries to move to the bottom-right corner. The robot can only move either down or right at any point in time. Given the two integers m and n, return the number of possible unique paths that the robot can take to reach the bottom-right corner.",
       notes: [],
@@ -3998,7 +3998,7 @@ console.log(uniquePaths(3, 2)); // Expected: 3`,
 # Test cases
 print(uniquePaths(3, 7))  # Expected: 28
 print(uniquePaths(3, 2))  # Expected: 3`,
-      java: `class Solution {
+      java: `class Main {
     public static int uniquePaths(int m, int n) {
         // Write your solution here
         
@@ -4045,7 +4045,7 @@ int main() {
     id: "binary-search",
     title: "Binary Search",
     difficulty: "Easy",
-    category: "Array • Binary Search",
+    category: "Array â€¢ Binary Search",
     description: {
       text: "Given an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, then return its index. Otherwise, return -1. You must write an algorithm with O(log n) runtime complexity.",
       notes: [],
@@ -4063,8 +4063,8 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ nums.length ≤ 10⁴",
-      "-10⁴ < nums[i], target < 10⁴",
+      "1 â‰¤ nums.length â‰¤ 10â´",
+      "-10â´ < nums[i], target < 10â´",
       "All the integers in nums are unique.",
       "nums is sorted in ascending order.",
     ],
@@ -4084,7 +4084,7 @@ console.log(search([-1,0,3,5,9,12], 2)); // Expected: -1`,
 # Test cases
 print(search([-1,0,3,5,9,12], 9))  # Expected: 4
 print(search([-1,0,3,5,9,12], 2))  # Expected: -1`,
-      java: `class Solution {
+      java: `class Main {
     public static int search(int[] nums, int target) {
         // Write your solution here
         
@@ -4133,7 +4133,7 @@ int main() {
     id: "search-insert-position",
     title: "Search Insert Position",
     difficulty: "Easy",
-    category: "Array • Binary Search",
+    category: "Array â€¢ Binary Search",
     description: {
       text: "Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order. You must write an algorithm with O(log n) runtime complexity.",
       notes: [],
@@ -4153,8 +4153,8 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ nums.length ≤ 10⁴",
-      "-10⁴ ≤ nums[i], target ≤ 10⁴",
+      "1 â‰¤ nums.length â‰¤ 10â´",
+      "-10â´ â‰¤ nums[i], target â‰¤ 10â´",
       "nums contains distinct values sorted in ascending order.",
     ],
     starterCode: {
@@ -4175,7 +4175,7 @@ console.log(searchInsert([1,3,5,6], 7)); // Expected: 4`,
 print(searchInsert([1,3,5,6], 5))  # Expected: 2
 print(searchInsert([1,3,5,6], 2))  # Expected: 1
 print(searchInsert([1,3,5,6], 7))  # Expected: 4`,
-      java: `class Solution {
+      java: `class Main {
     public static int searchInsert(int[] nums, int target) {
         // Write your solution here
         
@@ -4225,7 +4225,7 @@ int main() {
     id: "find-first-and-last-position-of-element-in-sorted-array",
     title: "Find First and Last Position of Element in Sorted Array",
     difficulty: "Medium",
-    category: "Array • Binary Search",
+    category: "Array â€¢ Binary Search",
     description: {
       text: "Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value. If target is not found in the array, return [-1, -1]. You must write an algorithm with O(log n) runtime complexity.",
       notes: [],
@@ -4245,8 +4245,8 @@ int main() {
       },
     ],
     constraints: [
-      "0 ≤ nums.length ≤ 10⁵",
-      "-10⁹ ≤ nums[i], target ≤ 10⁹",
+      "0 â‰¤ nums.length â‰¤ 10âµ",
+      "-10â¹ â‰¤ nums[i], target â‰¤ 10â¹",
       "nums is a non-decreasing array.",
     ],
     starterCode: {
@@ -4270,7 +4270,7 @@ print(json.dumps(searchRange([5,7,7,8,8,10], 6), separators=(',', ':')))
 print(json.dumps(searchRange([], 0), separators=(',', ':')))`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int[] searchRange(int[] nums, int target) {
         // Write your solution here
         
@@ -4331,7 +4331,7 @@ int main() {
     id: "find-minimum-in-rotated-sorted-array",
     title: "Find Minimum in Rotated Sorted Array",
     difficulty: "Medium",
-    category: "Array • Binary Search",
+    category: "Array â€¢ Binary Search",
     description: {
       text: "Suppose an array of length n sorted in ascending order is rotated between 1 and n times. For example, the array nums = [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2] if it was rotated 4 times. Given the sorted rotated array nums of unique elements, return the minimum element of this array. You must write an algorithm with O(log n) runtime complexity.",
       notes: [],
@@ -4351,8 +4351,8 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ nums.length ≤ 5000",
-      "-5000 ≤ nums[i] ≤ 5000",
+      "1 â‰¤ nums.length â‰¤ 5000",
+      "-5000 â‰¤ nums[i] â‰¤ 5000",
       "All the integers of nums are unique.",
       "nums is sorted and rotated between 1 and n times.",
     ],
@@ -4374,7 +4374,7 @@ console.log(findMin([11,13,15,17])); // Expected: 11`,
 print(findMin([3,4,5,1,2]))  # Expected: 1
 print(findMin([4,5,6,7,0,1,2]))  # Expected: 0
 print(findMin([11,13,15,17]))  # Expected: 11`,
-      java: `class Solution {
+      java: `class Main {
     public static int findMin(int[] nums) {
         // Write your solution here
         
@@ -4427,9 +4427,9 @@ int main() {
     id: "find-peak-element",
     title: "Find Peak Element",
     difficulty: "Medium",
-    category: "Array • Binary Search",
+    category: "Array â€¢ Binary Search",
     description: {
-      text: "A peak element is an element that is strictly greater than its neighbors. Given a 0-indexed integer array nums, find a peak element, and return its index. If the array contains multiple peaks, return the index to any of the peaks. You may imagine that nums[-1] = nums[n] = -∞. In other words, an element is always considered to be strictly greater than a neighbor that is outside the array.",
+      text: "A peak element is an element that is strictly greater than its neighbors. Given a 0-indexed integer array nums, find a peak element, and return its index. If the array contains multiple peaks, return the index to any of the peaks. You may imagine that nums[-1] = nums[n] = -âˆž. In other words, an element is always considered to be strictly greater than a neighbor that is outside the array.",
       notes: [
         "You must write an algorithm that runs in O(log n) time.",
       ],
@@ -4466,7 +4466,7 @@ console.log(res === 1 || res === 5 ? "true" : "false");`,
 print(findPeakElement([1,2,3,1]))  # Expected: 2
 res = findPeakElement([1,2,1,3,5,6,4])
 print("true" if res == 1 or res == 5 else "false")`,
-      java: `class Solution {
+      java: `class Main {
     public static int findPeakElement(int[] nums) {
         // Write your solution here
         
@@ -4517,7 +4517,7 @@ int main() {
     id: "merge-k-sorted-lists",
     title: "Merge k Sorted Lists",
     difficulty: "Hard",
-    category: "Linked List • Heap • Divide and Conquer",
+    category: "Linked List â€¢ Heap â€¢ Divide and Conquer",
     description: {
       text: "You are given an array of k linked-lists lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it.",
       notes: [],
@@ -4538,11 +4538,11 @@ int main() {
     ],
     constraints: [
       "k == lists.length",
-      "0 ≤ k ≤ 10⁴",
-      "0 ≤ lists[i].length ≤ 500",
-      "-10⁴ ≤ lists[i][j] ≤ 10⁴",
+      "0 â‰¤ k â‰¤ 10â´",
+      "0 â‰¤ lists[i].length â‰¤ 500",
+      "-10â´ â‰¤ lists[i][j] â‰¤ 10â´",
       "lists[i] is sorted in ascending order.",
-      "The sum of lists[i].length will not exceed 10⁴.",
+      "The sum of lists[i].length will not exceed 10â´.",
     ],
     starterCode: {
       javascript: `// Definition for singly-linked list.
@@ -4625,7 +4625,7 @@ class ListNode {
     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
 }
 
-class Solution {
+class Main {
     public static ListNode mergeKLists(ListNode[] lists) {
         // Write your solution here
         
@@ -4729,7 +4729,7 @@ int main() {
     id: "reverse-nodes-in-k-group",
     title: "Reverse Nodes in k-Group",
     difficulty: "Hard",
-    category: "Linked List • Two Pointers",
+    category: "Linked List â€¢ Two Pointers",
     description: {
       text: "Given the head of a linked list, reverse the nodes of the list k at a time, and return the modified list. k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is.",
       notes: [
@@ -4823,7 +4823,7 @@ class ListNode {
     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
 }
 
-class Solution {
+class Main {
     public static ListNode reverseKGroup(ListNode head, int k) {
         // Write your solution here
         
@@ -4921,7 +4921,7 @@ int main() {
     id: "edit-distance",
     title: "Edit Distance",
     difficulty: "Hard",
-    category: "String • Dynamic Programming",
+    category: "String â€¢ Dynamic Programming",
     description: {
       text: "Given two strings word1 and word2, return the minimum number of operations required to convert word1 to word2.",
       notes: [
@@ -4958,7 +4958,7 @@ console.log(minDistance("intention", "execution")); // Expected: 5`,
 # Test cases
 print(minDistance("horse", "ros"))  # Expected: 3
 print(minDistance("intention", "execution"))  # Expected: 5`,
-      java: `class Solution {
+      java: `class Main {
     public static int minDistance(String word1, String word2) {
         // Write your solution here
         
@@ -5007,7 +5007,7 @@ int main() {
     id: "largest-rectangle-in-histogram",
     title: "Largest Rectangle in Histogram",
     difficulty: "Hard",
-    category: "Array • Stack • Monotonic Stack",
+    category: "Array â€¢ Stack â€¢ Monotonic Stack",
     description: {
       text: "Given an array of integers heights representing the histogram's bar height where the width of each bar is 1, return the area of the largest rectangle in the histogram.",
       notes: [],
@@ -5041,7 +5041,7 @@ print(largestRectangleArea([2,1,5,6,2,3]))  # Expected: 10
 print(largestRectangleArea([2,4]))  # Expected: 4`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int largestRectangleArea(int[] heights) {
         // Write your solution here
         
@@ -5092,7 +5092,7 @@ int main() {
     id: "sudoku-solver",
     title: "Sudoku Solver",
     difficulty: "Hard",
-    category: "Array • Hash Table • Backtracking • Matrix",
+    category: "Array â€¢ Hash Table â€¢ Backtracking â€¢ Matrix",
     description: {
       text: "Write a program to solve a Sudoku puzzle by filling the empty cells. A sudoku solution must satisfy all of the following rules:",
       notes: [
@@ -5157,7 +5157,7 @@ board = [
 ]
 solveSudoku(board)
 printBoard(board)`,
-      java: `class Solution {
+      java: `class Main {
     public static void solveSudoku(char[][] board) {
         // Write your solution here
         
@@ -5240,7 +5240,7 @@ int main() {
     id: "generate-parentheses",
     title: "Generate Parentheses",
     difficulty: "Medium",
-    category: "String • Dynamic Programming • Backtracking",
+    category: "String â€¢ Dynamic Programming â€¢ Backtracking",
     description: {
       text: "Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.",
       notes: [],
@@ -5256,7 +5256,7 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ n ≤ 8",
+      "1 â‰¤ n â‰¤ 8",
     ],
     starterCode: {
       javascript: `function generateParenthesis(n) {
@@ -5277,7 +5277,7 @@ print(json.dumps(sorted(generateParenthesis(3)), separators=(',', ':')))
 print(json.dumps(sorted(generateParenthesis(1)), separators=(',', ':')))`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static List<String> generateParenthesis(int n) {
         // Write your solution here
         
@@ -5343,7 +5343,7 @@ int main() {
     id: "course-schedule",
     title: "Course Schedule",
     difficulty: "Medium",
-    category: "Depth-First Search • Breadth-First Search • Graph • Topological Sort",
+    category: "Depth-First Search â€¢ Breadth-First Search â€¢ Graph â€¢ Topological Sort",
     description: {
       text: "There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai. Return true if you can finish all courses. Otherwise, return false.",
       notes: [],
@@ -5361,10 +5361,10 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ numCourses ≤ 2000",
-      "0 ≤ prerequisites.length ≤ 5000",
+      "1 â‰¤ numCourses â‰¤ 2000",
+      "0 â‰¤ prerequisites.length â‰¤ 5000",
       "prerequisites[i].length == 2",
-      "0 ≤ ai, bi < numCourses",
+      "0 â‰¤ ai, bi < numCourses",
       "All the pairs prerequisites[i] are unique.",
     ],
     starterCode: {
@@ -5383,7 +5383,7 @@ console.log(canFinish(2, [[1,0],[0,1]])); // Expected: false`,
 # Test cases
 print("true" if canFinish(2, [[1,0]]) else "false")
 print("true" if canFinish(2, [[1,0],[0,1]]) else "false")`,
-      java: `class Solution {
+      java: `class Main {
     public static boolean canFinish(int numCourses, int[][] prerequisites) {
         // Write your solution here
         
@@ -5452,12 +5452,12 @@ int main() {
       },
     ],
     constraints: [
-      "0 ≤ intervals.length ≤ 10⁴",
+      "0 â‰¤ intervals.length â‰¤ 10â´",
       "intervals[i].length == 2",
-      "0 ≤ starti ≤ endi ≤ 10⁵",
+      "0 â‰¤ starti â‰¤ endi â‰¤ 10âµ",
       "intervals is sorted by starti in ascending order.",
       "newInterval.length == 2",
-      "0 ≤ start ≤ end ≤ 10⁵",
+      "0 â‰¤ start â‰¤ end â‰¤ 10âµ",
     ],
     starterCode: {
       javascript: `function insert(intervals, newInterval) {
@@ -5478,7 +5478,7 @@ print(json.dumps(insert([[1,3],[6,9]], [2,5]), separators=(',', ':')))
 print(json.dumps(insert([[1,2],[3,5],[6,7],[8,10],[12,16]], [4,8]), separators=(',', ':')))`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int[][] insert(int[][] intervals, int[] newInterval) {
         // Write your solution here
         
@@ -5540,7 +5540,7 @@ int main() {
     id: "longest-consecutive-sequence",
     title: "Longest Consecutive Sequence",
     difficulty: "Medium",
-    category: "Array • Hash Table • Union Find",
+    category: "Array â€¢ Hash Table â€¢ Union Find",
     description: {
       text: "Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.",
       notes: [
@@ -5559,8 +5559,8 @@ int main() {
       },
     ],
     constraints: [
-      "0 ≤ nums.length ≤ 10⁵",
-      "-10⁹ ≤ nums[i] ≤ 10⁹",
+      "0 â‰¤ nums.length â‰¤ 10âµ",
+      "-10â¹ â‰¤ nums[i] â‰¤ 10â¹",
     ],
     starterCode: {
       javascript: `function longestConsecutive(nums) {
@@ -5578,7 +5578,7 @@ console.log(longestConsecutive([0,3,7,2,5,8,4,6,0,1])); // Expected: 9`,
 # Test cases
 print(longestConsecutive([100,4,200,1,3,2]))  # Expected: 4
 print(longestConsecutive([0,3,7,2,5,8,4,6,0,1]))  # Expected: 9`,
-      java: `class Solution {
+      java: `class Main {
     public static int longestConsecutive(int[] nums) {
         // Write your solution here
         
@@ -5627,7 +5627,7 @@ int main() {
     id: "decode-ways",
     title: "Decode Ways",
     difficulty: "Medium",
-    category: "String • Dynamic Programming",
+    category: "String â€¢ Dynamic Programming",
     description: {
       text: "A message containing letters from A-Z can be encoded into numbers using the following mapping: 'A' -> \"1\", 'B' -> \"2\", ... 'Z' -> \"26\". To decode an encoded message, all the digits must be grouped then mapped back into letters using the reverse of the mapping above (there may be multiple ways).",
       notes: [
@@ -5655,7 +5655,7 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ s.length ≤ 100",
+      "1 â‰¤ s.length â‰¤ 100",
       "s contains only digits and may contain leading zero(s).",
     ],
     starterCode: {
@@ -5676,7 +5676,7 @@ console.log(numDecodings("06")); // Expected: 0`,
 print(numDecodings("12"))  # Expected: 2
 print(numDecodings("226"))  # Expected: 3
 print(numDecodings("06"))  # Expected: 0`,
-      java: `class Solution {
+      java: `class Main {
     public static int numDecodings(String s) {
         // Write your solution here
         
@@ -5750,7 +5750,7 @@ int main() {
       },
     ],
     constraints: [
-      "-2³¹ ≤ x ≤ 2³¹ - 1",
+      "-2Â³Â¹ â‰¤ x â‰¤ 2Â³Â¹ - 1",
     ],
     starterCode: {
       javascript: `function isPalindrome(x) {
@@ -5771,7 +5771,7 @@ def isPalindrome(x):
 print("true" if isPalindrome(121) else "false")
 print("true" if isPalindrome(-121) else "false")
 print("true" if isPalindrome(10) else "false")`,
-      java: `class Solution {
+      java: `class Main {
     public static boolean isPalindrome(int x) {
         // Write your solution here
         
@@ -5819,7 +5819,7 @@ int main() {
     id: "roman-to-integer",
     title: "Roman to Integer",
     difficulty: "Easy",
-    category: "Hash Table • Math • String",
+    category: "Hash Table â€¢ Math â€¢ String",
     description: {
       text: "Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M. Given a roman numeral, convert it to an integer.",
       notes: [
@@ -5852,7 +5852,7 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ s.length ≤ 15",
+      "1 â‰¤ s.length â‰¤ 15",
       "s contains only the characters ('I', 'V', 'X', 'L', 'C', 'D', 'M').",
       "It is guaranteed that s is a valid roman numeral in the range [1, 3999]."
     ],
@@ -5874,7 +5874,7 @@ console.log(romanToInt("MCMXCIV")); // Expected: 1994`,
 print(romanToInt("III"))
 print(romanToInt("LVIII"))
 print(romanToInt("MCMXCIV"))`,
-      java: `class Solution {
+      java: `class Main {
     public static int romanToInt(String s) {
         // Write your solution here
         
@@ -5923,11 +5923,11 @@ int main() {
     id: "majority-element",
     title: "Majority Element",
     difficulty: "Easy",
-    category: "Array • Hash Table • Divide and Conquer • Sorting • Counting",
+    category: "Array â€¢ Hash Table â€¢ Divide and Conquer â€¢ Sorting â€¢ Counting",
     description: {
       text: "Given an array nums of size n, return the majority element.",
       notes: [
-        "The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array."
+        "The majority element is the element that appears more than âŒŠn / 2âŒ‹ times. You may assume that the majority element always exists in the array."
       ],
     },
     examples: [
@@ -5942,8 +5942,8 @@ int main() {
     ],
     constraints: [
       "n == nums.length",
-      "1 ≤ n ≤ 5 * 10⁴",
-      "-10⁹ ≤ nums[i] ≤ 10⁹"
+      "1 â‰¤ n â‰¤ 5 * 10â´",
+      "-10â¹ â‰¤ nums[i] â‰¤ 10â¹"
     ],
     starterCode: {
       javascript: `function majorityElement(nums) {
@@ -5961,7 +5961,7 @@ console.log(majorityElement([2,2,1,1,1,2,2])); // Expected: 2`,
 # Test cases
 print(majorityElement([3,2,3]))
 print(majorityElement([2,2,1,1,1,2,2]))`,
-      java: `class Solution {
+      java: `class Main {
     public static int majorityElement(int[] nums) {
         // Write your solution here
         
@@ -6010,7 +6010,7 @@ int main() {
     id: "move-zeroes",
     title: "Move Zeroes",
     difficulty: "Easy",
-    category: "Array • Two Pointers",
+    category: "Array â€¢ Two Pointers",
     description: {
       text: "Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.",
       notes: [
@@ -6028,8 +6028,8 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ nums.length ≤ 10⁴",
-      "-2³¹ ≤ nums[i] ≤ 2³¹ - 1"
+      "1 â‰¤ nums.length â‰¤ 10â´",
+      "-2Â³Â¹ â‰¤ nums[i] â‰¤ 2Â³Â¹ - 1"
     ],
     starterCode: {
       javascript: `function moveZeroes(nums) {
@@ -6060,7 +6060,7 @@ moveZeroes(nums2)
 print(json.dumps(nums2, separators=(',', ':')))`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static void moveZeroes(int[] nums) {
         // Write your solution here
         
@@ -6125,7 +6125,7 @@ int main() {
     id: "permutations",
     title: "Permutations",
     difficulty: "Medium",
-    category: "Array • Backtracking",
+    category: "Array â€¢ Backtracking",
     description: {
       text: "Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.",
       notes: [],
@@ -6145,8 +6145,8 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ nums.length ≤ 6",
-      "-10 ≤ nums[i] ≤ 10",
+      "1 â‰¤ nums.length â‰¤ 6",
+      "-10 â‰¤ nums[i] â‰¤ 10",
       "All the integers of nums are unique."
     ],
     starterCode: {
@@ -6170,7 +6170,7 @@ print(json.dumps(sorted(permute([0,1])), separators=(',', ':')))
 print(json.dumps(sorted(permute([1])), separators=(',', ':')))`,
       java: `import java.util.*;
 
-class Solution {
+class Main {
     public static List<List<Integer>> permute(int[] nums) {
         // Write your solution here
         
@@ -6264,7 +6264,7 @@ int main() {
     id: "reverse-linked-list",
     title: "Reverse Linked List",
     difficulty: "Easy",
-    category: "Linked List • Recursion",
+    category: "Linked List â€¢ Recursion",
     description: {
       text: "Given the head of a singly linked list, reverse the list, and return the reversed list.",
       notes: [],
@@ -6285,7 +6285,7 @@ int main() {
     ],
     constraints: [
       "The number of nodes in the list is the range [0, 5000].",
-      "-5000 ≤ Node.val ≤ 5000",
+      "-5000 â‰¤ Node.val â‰¤ 5000",
     ],
     starterCode: {
       javascript: `/**
@@ -6363,7 +6363,7 @@ class ListNode {
     ListNode(int val) { this.val = val; }
 }
 
-class Solution {
+class Main {
     public static ListNode reverseList(ListNode head) {
         // Write your solution here
         
@@ -6459,7 +6459,7 @@ int main() {
     id: "merge-two-sorted-lists",
     title: "Merge Two Sorted Lists",
     difficulty: "Easy",
-    category: "Linked List • Recursion",
+    category: "Linked List â€¢ Recursion",
     description: {
       text: "You are given the heads of two sorted linked lists list1 and list2. Merge the two lists into one sorted list. The list should be made by splicing together the nodes of the first two lists. Return the head of the merged linked list.",
       notes: [],
@@ -6480,7 +6480,7 @@ int main() {
     ],
     constraints: [
       "The number of nodes in both lists is in the range [0, 50].",
-      "-100 ≤ Node.val ≤ 100",
+      "-100 â‰¤ Node.val â‰¤ 100",
       "Both list1 and list2 are sorted in non-decreasing order.",
     ],
     starterCode: {
@@ -6552,7 +6552,7 @@ class ListNode {
     ListNode(int val) { this.val = val; }
 }
 
-class Solution {
+class Main {
     public static ListNode mergeTwoLists(ListNode list1, ListNode list2) {
         // Write your solution here
         
@@ -6648,7 +6648,7 @@ int main() {
     id: "validate-binary-search-tree",
     title: "Validate Binary Search Tree",
     difficulty: "Medium",
-    category: "Tree • Depth-First Search • Binary Search Tree • Binary Tree",
+    category: "Tree â€¢ Depth-First Search â€¢ Binary Search Tree â€¢ Binary Tree",
     description: {
       text: "Given the root of a binary tree, determine if it is a valid binary search tree (BST).",
       notes: [
@@ -6670,8 +6670,8 @@ int main() {
       },
     ],
     constraints: [
-      "The number of nodes in the tree is in the range [1, 10⁴].",
-      "-2³¹ ≤ Node.val ≤ 2³¹ - 1",
+      "The number of nodes in the tree is in the range [1, 10â´].",
+      "-2Â³Â¹ â‰¤ Node.val â‰¤ 2Â³Â¹ - 1",
     ],
     starterCode: {
       javascript: `/**
@@ -6723,7 +6723,7 @@ print("true" if isValidBST(t2) else "false")`,
     }
 }
 
-class Solution {
+class Main {
     public static boolean isValidBST(TreeNode root) {
         // Write your solution here
         
@@ -6784,7 +6784,7 @@ int main() {
     id: "binary-tree-level-order-traversal",
     title: "Binary Tree Level Order Traversal",
     difficulty: "Medium",
-    category: "Tree • Breadth-First Search • Binary Tree",
+    category: "Tree â€¢ Breadth-First Search â€¢ Binary Tree",
     description: {
       text: "Given the root of a binary tree, return the level order traversal of its nodes' values. (i.e., from left to right, level by level).",
       notes: [],
@@ -6805,7 +6805,7 @@ int main() {
     ],
     constraints: [
       "The number of nodes in the tree is in the range [0, 2000].",
-      "-1000 ≤ Node.val ≤ 1000",
+      "-1000 â‰¤ Node.val â‰¤ 1000",
     ],
     starterCode: {
       javascript: `function levelOrder(root) {
@@ -6852,7 +6852,7 @@ class TreeNode {
     }
 }
 
-class Solution {
+class Main {
     public static List<List<Integer>> levelOrder(TreeNode root) {
         // Write your solution here
         
@@ -6932,7 +6932,7 @@ int main() {
     id: "longest-increasing-subsequence",
     title: "Longest Increasing Subsequence",
     difficulty: "Medium",
-    category: "Array • Binary Search • Dynamic Programming",
+    category: "Array â€¢ Binary Search â€¢ Dynamic Programming",
     description: {
       text: "Given an integer array nums, return the length of the longest strictly increasing subsequence.",
       notes: [
@@ -6955,8 +6955,8 @@ int main() {
       },
     ],
     constraints: [
-      "1 ≤ nums.length ≤ 2500",
-      "-10⁴ ≤ nums[i] ≤ 10⁴",
+      "1 â‰¤ nums.length â‰¤ 2500",
+      "-10â´ â‰¤ nums[i] â‰¤ 10â´",
     ],
     starterCode: {
       javascript: `function lengthOfLIS(nums) {
@@ -6976,7 +6976,7 @@ console.log(lengthOfLIS([7,7,7,7,7,7,7])); // Expected: 1`,
 print(lengthOfLIS([10,9,2,5,3,7,101,18]))
 print(lengthOfLIS([0,1,0,3,2,3]))
 print(lengthOfLIS([7,7,7,7,7,7,7]))`,
-      java: `class Solution {
+      java: `class Main {
     public static int lengthOfLIS(int[] nums) {
         // Write your solution here
         
@@ -7028,7 +7028,7 @@ int main() {
   id: "pascals-triangle",
   title: "Pascal's Triangle",
   difficulty: "Easy",
-  category: "Array • Dynamic Programming",
+  category: "Array â€¢ Dynamic Programming",
   description: {
     text: "Given an integer numRows, return the first numRows of Pascal's triangle. In Pascal's triangle, each number is the sum of the two numbers directly above it.",
     notes: [
@@ -7048,7 +7048,7 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ numRows ≤ 30",
+    "1 â‰¤ numRows â‰¤ 30",
   ],
   starterCode: {
     javascript: `function generate(numRows) {
@@ -7072,7 +7072,7 @@ print(json.dumps(generate(1), separators=(',', ':')))  # Expected: [[1]]`,
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static List<List<Integer>> generate(int numRows) {
         // Write your solution here
         
@@ -7134,11 +7134,11 @@ int main() {
   id: "letter-combinations-phone-number",
   title: "Letter Combinations of a Phone Number",
   difficulty: "Medium",
-  category: "String • Backtracking • Hash Table",
+  category: "String â€¢ Backtracking â€¢ Hash Table",
   description: {
     text: "Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.",
     notes: [
-      "A mapping of digits to letters (just like on a phone keypad) is given: 2→abc, 3→def, 4→ghi, 5→jkl, 6→mno, 7→pqrs, 8→tuv, 9→wxyz.",
+      "A mapping of digits to letters (just like on a phone keypad) is given: 2â†’abc, 3â†’def, 4â†’ghi, 5â†’jkl, 6â†’mno, 7â†’pqrs, 8â†’tuv, 9â†’wxyz.",
       "If the input is an empty string, return an empty list.",
     ],
   },
@@ -7158,7 +7158,7 @@ int main() {
     },
   ],
   constraints: [
-    "0 ≤ digits.length ≤ 4",
+    "0 â‰¤ digits.length â‰¤ 4",
     "digits[i] is a digit in the range ['2', '9']",
   ],
   starterCode: {
@@ -7185,7 +7185,7 @@ print(json.dumps(letterCombinations("2"), separators=(',', ':')))   # Expected: 
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static List<String> letterCombinations(String digits) {
         // Write your solution here
         
@@ -7244,7 +7244,7 @@ int main() {
   id: "maximum-depth-of-binary-tree",
   title: "Maximum Depth of Binary Tree",
   difficulty: "Easy",
-  category: "Tree • Depth-First Search • Breadth-First Search • Binary Tree",
+  category: "Tree â€¢ Depth-First Search â€¢ Breadth-First Search â€¢ Binary Tree",
   description: {
     text: "Given the root of a binary tree, return its maximum depth. A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.",
     notes: [
@@ -7256,7 +7256,7 @@ int main() {
     {
       input: "root = [3,9,20,null,null,15,7]",
       output: "3",
-      explanation: "The longest path is 3 → 20 → 15 (or 3 → 20 → 7), which has 3 nodes.",
+      explanation: "The longest path is 3 â†’ 20 â†’ 15 (or 3 â†’ 20 â†’ 7), which has 3 nodes.",
     },
     {
       input: "root = [1,null,2]",
@@ -7264,8 +7264,8 @@ int main() {
     },
   ],
   constraints: [
-    "The number of nodes in the tree is in the range [0, 10⁴]",
-    "-100 ≤ Node.val ≤ 100",
+    "The number of nodes in the tree is in the range [0, 10â´]",
+    "-100 â‰¤ Node.val â‰¤ 100",
   ],
   starterCode: {
     javascript: `class TreeNode {
@@ -7344,7 +7344,7 @@ class TreeNode {
     TreeNode(int val) { this.val = val; }
 }
 
-class Solution {
+class Main {
     public static TreeNode buildTree(Integer[] arr) {
         if (arr == null || arr.length == 0) return null;
         TreeNode root = new TreeNode(arr[0]);
@@ -7434,7 +7434,7 @@ int main() {
   id: "coin-change",
   title: "Coin Change",
   difficulty: "Medium",
-  category: "Array • Dynamic Programming • Breadth-First Search",
+  category: "Array â€¢ Dynamic Programming â€¢ Breadth-First Search",
   description: {
     text: "You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money. Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.",
     notes: [
@@ -7446,7 +7446,7 @@ int main() {
     {
       input: "coins = [1,5,11], amount = 15",
       output: "3",
-      explanation: "15 = 11 + 3×1 is not optimal. 15 = 5 + 5 + 5 uses 3 coins.",
+      explanation: "15 = 11 + 3Ã—1 is not optimal. 15 = 5 + 5 + 5 uses 3 coins.",
     },
     {
       input: "coins = [2], amount = 3",
@@ -7459,9 +7459,9 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ coins.length ≤ 12",
-    "1 ≤ coins[i] ≤ 2³¹ - 1",
-    "0 ≤ amount ≤ 10⁴",
+    "1 â‰¤ coins.length â‰¤ 12",
+    "1 â‰¤ coins[i] â‰¤ 2Â³Â¹ - 1",
+    "0 â‰¤ amount â‰¤ 10â´",
   ],
   starterCode: {
     javascript: `function coinChange(coins, amount) {
@@ -7485,7 +7485,7 @@ print(coinChange([1], 0))        # Expected: 0`,
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int coinChange(int[] coins, int amount) {
         // Write your solution here
 
@@ -7537,7 +7537,7 @@ int main() {
   id: "flood-fill",
   title: "Flood Fill",
   difficulty: "Easy",
-  category: "Array • Depth-First Search • Breadth-First Search • Matrix",
+  category: "Array â€¢ Depth-First Search â€¢ Breadth-First Search â€¢ Matrix",
   description: {
     text: "An image is represented by an m x n integer grid image where image[i][j] represents the pixel value of the image. You are given three integers sr, sc, and color. Perform a flood fill starting from the pixel image[sr][sc]. To perform a flood fill, consider the starting pixel, plus any pixels connected 4-directionally to the starting pixel of the same color as the starting pixel, and any pixels connected 4-directionally to those pixels (also with the same color), and so on. Replace the color of all of the aforementioned pixels with color. Return the modified image after performing the flood fill.",
     notes: [
@@ -7560,10 +7560,10 @@ int main() {
   constraints: [
     "m == image.length",
     "n == image[i].length",
-    "1 ≤ m, n ≤ 50",
-    "0 ≤ image[i][j], color < 2¹⁶",
-    "0 ≤ sr < m",
-    "0 ≤ sc < n",
+    "1 â‰¤ m, n â‰¤ 50",
+    "0 â‰¤ image[i][j], color < 2Â¹â¶",
+    "0 â‰¤ sr < m",
+    "0 â‰¤ sc < n",
   ],
   starterCode: {
     javascript: `function floodFill(image, sr, sc, color) {
@@ -7587,7 +7587,7 @@ print(json.dumps(floodFill([[0,0,0],[0,0,0]], 0, 0, 0), separators=(',', ':'))) 
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int[][] floodFill(int[][] image, int sr, int sc, int color) {
         // Write your solution here
 
@@ -7650,7 +7650,7 @@ int main() {
   id: "rotate-array",
   title: "Rotate Array",
   difficulty: "Medium",
-  category: "Array • Two Pointers • Math",
+  category: "Array â€¢ Two Pointers â€¢ Math",
   description: {
     text: "Given an integer array nums, rotate the array to the right by k steps, where k is non-negative.",
     notes: [
@@ -7672,9 +7672,9 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ nums.length ≤ 10⁵",
-    "-2³¹ ≤ nums[i] ≤ 2³¹ - 1",
-    "0 ≤ k ≤ 10⁵",
+    "1 â‰¤ nums.length â‰¤ 10âµ",
+    "-2Â³Â¹ â‰¤ nums[i] â‰¤ 2Â³Â¹ - 1",
+    "0 â‰¤ k â‰¤ 10âµ",
   ],
   starterCode: {
     javascript: `function rotate(nums, k) {
@@ -7708,7 +7708,7 @@ print(json.dumps(b, separators=(',', ':')))  # Expected: [3,99,-1,-100]`,
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static void rotate(int[] nums, int k) {
         // Write your solution here (modify nums in-place)
 
@@ -7774,7 +7774,7 @@ int main() {
   id: "symmetric-tree",
   title: "Symmetric Tree",
   difficulty: "Easy",
-  category: "Tree • Depth-First Search • Breadth-First Search • Binary Tree",
+  category: "Tree â€¢ Depth-First Search â€¢ Breadth-First Search â€¢ Binary Tree",
   description: {
     text: "Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).",
     notes: [
@@ -7786,17 +7786,17 @@ int main() {
     {
       input: "root = [1,2,2,3,4,4,3]",
       output: "true",
-      explanation: "The tree is symmetric — left and right subtrees are mirror images of each other.",
+      explanation: "The tree is symmetric â€” left and right subtrees are mirror images of each other.",
     },
     {
       input: "root = [1,2,2,null,3,null,3]",
       output: "false",
-      explanation: "The tree is not symmetric — the right children differ between the two sides.",
+      explanation: "The tree is not symmetric â€” the right children differ between the two sides.",
     },
   ],
   constraints: [
     "The number of nodes in the tree is in the range [1, 1000]",
-    "-100 ≤ Node.val ≤ 100",
+    "-100 â‰¤ Node.val â‰¤ 100",
   ],
   starterCode: {
     javascript: `class TreeNode {
@@ -7873,7 +7873,7 @@ class TreeNode {
     TreeNode(int val) { this.val = val; }
 }
 
-class Solution {
+class Main {
     public static TreeNode buildTree(Integer[] arr) {
         if (arr == null || arr.length == 0) return null;
         TreeNode root = new TreeNode(arr[0]);
@@ -7961,7 +7961,7 @@ int main() {
   id: "top-k-frequent-elements",
   title: "Top K Frequent Elements",
   difficulty: "Medium",
-  category: "Array • Hash Table • Sorting • Heap",
+  category: "Array â€¢ Hash Table â€¢ Sorting â€¢ Heap",
   description: {
     text: "Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.",
     notes: [
@@ -7981,8 +7981,8 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ nums.length ≤ 10⁵",
-    "-10⁴ ≤ nums[i] ≤ 10⁴",
+    "1 â‰¤ nums.length â‰¤ 10âµ",
+    "-10â´ â‰¤ nums[i] â‰¤ 10â´",
     "k is in the range [1, the number of unique elements in the array]",
     "It is guaranteed that the answer is unique",
   ],
@@ -8008,7 +8008,7 @@ print(json.dumps(topKFrequent([1], 1), separators=(',', ':')))            # Expe
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int[] topKFrequent(int[] nums, int k) {
         // Write your solution here
 
@@ -8066,12 +8066,12 @@ int main() {
   id: "linked-list-cycle",
   title: "Linked List Cycle",
   difficulty: "Easy",
-  category: "Linked List • Hash Table • Two Pointers",
+  category: "Linked List â€¢ Hash Table â€¢ Two Pointers",
   description: {
     text: "Given head, the head of a linked list, determine if the linked list has a cycle in it. There is a cycle if there is some node in the list that can be reached again by continuously following the next pointer. Return true if there is a cycle, otherwise return false.",
     notes: [
       "Use Floyd's Cycle Detection Algorithm (fast and slow pointers) for O(1) space.",
-      "pos is used internally to denote the index where the tail connects back — it is not passed as a parameter.",
+      "pos is used internally to denote the index where the tail connects back â€” it is not passed as a parameter.",
     ],
   },
   examples: [
@@ -8092,8 +8092,8 @@ int main() {
     },
   ],
   constraints: [
-    "The number of nodes in the list is in the range [0, 10⁴]",
-    "-10⁵ ≤ Node.val ≤ 10⁵",
+    "The number of nodes in the list is in the range [0, 10â´]",
+    "-10âµ â‰¤ Node.val â‰¤ 10âµ",
     "pos is -1 or a valid index in the linked list",
   ],
   starterCode: {
@@ -8152,7 +8152,7 @@ print(hasCycle(buildList([1], -1)))        # Expected: False`,
     ListNode(int val) { this.val = val; }
 }
 
-class Solution {
+class Main {
     public static ListNode buildList(int[] arr, int pos) {
         if (arr.length == 0) return null;
         ListNode[] nodes = new ListNode[arr.length];
@@ -8226,7 +8226,7 @@ int main() {
   id: "min-stack",
   title: "Min Stack",
   difficulty: "Medium",
-  category: "Stack • Design",
+  category: "Stack â€¢ Design",
   description: {
     text: "Design a stack that supports push, pop, top, and retrieving the minimum element in constant time. Implement the MinStack class with the following methods: push(val), pop(), top(), and getMin().",
     notes: [
@@ -8245,9 +8245,9 @@ int main() {
     },
   ],
   constraints: [
-    "-2³¹ ≤ val ≤ 2³¹ - 1",
+    "-2Â³Â¹ â‰¤ val â‰¤ 2Â³Â¹ - 1",
     "pop, top and getMin operations will always be called on non-empty stacks",
-    "At most 3 × 10⁴ calls will be made to push, pop, top, and getMin",
+    "At most 3 Ã— 10â´ calls will be made to push, pop, top, and getMin",
   ],
   starterCode: {
     javascript: `class MinStack {
@@ -8405,7 +8405,7 @@ int main() {
   id: "binary-tree-right-side-view",
   title: "Binary Tree Right Side View",
   difficulty: "Medium",
-  category: "Tree • Breadth-First Search • Depth-First Search • Binary Tree",
+  category: "Tree â€¢ Breadth-First Search â€¢ Depth-First Search â€¢ Binary Tree",
   description: {
     text: "Given the root of a binary tree, imagine yourself standing on the right side of it. Return the values of the nodes you can see ordered from top to bottom.",
     notes: [
@@ -8417,7 +8417,7 @@ int main() {
     {
       input: "root = [1,2,3,null,5,null,4]",
       output: "[1,3,4]",
-      explanation: "From the right side: level 0 → 1, level 1 → 3, level 2 → 4.",
+      explanation: "From the right side: level 0 â†’ 1, level 1 â†’ 3, level 2 â†’ 4.",
     },
     {
       input: "root = [1,null,3]",
@@ -8430,7 +8430,7 @@ int main() {
   ],
   constraints: [
     "The number of nodes in the tree is in the range [0, 100]",
-    "-100 ≤ Node.val ≤ 100",
+    "-100 â‰¤ Node.val â‰¤ 100",
   ],
   starterCode: {
     javascript: `class TreeNode {
@@ -8510,7 +8510,7 @@ class TreeNode {
     TreeNode(int val) { this.val = val; }
 }
 
-class Solution {
+class Main {
     public static TreeNode buildTree(Integer[] arr) {
         if (arr == null || arr.length == 0) return null;
         TreeNode root = new TreeNode(arr[0]);
@@ -8608,9 +8608,9 @@ int main() {
   id: "two-sum-ii",
   title: "Two Sum II - Input Array Is Sorted",
   difficulty: "Medium",
-  category: "Array • Two Pointers • Binary Search",
+  category: "Array â€¢ Two Pointers â€¢ Binary Search",
   description: {
-    text: "Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers such that they add up to a specific target number. Return the indices of the two numbers as an integer array [index1, index2] where 1 ≤ index1 < index2 ≤ numbers.length.",
+    text: "Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers such that they add up to a specific target number. Return the indices of the two numbers as an integer array [index1, index2] where 1 â‰¤ index1 < index2 â‰¤ numbers.length.",
     notes: [
       "The array is 1-indexed, so return indices starting from 1.",
       "There is exactly one solution, and you may not use the same element twice.",
@@ -8634,10 +8634,10 @@ int main() {
     },
   ],
   constraints: [
-    "2 ≤ numbers.length ≤ 3 × 10⁴",
-    "-1000 ≤ numbers[i] ≤ 1000",
+    "2 â‰¤ numbers.length â‰¤ 3 Ã— 10â´",
+    "-1000 â‰¤ numbers[i] â‰¤ 1000",
     "numbers is sorted in non-decreasing order",
-    "-1000 ≤ target ≤ 1000",
+    "-1000 â‰¤ target â‰¤ 1000",
     "The tests are generated such that there is exactly one solution",
   ],
   starterCode: {
@@ -8664,7 +8664,7 @@ print(json.dumps(twoSumII([-1,0], -1), separators=(',', ':')))       # Expected:
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int[] twoSumII(int[] numbers, int target) {
         // Write your solution here
 
@@ -8725,7 +8725,7 @@ int main() {
   id: "palindrome-linked-list",
   title: "Palindrome Linked List",
   difficulty: "Easy",
-  category: "Linked List • Two Pointers • Stack • Recursion",
+  category: "Linked List â€¢ Two Pointers â€¢ Stack â€¢ Recursion",
   description: {
     text: "Given the head of a singly linked list, return true if it is a palindrome or false otherwise.",
     notes: [
@@ -8742,7 +8742,7 @@ int main() {
     {
       input: "head = [1,2]",
       output: "false",
-      explanation: "1 → 2 is not the same as 2 → 1.",
+      explanation: "1 â†’ 2 is not the same as 2 â†’ 1.",
     },
     {
       input: "head = [1,2,3,2,1]",
@@ -8750,8 +8750,8 @@ int main() {
     },
   ],
   constraints: [
-    "The number of nodes in the list is in the range [1, 10⁵]",
-    "0 ≤ Node.val ≤ 9",
+    "The number of nodes in the list is in the range [1, 10âµ]",
+    "0 â‰¤ Node.val â‰¤ 9",
   ],
   starterCode: {
     javascript: `class ListNode {
@@ -8809,7 +8809,7 @@ print(isPalindrome(buildList([1,2,3,2,1])))  # Expected: True`,
     ListNode(int val) { this.val = val; }
 }
 
-class Solution {
+class Main {
     public static ListNode buildList(int[] arr) {
         if (arr.length == 0) return null;
         ListNode head = new ListNode(arr[0]);
@@ -8881,7 +8881,7 @@ int main() {
   id: "lowest-common-ancestor-bst",
   title: "Lowest Common Ancestor of a Binary Search Tree",
   difficulty: "Medium",
-  category: "Tree • Depth-First Search • Binary Search Tree • Binary Tree",
+  category: "Tree â€¢ Depth-First Search â€¢ Binary Search Tree â€¢ Binary Tree",
   description: {
     text: "Given a binary search tree (BST), find the lowest common ancestor (LCA) node of two given nodes p and q. The LCA is defined as the lowest node in the tree that has both p and q as descendants (a node can be a descendant of itself).",
     notes: [
@@ -8907,8 +8907,8 @@ int main() {
     },
   ],
   constraints: [
-    "The number of nodes in the tree is in the range [2, 10⁵]",
-    "-10⁹ ≤ Node.val ≤ 10⁹",
+    "The number of nodes in the tree is in the range [2, 10âµ]",
+    "-10â¹ â‰¤ Node.val â‰¤ 10â¹",
     "All Node.val are unique",
     "p != q",
     "p and q will exist in the BST",
@@ -9007,7 +9007,7 @@ class TreeNode {
     TreeNode(int val) { this.val = val; }
 }
 
-class Solution {
+class Main {
     public static TreeNode buildTree(Integer[] arr) {
         if (arr == null || arr.length == 0) return null;
         TreeNode root = new TreeNode(arr[0]);
@@ -9115,7 +9115,7 @@ int main() {
   id: "clone-graph",
   title: "Clone Graph",
   difficulty: "Medium",
-  category: "Graph • Depth-First Search • Breadth-First Search • Hash Table",
+  category: "Graph â€¢ Depth-First Search â€¢ Breadth-First Search â€¢ Hash Table",
   description: {
     text: "Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph. Each node in the graph contains a value (int) and a list of its neighbors.",
     notes: [
@@ -9143,7 +9143,7 @@ int main() {
   ],
   constraints: [
     "The number of nodes in the graph is in the range [0, 100]",
-    "1 ≤ Node.val ≤ 100",
+    "1 â‰¤ Node.val â‰¤ 100",
     "Node.val is unique for each node",
     "There are no repeated edges and no self-loops",
     "The graph is connected and all nodes can be visited starting from the given node",
@@ -9239,7 +9239,7 @@ class Node {
     public Node(int val) { this.val = val; this.neighbors = new ArrayList<>(); }
 }
 
-class Solution {
+class Main {
     public static Node buildGraph(int[][] adjList) {
         if (adjList == null || adjList.length == 0) return null;
         Node[] nodes = new Node[adjList.length];
@@ -9360,7 +9360,7 @@ int main() {
   id: "path-sum",
   title: "Path Sum",
   difficulty: "Easy",
-  category: "Tree • Depth-First Search • Breadth-First Search • Binary Tree",
+  category: "Tree â€¢ Depth-First Search â€¢ Breadth-First Search â€¢ Binary Tree",
   description: {
     text: "Given the root of a binary tree and an integer targetSum, return true if the tree has a root-to-leaf path such that adding up all the values along the path equals targetSum. A leaf is a node with no children.",
     notes: [
@@ -9372,12 +9372,12 @@ int main() {
     {
       input: "root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22",
       output: "true",
-      explanation: "The path 5 → 4 → 11 → 2 sums to 22.",
+      explanation: "The path 5 â†’ 4 â†’ 11 â†’ 2 sums to 22.",
     },
     {
       input: "root = [1,2,3], targetSum = 5",
       output: "false",
-      explanation: "Paths are 1→2=3 and 1→3=4, neither equals 5.",
+      explanation: "Paths are 1â†’2=3 and 1â†’3=4, neither equals 5.",
     },
     {
       input: "root = [], targetSum = 0",
@@ -9386,8 +9386,8 @@ int main() {
   ],
   constraints: [
     "The number of nodes in the tree is in the range [0, 5000]",
-    "-1000 ≤ Node.val ≤ 1000",
-    "-1000 ≤ targetSum ≤ 1000",
+    "-1000 â‰¤ Node.val â‰¤ 1000",
+    "-1000 â‰¤ targetSum â‰¤ 1000",
   ],
   starterCode: {
     javascript: `class TreeNode {
@@ -9466,7 +9466,7 @@ class TreeNode {
     TreeNode(int val) { this.val = val; }
 }
 
-class Solution {
+class Main {
     public static TreeNode buildTree(Integer[] arr) {
         if (arr == null || arr.length == 0) return null;
         TreeNode root = new TreeNode(arr[0]);
@@ -9555,7 +9555,7 @@ int main() {
   id: "encode-and-decode-strings",
   title: "Encode and Decode Strings",
   difficulty: "Medium",
-  category: "String • Design",
+  category: "String â€¢ Design",
   description: {
     text: "Design an algorithm to encode a list of strings to a single string. The encoded string is then sent over the network and is decoded back to the original list of strings. Implement encode and decode functions.",
     notes: [
@@ -9577,8 +9577,8 @@ int main() {
     },
   ],
   constraints: [
-    "0 ≤ strs.length ≤ 200",
-    "0 ≤ strs[i].length ≤ 200",
+    "0 â‰¤ strs.length â‰¤ 200",
+    "0 â‰¤ strs[i].length â‰¤ 200",
     "strs[i] contains any possible characters out of 256 valid ASCII characters",
   ],
   starterCode: {
@@ -9620,7 +9620,7 @@ print(json.dumps(decode(encode(c)), separators=(',', ':')))              # Expec
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static String encode(List<String> strs) {
         // Write your solution here
 
@@ -9693,7 +9693,7 @@ int main() {
   id: "car-fleet",
   title: "Car Fleet",
   difficulty: "Medium",
-  category: "Array • Stack • Sorting • Monotonic Stack",
+  category: "Array â€¢ Stack â€¢ Sorting â€¢ Monotonic Stack",
   description: {
     text: "There are n cars at given miles away from the starting mile 0, traveling to their destination at target miles. Each car has a position and speed given in two integer arrays position and speed, where position[i] is the position of the ith car and speed[i] is the speed of the ith car (in miles per hour). A car can never pass another car ahead of it, but it can catch up and travel at the same speed as the car in front of it (forming a fleet). Return the number of car fleets that will arrive at the destination.",
     notes: [
@@ -9721,10 +9721,10 @@ int main() {
   ],
   constraints: [
     "n == position.length == speed.length",
-    "1 ≤ n ≤ 10⁵",
-    "0 < target ≤ 10⁶",
-    "0 ≤ position[i] < target",
-    "0 < speed[i] ≤ 10⁶",
+    "1 â‰¤ n â‰¤ 10âµ",
+    "0 < target â‰¤ 10â¶",
+    "0 â‰¤ position[i] < target",
+    "0 < speed[i] â‰¤ 10â¶",
     "All values of position are unique",
   ],
   starterCode: {
@@ -9749,7 +9749,7 @@ print(carFleet(100, [0,2,4], [4,2,1]))            # Expected: 1`,
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int carFleet(int target, int[] position, int[] speed) {
         // Write your solution here
 
@@ -9802,7 +9802,7 @@ int main() {
   id: "combination-sum",
   title: "Combination Sum",
   difficulty: "Medium",
-  category: "Array • Backtracking",
+  category: "Array â€¢ Backtracking",
   description: {
     text: "Given an array of distinct integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target. You may return the combinations in any order. The same number may be chosen from candidates an unlimited number of times.",
     notes: [
@@ -9828,10 +9828,10 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ candidates.length ≤ 30",
-    "2 ≤ candidates[i] ≤ 40",
+    "1 â‰¤ candidates.length â‰¤ 30",
+    "2 â‰¤ candidates[i] â‰¤ 40",
     "All elements of candidates are distinct",
-    "1 ≤ target ≤ 40",
+    "1 â‰¤ target â‰¤ 40",
   ],
   starterCode: {
     javascript: `function combinationSum(candidates, target) {
@@ -9857,7 +9857,7 @@ print(json.dumps(combinationSum([2], 1), separators=(',', ':')))         # Expec
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static List<List<Integer>> combinationSum(int[] candidates, int target) {
         // Write your solution here
 
@@ -9922,29 +9922,29 @@ int main() {
   id: "reorder-list",
   title: "Reorder List",
   difficulty: "Medium",
-  category: "Linked List • Two Pointers • Stack • Recursion",
+  category: "Linked List â€¢ Two Pointers â€¢ Stack â€¢ Recursion",
   description: {
-    text: "You are given the head of a singly linked list. The list can be represented as L0 → L1 → … → Ln-1 → Ln. Reorder it to: L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → … You may not modify the values in the list's nodes. Only nodes themselves may be changed.",
+    text: "You are given the head of a singly linked list. The list can be represented as L0 â†’ L1 â†’ â€¦ â†’ Ln-1 â†’ Ln. Reorder it to: L0 â†’ Ln â†’ L1 â†’ Ln-1 â†’ L2 â†’ Ln-2 â†’ â€¦ You may not modify the values in the list's nodes. Only nodes themselves may be changed.",
     notes: [
       "Find the middle using slow/fast pointers, reverse the second half, then merge.",
-      "Do not return a new list — modify the original list in-place.",
+      "Do not return a new list â€” modify the original list in-place.",
     ],
   },
   examples: [
     {
       input: "head = [1,2,3,4]",
       output: "[1,4,2,3]",
-      explanation: "Reordered as L0→L3→L1→L2: 1→4→2→3.",
+      explanation: "Reordered as L0â†’L3â†’L1â†’L2: 1â†’4â†’2â†’3.",
     },
     {
       input: "head = [1,2,3,4,5]",
       output: "[1,5,2,4,3]",
-      explanation: "Reordered as L0→L4→L1→L3→L2: 1→5→2→4→3.",
+      explanation: "Reordered as L0â†’L4â†’L1â†’L3â†’L2: 1â†’5â†’2â†’4â†’3.",
     },
   ],
   constraints: [
-    "The number of nodes in the list is in the range [1, 5 × 10⁴]",
-    "1 ≤ Node.val ≤ 1000",
+    "The number of nodes in the list is in the range [1, 5 Ã— 10â´]",
+    "1 â‰¤ Node.val â‰¤ 1000",
   ],
   starterCode: {
     javascript: `class ListNode {
@@ -10027,7 +10027,7 @@ class ListNode {
     ListNode(int val) { this.val = val; }
 }
 
-class Solution {
+class Main {
     public static ListNode buildList(int[] arr) {
         if (arr.length == 0) return null;
         ListNode head = new ListNode(arr[0]);
@@ -10118,11 +10118,11 @@ int main() {
   id: "pacific-atlantic-water-flow",
   title: "Pacific Atlantic Water Flow",
   difficulty: "Medium",
-  category: "Array • DFS • BFS • Matrix",
+  category: "Array â€¢ DFS â€¢ BFS â€¢ Matrix",
   description: {
     text: "There is an m x n rectangular island that borders both the Pacific Ocean and Atlantic Ocean. The Pacific Ocean touches the island's left and top edges, and the Atlantic Ocean touches the island's right and bottom edges. Water can only flow in four directions (up, down, left, right) to an adjacent cell with a height less than or equal to the current cell's height. Given an m x n integer matrix heights where heights[r][c] represents the height above sea level of the cell at coordinate (r, c), return a list of grid coordinates where water can flow to both the Pacific and Atlantic oceans.",
     notes: [
-      "Run BFS/DFS from ocean borders inward — cells reachable from Pacific border and Atlantic border separately.",
+      "Run BFS/DFS from ocean borders inward â€” cells reachable from Pacific border and Atlantic border separately.",
       "A cell qualifies if it appears in both reachable sets.",
     ],
   },
@@ -10141,8 +10141,8 @@ int main() {
   constraints: [
     "m == heights.length",
     "n == heights[r].length",
-    "1 ≤ m, n ≤ 200",
-    "0 ≤ heights[r][c] ≤ 10⁵",
+    "1 â‰¤ m, n â‰¤ 200",
+    "0 â‰¤ heights[r][c] â‰¤ 10âµ",
   ],
   starterCode: {
     javascript: `function pacificAtlantic(heights) {
@@ -10170,7 +10170,7 @@ print(json.dumps(pacificAtlantic([[1]]), separators=(',', ':')))
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static List<List<Integer>> pacificAtlantic(int[][] heights) {
         // Write your solution here
 
@@ -10237,7 +10237,7 @@ int main() {
   id: "kth-smallest-element-bst",
   title: "Kth Smallest Element in a BST",
   difficulty: "Medium",
-  category: "Tree • Depth-First Search • Binary Search Tree • Binary Tree",
+  category: "Tree â€¢ Depth-First Search â€¢ Binary Search Tree â€¢ Binary Tree",
   description: {
     text: "Given the root of a binary search tree, and an integer k, return the kth smallest value (1-indexed) of all the values of the nodes in the tree.",
     notes: [
@@ -10259,8 +10259,8 @@ int main() {
   ],
   constraints: [
     "The number of nodes in the tree is n",
-    "1 ≤ k ≤ n ≤ 10⁴",
-    "0 ≤ Node.val ≤ 10⁴",
+    "1 â‰¤ k â‰¤ n â‰¤ 10â´",
+    "0 â‰¤ Node.val â‰¤ 10â´",
   ],
   starterCode: {
     javascript: `class TreeNode {
@@ -10337,7 +10337,7 @@ class TreeNode {
     TreeNode(int val) { this.val = val; }
 }
 
-class Solution {
+class Main {
     public static TreeNode buildTree(Integer[] arr) {
         if (arr == null || arr.length == 0) return null;
         TreeNode root = new TreeNode(arr[0]);
@@ -10425,11 +10425,11 @@ int main() {
   id: "subsets",
   title: "Subsets",
   difficulty: "Medium",
-  category: "Array • Backtracking • Bit Manipulation",
+  category: "Array â€¢ Backtracking â€¢ Bit Manipulation",
   description: {
     text: "Given an integer array nums of unique elements, return all possible subsets (the power set). The solution set must not contain duplicate subsets. Return the solution in any order.",
     notes: [
-      "The power set of n elements contains 2ⁿ subsets.",
+      "The power set of n elements contains 2â¿ subsets.",
       "Include the empty subset [] in your result.",
       "Can be solved with backtracking or bit manipulation.",
     ],
@@ -10438,7 +10438,7 @@ int main() {
     {
       input: "nums = [1,2,3]",
       output: "[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]",
-      explanation: "All 2³ = 8 possible subsets of [1,2,3].",
+      explanation: "All 2Â³ = 8 possible subsets of [1,2,3].",
     },
     {
       input: "nums = [0]",
@@ -10447,8 +10447,8 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ nums.length ≤ 10",
-    "-10 ≤ nums[i] ≤ 10",
+    "1 â‰¤ nums.length â‰¤ 10",
+    "-10 â‰¤ nums[i] â‰¤ 10",
     "All the numbers of nums are unique",
   ],
   starterCode: {
@@ -10473,7 +10473,7 @@ print(json.dumps(subsets([0]), separators=(',', ':')))       # Expected: [[],[0]
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static List<List<Integer>> subsets(int[] nums) {
         // Write your solution here
 
@@ -10535,7 +10535,7 @@ int main() {
   id: "hand-of-straights",
   title: "Hand of Straights",
   difficulty: "Medium",
-  category: "Array • Hash Table • Greedy • Sorting",
+  category: "Array â€¢ Hash Table â€¢ Greedy â€¢ Sorting",
   description: {
     text: "Alice has some number of cards and she wants to rearrange the cards into groups so that each group is of size groupSize, and consists of groupSize consecutive cards. Given an integer array hand where hand[i] is the value written on the ith card and an integer groupSize, return true if she can rearrange the cards, or false otherwise.",
     notes: [
@@ -10556,9 +10556,9 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ hand.length ≤ 10⁴",
-    "0 ≤ hand[i] ≤ 10⁹",
-    "1 ≤ groupSize ≤ hand.length",
+    "1 â‰¤ hand.length â‰¤ 10â´",
+    "0 â‰¤ hand[i] â‰¤ 10â¹",
+    "1 â‰¤ groupSize â‰¤ hand.length",
   ],
   starterCode: {
     javascript: `function isNStraightHand(hand, groupSize) {
@@ -10580,7 +10580,7 @@ print(isNStraightHand([1,2,3,4,5], 4))            # Expected: False`,
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static boolean isNStraightHand(int[] hand, int groupSize) {
         // Write your solution here
 
@@ -10630,12 +10630,12 @@ int main() {
   id: "partition-equal-subset-sum",
   title: "Partition Equal Subset Sum",
   difficulty: "Medium",
-  category: "Array • Dynamic Programming",
+  category: "Array â€¢ Dynamic Programming",
   description: {
     text: "Given an integer array nums, return true if you can partition the array into two subsets such that the sum of the elements in both subsets is equal, or false otherwise.",
     notes: [
       "If the total sum is odd, it's impossible to partition equally.",
-      "This is a 0/1 knapsack problem — find a subset that sums to totalSum / 2.",
+      "This is a 0/1 knapsack problem â€” find a subset that sums to totalSum / 2.",
       "Use a boolean DP set tracking all reachable sums.",
     ],
   },
@@ -10652,8 +10652,8 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ nums.length ≤ 200",
-    "1 ≤ nums[i] ≤ 100",
+    "1 â‰¤ nums.length â‰¤ 200",
+    "1 â‰¤ nums[i] â‰¤ 100",
   ],
   starterCode: {
     javascript: `function canPartition(nums) {
@@ -10675,7 +10675,7 @@ print(canPartition([1,2,3,5]))   # Expected: False`,
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static boolean canPartition(int[] nums) {
         // Write your solution here
 
@@ -10725,7 +10725,7 @@ int main() {
   id: "burst-balloons",
   title: "Burst Balloons",
   difficulty: "Hard",
-  category: "Array • Dynamic Programming • Divide and Conquer",
+  category: "Array â€¢ Dynamic Programming â€¢ Divide and Conquer",
   description: {
     text: "You are given n balloons, indexed from 0 to n - 1. Each balloon is painted with a number on it represented by an array nums. You are asked to burst all the balloons. If you burst the ith balloon, you will get nums[i - 1] * nums[i] * nums[i + 1] coins. If i - 1 or i + 1 goes out of bounds of the array, treat it as if there is a balloon with a 1 painted on it. Return the maximum coins you can collect by bursting the balloons wisely.",
     notes: [
@@ -10738,18 +10738,18 @@ int main() {
     {
       input: "nums = [3,1,5,8]",
       output: "167",
-      explanation: "Burst order: [3,1,5,8] → [3,5,8] → [3,8] → [8] → []. Coins: 3×1×5 + 3×5×8 + 1×3×8 + 1×8×1 = 167.",
+      explanation: "Burst order: [3,1,5,8] â†’ [3,5,8] â†’ [3,8] â†’ [8] â†’ []. Coins: 3Ã—1Ã—5 + 3Ã—5Ã—8 + 1Ã—3Ã—8 + 1Ã—8Ã—1 = 167.",
     },
     {
       input: "nums = [1,5]",
       output: "10",
-      explanation: "Burst 1 first: 1×1×5=5. Then burst 5: 1×5×1=5. Total = 10.",
+      explanation: "Burst 1 first: 1Ã—1Ã—5=5. Then burst 5: 1Ã—5Ã—1=5. Total = 10.",
     },
   ],
   constraints: [
     "n == nums.length",
-    "1 ≤ n ≤ 300",
-    "0 ≤ nums[i] ≤ 100",
+    "1 â‰¤ n â‰¤ 300",
+    "0 â‰¤ nums[i] â‰¤ 100",
   ],
   starterCode: {
     javascript: `function maxCoins(nums) {
@@ -10769,7 +10769,7 @@ console.log(maxCoins([1,5]));      // Expected: 10`,
 print(maxCoins([3,1,5,8]))  # Expected: 167
 print(maxCoins([1,5]))       # Expected: 10`,
 
-    java: `class Solution {
+    java: `class Main {
     public static int maxCoins(int[] nums) {
         // Write your solution here
 
@@ -10819,7 +10819,7 @@ int main() {
   id: "meeting-rooms-ii",
   title: "Meeting Rooms II",
   difficulty: "Medium",
-  category: "Array • Greedy • Sorting • Heap",
+  category: "Array â€¢ Greedy â€¢ Sorting â€¢ Heap",
   description: {
     text: "Given an array of meeting time intervals where intervals[i] = [start, end], return the minimum number of conference rooms required.",
     notes: [
@@ -10846,8 +10846,8 @@ int main() {
     },
   ],
   constraints: [
-    "0 ≤ intervals.length ≤ 10⁴",
-    "0 ≤ start < end ≤ 10⁶",
+    "0 â‰¤ intervals.length â‰¤ 10â´",
+    "0 â‰¤ start < end â‰¤ 10â¶",
   ],
   starterCode: {
     javascript: `function minMeetingRooms(intervals) {
@@ -10871,7 +10871,7 @@ print(minMeetingRooms([[1,5],[2,6],[3,7]]))       # Expected: 3`,
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int minMeetingRooms(int[][] intervals) {
         // Write your solution here
 
@@ -10924,11 +10924,11 @@ int main() {
   id: "rotate-list",
   title: "Rotate List",
   difficulty: "Medium",
-  category: "Linked List • Two Pointers",
+  category: "Linked List â€¢ Two Pointers",
   description: {
     text: "Given the head of a linked list, rotate the list to the right by k places.",
     notes: [
-      "k may be greater than the length of the list — use modulo.",
+      "k may be greater than the length of the list â€” use modulo.",
       "Rotating by the list length results in the same list.",
       "Connect the tail to the head to form a circle, then break at the right point.",
     ],
@@ -10952,8 +10952,8 @@ int main() {
   ],
   constraints: [
     "The number of nodes in the list is in the range [0, 500]",
-    "-100 ≤ Node.val ≤ 100",
-    "0 ≤ k ≤ 2 × 10⁹",
+    "-100 â‰¤ Node.val â‰¤ 100",
+    "0 â‰¤ k â‰¤ 2 Ã— 10â¹",
   ],
   starterCode: {
     javascript: `class ListNode {
@@ -11028,7 +11028,7 @@ class ListNode {
     ListNode(int val) { this.val = val; }
 }
 
-class Solution {
+class Main {
     public static ListNode buildList(int[] arr) {
         if (arr.length == 0) return null;
         ListNode head = new ListNode(arr[0]);
@@ -11113,12 +11113,12 @@ int main() {
   id: "construct-binary-tree-preorder-inorder",
   title: "Construct Binary Tree from Preorder and Inorder Traversal",
   difficulty: "Medium",
-  category: "Array • Hash Table • Divide and Conquer • Tree • Binary Tree",
+  category: "Array â€¢ Hash Table â€¢ Divide and Conquer â€¢ Tree â€¢ Binary Tree",
   description: {
     text: "Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree.",
     notes: [
       "The first element of preorder is always the root.",
-      "Find the root in inorder — everything to its left is the left subtree, everything to the right is the right subtree.",
+      "Find the root in inorder â€” everything to its left is the left subtree, everything to the right is the right subtree.",
       "Use a hash map for O(1) index lookup in the inorder array.",
     ],
   },
@@ -11135,9 +11135,9 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ preorder.length ≤ 3000",
+    "1 â‰¤ preorder.length â‰¤ 3000",
     "inorder.length == preorder.length",
-    "-3000 ≤ preorder[i], inorder[i] ≤ 3000",
+    "-3000 â‰¤ preorder[i], inorder[i] â‰¤ 3000",
     "preorder and inorder consist of unique values",
     "Each value of inorder also appears in preorder",
     "preorder is guaranteed to be the preorder traversal of the tree",
@@ -11216,7 +11216,7 @@ class TreeNode {
     TreeNode(int val) { this.val = val; }
 }
 
-class Solution {
+class Main {
     public static List<Integer> treeToArray(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         if (root == null) return res;
@@ -11312,11 +11312,11 @@ int main() {
   id: "word-ladder",
   title: "Word Ladder",
   difficulty: "Hard",
-  category: "Hash Table • String • Breadth-First Search",
+  category: "Hash Table â€¢ String â€¢ Breadth-First Search",
   description: {
-    text: "A transformation sequence from word beginWord to word endWord using a dictionary wordList is a sequence beginWord → s1 → s2 → ... → sk such that every adjacent pair of words differs by a single letter, and every si for 1 ≤ i ≤ k is in wordList. Given beginWord, endWord, and wordList, return the number of words in the shortest transformation sequence from beginWord to endWord, or 0 if no such sequence exists.",
+    text: "A transformation sequence from word beginWord to word endWord using a dictionary wordList is a sequence beginWord â†’ s1 â†’ s2 â†’ ... â†’ sk such that every adjacent pair of words differs by a single letter, and every si for 1 â‰¤ i â‰¤ k is in wordList. Given beginWord, endWord, and wordList, return the number of words in the shortest transformation sequence from beginWord to endWord, or 0 if no such sequence exists.",
     notes: [
-      "Use BFS to find the shortest path — each level represents one transformation.",
+      "Use BFS to find the shortest path â€” each level represents one transformation.",
       "At each step try replacing every character with a-z and check if it exists in the word set.",
       "Remove words from the set once visited to avoid cycles.",
     ],
@@ -11325,7 +11325,7 @@ int main() {
     {
       input: `beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]`,
       output: "5",
-      explanation: `Shortest sequence: "hit" → "hot" → "dot" → "dog" → "cog" (5 words).`,
+      explanation: `Shortest sequence: "hit" â†’ "hot" â†’ "dot" â†’ "dog" â†’ "cog" (5 words).`,
     },
     {
       input: `beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log"]`,
@@ -11334,9 +11334,9 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ beginWord.length ≤ 10",
+    "1 â‰¤ beginWord.length â‰¤ 10",
     "endWord.length == beginWord.length",
-    "1 ≤ wordList.length ≤ 5000",
+    "1 â‰¤ wordList.length â‰¤ 5000",
     "wordList[i].length == beginWord.length",
     "beginWord, endWord, and wordList[i] consist of lowercase English letters",
     "beginWord != endWord",
@@ -11362,7 +11362,7 @@ print(ladderLength("hit", "cog", ["hot","dot","dog","lot","log"]))         # Exp
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int ladderLength(String beginWord, String endWord, List<String> wordList) {
         // Write your solution here
 
@@ -11415,7 +11415,7 @@ int main() {
   id: "maximum-profit-job-scheduling",
   title: "Maximum Profit in Job Scheduling",
   difficulty: "Hard",
-  category: "Array • Binary Search • Dynamic Programming • Sorting",
+  category: "Array â€¢ Binary Search â€¢ Dynamic Programming â€¢ Sorting",
   description: {
     text: "We have n jobs, where every job is scheduled to be done from startTime[i] to endTime[i], obtaining a profit of profit[i]. You're given the startTime, endTime and profit arrays. Return the maximum profit you can take such that there are no two jobs in the subset with overlapping time ranges. If you choose a job that ends at time X you will be able to start another job that starts at time X.",
     notes: [
@@ -11442,9 +11442,9 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ startTime.length == endTime.length == profit.length ≤ 5 × 10⁴",
-    "1 ≤ startTime[i] < endTime[i] ≤ 10⁹",
-    "1 ≤ profit[i] ≤ 10⁴",
+    "1 â‰¤ startTime.length == endTime.length == profit.length â‰¤ 5 Ã— 10â´",
+    "1 â‰¤ startTime[i] < endTime[i] â‰¤ 10â¹",
+    "1 â‰¤ profit[i] â‰¤ 10â´",
   ],
   starterCode: {
     javascript: `function jobScheduling(startTime, endTime, profit) {
@@ -11468,7 +11468,7 @@ print(jobScheduling([1,1,1], [2,3,4], [5,6,4]))                     # Expected: 
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
         // Write your solution here
 
@@ -11521,12 +11521,12 @@ int main() {
   id: "find-median-from-data-stream",
   title: "Find Median from Data Stream",
   difficulty: "Hard",
-  category: "Two Pointers • Design • Sorting • Heap • Data Stream",
+  category: "Two Pointers â€¢ Design â€¢ Sorting â€¢ Heap â€¢ Data Stream",
   description: {
     text: "The median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value, and the median is the mean of the two middle values. Implement the MedianFinder class with addNum(num) which adds an integer num from the data stream to the data structure, and findMedian() which returns the median of all elements so far.",
     notes: [
       "Use two heaps: a max-heap for the lower half and a min-heap for the upper half.",
-      "Keep the heaps balanced — sizes differ by at most 1.",
+      "Keep the heaps balanced â€” sizes differ by at most 1.",
       "Median is the top of the larger heap, or average of both tops if equal size.",
     ],
   },
@@ -11538,9 +11538,9 @@ int main() {
     },
   ],
   constraints: [
-    "-10⁵ ≤ num ≤ 10⁵",
+    "-10âµ â‰¤ num â‰¤ 10âµ",
     "There will be at least one element in the data structure before calling findMedian",
-    "At most 5 × 10⁴ calls will be made to addNum and findMedian",
+    "At most 5 Ã— 10â´ calls will be made to addNum and findMedian",
   ],
   starterCode: {
     javascript: `class MedianFinder {
@@ -11662,36 +11662,36 @@ int main() {
   id: "alien-dictionary",
   title: "Alien Dictionary",
   difficulty: "Hard",
-  category: "Array • String • Graph • Topological Sort • Depth-First Search",
+  category: "Array â€¢ String â€¢ Graph â€¢ Topological Sort â€¢ Depth-First Search",
   description: {
     text: "There is a new alien language that uses the English alphabet. However, the order of the letters is unknown to you. You are given a list of strings words from the alien language's dictionary, where the strings in words are sorted lexicographically by the rules of this new language. Derive the order of letters in this alien language and return any valid order. If the order is invalid, return an empty string. If there are multiple valid orders, return any of them.",
     notes: [
       "Compare adjacent words to find character ordering constraints.",
       "Build a directed graph and run topological sort (DFS or BFS/Kahn's).",
       "If a shorter word appears after a longer word with the same prefix, return empty string.",
-      "Detect cycles using DFS — a cycle means the order is invalid.",
+      "Detect cycles using DFS â€” a cycle means the order is invalid.",
     ],
   },
   examples: [
     {
       input: `words = ["wrt","wrf","er","ett","rftt"]`,
       output: `"wertf"`,
-      explanation: `From comparisons: t→f, w→e, r→t, e→r. Topological sort gives "wertf".`,
+      explanation: `From comparisons: tâ†’f, wâ†’e, râ†’t, eâ†’r. Topological sort gives "wertf".`,
     },
     {
       input: `words = ["z","x"]`,
       output: `"zx"`,
-      explanation: `Only one constraint: z→x.`,
+      explanation: `Only one constraint: zâ†’x.`,
     },
     {
       input: `words = ["z","x","z"]`,
       output: `""`,
-      explanation: `z→x and x→z creates a cycle, so return empty string.`,
+      explanation: `zâ†’x and xâ†’z creates a cycle, so return empty string.`,
     },
   ],
   constraints: [
-    "1 ≤ words.length ≤ 100",
-    "1 ≤ words[i].length ≤ 100",
+    "1 â‰¤ words.length â‰¤ 100",
+    "1 â‰¤ words[i].length â‰¤ 100",
     "words[i] consists of only lowercase English letters",
   ],
   starterCode: {
@@ -11716,7 +11716,7 @@ print(alienOrder(["z","x","z"]))                     # Expected: ""`,
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static String alienOrder(String[] words) {
         // Write your solution here
 
@@ -11773,7 +11773,7 @@ int main() {
   id: "sliding-window-maximum",
   title: "Sliding Window Maximum",
   difficulty: "Hard",
-  category: "Array • Queue • Sliding Window • Heap • Monotonic Queue",
+  category: "Array â€¢ Queue â€¢ Sliding Window â€¢ Heap â€¢ Monotonic Queue",
   description: {
     text: "You are given an array of integers nums and an integer k. There is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position, return the maximum value in each window position.",
     notes: [
@@ -11801,9 +11801,9 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ nums.length ≤ 10⁵",
-    "-10⁴ ≤ nums[i] ≤ 10⁴",
-    "1 ≤ k ≤ nums.length",
+    "1 â‰¤ nums.length â‰¤ 10âµ",
+    "-10â´ â‰¤ nums[i] â‰¤ 10â´",
+    "1 â‰¤ k â‰¤ nums.length",
   ],
   starterCode: {
     javascript: `function maxSlidingWindow(nums, k) {
@@ -11829,7 +11829,7 @@ print(json.dumps(maxSlidingWindow([9,11], 2), separators=(',', ':')))           
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int[] maxSlidingWindow(int[] nums, int k) {
         // Write your solution here
 
@@ -11891,7 +11891,7 @@ int main() {
   id: "sum-of-two-integers",
   title: "Sum of Two Integers",
   difficulty: "Medium",
-  category: "Math • Bit Manipulation",
+  category: "Math â€¢ Bit Manipulation",
   description: {
     text: "Given two integers a and b, return the sum of the two integers without using the operators + and -.",
     notes: [
@@ -11919,7 +11919,7 @@ int main() {
     },
   ],
   constraints: [
-    "-1000 ≤ a, b ≤ 1000",
+    "-1000 â‰¤ a, b â‰¤ 1000",
   ],
   starterCode: {
     javascript: `function getSum(a, b) {
@@ -11941,7 +11941,7 @@ print(getSum(1, 2))   # Expected: 3
 print(getSum(2, 3))   # Expected: 5
 print(getSum(-1, 1))  # Expected: 0`,
 
-    java: `class Solution {
+    java: `class Main {
     public static int getSum(int a, int b) {
         // Write your solution here
 
@@ -11990,9 +11990,9 @@ int main() {
   id: "counting-bits",
   title: "Counting Bits",
   difficulty: "Easy",
-  category: "Dynamic Programming • Bit Manipulation",
+  category: "Dynamic Programming â€¢ Bit Manipulation",
   description: {
-    text: "Given an integer n, return an array ans of length n + 1 such that for each i (0 ≤ i ≤ n), ans[i] is the number of 1's in the binary representation of i.",
+    text: "Given an integer n, return an array ans of length n + 1 such that for each i (0 â‰¤ i â‰¤ n), ans[i] is the number of 1's in the binary representation of i.",
     notes: [
       "For even number i: countBits(i) = countBits(i >> 1).",
       "For odd number i: countBits(i) = countBits(i >> 1) + 1.",
@@ -12003,16 +12003,16 @@ int main() {
     {
       input: "n = 2",
       output: "[0,1,1]",
-      explanation: "0 → 0 ones, 1 → 1 one, 2 (10) → 1 one.",
+      explanation: "0 â†’ 0 ones, 1 â†’ 1 one, 2 (10) â†’ 1 one.",
     },
     {
       input: "n = 5",
       output: "[0,1,1,2,1,2]",
-      explanation: "0→0, 1→1, 2→1, 3→2, 4→1, 5→2 ones in binary.",
+      explanation: "0â†’0, 1â†’1, 2â†’1, 3â†’2, 4â†’1, 5â†’2 ones in binary.",
     },
   ],
   constraints: [
-    "0 ≤ n ≤ 10⁵",
+    "0 â‰¤ n â‰¤ 10âµ",
   ],
   starterCode: {
     javascript: `function countBits(n) {
@@ -12036,7 +12036,7 @@ print(json.dumps(countBits(5), separators=(',', ':')))  # Expected: [0,1,1,2,1,2
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int[] countBits(int n) {
         // Write your solution here
 
@@ -12091,13 +12091,13 @@ int main() {
   id: "longest-repeating-character-replacement",
   title: "Longest Repeating Character Replacement",
   difficulty: "Medium",
-  category: "String • Sliding Window • Hash Table",
+  category: "String â€¢ Sliding Window â€¢ Hash Table",
   description: {
     text: "You are given a string s and an integer k. You can choose any character of the string and change it to any other uppercase English character. You can perform this operation at most k times. Return the length of the longest substring containing the same letter you can get after performing the above operations.",
     notes: [
       "Use a sliding window and track the frequency of each character in the window.",
-      "The window is valid if (window size - max frequency) ≤ k.",
-      "The max frequency only needs to increase — never shrink it.",
+      "The window is valid if (window size - max frequency) â‰¤ k.",
+      "The max frequency only needs to increase â€” never shrink it.",
     ],
   },
   examples: [
@@ -12118,9 +12118,9 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ s.length ≤ 10⁵",
+    "1 â‰¤ s.length â‰¤ 10âµ",
     "s consists of only uppercase English letters",
-    "0 ≤ k ≤ s.length",
+    "0 â‰¤ k â‰¤ s.length",
   ],
   starterCode: {
     javascript: `function characterReplacement(s, k) {
@@ -12142,7 +12142,7 @@ print(characterReplacement("ABAB", 2))    # Expected: 4
 print(characterReplacement("AABABBA", 1)) # Expected: 4
 print(characterReplacement("AAAA", 0))    # Expected: 4`,
 
-    java: `class Solution {
+    java: `class Main {
     public static int characterReplacement(String s, int k) {
         // Write your solution here
 
@@ -12193,7 +12193,7 @@ int main() {
   id: "serialize-and-deserialize-binary-tree",
   title: "Serialize and Deserialize Binary Tree",
   difficulty: "Hard",
-  category: "String • Tree • Depth-First Search • Breadth-First Search • Design • Binary Tree",
+  category: "String â€¢ Tree â€¢ Depth-First Search â€¢ Breadth-First Search â€¢ Design â€¢ Binary Tree",
   description: {
     text: "Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored or transmitted and reconstructed later. Design an algorithm to serialize and deserialize a binary tree. The serialize function converts the tree to a string, and the deserialize function reconstructs the tree from that string. There is no restriction on how your serialization/deserialization algorithm should work.",
     notes: [
@@ -12215,8 +12215,8 @@ int main() {
     },
   ],
   constraints: [
-    "The number of nodes in the tree is in the range [0, 10⁴]",
-    "-1000 ≤ Node.val ≤ 1000",
+    "The number of nodes in the tree is in the range [0, 10â´]",
+    "-1000 â‰¤ Node.val â‰¤ 1000",
   ],
   starterCode: {
     javascript: `class TreeNode {
@@ -12467,7 +12467,7 @@ int main() {
   id: "task-scheduler",
   title: "Task Scheduler",
   difficulty: "Medium",
-  category: "Array • Hash Table • Greedy • Sorting • Heap • Counting",
+  category: "Array â€¢ Hash Table â€¢ Greedy â€¢ Sorting â€¢ Heap â€¢ Counting",
   description: {
     text: "You are given an array of CPU tasks, each labeled with a letter from A to Z, and a number n. Each CPU interval can be idle or allow completion of one task. Tasks can be completed in any order, but there is a cooldown interval of n between two tasks with the same label. Return the minimum number of CPU intervals required to complete all the tasks.",
     notes: [
@@ -12480,12 +12480,12 @@ int main() {
     {
       input: `tasks = ["A","A","A","B","B","B"], n = 2`,
       output: "8",
-      explanation: "A→B→idle→A→B→idle→A→B. Total 8 intervals.",
+      explanation: "Aâ†’Bâ†’idleâ†’Aâ†’Bâ†’idleâ†’Aâ†’B. Total 8 intervals.",
     },
     {
       input: `tasks = ["A","C","A","B","D","B"], n = 1`,
       output: "6",
-      explanation: "No idle time needed: A→B→C→D→A→B. Total 6 intervals.",
+      explanation: "No idle time needed: Aâ†’Bâ†’Câ†’Dâ†’Aâ†’B. Total 6 intervals.",
     },
     {
       input: `tasks = ["A","A","A","B","B","B"], n = 0`,
@@ -12494,9 +12494,9 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ tasks.length ≤ 10⁴",
+    "1 â‰¤ tasks.length â‰¤ 10â´",
     "tasks[i] is an uppercase English letter",
-    "0 ≤ n ≤ 100",
+    "0 â‰¤ n â‰¤ 100",
   ],
   starterCode: {
     javascript: `function leastInterval(tasks, n) {
@@ -12520,7 +12520,7 @@ print(leastInterval(["A","A","A","B","B","B"], 0))  # Expected: 6`,
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int leastInterval(char[] tasks, int n) {
         // Write your solution here
 
@@ -12574,11 +12574,11 @@ int main() {
   id: "number-of-connected-components",
   title: "Number of Connected Components in an Undirected Graph",
   difficulty: "Medium",
-  category: "Graph • Depth-First Search • Breadth-First Search • Union Find",
+  category: "Graph â€¢ Depth-First Search â€¢ Breadth-First Search â€¢ Union Find",
   description: {
     text: "You have a graph of n nodes. You are given an integer n and an array edges where edges[i] = [ai, bi] indicates that there is an edge between ai and bi in the graph. Return the number of connected components in the graph.",
     notes: [
-      "Use Union-Find (Disjoint Set Union) for an efficient O(n α(n)) solution.",
+      "Use Union-Find (Disjoint Set Union) for an efficient O(n Î±(n)) solution.",
       "Alternatively use DFS/BFS visiting all unvisited neighbors.",
       "Each unvisited node that starts a new DFS/BFS adds 1 to the component count.",
     ],
@@ -12601,10 +12601,10 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ n ≤ 2000",
-    "1 ≤ edges.length ≤ 5000",
+    "1 â‰¤ n â‰¤ 2000",
+    "1 â‰¤ edges.length â‰¤ 5000",
     "edges[i].length == 2",
-    "0 ≤ ai ≤ bi < n",
+    "0 â‰¤ ai â‰¤ bi < n",
     "ai != bi",
     "There are no repeated edges",
   ],
@@ -12630,7 +12630,7 @@ print(countComponents(4, []))                          # Expected: 4`,
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int countComponents(int n, int[][] edges) {
         // Write your solution here
 
@@ -12683,13 +12683,13 @@ int main() {
   id: "redundant-connection",
   title: "Redundant Connection",
   difficulty: "Medium",
-  category: "Graph • Depth-First Search • Breadth-First Search • Union Find • Tree",
+  category: "Graph â€¢ Depth-First Search â€¢ Breadth-First Search â€¢ Union Find â€¢ Tree",
   description: {
     text: "In this problem, a tree is an undirected graph that is connected and has no cycles. You are given a graph that started as a tree with n nodes labeled from 1 to n, with one additional edge added. The added edge has two different vertices chosen from 1 to n, and was not an edge that already existed. The graph is represented as an array edges where edges[i] = [ai, bi] indicates that there is an edge between ai and bi in the graph. Return an edge that can be removed so that the resulting graph is a tree of n nodes. If there are multiple answers, return the edge that occurs last in the input.",
     notes: [
       "Use Union-Find: for each edge, if both nodes are already in the same component, this edge is redundant.",
       "The first edge that tries to union two already-connected nodes is the answer.",
-      "Process edges in order — the last such edge encountered is the answer.",
+      "Process edges in order â€” the last such edge encountered is the answer.",
     ],
   },
   examples: [
@@ -12706,9 +12706,9 @@ int main() {
   ],
   constraints: [
     "n == edges.length",
-    "3 ≤ n ≤ 1000",
+    "3 â‰¤ n â‰¤ 1000",
     "edges[i].length == 2",
-    "1 ≤ ai < bi ≤ edges.length",
+    "1 â‰¤ ai < bi â‰¤ edges.length",
     "ai != bi",
     "There are no repeated edges",
     "The given graph is connected",
@@ -12735,7 +12735,7 @@ print(json.dumps(findRedundantConnection([[1,2],[2,3],[3,4],[1,4],[1,5]]), separ
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int[] findRedundantConnection(int[][] edges) {
         // Write your solution here
 
@@ -12793,7 +12793,7 @@ int main() {
   id: "reverse-bits",
   title: "Reverse Bits",
   difficulty: "Easy",
-  category: "Divide and Conquer • Bit Manipulation",
+  category: "Divide and Conquer â€¢ Bit Manipulation",
   description: {
     text: "Reverse bits of a given 32-bit unsigned integer and return the result as an unsigned integer.",
     notes: [
@@ -12835,7 +12835,7 @@ console.log(reverseBits(4294967293)); // Expected: 3221225471`,
 print(reverseBits(43261596))    # Expected: 964176192
 print(reverseBits(4294967293))  # Expected: 3221225471`,
 
-    java: `class Solution {
+    java: `class Main {
     public static long reverseBits(long n) {
         // Write your solution here
 
@@ -12882,12 +12882,12 @@ int main() {
   id: "missing-number",
   title: "Missing Number",
   difficulty: "Easy",
-  category: "Array • Hash Table • Math • Bit Manipulation • Sorting",
+  category: "Array â€¢ Hash Table â€¢ Math â€¢ Bit Manipulation â€¢ Sorting",
   description: {
     text: "Given an array nums containing n distinct numbers in the range [0, n], return the only number in the range that is missing from the array.",
     notes: [
       "The sum of [0, n] is n*(n+1)/2. Subtract the actual sum to find the missing number.",
-      "Alternatively use XOR: XOR all indices and all values — duplicates cancel out.",
+      "Alternatively use XOR: XOR all indices and all values â€” duplicates cancel out.",
       "Both approaches run in O(n) time and O(1) space.",
     ],
   },
@@ -12910,8 +12910,8 @@ int main() {
   ],
   constraints: [
     "n == nums.length",
-    "1 ≤ n ≤ 10⁴",
-    "0 ≤ nums[i] ≤ n",
+    "1 â‰¤ n â‰¤ 10â´",
+    "0 â‰¤ nums[i] â‰¤ n",
     "All the numbers of nums are unique",
   ],
   starterCode: {
@@ -12934,7 +12934,7 @@ print(missingNumber([3,0,1]))               # Expected: 2
 print(missingNumber([0,1]))                 # Expected: 2
 print(missingNumber([9,6,4,2,3,5,7,0,1]))  # Expected: 8`,
 
-    java: `class Solution {
+    java: `class Main {
     public static int missingNumber(int[] nums) {
         // Write your solution here
 
@@ -12987,7 +12987,7 @@ int main() {
   id: "graph-valid-tree",
   title: "Graph Valid Tree",
   difficulty: "Medium",
-  category: "Graph • Depth-First Search • Breadth-First Search • Union Find",
+  category: "Graph â€¢ Depth-First Search â€¢ Breadth-First Search â€¢ Union Find",
   description: {
     text: "Given n nodes labeled from 0 to n-1 and a list of undirected edges, write a function to check whether these edges form a valid tree. A valid tree must be connected and contain no cycles.",
     notes: [
@@ -13000,24 +13000,24 @@ int main() {
     {
       input: "n = 5, edges = [[0,1],[0,2],[0,3],[1,4]]",
       output: "true",
-      explanation: "4 edges for 5 nodes, no cycles, fully connected — valid tree.",
+      explanation: "4 edges for 5 nodes, no cycles, fully connected â€” valid tree.",
     },
     {
       input: "n = 5, edges = [[0,1],[1,2],[2,3],[1,3],[1,4]]",
       output: "false",
-      explanation: "Contains a cycle: 1→2→3→1.",
+      explanation: "Contains a cycle: 1â†’2â†’3â†’1.",
     },
     {
       input: "n = 3, edges = [[0,1]]",
       output: "false",
-      explanation: "Only 1 edge for 3 nodes — graph is not connected.",
+      explanation: "Only 1 edge for 3 nodes â€” graph is not connected.",
     },
   ],
   constraints: [
-    "1 ≤ n ≤ 2000",
-    "0 ≤ edges.length ≤ 5000",
+    "1 â‰¤ n â‰¤ 2000",
+    "0 â‰¤ edges.length â‰¤ 5000",
     "edges[i].length == 2",
-    "0 ≤ ai, bi < n",
+    "0 â‰¤ ai, bi < n",
     "ai != bi",
     "There are no self-loops or repeated edges",
   ],
@@ -13043,7 +13043,7 @@ print(validTree(3, [[0,1]]))                           # Expected: False`,
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static boolean validTree(int n, int[][] edges) {
         // Write your solution here
 
@@ -13096,11 +13096,11 @@ int main() {
   id: "swim-in-rising-water",
   title: "Swim in Rising Water",
   difficulty: "Hard",
-  category: "Array • Binary Search • Depth-First Search • Breadth-First Search • Matrix • Heap",
+  category: "Array â€¢ Binary Search â€¢ Depth-First Search â€¢ Breadth-First Search â€¢ Matrix â€¢ Heap",
   description: {
     text: "You are given an n x n integer matrix grid where each value grid[i][j] represents the elevation at that point (i, j). The rain starts to fall at time t. At time t, the depth of the water everywhere is t. You can swim from a square to an adjacent (4-directional) square if the elevation of both squares is at most t. You can swim infinite distances in zero time. You must stay within the n x n grid. Return the least time until you can reach the bottom right square (n-1, n-1) from the top left square (0, 0).",
     notes: [
-      "Use a min-heap (priority queue) — Dijkstra-like approach.",
+      "Use a min-heap (priority queue) â€” Dijkstra-like approach.",
       "The cost to reach a cell is max(cost to previous cell, current cell elevation).",
       "Alternatively use binary search + BFS/DFS to check if target time is reachable.",
     ],
@@ -13109,7 +13109,7 @@ int main() {
     {
       input: "grid = [[0,2],[1,3]]",
       output: "3",
-      explanation: "At time 3 we can swim from (0,0)→(0,1)→(1,1) since all elevations ≤ 3.",
+      explanation: "At time 3 we can swim from (0,0)â†’(0,1)â†’(1,1) since all elevations â‰¤ 3.",
     },
     {
       input: "grid = [[0,1,2,3,4],[24,23,22,21,5],[12,13,14,15,16],[11,17,18,19,20],[10,9,8,7,6]]",
@@ -13120,8 +13120,8 @@ int main() {
   constraints: [
     "n == grid.length",
     "n == grid[i].length",
-    "1 ≤ n ≤ 50",
-    "0 ≤ grid[i][j] < n²",
+    "1 â‰¤ n â‰¤ 50",
+    "0 â‰¤ grid[i][j] < nÂ²",
     "Each value grid[i][j] is unique",
   ],
   starterCode: {
@@ -13144,7 +13144,7 @@ print(swimInWater([[0,1,2,3,4],[24,23,22,21,5],[12,13,14,15,16],[11,17,18,19,20]
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static int swimInWater(int[][] grid) {
         // Write your solution here
 
@@ -13199,7 +13199,7 @@ int main() {
   id: "interleaving-string",
   title: "Interleaving String",
   difficulty: "Medium",
-  category: "String • Dynamic Programming",
+  category: "String â€¢ Dynamic Programming",
   description: {
     text: "Given strings s1, s2, and s3, find whether s3 is formed by an interleaving of s1 and s2. An interleaving of two strings s and t is a configuration where s and t are divided into n and m substrings respectively such that s = s1 + s2 + ... + sn, t = t1 + t2 + ... + tm, and the interleaving is s1 + t1 + s2 + t2 + ... or t1 + s1 + t2 + s2 + ...",
     notes: [
@@ -13226,8 +13226,8 @@ int main() {
     },
   ],
   constraints: [
-    "0 ≤ s1.length, s2.length ≤ 100",
-    "0 ≤ s3.length ≤ 200",
+    "0 â‰¤ s1.length, s2.length â‰¤ 100",
+    "0 â‰¤ s3.length â‰¤ 200",
     "s1, s2, and s3 consist of lowercase English letters",
   ],
   starterCode: {
@@ -13250,7 +13250,7 @@ print(isInterleave("aabcc", "dbbca", "aadbbcbcac"))  # Expected: True
 print(isInterleave("aabcc", "dbbca", "aadbbbaccc"))  # Expected: False
 print(isInterleave("", "", ""))                        # Expected: True`,
 
-    java: `class Solution {
+    java: `class Main {
     public static boolean isInterleave(String s1, String s2, String s3) {
         // Write your solution here
 
@@ -13300,13 +13300,13 @@ int main() {
   id: "minimum-height-trees",
   title: "Minimum Height Trees",
   difficulty: "Medium",
-  category: "Graph • Depth-First Search • Breadth-First Search • Topological Sort • Tree",
+  category: "Graph â€¢ Depth-First Search â€¢ Breadth-First Search â€¢ Topological Sort â€¢ Tree",
   description: {
     text: "A tree is an undirected graph in which any two vertices are connected by exactly one path. Given a tree of n nodes labeled from 0 to n-1, and an array of n-1 edges, find all the roots of Minimum Height Trees (MHTs) and return their labels in any order. A minimum height tree is one where the height of the tree is minimized.",
     notes: [
-      "The answer is always 1 or 2 nodes — the centroid(s) of the tree.",
+      "The answer is always 1 or 2 nodes â€” the centroid(s) of the tree.",
       "Iteratively remove leaf nodes (degree 1) layer by layer until 1 or 2 nodes remain.",
-      "Similar to topological sort — leaves have degree 1.",
+      "Similar to topological sort â€” leaves have degree 1.",
     ],
   },
   examples: [
@@ -13327,9 +13327,9 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ n ≤ 2 × 10⁴",
+    "1 â‰¤ n â‰¤ 2 Ã— 10â´",
     "edges.length == n - 1",
-    "0 ≤ ai, bi < n",
+    "0 â‰¤ ai, bi < n",
     "ai != bi",
     "All the pairs (ai, bi) are distinct",
     "The given input is guaranteed to be a tree and there will be no repeated edges",
@@ -13358,7 +13358,7 @@ print(json.dumps(findMinHeightTrees(1, []), separators=(',', ':')))             
 
     java: `import java.util.*;
 
-class Solution {
+class Main {
     public static List<Integer> findMinHeightTrees(int n, int[][] edges) {
         // Write your solution here
 
@@ -13420,7 +13420,7 @@ int main() {
   id: "longest-common-subsequence",
   title: "Longest Common Subsequence",
   difficulty: "Medium",
-  category: "String • Dynamic Programming",
+  category: "String â€¢ Dynamic Programming",
   description: {
     text: "Given two strings text1 and text2, return the length of their longest common subsequence. If there is no common subsequence, return 0. A subsequence of a string is a new string generated from the original string with some characters (can be none) deleted without changing the relative order of the remaining characters.",
     notes: [
@@ -13447,7 +13447,7 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ text1.length, text2.length ≤ 1000",
+    "1 â‰¤ text1.length, text2.length â‰¤ 1000",
     "text1 and text2 consist of only lowercase English characters",
   ],
   starterCode: {
@@ -13470,7 +13470,7 @@ print(longestCommonSubsequence("abcde", "ace"))  # Expected: 3
 print(longestCommonSubsequence("abc", "abc"))    # Expected: 3
 print(longestCommonSubsequence("abc", "def"))    # Expected: 0`,
 
-    java: `class Solution {
+    java: `class Main {
     public static int longestCommonSubsequence(String text1, String text2) {
         // Write your solution here
 
@@ -13521,7 +13521,7 @@ int main() {
   id: "regular-expression-matching",
   title: "Regular Expression Matching",
   difficulty: "Hard",
-  category: "String • Dynamic Programming • Recursion",
+  category: "String â€¢ Dynamic Programming â€¢ Recursion",
   description: {
     text: "Given an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where '.' matches any single character and '*' matches zero or more of the preceding element. The matching should cover the entire input string (not partial).",
     notes: [
@@ -13548,8 +13548,8 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ s.length ≤ 20",
-    "1 ≤ p.length ≤ 30",
+    "1 â‰¤ s.length â‰¤ 20",
+    "1 â‰¤ p.length â‰¤ 30",
     "s contains only lowercase English letters",
     "p contains only lowercase English letters, '.', and '*'",
     "It is guaranteed for each occurrence of '*', there will be a previous valid character to match",
@@ -13574,7 +13574,7 @@ print(isMatch("aa", "a"))   # Expected: False
 print(isMatch("aa", "a*"))  # Expected: True
 print(isMatch("ab", ".*"))  # Expected: True`,
 
-    java: `class Solution {
+    java: `class Main {
     public static boolean isMatch(String s, String p) {
         // Write your solution here
 
@@ -13625,7 +13625,7 @@ int main() {
   id: "distinct-subsequences",
   title: "Distinct Subsequences",
   difficulty: "Hard",
-  category: "String • Dynamic Programming",
+  category: "String â€¢ Dynamic Programming",
   description: {
     text: "Given two strings s and t, return the number of distinct subsequences of s which equals t. A subsequence of a string is a new string formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters.",
     notes: [
@@ -13648,7 +13648,7 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ s.length, t.length ≤ 1000",
+    "1 â‰¤ s.length, t.length â‰¤ 1000",
     "s and t consist of English letters",
   ],
   starterCode: {
@@ -13669,7 +13669,7 @@ console.log(numDistinct("babgbag", "bag"));    // Expected: 5`,
 print(numDistinct("rabbbit", "rabbit"))  # Expected: 3
 print(numDistinct("babgbag", "bag"))     # Expected: 5`,
 
-    java: `class Solution {
+    java: `class Main {
     public static int numDistinct(String s, String t) {
         // Write your solution here
 
@@ -13718,11 +13718,11 @@ int main() {
   id: "number-of-1-bits",
   title: "Number of 1 Bits",
   difficulty: "Easy",
-  category: "Divide and Conquer • Bit Manipulation",
+  category: "Divide and Conquer â€¢ Bit Manipulation",
   description: {
     text: "Write a function that takes the binary representation of a positive integer and returns the number of set bits it has (also known as the Hamming weight).",
     notes: [
-      "Use n & (n-1) to clear the lowest set bit — repeat until n is 0.",
+      "Use n & (n-1) to clear the lowest set bit â€” repeat until n is 0.",
       "Count how many times you perform this operation.",
       "Alternatively use n & 1 to check the LSB and right shift n each iteration.",
     ],
@@ -13745,7 +13745,7 @@ int main() {
     },
   ],
   constraints: [
-    "1 ≤ n ≤ 2³¹ - 1",
+    "1 â‰¤ n â‰¤ 2Â³Â¹ - 1",
   ],
   starterCode: {
     javascript: `function hammingWeight(n) {
@@ -13767,7 +13767,7 @@ print(hammingWeight(11))           # Expected: 3
 print(hammingWeight(128))          # Expected: 1
 print(hammingWeight(2147483645))   # Expected: 30`,
 
-    java: `class Solution {
+    java: `class Main {
     public static int hammingWeight(int n) {
         // Write your solution here
 

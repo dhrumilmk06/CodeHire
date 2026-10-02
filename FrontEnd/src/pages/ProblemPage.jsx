@@ -162,15 +162,13 @@ export const ProblemPage = () => {
 
 
     return (
-        <div className='h-screen bg-base-100 flex flex-col'>
-
-
-            <div className='flex-1'>
+        <div className='h-[calc(100vh-73px)] bg-base-100 flex flex-col overflow-hidden'>
+            <div className='flex-1 min-h-0 h-full'>
                 <PanelGroup direction='horizontal'>
 
-                    {/* left panel- problem desc */}
-                    <Panel defaultSize={40} minSize={30}>
-                        <div className="flex border-b border-[#2a2a2a] mb-4 flex-shrink-0">
+                    {/* left panel- problem desc & solution */}
+                    <Panel defaultSize={40} minSize={30} className="flex flex-col h-full overflow-hidden bg-base-200">
+                        <div className="flex border-b border-base-300 bg-base-100 flex-shrink-0 px-4">
                             <button
                                 onClick={() => setActiveTab('description')}
                                 className={`
@@ -202,28 +200,33 @@ export const ProblemPage = () => {
                             </button>
                         </div>
 
-                        {activeTab === 'description' && (
-                            <ProblemDescription
-                                problem={currentProblem}
-                                currentProblemId={id}
-                                onProblemChange={handelProblemChange}
-                                allProblems={allProblems}
-                            />
-                        )}
+                        <div className="flex-1 min-h-0 overflow-hidden">
+                            {activeTab === 'description' && (
+                                <ProblemDescription
+                                    problem={currentProblem}
+                                    currentProblemId={id}
+                                    onProblemChange={handelProblemChange}
+                                    allProblems={allProblems}
+                                />
+                            )}
 
-                        {activeTab === 'solution' && (
-                            <SolutionTab problem={currentProblem} />
-                        )}
+                            {activeTab === 'solution' && (
+                                <SolutionTab 
+                                    problem={currentProblem} 
+                                    selectedLanguage={selectedLanguage}
+                                />
+                            )}
+                        </div>
                     </Panel>
 
                     <PanelResizeHandle className='w-2 bg-base-300 hover:bg-primary transition-colors cursor-col-resize' />
 
-                    {/* right panel- problem desc */}
-                    <Panel defaultSize={60} minSize={30}>
-                        <PanelGroup direction='vertical'>
+                    {/* right panel- code editor & output */}
+                    <Panel defaultSize={60} minSize={30} className="flex flex-col h-full overflow-hidden">
+                        <PanelGroup direction='vertical' className="h-full">
 
                             {/* Top panel - Code editor */}
-                            <Panel defaultSize={70} minSize={30}>
+                            <Panel defaultSize={70} minSize={30} className="flex flex-col h-full overflow-hidden">
                                 <CodeEditorPanel
                                     selectedLanguage={selectedLanguage}
                                     code={code}
@@ -237,8 +240,8 @@ export const ProblemPage = () => {
                             <PanelResizeHandle className='h-2 bg-base-300 hover:bg-primary transition-colors cursor-row-resize' />
 
                             {/* bottom panel - output Panel */}
-                            <Panel defaultSize={30} minSize={30}>
-                                <OutputPanel output={output} />
+                            <Panel defaultSize={30} minSize={20} className="flex flex-col h-full overflow-hidden">
+                                <OutputPanel output={output} isRunning={isRunning} />
                             </Panel>
 
                         </PanelGroup>

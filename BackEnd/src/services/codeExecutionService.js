@@ -28,6 +28,34 @@ const LANGUAGE_RUNTIME_MAP = {
   typescript: { language: 'typescript', version: '5.0.3'   },
 };
 
+// Language → proper filename (Java MUST be Main.java so Piston runs `java Main`)
+const FILE_NAME_MAP = {
+  javascript: 'solution.js',
+  python:     'solution.py',
+  'c++':      'solution.cpp',
+  c:          'solution.c',
+  typescript: 'solution.ts',
+};
+
+// For Java, the filename MUST match the public class name.
+// Piston runs `java <ClassName>` after compiling, so we extract it from source.
+function getFileName(language, code = '') {
+  if (language.toLowerCase() === 'java') {
+    const match = code.match(/(?:public\s+)?class\s+(\w+)/);
+    const className = match ? match[1] : 'Main';
+    return `${className}.java`;
+  }
+  return FILE_NAME_MAP[language.toLowerCase()] || 'solution.txt';
+}
+
+// Piston's Java runtime hardcodes `java Main` — rename user's class to Main.
+function normalizeJavaCode(code) {
+  const match = code.match(/(?:public\s+)?class\s+(\w+)/);
+  if (!match || match[1] === 'Main') return code;
+  const originalName = match[1];
+  return code.replace(new RegExp(`\\b${originalName}\\b`, 'g'), 'Main');
+}
+
 // ---------------------------------------------------------------------------
 // Internal helpers
 // ---------------------------------------------------------------------------
@@ -51,6 +79,10 @@ async function runOnPiston(code, language, stdin = '') {
     };
   }
 
+  // Piston's Java runtime ALWAYS runs `java Main` — normalize class name
+  const pistonCode = language.toLowerCase() === 'java' ? normalizeJavaCode(code) : code;
+  const fileName = getFileName(language, pistonCode);
+
   const controller = new AbortController();
   const timeoutId  = setTimeout(() => controller.abort(), EXECUTION_TIMEOUT_MS);
 
@@ -62,7 +94,7 @@ async function runOnPiston(code, language, stdin = '') {
       body: JSON.stringify({
         language: runtime.language,
         version:  runtime.version,
-        files:    [{ name: 'solution', content: code }],
+        files:    [{ name: fileName, content: pistonCode }],
         stdin,
       }),
     });

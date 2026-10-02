@@ -1,13 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axiosInstance from '../../lib/axios'
 
-export default function SolutionTab({ problem }) {
+export default function SolutionTab({ problem, selectedLanguage = 'javascript' }) {
   const [state, setState]               = useState('locked')
   const [solution, setSolution]         = useState(null)
   const [isLoading, setIsLoading]       = useState(false)
   const [error, setError]               = useState('')
-  const [selectedLang, setSelectedLang] = useState('javascript')
+  const [selectedLang, setSelectedLang] = useState(selectedLanguage || 'javascript')
   const [copied, setCopied]             = useState(false)
+
+  // Sync selectedLang when user switches language in parent
+  useEffect(() => {
+    if (selectedLanguage) {
+      setSelectedLang(selectedLanguage)
+    }
+  }, [selectedLanguage])
 
   const languages = ['javascript', 'python', 'java', 'cpp']
 
@@ -30,7 +37,7 @@ export default function SolutionTab({ problem }) {
           ? problem.description.text
           : problem.description,
         difficulty: problem.difficulty,
-        language:   'javascript'
+        language:   selectedLang || 'javascript'
       })
 
       setSolution(data.solution)
@@ -57,7 +64,7 @@ export default function SolutionTab({ problem }) {
   // ── State 1 — Locked ──────────────────────────────────────
   if (state === 'locked') {
     return (
-      <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
+      <div className="h-full overflow-y-auto bg-base-200 p-6 flex flex-col items-center justify-center text-center">
 
         <div className="
           w-16 h-16 rounded-full mb-5
@@ -78,7 +85,7 @@ export default function SolutionTab({ problem }) {
 
         {error && (
           <div className="
-            w-full mb-4
+            w-full mb-4 max-w-xs
             bg-red-500/10 border border-red-500/30
             rounded-lg px-4 py-2
           ">
@@ -113,7 +120,7 @@ export default function SolutionTab({ problem }) {
   // ── State 2 — Loading ─────────────────────────────────────
   if (state === 'loading') {
     return (
-      <div className="flex flex-col items-center justify-center py-16 gap-4">
+      <div className="h-full overflow-y-auto bg-base-200 p-6 flex flex-col items-center justify-center gap-4">
         <div className="text-[#22c55e] text-4xl animate-spin">
           ⟳
         </div>
@@ -126,7 +133,7 @@ export default function SolutionTab({ problem }) {
 
   // ── State 3 — Revealed ────────────────────────────────────
   return (
-    <div className="space-y-4">
+    <div className="h-full overflow-y-auto bg-base-200 p-6 space-y-4">
 
       {/* Approach */}
       <div className="

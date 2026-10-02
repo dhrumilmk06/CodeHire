@@ -64,4 +64,18 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    target: 'esnext',
+    chunkSizeWarningLimit: 2500,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router'],
+          'vendor-clerk': ['@clerk/clerk-react'],
+          'vendor-stream': ['@stream-io/video-react-sdk', 'stream-chat', 'stream-chat-react'],
+          'vendor-excalidraw': ['@excalidraw/excalidraw'],
+        },
+      },
+    },
+  },
 })

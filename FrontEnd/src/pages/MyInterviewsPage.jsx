@@ -7,7 +7,9 @@ import { SkeletonCard } from '../components/ui/SkeletonCard';
 import QuickJoinCard from '../components/dashboard/QuickJoinCard';
 
 export const MyInterviewsPage = () => {
-  const { user } = useUser();
+  const { user: clerkUser } = useUser();
+  const e2eUser = typeof window !== 'undefined' && window.__E2E_USER__;
+  const user = e2eUser || clerkUser;
   const { data: recentSessionsData, isLoading } = useMyRecentSessions();
 
   const sessions = recentSessionsData?.sessions || [];

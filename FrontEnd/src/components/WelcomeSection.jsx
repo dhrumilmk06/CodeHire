@@ -2,7 +2,9 @@ import { useUser } from "@clerk/clerk-react";
 import { ArrowRightIcon, SparklesIcon, ZapIcon } from "lucide-react";
 
 export const WelcomeSection = ({ onCreateSession }) => {
-  const { user } = useUser();
+  const { user: clerkUser } = useUser();
+  const e2eUser = typeof window !== 'undefined' && window.__E2E_USER__;
+  const user = e2eUser || clerkUser;
 
   return (
     <div className="relative overflow-hidden">

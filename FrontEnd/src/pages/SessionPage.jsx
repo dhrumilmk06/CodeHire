@@ -27,7 +27,9 @@ import { useOutletContext } from 'react-router';
 export const SessionPage = () => {
   const navigate = useNavigate();
   const { sessionId } = useParams();
-  const { user } = useUser();
+  const { user: clerkUser } = useUser();
+  const e2eUser = typeof window !== 'undefined' && window.__E2E_USER__;
+  const user = e2eUser || clerkUser;
   const [output, setOutput] = useState(null)
   const [isRunning, setIsRunning] = useState(false)
   const [isProblemLoading, setIsProblemLoading] = useState(false);
@@ -175,7 +177,7 @@ export const SessionPage = () => {
     if (!socket) return;
 
     const handleAutoScore = async (data) => {
-      if (data.sessionId === id) {
+      if (data.sessionId === sessionId) {
         setAutoScoreResults(data);
         setIsScoring(false);
 
@@ -186,7 +188,7 @@ export const SessionPage = () => {
         // Host persists the score to DB
         if (isHost && data.score) {
           try {
-            await sessionApi.updateSessionScore(id, `${data.score.passed}/${data.score.total}`);
+            await sessionApi.updateSessionScore(sessionId, `${data.score.passed}/${data.score.total}`);
           } catch (err) {
             console.error("Failed to save session score:", err);
           }
@@ -195,25 +197,25 @@ export const SessionPage = () => {
     };
 
     const handleScoringStarted = (data) => {
-      if (data.sessionId === id) {
+      if (data.sessionId === sessionId) {
         setIsScoring(true);
         setAutoScoreResults(null);
       }
     };
 
     const handleReceiveHint = (data) => {
-      if (data.sessionId === id && !isHost) {
+      if (data.sessionId === sessionId && !isHost) {
         setReceivedHint(data.hint);
         setTimeout(() => setReceivedHint(""), 15000);
       }
     };
 
     const handleAgentStarted = (data) => {
-      if (data.sessionId === id) setAgentActive(true);
+      if (data.sessionId === sessionId) setAgentActive(true);
     };
 
     const handleAgentStopped = (data) => {
-      if (data.sessionId === id) setAgentActive(false);
+      if (data.sessionId === sessionId) setAgentActive(false);
     };
 
     const handleNavigateWhiteboard = (data) => {
@@ -305,11 +307,11 @@ export const SessionPage = () => {
     }, 100);
 
     // 2. Debounce-persist code to DB every 3s so the AI agent can read it
-    if (session?.problem && id) {
+    if (session?.problem && sessionId) {
       clearTimeout(codeSaveTimerRef.current);
       codeSaveTimerRef.current = setTimeout(async () => {
         try {
-          await sessionApi.saveProblemCode(id, session.problem, value);
+          await sessionApi.saveProblemCode(sessionId, session.problem, value);
         } catch (err) {
           console.warn('[Session] Failed to auto-save code to DB:', err?.message);
         }

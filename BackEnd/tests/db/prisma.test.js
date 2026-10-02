@@ -25,12 +25,14 @@ import { truncateAll, disconnectDb } from './setup.js';
 
 // ── Shared fixtures ───────────────────────────────────────────────────────────
 
-/** Minimal valid User seed */
-const makeUser = (suffix = '') => ({
-  clerkId: `clerk_test_${suffix}_${Date.now()}`,
-  email:   `test${suffix}_${Date.now()}@codehire-test.dev`,
-  name:    `Test User ${suffix}`,
-});
+const makeUser = (suffix = '') => {
+  const rand = Math.floor(Math.random() * 100000);
+  return {
+    clerkId: `clerk_test_${suffix}_${Date.now()}_${rand}`,
+    email:   `test${suffix}_${Date.now()}_${rand}@codehire-test.dev`,
+    name:    `Test User ${suffix}`,
+  };
+};
 
 /** Minimal valid Session seed (requires a pre-created host User's clerkId) */
 const makeSession = (hostClerkId, overrides = {}) => ({
@@ -211,7 +213,10 @@ describe('Session model', () => {
   });
 
   afterAll(async () => {
-    await prisma.user.deleteMany({ where: { id: { in: [host.id, participant.id] } } });
+    const ids = [host?.id, participant?.id].filter(Boolean);
+    if (ids.length > 0) {
+      await prisma.user.deleteMany({ where: { id: { in: ids } } });
+    }
   });
 
   test('creates a session linked to a host via clerkId', async () => {
@@ -400,7 +405,9 @@ describe('CustomProblem model', () => {
   });
 
   afterAll(async () => {
-    await prisma.user.delete({ where: { id: owner.id } });
+    if (owner?.id) {
+      await prisma.user.delete({ where: { id: owner.id } });
+    }
   });
 
   test('creates a CustomProblem with required fields', async () => {

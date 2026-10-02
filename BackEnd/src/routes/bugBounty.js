@@ -18,6 +18,14 @@
 import express from 'express';
 import { prisma } from '../lib/db.js';
 import { protectRoute } from '../middleware/protectRoute.js';
+import validate from '../middleware/validate.js';
+import {
+  bugBountyProblemSchema,
+  bugBountySubmitSchema,
+  bugBountyHintRequestSchema,
+  bugBountyRunTestsSchema,
+  bugBountyReviewSchema
+} from '../schemas/validationSchemas.js';
 import { runAutoTests } from '../services/pistonService.js';
 import { reviewBugFix, explainBugFix } from '../services/geminiReviewService.js';
 
@@ -49,7 +57,7 @@ function isHost(user) {
 // POST /api/bug-bounty/problems
 // Host creates a new bug bounty problem.
 // ===========================================================================
-router.post('/problems', async (req, res) => {
+router.post('/problems', validate(bugBountyProblemSchema), async (req, res) => {
   try {
     if (!isHost(req.user)) {
       return res.status(403).json({ success: false, error: 'Only hosts can create bug bounty problems.' });
@@ -212,7 +220,7 @@ router.get('/problems/:id', async (req, res) => {
 // POST /api/bug-bounty/problems/:id/submit
 // Candidate submits their fixed code.
 // ===========================================================================
-router.post('/problems/:id/submit', async (req, res) => {
+router.post('/problems/:id/submit', validate(bugBountySubmitSchema), async (req, res) => {
   try {
     const problemId = Number(req.params.id);
     const { fixedCode, sessionId, timeTakenSeconds } = req.body;
@@ -305,7 +313,7 @@ router.post('/problems/:id/submit', async (req, res) => {
 // POST /api/bug-bounty/problems/:id/hints
 // Candidate requests a hint. Reveals bugHints and logs the request.
 // ===========================================================================
-router.post('/problems/:id/hints', async (req, res) => {
+router.post('/problems/:id/hints', validate(bugBountyHintRequestSchema), async (req, res) => {
   try {
     const problemId    = Number(req.params.id);
     const { submissionId } = req.body;
@@ -398,7 +406,7 @@ router.get('/leaderboard', async (req, res) => {
 // POST /api/bug-bounty/problems/:id/run-tests
 // Run fixed code against the public initialTestCases only (no submission created).
 // ===========================================================================
-router.post('/problems/:id/run-tests', async (req, res) => {
+router.post('/problems/:id/run-tests', validate(bugBountyRunTestsSchema), async (req, res) => {
   try {
     const problemId = Number(req.params.id);
     const { fixedCode } = req.body;
@@ -521,7 +529,7 @@ router.get('/submissions/:id', async (req, res) => {
 // PUT /api/bug-bounty/submissions/:id/review
 // Host adds manual review score and feedback, recalculates finalScore.
 // ===========================================================================
-router.put('/submissions/:id/review', async (req, res) => {
+router.put('/submissions/:id/review', validate(bugBountyReviewSchema), async (req, res) => {
   try {
     if (!isHost(req.user)) {
       return res.status(403).json({ success: false, error: 'Only hosts can add manual reviews.' });
@@ -705,7 +713,7 @@ router.get('/session/:sessionId/problem', async (req, res) => {
 // POST /api/bug-bounty/problems/:id/run-public-tests
 // Run against public test cases only using Piston
 // ===========================================================================
-router.post('/problems/:id/run-public-tests', async (req, res) => {
+router.post('/problems/:id/run-public-tests', validate(bugBountyRunTestsSchema), async (req, res) => {
   try {
     const { id } = req.params;
     const { code } = req.body;

@@ -4,6 +4,8 @@ import http from 'http';
 import { Server as SocketIOServer } from 'socket.io';
 import { serve } from 'inngest/express';
 import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import { clerkMiddleware } from '@clerk/express'
 
 import { ENV } from './lib/env.js';
@@ -172,11 +174,12 @@ io.on("connection", (socket) => {
 // ──────────────────────────────────────────────────────────────────────────
 
 // Middlewares
+app.use(helmet());
 app.use((req, res, next) => {
     //console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     next();
 });
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '2mb' }));
 const allowedOrigins = [
     ENV.CLIENT_URL,
     'http://localhost:5173',
@@ -214,6 +217,14 @@ app.use("/api/inngest", serve({
     client: inngest,
     functions
 }))
+
+// Global API Rate Limiter
+const globalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: { success: false, error: 'Too many requests from this IP, please try again after 15 minutes.' }
+});
+app.use('/api', globalLimiter);
 
 app.get('/api/health', (req, res) => {
     res.send("Hello World")

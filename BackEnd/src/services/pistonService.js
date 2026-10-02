@@ -20,13 +20,31 @@ const LANGUAGE_MAP = {
 };
 
 // File name map for proper naming inside Piston
+// Java is handled dynamically — see getJavaFileName()
 const FILE_NAME_MAP = {
   javascript: 'solution.js',
   python:     'solution.py',
-  java:       'Solution.java',
   cpp:        'solution.cpp',
   typescript: 'solution.ts',
 };
+
+// For Java, Piston compiles then runs `java <ClassName>` — the filename must match.
+function getFileName(language, code = '') {
+  if (language === 'java') {
+    const match = code.match(/(?:public\s+)?class\s+(\w+)/);
+    const className = match ? match[1] : 'Main';
+    return `${className}.java`;
+  }
+  return FILE_NAME_MAP[language] || 'solution.txt';
+}
+
+// Piston's Java runtime hardcodes `java Main` — rename the user's class to Main.
+function normalizeJavaCode(code) {
+  const match = code.match(/(?:public\s+)?class\s+(\w+)/);
+  if (!match || match[1] === 'Main') return code;
+  const originalName = match[1];
+  return code.replace(new RegExp(`\\b${originalName}\\b`, 'g'), 'Main');
+}
 
 // ---------------------------------------------------------------------------
 // Internal: execute one test case against Piston
@@ -85,8 +103,8 @@ async function executeOnPiston(code, runtime, fileName, stdin) {
  * @returns {{ passed, total, score, details, error? }}
  */
 export async function runAutoTests(fixedCode, hiddenTestCases, language) {
-  const langKey = (language || 'javascript').toLowerCase();
-  const runtime = LANGUAGE_MAP[langKey];
+  const langKey  = (language || 'javascript').toLowerCase();
+  const runtime  = LANGUAGE_MAP[langKey];
 
   if (!runtime) {
     return {
@@ -98,13 +116,15 @@ export async function runAutoTests(fixedCode, hiddenTestCases, language) {
     };
   }
 
-  const fileName = FILE_NAME_MAP[langKey] || 'solution.js';
+  // Piston's Java runtime ALWAYS runs `java Main` — normalize class name
+  const normalizedCode = langKey === 'java' ? normalizeJavaCode(fixedCode) : fixedCode;
+  const fileName = getFileName(langKey, normalizedCode);
   const total    = hiddenTestCases.length;
   let   passed   = 0;
   const details  = [];
 
   for (const testCase of hiddenTestCases) {
-    const result = await executeOnPiston(fixedCode, runtime, fileName, testCase.input ?? '');
+    const result = await executeOnPiston(normalizedCode, runtime, fileName, testCase.input ?? '');
 
     // If Piston is unreachable (ECONNREFUSED shows up as a network error with a specific message)
     if (

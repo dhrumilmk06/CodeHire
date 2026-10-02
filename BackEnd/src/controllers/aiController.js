@@ -434,12 +434,18 @@ Return ONLY a valid JSON object with NO extra text, NO markdown, NO backticks:
     // Clean and parse JSON response from Gemini
     let generatedProblem
     try {
-      const cleaned = aiResponse
-        .replace(/```json/g, '')
-        .replace(/```/g, '')
-        .trim()
+      // Find the first { and last } to extract JSON from potential extra text
+      const startJson = aiResponse.indexOf('{')
+      const endJson   = aiResponse.lastIndexOf('}')
+
+      if (startJson === -1 || endJson === -1) {
+        throw new Error('No valid JSON found')
+      }
+
+      const cleaned = aiResponse.substring(startJson, endJson + 1)
       generatedProblem = JSON.parse(cleaned)
-    } catch {
+    } catch (parseError) {
+      console.error('[generateProblem] JSON Parsing Error:', parseError.message, '\nRaw Response:', aiResponse)
       return res.status(500).json({
         error: 'AI returned invalid format. Please try again.'
       })

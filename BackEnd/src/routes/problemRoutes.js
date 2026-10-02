@@ -2,7 +2,7 @@ import express from "express";
 import rateLimit from "express-rate-limit";
 import { protectRoute } from "../middleware/protectRoute.js";
 import validate from "../middleware/validate.js";
-import { problemSchema } from "../schemas/validationSchemas.js";
+import { problemSchema, bulkImportProblemsSchema } from "../schemas/validationSchemas.js";
 
 import { 
     getMyProblems, 
@@ -29,8 +29,8 @@ router.get("/", protectRoute, getMyProblems);
 router.get("/find", protectRoute, getProblemByTitle);  // Must be before /:id
 router.post("/", protectRoute, validate(problemSchema), createProblem);
 
-router.post("/bulk", protectRoute, bulkImportLimiter, bulkImportProblems);
-router.put("/:id", protectRoute, updateProblem);
+router.post("/bulk", protectRoute, bulkImportLimiter, validate(bulkImportProblemsSchema), bulkImportProblems);
+router.put("/:id", protectRoute, validate(problemSchema), updateProblem);
 router.delete("/:id", protectRoute, deleteProblem);
 
 export default router;

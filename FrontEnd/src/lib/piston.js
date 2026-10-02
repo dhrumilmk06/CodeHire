@@ -49,6 +49,10 @@ export async function executeCode(language, code) {
             }
         }
 
+        // Piston's Java runtime ALWAYS runs `java Main` after compiling.
+        // So we must rename the user's class (e.g. Solution) to Main before sending.
+        const pistonCode = language === 'java' ? normalizeJavaCode(code) : code;
+
         // Add a 60 second timeout so it never hangs indefinitely
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 60000);
@@ -64,8 +68,8 @@ export async function executeCode(language, code) {
                 version: languageConfig.version,
                 files: [
                     {
-                        name: getFileExecution(language),
-                        content: code,
+                        name: language === 'java' ? 'Main.java' : getFileExecution(language, code),
+                        content: pistonCode,
                     },
                 ],
                 compile_timeout: 30000,
@@ -116,15 +120,46 @@ export async function executeCode(language, code) {
     }
 }
 
-function getFileExecution(language) {
+/**
+ * Returns the correct filename for Piston.
+ * For Java, Piston REQUIRES the filename to match the public class name
+ * (e.g. `class Solution` → `Solution.java`), otherwise it throws
+ * "Could not find or load main class X".
+ * We extract the class name dynamically from the source code.
+ */
+function getFileExecution(language, code = "") {
+    if (language === "java") {
+        // Match `public class Foo` or `class Foo` (first occurrence)
+        const match = code.match(/(?:public\s+)?class\s+(\w+)/);
+        const className = match ? match[1] : "Main";
+        return `${className}.java`;
+    }
+
     const fileNames = {
         javascript: "main.js",
         python: "main.py",
-        java: "Solution.java",
         cpp: "main.cpp"
     };
 
     return fileNames[language] || "main.txt"
+}
+
+// ---------------------------------------------------------------------------
+// Java code normalizer — Piston ALWAYS runs `java Main`
+// ---------------------------------------------------------------------------
+/**
+ * Renames the top-level class in Java code to `Main` so that Piston can
+ * compile it as Main.java and execute it with `java Main`.
+ * Works regardless of whether the user wrote `class Solution`, `class MyClass`, etc.
+ */
+function normalizeJavaCode(code) {
+    // Find the first class declaration (public or package-private)
+    const match = code.match(/(?:public\s+)?class\s+(\w+)/);
+    if (!match || match[1] === 'Main') return code; // already Main, nothing to do
+
+    const originalName = match[1];
+    // Replace all occurrences of the class name as a whole word
+    return code.replace(new RegExp(`\\b${originalName}\\b`, 'g'), 'Main');
 }
 
 // ---------------------------------------------------------------------------

@@ -25,10 +25,10 @@ jobs:
           - 5432:5432
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           
       - run: npm install --prefix FrontEnd
       - run: npm install --prefix BackEnd
@@ -36,7 +36,9 @@ jobs:
       - name: Setup test database
         env:
           DATABASE_URL: postgresql://postgres:test@localhost:5432/codehire_test
-        run: npx prisma migrate deploy
+        run: |
+          npx prisma generate
+          npx prisma migrate deploy
         working-directory: ./BackEnd
         
       - name: Run unit tests
@@ -64,19 +66,30 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           
       - run: npm install --prefix FrontEnd
       - run: npm install --prefix BackEnd
+
+      - name: Setup FrontEnd environment
+        run: |
+          echo "VITE_CLERK_PUBLISHABLE_KEY=pk_test_bmVlZGVkLWtpbmdmaXNoLTU2LmNsZXJrLmFjY291bnRzLmRldiQ" > FrontEnd/.env
+          echo "VITE_API_URL=http://localhost:3000/api" >> FrontEnd/.env
+          echo "VITE_STREAM_API_KEY=kmatzfzr7dth" >> FrontEnd/.env
       
       - name: Install Playwright
         run: npx playwright install --with-deps
         working-directory: ./FrontEnd
       
       - name: Run E2E tests
+        env:
+          CI: true
+          VITE_CLERK_PUBLISHABLE_KEY: pk_test_bmVlZGVkLWtpbmdmaXNoLTU2LmNsZXJrLmFjY291bnRzLmRldiQ
+          VITE_API_URL: http://localhost:3000/api
+          VITE_STREAM_API_KEY: kmatzfzr7dth
         run: npm run test:e2e
         working-directory: ./FrontEnd
         

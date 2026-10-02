@@ -27,7 +27,10 @@ import BugBountyDashboard from './pages/BugBountyDashboard.jsx';
 import BugBountyReview from './pages/BugBountyReview.jsx';
 
 function LandingRedirect() {
-  const { user, isLoaded } = useUser();
+  const { user: clerkUser, isLoaded: clerkLoaded } = useUser();
+  const e2eUser = typeof window !== 'undefined' && window.__E2E_USER__;
+  const user = e2eUser || clerkUser;
+  const isLoaded = !!e2eUser || clerkLoaded;
   const [isSyncing, setIsSyncing] = useState(false);
   const [retry, setRetry] = useState(0);
 
@@ -35,7 +38,7 @@ function LandingRedirect() {
   // This hits protectRoute.js which auto-syncs DB role -> Clerk metadata
   useEffect(() => {
     const syncRole = async () => {
-      if (isLoaded && user && !user.publicMetadata?.role) {
+      if (isLoaded && user && !user.publicMetadata?.role && !e2eUser) {
         setIsSyncing(true);
         try {
           const { default: axiosInstance } = await import("./lib/axios");
@@ -49,7 +52,7 @@ function LandingRedirect() {
       }
     };
     syncRole();
-  }, [isLoaded, user, retry]);
+  }, [isLoaded, user, retry, e2eUser]);
 
   if (!isLoaded || isSyncing) {
     return (
@@ -86,7 +89,10 @@ function LandingRedirect() {
 
 function App() {
 
-  const { isSignedIn, isLoaded } = useUser()
+  const { isSignedIn: clerkSignedIn, isLoaded: clerkLoaded } = useUser();
+  const e2eUser = typeof window !== 'undefined' && window.__E2E_USER__;
+  const isSignedIn = !!e2eUser || clerkSignedIn;
+  const isLoaded = !!e2eUser || clerkLoaded;
   const location = useLocation()
 
   if (!isLoaded) return null

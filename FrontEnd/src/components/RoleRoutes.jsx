@@ -2,8 +2,27 @@ import { useUser } from "@clerk/clerk-react";
 import { Navigate } from "react-router";
 import { LoaderIcon } from "lucide-react";
 
+function getAuth(useUserHook) {
+    const { user: clerkUser, isLoaded: clerkLoaded, isSignedIn: clerkSignedIn } = useUserHook();
+    const e2eUser = typeof window !== 'undefined' && window.__E2E_USER__;
+    if (e2eUser) {
+        return {
+            user: e2eUser,
+            isLoaded: true,
+            isSignedIn: true,
+            role: e2eUser.publicMetadata?.role || e2eUser.role || 'host',
+        };
+    }
+    return {
+        user: clerkUser,
+        isLoaded: clerkLoaded,
+        isSignedIn: clerkSignedIn,
+        role: clerkUser?.publicMetadata?.role || clerkUser?.role,
+    };
+}
+
 export function AdminRoute({ children }) {
-    const { user, isLoaded, isSignedIn } = useUser();
+    const { isLoaded, isSignedIn, role } = getAuth(useUser);
 
     if (!isLoaded) {
         return (
@@ -15,11 +34,6 @@ export function AdminRoute({ children }) {
 
     if (!isSignedIn) return <Navigate to="/" />;
 
-    // Assuming role is stored in publicMetadata as per Clerk best practices 
-    // or as a custom property synced with our DB.
-    // The README specifies 'user.role'
-    const role = user?.publicMetadata?.role || user?.role;
-    
     if (!role) return <Navigate to="/select-role" />;
 
     if (role !== 'admin') {
@@ -30,7 +44,7 @@ export function AdminRoute({ children }) {
 }
 
 export function HostRoute({ children }) {
-    const { user, isLoaded, isSignedIn } = useUser();
+    const { isLoaded, isSignedIn, role } = getAuth(useUser);
 
     if (!isLoaded) {
         return (
@@ -41,8 +55,6 @@ export function HostRoute({ children }) {
     }
 
     if (!isSignedIn) return <Navigate to="/" />;
-
-    const role = user?.publicMetadata?.role || user?.role;
 
     if (!role) return <Navigate to="/select-role" />;
 
@@ -54,7 +66,7 @@ export function HostRoute({ children }) {
 }
 
 export function ParticipantRoute({ children }) {
-    const { user, isLoaded, isSignedIn } = useUser();
+    const { isLoaded, isSignedIn, role } = getAuth(useUser);
 
     if (!isLoaded) {
         return (
@@ -66,11 +78,8 @@ export function ParticipantRoute({ children }) {
 
     if (!isSignedIn) return <Navigate to="/" />;
 
-    const role = user?.publicMetadata?.role || user?.role;
-
     if (!role) return <Navigate to="/select-role" />;
 
-    // Admin can also see these pages usually, but following strict participant-only guard from README
     if (role !== 'participant') {
         return <Navigate to="/dashboard" />;
     }
@@ -79,7 +88,7 @@ export function ParticipantRoute({ children }) {
 }
 
 export function AuthenticatedRoute({ children }) {
-    const { user, isLoaded, isSignedIn } = useUser();
+    const { isLoaded, isSignedIn, role } = getAuth(useUser);
 
     if (!isLoaded) {
         return (
@@ -90,8 +99,6 @@ export function AuthenticatedRoute({ children }) {
     }
 
     if (!isSignedIn) return <Navigate to="/" />;
-
-    const role = user?.publicMetadata?.role || user?.role;
 
     if (!role) return <Navigate to="/select-role" />;
 

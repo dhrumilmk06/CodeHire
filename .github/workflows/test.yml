@@ -1,0 +1,101 @@
+name: Automated Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  unit-and-api-tests:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: codehire_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          
+      - run: npm install --prefix FrontEnd
+      - run: npm install --prefix BackEnd
+      
+      - name: Setup test database
+        env:
+          DATABASE_URL: postgresql://postgres:test@localhost:5432/codehire_test
+        run: |
+          npx prisma generate
+          npx prisma migrate deploy
+        working-directory: ./BackEnd
+        
+      - name: Run unit tests
+        run: npm run test:unit
+        working-directory: ./FrontEnd
+        
+      - name: Run API tests
+        env:
+          DATABASE_URL: postgresql://postgres:test@localhost:5432/codehire_test
+        run: npm run test:api
+        working-directory: ./BackEnd
+        
+      - name: Run DB tests
+        env:
+          DATABASE_URL: postgresql://postgres:test@localhost:5432/codehire_test
+        run: npm run test:db
+        working-directory: ./BackEnd
+        
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./FrontEnd/coverage/coverage-final.json,./BackEnd/coverage/coverage-final.json
+
+  e2e-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          
+      - run: npm install --prefix FrontEnd
+      - run: npm install --prefix BackEnd
+
+      - name: Setup FrontEnd environment
+        run: |
+          echo "VITE_CLERK_PUBLISHABLE_KEY=pk_test_bmVlZGVkLWtpbmdmaXNoLTU2LmNsZXJrLmFjY291bnRzLmRldiQ" > FrontEnd/.env
+          echo "VITE_API_URL=http://localhost:3000/api" >> FrontEnd/.env
+          echo "VITE_STREAM_API_KEY=kmatzfzr7dth" >> FrontEnd/.env
+      
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+        working-directory: ./FrontEnd
+      
+      - name: Run E2E tests
+        env:
+          CI: true
+          VITE_CLERK_PUBLISHABLE_KEY: pk_test_bmVlZGVkLWtpbmdmaXNoLTU2LmNsZXJrLmFjY291bnRzLmRldiQ
+          VITE_API_URL: http://localhost:3000/api
+          VITE_STREAM_API_KEY: kmatzfzr7dth
+        run: npm run test:e2e
+        working-directory: ./FrontEnd
+        
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: FrontEnd/playwright-report/

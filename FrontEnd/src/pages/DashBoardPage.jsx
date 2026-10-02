@@ -11,7 +11,9 @@ import { CreateSessionModel } from '../components/CreateSessionModel.jsx'
 
 export const DashBoardPage = () => {
   const navigate = useNavigate();
-  const { user } = useUser();
+  const { user: clerkUser } = useUser();
+  const e2eUser = typeof window !== 'undefined' && window.__E2E_USER__;
+  const user = e2eUser || clerkUser;
 
   //showCreateModel show the pop-up after we click on createsessionBtn  
   const [showCreateModel, setShowCreateModel] = useState(false);

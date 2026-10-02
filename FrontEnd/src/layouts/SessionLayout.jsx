@@ -15,7 +15,10 @@ import { StreamCall, StreamVideo } from "@stream-io/video-react-sdk";
  */
 export default function SessionLayout() {
     const { sessionId } = useParams();
-    const { user, isSignedIn } = useUser();
+    const { user: clerkUser, isSignedIn: clerkSignedIn } = useUser();
+    const e2eUser = typeof window !== 'undefined' && window.__E2E_USER__;
+    const user = e2eUser || clerkUser;
+    const isSignedIn = !!e2eUser || clerkSignedIn;
 
     // Fetch session to get the callId (used as roomId) and determine role
     const { data: sessionData, isLoading } = useSessionById(sessionId);

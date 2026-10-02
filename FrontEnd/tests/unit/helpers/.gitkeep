@@ -1,0 +1,2 @@
+# Unit test helpers live here.
+# Add shared utility functions used across multiple unit tests (e.g. render wrappers, mock factories).

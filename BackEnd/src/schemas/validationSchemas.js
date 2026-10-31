@@ -36,7 +36,7 @@ const joinSessionSchema = z.object({
 const aiHintSchema = z.object({
     sessionId: z.string().min(1, "Session ID is required"),
     problemTitle: z.string().min(1, "Problem title is required"),
-    candidateCode: z.string().min(1, "Candidate code is required"),
+    candidateCode: z.string().optional().default("// No code submitted"),
     problemDescription: z.string().optional(),
 });
 
@@ -44,7 +44,7 @@ const aiReviewSchema = z.object({
     sessionId: z.string().min(1, "Session ID is required"),
     problemTitle: z.string().min(1, "Problem title is required"),
     problemDescription: z.string().optional(),
-    candidateCode: z.string().min(1, "Candidate code is required"),
+    candidateCode: z.string().optional().default("// No code submitted"),
     score: z.any().optional(),
     timeTaken: z.any().optional(),
     language: z.string().optional(),

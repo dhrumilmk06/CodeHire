@@ -187,8 +187,18 @@ export const generateCodeReview = async (req, res, next) => {
       language
     } = req.body
 
-    // Only host can generate review
-    if (req.user.role !== 'host') {
+    // 1. Fetch the session to verify existence and authorization
+    const session = await prisma.session.findUnique({
+      where: { id: sessionId }
+    })
+
+    if (!session) {
+      return res.status(404).json({ error: 'Session not found' })
+    }
+
+    // Only session host or user with host/admin role can generate review
+    const isSessionHost = session.hostId === req.user.clerkId
+    if (!isSessionHost && req.user.role !== 'host' && req.user.role !== 'admin') {
       return res.status(403).json({
         error: 'Only host can generate code review'
       })
@@ -201,11 +211,6 @@ export const generateCodeReview = async (req, res, next) => {
     let failedTestsInfo  = ''
 
     try {
-      // 1. Fetch the session to get session.problem (CustomProblem ID)
-      const session = await prisma.session.findUnique({
-        where: { id: sessionId }
-      })
-
       if (session) {
         // 2. Determine which code to execute:
         //    Prefer the live code stored in session.problemCodes[language],

@@ -3,8 +3,11 @@ import { io } from "socket.io-client";
 
 const SessionContext = createContext(null);
 
-// Relative URL — Vite proxy forwards /socket.io → backend:3000
-const SOCKET_URL = "/";
+// In production, connect to the deployed backend URL directly.
+// In development, use "/" so Vite's proxy handles the Socket.io upgrade.
+const SOCKET_URL = import.meta.env.VITE_API_URL
+    ? import.meta.env.VITE_API_URL.replace('/api', '')
+    : '/';
 
 /**
  * Provides a single persistent socket connection that survives navigation

@@ -4,7 +4,8 @@
 
 // SELF-HOSTED (Docker) - proxied through Vite to avoid CORS
 // Vite proxy routes /piston/* → http://localhost:2000/api/v2/*
-const PISTON_API = "/piston"
+// In production, set VITE_PISTON_URL to your self-hosted Piston instance URL.
+const PISTON_API = import.meta.env.VITE_PISTON_URL || "/piston"
 
 // PUBLIC API (no longer free as of Feb 2026, returns 401)
 // const PISTON_API = "https://emkc.org/api/v2/piston"

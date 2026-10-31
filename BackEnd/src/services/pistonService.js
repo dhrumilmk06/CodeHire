@@ -5,7 +5,8 @@
  * Piston base URL: http://localhost:2000
  */
 
-const PISTON_ENDPOINT = 'http://localhost:2000/api/v2/execute';
+const PISTON_BASE = (process.env.PISTON_URL || 'http://localhost:2000').replace(/\/$/, '');
+const PISTON_ENDPOINT = `${PISTON_BASE}/api/v2/execute`;
 const EXECUTION_TIMEOUT_MS = 10000; // 10 seconds per test case
 
 // ---------------------------------------------------------------------------

@@ -36,10 +36,32 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const httpServer = http.createServer(app);
 
+// ── Allowed Origins & CORS ─────────────────────────────────────────────────
+const allowedOrigins = [
+    ENV.CLIENT_URL,
+    ENV.FRONTEND_URL,
+    'http://localhost:5173',
+    'http://localhost:5174',
+].filter(Boolean);
+
+const isOriginAllowed = (origin, callback) => {
+    // Allow server-to-server or curl/Postman requests (no origin header)
+    if (!origin) return callback(null, true);
+
+    const isExplicitlyAllowed = allowedOrigins.includes(origin);
+    const isVercelDomain = origin.endsWith('.vercel.app');
+
+    if (isExplicitlyAllowed || isVercelDomain) {
+        callback(null, true);
+    } else {
+        callback(new Error(`CORS blocked: ${origin}`));
+    }
+};
+
 // ── Socket.io Setup ────────────────────────────────────────────────────────
 const io = new SocketIOServer(httpServer, {
     cors: {
-        origin: ['http://localhost:5173', 'http://localhost:5174', ENV.CLIENT_URL],
+        origin: isOriginAllowed,
         methods: ["GET", "POST"],
         credentials: true,
     },
@@ -180,21 +202,12 @@ app.use((req, res, next) => {
     next();
 });
 app.use(express.json({ limit: '2mb' }));
-const allowedOrigins = [
-    ENV.CLIENT_URL,
-    'http://localhost:5173',
-    'http://localhost:5174',
-];
+
 app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error(`CORS blocked: ${origin}`));
-        }
-    },
+    origin: isOriginAllowed,
     credentials: true
 }))
+
 // Sanitize Authorization header to prevent Clerk JWT parsing crashes (strips quotes, backslashes, and 'null' strings)
 app.use((req, res, next) => {
     if (req.headers.authorization) {
@@ -226,9 +239,18 @@ const globalLimiter = rateLimit({
 });
 app.use('/api', globalLimiter);
 
+// ── Health & Root Endpoints ───────────────────────────────────────────────
+app.get('/', (req, res) => {
+    res.json({ status: 'ok', message: 'CodeHire API Server is running' });
+});
+
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok' });
+});
+
 app.get('/api/health', (req, res) => {
-    res.send("Hello World")
-})
+    res.json({ status: 'ok' });
+});
 
 app.use('/api/chat', chatRoutes)
 app.use('/api/sessions', sessionRoutes)
@@ -316,8 +338,8 @@ if (ENV.NODE_ENV === "production") {
 const startServer = async () => {
     try {
         await connectDB()
-        httpServer.listen(ENV.PORT, () => {
-            console.log("Server is running on port:", ENV.PORT)
+        httpServer.listen(ENV.PORT, '0.0.0.0', () => {
+            console.log('Server is running on port:', ENV.PORT);
         });
     } catch (error) {
         console.error("❌Error starting server:", error)

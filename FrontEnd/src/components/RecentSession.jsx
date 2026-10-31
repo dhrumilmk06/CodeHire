@@ -774,30 +774,41 @@ export const RecentSession = ({ sessions, isLoading, userClerkId, hideCompare = 
     setReportStep(prev => ({ ...prev, [session._id]: "review" }));
 
     try {
-      const token = await window.Clerk?.session?.getToken();
+      let token = await window.Clerk?.session?.getToken();
+      if (!token && window.Clerk) {
+        // Wait a moment if Clerk is still mounting
+        await new Promise(r => setTimeout(r, 500));
+        token = await window.Clerk?.session?.getToken();
+      }
       const apiUrl = import.meta.env.VITE_API_URL || "";
 
-      // Step 1 — For coding sessions, generate AI Code Review first.
+      // Step 1 — For coding sessions, generate AI Code Review first (if not already generated).
       // For system-design sessions, skip this step (no code to review).
-      if (session.sessionType !== 'system-design') {
-        const reviewRes = await fetch(`${apiUrl}/ai/review`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            sessionId: session._id,
-            problemTitle: session.problem || "Coding Problem",
-            problemDescription: "",
-            candidateCode: Object.values(session.problemCodes || {})[0] || "",
-            score: session.testCasesPassed || "0/0",
-            timeTaken: session.timeTaken ? `${session.timeTaken}:00` : "12:00",
-            language: "JavaScript",
-          }),
-        });
+      if (session.sessionType !== 'system-design' && !session.ai_review) {
+        try {
+          const reviewRes = await fetch(`${apiUrl}/ai/review`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              sessionId: session._id,
+              problemTitle: session.problem || "Coding Problem",
+              problemDescription: "",
+              candidateCode: Object.values(session.problemCodes || {})[0] || "// No code submitted",
+              score: session.testCasesPassed || "0/0",
+              timeTaken: session.timeTaken ? `${session.timeTaken}:00` : "12:00",
+              language: "JavaScript",
+            }),
+          });
 
-        if (!reviewRes.ok) throw new Error("AI review failed");
+          if (!reviewRes.ok) {
+            console.warn("AI review request did not succeed, proceeding to generate PDF without fresh review");
+          }
+        } catch (aiErr) {
+          console.warn("AI review step skipped:", aiErr?.message);
+        }
       }
 
       // Step 2 — Generate PDF
@@ -808,7 +819,10 @@ export const RecentSession = ({ sessions, isLoading, userClerkId, hideCompare = 
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (!reportRes.ok) throw new Error("PDF generation failed");
+      if (!reportRes.ok) {
+        const errDetail = await reportRes.text().catch(() => "");
+        throw new Error(`PDF generation failed (${reportRes.status}): ${errDetail}`);
+      }
 
       // Step 3 — Auto download PDF
       const blob = await reportRes.blob();

@@ -2,10 +2,11 @@ import puppeteer from 'puppeteer';
 import { prisma } from '../lib/db.js';
 import path from 'path';
 import fs from 'fs';
+import { generatePDFWithPDFKit } from '../utils/pdfGenerator.js';
 
 /**
  * GET /api/reports/:sessionId/generate
- * Only host can access this endpoint
+ * Only host or admin can access this endpoint
  */
 export const generateReport = async (req, res) => {
   try {
@@ -36,8 +37,9 @@ export const generateReport = async (req, res) => {
     }
 
     console.log("[ReportGen] Session Host ID:", session.hostId, "Comparison:", session.hostId === clerkId);
-    // Security: Only the host can access this endpoint
-    if (session.hostId !== clerkId) {
+    // Security: Host of this session or admin can generate report
+    const isSessionHost = session.hostId === clerkId;
+    if (!isSessionHost && req.user?.role !== 'admin') {
       return res.status(403).json({ message: "Forbidden - Only the host can generate this report" });
     }
 
@@ -53,49 +55,70 @@ export const generateReport = async (req, res) => {
     // Build HTML template with all session data
     const htmlContent = generateHTMLTemplate(session, latestSnapshot);
 
-    // Use Puppeteer to convert HTML to PDF
-    const browser = await puppeteer.launch({
-      headless: 'new',
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
+    let pdfBuffer = null;
 
-    const page = await browser.newPage();
-    await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+    // Attempt 1: Try Puppeteer if available
+    try {
+      const browser = await puppeteer.launch({
+        headless: true,
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-gpu',
+          '--no-first-run',
+          '--no-zygote',
+          '--single-process'
+        ],
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined
+      });
 
-    const pdfBuffer = await page.pdf({
-      format: 'A4',
-      printBackground: true,
-      margin: {
-        top: '20mm', bottom: '20mm',
-        left: '15mm', right: '15mm'
-      }
-    });
+      const page = await browser.newPage();
+      await page.setContent(htmlContent, { waitUntil: 'domcontentloaded', timeout: 15000 });
 
-    await browser.close();
+      pdfBuffer = await page.pdf({
+        format: 'A4',
+        printBackground: true,
+        margin: {
+          top: '20mm', bottom: '20mm',
+          left: '15mm', right: '15mm'
+        }
+      });
 
-    // Save PDF to BackEnd/reports/ folder
-    const reportsDir = path.join(process.cwd(), 'reports');
-    if (!fs.existsSync(reportsDir)) {
-      fs.mkdirSync(reportsDir, { recursive: true });
+      await browser.close();
+    } catch (puppeteerErr) {
+      console.warn('[ReportGen] Puppeteer generation unavailable, using PDFKit fallback:', puppeteerErr.message);
+      // Fallback: Pure Node PDFKit (works without external Chromium on any cloud host)
+      pdfBuffer = await generatePDFWithPDFKit(session, latestSnapshot);
     }
 
-    const timestamp = Date.now();
-    const fileName = `report-${sessionId}-${timestamp}.pdf`;
-    const filePath = path.join(reportsDir, fileName);
-    fs.writeFileSync(filePath, pdfBuffer);
-
-    // Update session report_generated = true and report_url
-    await prisma.session.update({
-      where: { id: sessionId },
-      data: {
-        report_generated: true,
-        report_url: `/reports/${fileName}`
+    // Save PDF to BackEnd/reports/ folder if filesystem allows
+    try {
+      const reportsDir = path.join(process.cwd(), 'reports');
+      if (!fs.existsSync(reportsDir)) {
+        fs.mkdirSync(reportsDir, { recursive: true });
       }
-    });
+
+      const timestamp = Date.now();
+      const fileName = `report-${sessionId}-${timestamp}.pdf`;
+      const filePath = path.join(reportsDir, fileName);
+      fs.writeFileSync(filePath, pdfBuffer);
+
+      // Update session report_generated = true and report_url
+      await prisma.session.update({
+        where: { id: sessionId },
+        data: {
+          report_generated: true,
+          report_url: `/reports/${fileName}`
+        }
+      });
+    } catch (fsErr) {
+      console.warn('[ReportGen] Could not cache report to local disk:', fsErr.message);
+    }
 
     // Send PDF as downloadable file in response
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="CodeHire-Report-${sessionId}.pdf"`);
+    res.setHeader('Content-Disposition', `attachment; filename="CodeHire-Report-${sessionId.slice(0, 8)}.pdf"`);
     res.send(pdfBuffer);
 
   } catch (error) {
